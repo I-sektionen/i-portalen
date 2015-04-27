@@ -155,3 +155,5 @@ $RECYCLE.BIN/
 pyvenv.cfg
 pip-selfcheck.json
 
+### Sqlite3 ###
+*.sqlite3
