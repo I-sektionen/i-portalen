@@ -16,7 +16,7 @@
 
 Kör följande kommandon:
 
-```
+```Bash
 sudo apt-get update
 sudo apt-get install java-common openjdk-7-jdk mysql sqlite3 mysql-server git python-pip python-pip3 -y
 sudo pip install virtualenvwrapper
