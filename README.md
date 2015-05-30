@@ -1,14 +1,14 @@
 # [I-portalen](http://i-portalen.se)
 ## Innehåll
-- [Sätt upp utvecklingsmiljön (Ubuntu 14.04)](#sätt-upp-utvecklingsmiljön-ubuntu-1404)
+- [Sätt upp utvecklingsmiljön (Ubuntu 14.04)](#s-tt-upp-utvecklingsmilj-n-ubuntu-1404)
   - [Installera beroenden](#installera-beroenden)
   - [Installera Pycharm](#installera-pycharm)
-  - [Skapa en virtuel miljö](#skapa-en-virtuel-miljö)
+  - [Skapa en virtuel miljö](#skapa-en-virtuel-milj)
   - [Klona ner gitprojektet](#klona-ner-gitprojektet)
-  - [Installera beroenden till miljön](#installera-beroenden-till-miljon)
-  - [Ställ in Pycharm](#ställ-in-pycharm)
+  - [Installera beroenden till miljön](#installera-beroenden-till-milj-n)
+  - [Ställ in Pycharm](#st-ll-in-pycharm)
 - [Pycharm tips](#pycharm-tips)
-- [Länkar](#länkar)
+- [Länkar](#l-nkar)
   
 
 ## Sätt upp utvecklingsmiljön (Ubuntu 14.04)
