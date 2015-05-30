@@ -18,9 +18,10 @@ Kör följande kommandon:
 
 ```Bash
 sudo apt-get update
-sudo apt-get install java-common openjdk-7-jdk mysql sqlite3 mysql-server git python-pip python-pip3 -y
+sudo apt-get install java-common openjdk-7-jdk mysql sqlite3 mysql-server git python-pip python-pip3 npm -y
 sudo pip install virtualenvwrapper
 sudo pip3 install virtualenvwrapper
+sudo npm install -g bower
 ```
 
 Skapa sedan en mapp ".envs" i din hemmapp genom kommandot `mkdir ~/.envs` i terminalen. 
