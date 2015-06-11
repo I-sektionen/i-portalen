@@ -7,7 +7,7 @@
   - [Klona ner gitprojektet](#klona-ner-gitprojektet)
   - [Installera beroenden till miljön](#installera-beroenden-till-milj-n)
   - [Ställ in Pycharm](#st-ll-in-pycharm)
-- [Sätt upp miljö på Mac (pycharm)]
+- [Sätt upp miljö på Mac (pycharm)](satt-upp-utvecklingsmilj-p-mac)
 - [Pycharm tips](#pycharm-tips)
 - [Länkar](#l-nkar)
   
@@ -82,38 +82,38 @@ pip install -r requirements.txt
 ## Sätt upp utvecklingsmiljö på Mac
 ### Installera homebrew
 1. Ladda ner homebrew genom att köra följande rad i terminalen  
-`` bash
+``` bash
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-``
-2. I terminalen: `` brew update ``
-3. Kör också en `` brew doctor `` för att kolla om något gått verkligt snett. Är det bara `` warning `` brukar det vara lugnt
+```
+1. I terminalen: `` brew update ``
+1. Kör också en `` brew doctor `` för att kolla om något gått verkligt snett. Är det bara `` warning `` brukar det vara lugnt
 ### Installera python 3
 `` brew install python3 ``
 ### Ladda ner Pycharm
-Följ instruktionerna ovan
+Följ instruktionerna ovan  
 ### Klona ner projektet
-Följ instruktionerna ovan
+Följ instruktionerna ovan  
 ### Skapa virtuell miljö
-1. Starta Pycharm och öppna projektet (repot) genom ``File > Open``
-2. Öppna `` Preferences ⌘, `` för Pycharm
-3. Välj `` Project [namn på repot] -> Project interpreters ``
-4. Klicka på kugghjulet vid `` Project interpreter `` och välj `` Create virtualenv ``
-5. Ge miljön ett namn tex. `` iportalen_virtualEnv `` och väl `` base interpreter `` till `` python 3.x ``
-6. När det är klart: se till att `` pip `` och `` setuptools `` finns med i din interpreter
+    1. Starta Pycharm och öppna projektet (repot) genom ``File > Open``
+    1. Öppna `` Preferences ⌘, `` för Pycharm
+    1. Välj `` Project [namn på repot] -> Project interpreters ``
+    1. Klicka på kugghjulet vid `` Project interpreter `` och välj `` Create virtualenv ``
+    1. Ge miljön ett namn tex. `` iportalen_virtualEnv `` och väl `` base interpreter `` till `` python 3.x ``
+    1. När det är klart: se till att `` pip `` och `` setuptools `` finns med i din interpreter
 ### Configurera django och fixa en lokal server
-1. Öppna `` Preferences ⌘, `` för Pycharm
-2. Välj `` languages and framwork ``
-3. Välj Django och välj följande inställningar. Avsluta med OK:
-  * Django project root: `~repos/i-portalen/iportalen`
-  * Settings: `iportalen/settings.py`
-  * Manage script: `manage.py`
-4. Klicka på dropdown menyn uppe i högra hörnet bredvid play-symbolen och väl `` Edit configurations ``
-5. Välj `` + `` sedan `` Django server ``
-6. Fyll i enligt:
-    * Name : `` iportalen ``
-    * Interpreter: `` iportalen_virtualEnv ``
-    * Working directory: `` /Users/<user>/repos/i-portalen/iportalen
- 7. Klicka på ``Play ``för att kolla om allt fungerar
+    1. Öppna `` Preferences ⌘, `` för Pycharm
+    1. Välj `` languages and framwork ``
+    1. Välj Django och välj följande inställningar. Avsluta med OK:
+        - Django project root: `~repos/i-portalen/iportalen`
+        - Settings: `iportalen/settings.py`
+        - Manage script: ``manage.py``
+    1. Klicka på dropdown menyn uppe i högra hörnet bredvid play-symbolen och väl `` Edit configurations ``
+    1. Välj ``+`` sedan ``Django server``
+    1. Fyll i enligt:
+        * Name : `` iportalen ``
+        * Interpreter: `` iportalen_virtualEnv ``
+        * Working directory: `` /Users/<user>/repos/i-portalen/iportalen ``
+    1. Klicka på `` Play ``för att kolla om allt fungerar
 
 
 
