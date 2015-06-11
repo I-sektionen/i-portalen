@@ -7,7 +7,7 @@
   - [Klona ner gitprojektet](#klona-ner-gitprojektet)
   - [Installera beroenden till miljön](#installera-beroenden-till-milj-n)
   - [Ställ in Pycharm](#st-ll-in-pycharm)
-- [Sätt upp miljö på Mac (pycharm)](satt-upp-utvecklingsmilj-p-mac)
+- [Sätt upp miljö på Mac (pycharm)](#satt-upp-utvecklingsmilj-p-mac)
 - [Pycharm tips](#pycharm-tips)
 - [Länkar](#l-nkar)
   
