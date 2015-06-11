@@ -85,17 +85,16 @@ pip install -r requirements.txt
 ``` bash
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
-2. I terminalen: `` brew update ``
-2. Kör också en `` brew doctor `` för att kolla om något gått verkligt snett. Är det bara `` warning `` brukar det vara lugnt.
-
+1. I terminalen: ``brew update``
+1. Kör också en `` brew doctor `` för att kolla om något gått verkligt snett. Är det bara `` warning `` brukar det vara lugnt.
 ### Installera python 3
-``` brew install python3 ```
+`` brew install python3 ``
 ### Ladda ner Pycharm
-Följ instruktionerna ovan  
+Följ instruktionerna ovan
 ### Klona ner projektet
-Följ instruktionerna ovan  
+Följ instruktionerna ovan
 ### Skapa virtuell miljö
-    1. Starta Pycharm och öppna projektet (repot) genom ``File > Open``
+    . Starta Pycharm och öppna projektet (repot) genom ``File > Open``
     1. Öppna ``Preferences ⌘, `` för Pycharm
     1. Välj `` Project [namn på repot] -> Project interpreters ``
     1. Klicka på kugghjulet vid `` Project interpreter `` och välj `` Create virtualenv ``
@@ -114,11 +113,7 @@ Följ instruktionerna ovan
         * Name : `` iportalen ``
         * Interpreter: `` iportalen_virtualEnv ``
         * Working directory: `` /Users/<user>/repos/i-portalen/iportalen ``
-    1. Klicka på `` Play ``för att kolla om allt fungerar
-
-
-
-
+    1. Klicka på `` Play `` för att kolla om allt fungerar
 
 ## Pycharm tips
 * Istället för att använda __Git__ terminalen kan man i menyn under __VCS->Git__ använda det inbyggda stödet i Pycharm.
