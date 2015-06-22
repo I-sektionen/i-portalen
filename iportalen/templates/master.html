@@ -1,0 +1,13 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link href="{% static "favicon.ico" %}" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <meta charset="UTF-8">
+    <title>I-portalen - {% block title %}{% endblock %}</title>
+{% block head %}{% endblock %}
+</head>
+<body>
+{% block content %}{% endblock %}
+</body>
+</html>
