@@ -1,0 +1,48 @@
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from .forms import CustomUserChangeForm, CustomUserCreationForm
+from .models import IUser, MasterProfile, BachelorProfile
+
+
+class IUserAdmin(UserAdmin):
+    form = CustomUserChangeForm
+    add_form = CustomUserCreationForm
+
+    list_display = ('username', 'email', 'is_staff', 'is_superuser')
+    list_filter = ('is_superuser',)
+
+    fieldsets = (
+        (None, {'fields': (
+            'username',
+            'password',
+            'first_name',
+            'last_name',
+            'p_nr',
+            'address',
+            'zip_code',
+            'city',
+            'gender',
+            'allergies',
+            'start_year',
+            'expected_exam_year',
+            'bachelor_profile',
+            'master_profile',
+
+        )}),
+        ('Permissions', {'fields': ('is_active', 'is_superuser', 'is_staff')}),
+    )
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'password1', 'password2', 'is_staff', 'is_superuser')}
+        ),
+    )
+
+    search_fields = ('username',)
+    ordering = ('username',)
+    filter_horizontal = ('groups', 'user_permissions',)
+
+admin.site.register(IUser, IUserAdmin)
+admin.site.register(MasterProfile)
+admin.site.register(BachelorProfile)

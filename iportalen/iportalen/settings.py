@@ -37,8 +37,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'user_managements',
     'articles',
-    'front_page',
+    'combined_views',
+    'events',
+    'organisations',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -51,6 +55,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 )
+
+AUTH_USER_MODEL = 'user_managements.IUser'
 
 ROOT_URLCONF = 'iportalen.urls'
 
