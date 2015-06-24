@@ -16,7 +16,6 @@ class Event(Article):
 
 class EntryDeadline(models.Model):
     description_sv = models.TextField(verbose_name='beskrivning')
-    description_en = models.TextField(verbose_name='description')
     entry_from = models.DateTimeField(verbose_name='anmälningsstart')
     entry_to = models.DateTimeField(verbose_name='anmälningsslut')
     event = models.ForeignKey(Event, verbose_name='arrangemang')

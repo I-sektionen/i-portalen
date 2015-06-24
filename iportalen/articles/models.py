@@ -5,7 +5,6 @@ from iportalen import settings
 
 class Tag(models.Model):
     name_sv = models.CharField(verbose_name='namn', max_length=255)
-    name_en = models.CharField(verbose_name='name', max_length=255)
 
     def __str__(self):
         return self.name_sv
@@ -16,24 +15,20 @@ class Tag(models.Model):
 
 
 class Article(models.Model):
-    headline_sv = models.CharField(verbose_name='rubrik', max_length=255)
-    lead_sv = models.TextField(verbose_name='ingress', )
-    body_sv = models.TextField(verbose_name='brödtext', )
+    headline = models.CharField(verbose_name='rubrik', max_length=255)
+    lead = models.TextField(verbose_name='ingress', )
+    body = models.TextField(verbose_name='brödtext', )
 
-    headline_en = models.CharField(verbose_name='headline', max_length=255)
-    lead_en = models.TextField(verbose_name='lead')
-    body_en = models.TextField(verbose_name='body')
-
-    visible_from = models.DateTimeField(verbose_name='publicera från', default=datetime.datetime.now())
-    visible_to = models.DateTimeField(verbose_name='publicera till', default=datetime.datetime.now().year+1)
+    visible_from = models.DateTimeField()
+    visible_to = models.DateTimeField()
     approved = models.BooleanField(verbose_name='godkänd', )
     # access  # TODO: access restrictions
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')
     tags = models.ManyToManyField(Tag, verbose_name='tag')
 
-    created = models.DateTimeField(verbose_name='skapad', editable=False)
-    updated = models.DateTimeField(verbose_name='uppdaterad', editable=False)
+    created = models.DateTimeField(editable=False)
+    updated = models.DateTimeField(editable=False)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -42,8 +37,7 @@ class Article(models.Model):
         super(Article, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.headline_sv
-
+        return self.headline
 
     class Meta:
         verbose_name = "Artikel"
