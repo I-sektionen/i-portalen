@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load article_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,5 +10,10 @@
 </head>
 <body>
 {% block content %}{% endblock %}
+
+{% get_articles as articles %}
+{% for article in articles %}
+{{ article.lead }}
+{% endfor %}
 </body>
 </html>

@@ -7,4 +7,4 @@ def index(request):
     articles = Article.objects.all()
     print(articles)
     context = {'articles': articles}
-    return render(request, 'front_page/index.html', context)
+    return render(request, 'combined_views/index.html', context)

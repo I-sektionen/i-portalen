@@ -19,7 +19,8 @@ Kör följande kommandon:
 
 ```Bash
 sudo apt-get update
-sudo apt-get install java-common openjdk-7-jdk mysql sqlite3 mysql-server git python-pip python-pip3 npm nodejs-legacy -y
+sudo apt-get install java-common openjdk-7-jdk sqlite3 git python-pip python3-pip npm nodejs-legacy libmysqlclient-dev -y
+sudo apt-get install mysql-server-5.6 -y
 sudo pip install virtualenvwrapper
 sudo pip3 install virtualenvwrapper
 sudo npm install -g bower
