@@ -1,7 +1,6 @@
 from django.db import models
-import datetime
-from django.contrib.auth.models import User
-from iportalen import settings
+from django.utils import timezone
+from django.conf import settings
 
 class Tag(models.Model):
     name_sv = models.CharField(verbose_name='namn', max_length=255)
@@ -21,19 +20,19 @@ class Article(models.Model):
 
     visible_from = models.DateTimeField()
     visible_to = models.DateTimeField()
-    approved = models.BooleanField(verbose_name='godkänd', )
+
     # access  # TODO: access restrictions
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')
-    tags = models.ManyToManyField(Tag, verbose_name='tag')
+    tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
 
     created = models.DateTimeField(editable=False)
-    updated = models.DateTimeField(editable=False)
+    modified = models.DateTimeField(editable=False)
 
     def save(self, *args, **kwargs):
         if not self.id:
-            self.created = datetime.datetime.now()
-        self.updated = datetime.datetime.now()
+            self.created = timezone.now()
+        self.modified = timezone.now()
         super(Article, self).save(*args, **kwargs)
 
     def __str__(self):

@@ -1,6 +1,6 @@
 from django.db import models
 from articles.models import Tag, Article
-from iportalen import settings
+from django.conf import settings
 
 
 class Event(Article):

@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import Permission
 from .forms import CustomUserChangeForm, CustomUserCreationForm
-from .models import IUser, MasterProfile, BachelorProfile
+from .models import IUser, MasterProfile, BachelorProfile, Approval
 
 
 class IUserAdmin(UserAdmin):
@@ -27,7 +28,7 @@ class IUserAdmin(UserAdmin):
             'expected_exam_year',
             'bachelor_profile',
             'master_profile',
-
+            'groups',
         )}),
         ('Permissions', {'fields': ('is_active', 'is_superuser', 'is_staff')}),
     )
@@ -46,3 +47,5 @@ class IUserAdmin(UserAdmin):
 admin.site.register(IUser, IUserAdmin)
 admin.site.register(MasterProfile)
 admin.site.register(BachelorProfile)
+admin.site.register(Approval)
+admin.site.register(Permission)

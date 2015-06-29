@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from .managers import IUserManager
 
+
 YEAR_CHOICES = []
 for r in range((datetime.datetime.now().year-10), (datetime.datetime.now().year+10)):
     YEAR_CHOICES.append((r,r))
@@ -38,12 +39,12 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False, null=False)
 
     # our fields
-    p_nr = models.CharField(verbose_name='personnummer', max_length=255)
-    address = models.CharField(verbose_name='adress', max_length=255)
-    zip_code = models.CharField(verbose_name='postnummer', max_length=255)
-    city = models.CharField(verbose_name='ort', max_length=255)
-    gender = models.CharField(verbose_name='kön', max_length=255)
-    allergies = models.TextField(verbose_name='allergier', )
+    p_nr = models.CharField(verbose_name='personnummer', max_length=255, null=True, blank=True)
+    address = models.CharField(verbose_name='adress', max_length=255, null=True, blank=True)
+    zip_code = models.CharField(verbose_name='postnummer', max_length=255, null=True, blank=True)
+    city = models.CharField(verbose_name='ort', max_length=255, null=True, blank=True)
+    gender = models.CharField(verbose_name='kön', max_length=255, null=True, blank=True)
+    allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
     start_year = models.IntegerField(verbose_name='start år', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     expected_exam_year = models.IntegerField(verbose_name='förväntat examens år', choices=YEAR_CHOICES, default=datetime.datetime.now().year+5)
     bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil')
@@ -51,7 +52,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
     objects = IUserManager()
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     def get_full_name(self):
         fullname = self.first_name+" "+self.last_name
@@ -71,3 +72,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = "användare"
         verbose_name_plural = "användare"
+
+
+class Approval(models.Model):
+    approved = models.BooleanField(verbose_name='godkänd', )

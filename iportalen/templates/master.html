@@ -10,10 +10,34 @@
 </head>
 <body>
 {% block content %}{% endblock %}
-
-{% get_articles as articles %}
+<h3>Get all articles:</h3><hr>
+{% get_all_articles as articles %}
 {% for article in articles %}
-{{ article.lead }}
+    headline: {{ article.headline }}<br>
+    lead: {{ article.lead }}<br>
+    body: {{ article.body }}<br>
+    user: {{ article.user }}<br>
+    tags:
+    {% for tag in article.tags.all %}
+        {{ tag }}
+    {% endfor %} <br>
+    created: {{ article.created }}<br>
+    modified: {{ article.modified }}<br><hr>
 {% endfor %}
+<br>
+
+<h3>Get one article:</h3><hr>
+{% get_article pk=1 as article %}
+    headline: {{ article.headline }}<br>
+    lead: {{ article.lead }}<br>
+    body: {{ article.body }}<br>
+    user: {{ article.user }}<br>
+    tags:
+    {% for tag in article.tags.all %}
+        {{ tag }}
+    {% endfor %} <br>
+    created: {{ article.created }}<br>
+    modified: {{ article.modified }}<br>
+<br>
 </body>
 </html>

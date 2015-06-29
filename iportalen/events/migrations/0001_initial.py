@@ -7,52 +7,63 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('articles', '0002_remove_article_author'),
+        ('articles', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Entry',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
-                ('registered_time', models.DateTimeField()),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('registered_time', models.DateTimeField(auto_now_add=True)),
             ],
+            options={
+                'verbose_name_plural': 'Anmälningar',
+                'verbose_name': 'Anmälning',
+            },
         ),
         migrations.CreateModel(
             name='EntryDeadline',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
-                ('description_sv', models.TextField()),
-                ('description_en', models.TextField()),
-                ('entry_from', models.DateTimeField()),
-                ('entry_to', models.DateTimeField()),
-                ('enable_unregistration', models.BooleanField()),
+                ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
+                ('description_sv', models.TextField(verbose_name='beskrivning')),
+                ('entry_from', models.DateTimeField(verbose_name='anmälningsstart')),
+                ('entry_to', models.DateTimeField(verbose_name='anmälningsslut')),
+                ('enable_unregistration', models.BooleanField(verbose_name='kan avanmäla sig')),
             ],
+            options={
+                'verbose_name_plural': 'Anmälningsperioder',
+                'verbose_name': 'Anmälningsperiod',
+            },
         ),
         migrations.CreateModel(
             name='Event',
             fields=[
-                ('article_ptr', models.OneToOneField(auto_created=True, to='articles.Article', primary_key=True, parent_link=True, serialize=False)),
-                ('start', models.DateTimeField()),
-                ('end', models.DateTimeField()),
-                ('enable_registration', models.BooleanField()),
-                ('registration_limit', models.IntegerField()),
+                ('article_ptr', models.OneToOneField(auto_created=True, parent_link=True, serialize=False, to='articles.Article', primary_key=True)),
+                ('start', models.DateTimeField(verbose_name='start')),
+                ('end', models.DateTimeField(verbose_name='slut')),
+                ('enable_registration', models.BooleanField(verbose_name='kan anmäla sig')),
+                ('registration_limit', models.IntegerField(verbose_name='max antal anmälningar')),
             ],
+            options={
+                'verbose_name_plural': 'Arrangemanger',
+                'verbose_name': 'Arrangemang',
+            },
             bases=('articles.article',),
         ),
         migrations.AddField(
             model_name='entrydeadline',
             name='event',
-            field=models.ForeignKey(to='events.Event'),
+            field=models.ForeignKey(verbose_name='arrangemang', to='events.Event'),
         ),
         migrations.AddField(
             model_name='entry',
             name='deadline',
-            field=models.ForeignKey(to='events.EntryDeadline'),
+            field=models.ForeignKey(verbose_name='anmälningsperiod', to='events.EntryDeadline'),
         ),
         migrations.AddField(
             model_name='entry',
             name='event',
-            field=models.ForeignKey(to='events.Event'),
+            field=models.ForeignKey(verbose_name='arrangemang', to='events.Event'),
         ),
     ]
