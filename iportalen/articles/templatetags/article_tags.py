@@ -1,7 +1,7 @@
 from django.utils import timezone
 from django.template.loader_tags import register
 
-from articles.models import Article
+from articles.models import Article, Tag
 
 @register.assignment_tag
 def get_all_articles():
@@ -14,5 +14,13 @@ def get_all_articles():
 
 @register.assignment_tag
 def get_article(pk):
-    article = Article.objects.get(pk=pk)
+    try:
+        article = Article.objects.get(pk=pk)
+    except Article.DoesNotExist:
+        article = None
     return article
+
+@register.assignment_tag
+def get_tags():
+    tags = Tag.objects.all().order_by('name')
+    return tags

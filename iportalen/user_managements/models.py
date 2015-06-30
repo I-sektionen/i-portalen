@@ -12,6 +12,8 @@ for r in range((datetime.datetime.now().year-10), (datetime.datetime.now().year+
 
 class BachelorProfile(models.Model):
     name = models.CharField(verbose_name='namn', max_length=255)
+    info = models.TextField(null=True, blank=True)
+    link = models.URLField(null=True, blank=True)
 
     class Meta:
         verbose_name = "kandidatprofil"
@@ -20,6 +22,8 @@ class BachelorProfile(models.Model):
 
 class MasterProfile(models.Model):
     name = models.CharField(verbose_name='namn', max_length=255)
+    info = models.TextField(null=True, blank=True)
+    link = models.URLField(null=True, blank=True)
 
     class Meta:
         verbose_name = "masterprofil"
@@ -52,11 +56,11 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
     objects = IUserManager()
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = []
 
     def get_full_name(self):
-        fullname = self.first_name+" "+self.last_name
-        return fullname
+        #fullname = self.first_name+" "+self.last_name
+        return self.username
 
     def get_short_name(self):
         return self.username
@@ -72,7 +76,3 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = "användare"
         verbose_name_plural = "användare"
-
-
-class Approval(models.Model):
-    approved = models.BooleanField(verbose_name='godkänd', )

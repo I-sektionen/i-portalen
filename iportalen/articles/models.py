@@ -20,6 +20,7 @@ class Article(models.Model):
 
     visible_from = models.DateTimeField()
     visible_to = models.DateTimeField()
+    approved = models.BooleanField(verbose_name='godkänd', default=False )
 
     # access  # TODO: access restrictions
 
@@ -41,3 +42,4 @@ class Article(models.Model):
     class Meta:
         verbose_name = "Artikel"
         verbose_name_plural = "Artiklar"
+        permissions = (('can_approve_article', 'Can approve article'),)
