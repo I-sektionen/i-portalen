@@ -1,0 +1,15 @@
+#!/bin/bash
+# This deploy hook gets executed after dependencies are resolved and the
+# build hook has been run but before the application has been started back
+# up again.  This script gets executed directly, so it could be python, php,
+# ruby, etc.
+
+#Activates the right virtualenv:
+source $OPENSHIFT_HOMEDIR/python/virtenv/venv/bin/activate
+
+echo "Migrating database... " -ne
+python "$OPENSHIFT_REPO_DIR"/wsgi/iportalen/manage.py migrate --noinput
+echo "[Done]"
+
+
+
