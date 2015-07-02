@@ -68,4 +68,4 @@ class Entry(models.Model):
         verbose_name_plural = "Anmälningar"
 
     def __str__(self):
-        return self.event + " | " + self.user
+        return str(self.event) + " | " + str(self.user)

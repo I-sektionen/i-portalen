@@ -19,6 +19,9 @@ class BachelorProfile(models.Model):
         verbose_name = "kandidatprofil"
         verbose_name_plural = "kandidatprofiler"
 
+    def __str__(self):
+        return self.name
+
 
 class MasterProfile(models.Model):
     name = models.CharField(verbose_name='namn', max_length=255)
@@ -28,6 +31,9 @@ class MasterProfile(models.Model):
     class Meta:
         verbose_name = "masterprofil"
         verbose_name_plural = "masterprofiler"
+
+    def __str__(self):
+        return self.name
 
 
 # Liuid as username and <liuid>@student.liu.se as email
