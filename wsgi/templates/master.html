@@ -7,8 +7,10 @@
     <meta charset="UTF-8">
     <title>I-portalen - {% block title %}{% endblock %}</title>
 {% block head %}{% endblock %}
+{% include 'css.html' %}
 </head>
 <body>
+{%  include 'top_menu.html' %}
 {% block content %}{% endblock %}
 <h3>Get all articles:</h3><hr>
 {% get_all_articles as articles %}
@@ -39,5 +41,8 @@
     created: {{ article.created }}<br>
     modified: {{ article.modified }}<br>
 <br>
+
+{% include 'scripts.html' %}
+
 </body>
 </html>
