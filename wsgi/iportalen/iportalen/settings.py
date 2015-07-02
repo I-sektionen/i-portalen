@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print(BASE_DIR)
 
 ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
 
@@ -65,6 +66,7 @@ AUTH_USER_MODEL = 'user_managements.IUser'
 
 ROOT_URLCONF = 'iportalen.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -80,7 +82,6 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'iportalen.wsgi.application'
 
 if ON_PASS:
