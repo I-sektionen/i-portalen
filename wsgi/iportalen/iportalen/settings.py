@@ -16,7 +16,9 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print(BASE_DIR)
 
-ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
+#ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
+
+ON_PASS = False
 
 if ON_PASS:
     ALLOWED_HOSTS = ['*']
