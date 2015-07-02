@@ -24,7 +24,7 @@ class Event(models.Model):
     start = models.DateTimeField(verbose_name='start')
     end = models.DateTimeField(verbose_name='slut')
     enable_registration = models.BooleanField(verbose_name='kan anmäla sig')
-    registration_limit = models.IntegerField(verbose_name='max antal anmälningar')
+    registration_limit = models.IntegerField(verbose_name='max antal anmälningar', blank=True, null=True)
 
     class Meta:
         verbose_name = "Arrangemang"
@@ -42,7 +42,7 @@ class Event(models.Model):
 
 
 class EntryDeadline(models.Model):
-    description_sv = models.TextField(verbose_name='beskrivning')
+    description = models.TextField(verbose_name='beskrivning')
     entry_from = models.DateTimeField(verbose_name='anmälningsstart')
     entry_to = models.DateTimeField(verbose_name='anmälningsslut')
     event = models.ForeignKey(Event, verbose_name='arrangemang')
@@ -51,6 +51,9 @@ class EntryDeadline(models.Model):
     class Meta:
         verbose_name = "Anmälningsperiod"
         verbose_name_plural = "Anmälningsperioder"
+
+    def __str__(self):
+        return str(self.event) + " | " + self.description
 
 
 class Entry(models.Model):
@@ -63,3 +66,6 @@ class Entry(models.Model):
     class Meta:
         verbose_name = "Anmälning"
         verbose_name_plural = "Anmälningar"
+
+    def __str__(self):
+        return self.event + " | " + self.user
