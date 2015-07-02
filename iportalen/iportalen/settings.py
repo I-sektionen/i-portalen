@@ -15,18 +15,22 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
+
+if ON_PASS:
+    ALLOWED_HOSTS = ['*']
+    DEBUG = False
+    TEMPLATE_DEBUG = False
+else:
+    ALLOWED_HOSTS = ['*']
+    DEBUG = True
+    TEMPLATE_DEBUG = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '^+^i^1i94%j-hi+107xw(vf^mz4hg--#w0mw93+kc#&4vc=#=@'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -79,17 +83,30 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'iportalen.wsgi.application'
 
-
+if ON_PASS:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ['OPENSHIFT_APP_NAME'],
+            'USER': os.environ['OPENSHIFT_MYSQL_DB_USERNAME'],
+            'PASSWORD': os.environ['OPENSHIFT_MYSQL_DB_PASSWORD'],
+            'HOST': os.environ['OPENSHIFT_MYSQL_DB_HOST'],
+            'PORT': os.environ['OPENSHIFT_MYSQL_DB_PORT']
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+             'ENGINE': 'django.db.backends.mysql',
+             'NAME': 'django_iportalen',
+             'USER': 'django_iportalen',
+             'PASSWORD': 'igL4r3aEPn70',
+             'HOST': 'jonathananderson.se',  # Högst temporär lösning...
+             'PORT': '3306',
+        }
+    }
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
