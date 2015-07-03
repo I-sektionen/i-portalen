@@ -16,30 +16,24 @@
 {% get_all_articles as articles %}
 {% for article in articles %}
     headline: {{ article.headline }}<br>
-    lead: {{ article.lead }}<br>
-    body: {{ article.body }}<br>
+    lead: {{ article.lead|truncatewords_html:50 }}<br>
+    body: {{ article.body|urlizetrunc:30|linebreaks }}<br>
     user: {{ article.user }}<br>
-    tags:
-    {% for tag in article.tags.all %}
-        {{ tag }}
-    {% endfor %} <br>
-    created: {{ article.created }}<br>
-    modified: {{ article.modified }}<br><hr>
+    tags: {{ article.tags.all|safeseq|join:", " }}<br>
+    created: {{ article.created|date:"Y-m-d H:i:s" }}<br>
+    modified: {{ article.modified|date:"Y-m-d H:i:s" }}<br><hr>
 {% endfor %}
 <br>
 
 <h3>Get one article:</h3><hr>
 {% get_article pk=1 as article %}
     headline: {{ article.headline }}<br>
-    lead: {{ article.lead }}<br>
-    body: {{ article.body }}<br>
+    lead: {{ article.lead|truncatewords_html:50 }}<br>
+    body: {{ article.body|urlizetrunc:30|linebreaks }}<br>
     user: {{ article.user }}<br>
-    tags:
-    {% for tag in article.tags.all %}
-        {{ tag }}
-    {% endfor %} <br>
-    created: {{ article.created }}<br>
-    modified: {{ article.modified }}<br>
+    tags: {{ article.tags.all|safeseq|join:", " }}<br>
+    created: {{ article.created|date:"Y-m-d H:i:s" }}<br>
+    modified: {{ article.modified|date:"Y-m-d H:i:s" }}<br>
 <br>
 
 {% include 'scripts.html' %}

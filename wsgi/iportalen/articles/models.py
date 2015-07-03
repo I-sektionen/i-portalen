@@ -3,10 +3,13 @@ from django.utils import timezone
 from django.conf import settings
 
 class Tag(models.Model):
-    name_sv = models.CharField(verbose_name='namn', max_length=255)
+    name = models.CharField(verbose_name='namn', max_length=255)
 
     def __str__(self):
-        return self.name_sv
+        return "<a href='" + self.get_absolute_url() + "/'>" + self.name + "</a>"
+
+    def get_absolute_url(self):
+        return "/tag/%i/" % self.id
 
     class Meta:
         verbose_name = "tagg"
