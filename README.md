@@ -130,3 +130,4 @@ Resten löser sig på vägen.
 ## Länkar
 * Rekommenderad Django tutorial: https://docs.djangoproject.com/en/1.8/intro/install/
 * Cheat Sheet: http://www.mercurytide.co.uk/media/resources/django-cheat-sheet-a4.pdf
+ 
