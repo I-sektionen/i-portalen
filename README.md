@@ -11,7 +11,7 @@
 - [Pycharm tips](#pycharm-tips)
 - [Länkar](#l-nkar)
   
-
+ 
 ## Sätt upp utvecklingsmiljön (Ubuntu 14.04)
 ### Installera beroenden 
 
