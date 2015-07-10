@@ -1,3 +1,33 @@
+from datetime import timezone, datetime
+
 from django.test import TestCase
 
-# Create your tests here.
+from .models import Article
+from ..user_managements.models import IUser
+
+
+class ArticleTests (TestCase):
+    def create_an_article(self):
+        """
+        This tests creates an article and verifies that it is existing. Then it checks publishing.
+        :return:
+        """
+
+        """
+        u = IUser.objects._create_user(username="isaek808")
+        publish_time = timezone.now() + datetime.timedelta(days=30)
+        unpublish_time = timezone.now() + datetime.timedelta(days=35)
+        a = Article(headline="headline",
+                    lead="a short lead",
+                    body="an even shorter boyd",
+                    visible_from=publish_time,
+                    visible_to=unpublish_time,
+                    approved=False,
+                    user=u,
+                    )
+
+        self.assertEqual(a.headline, "headline")
+        self.assertFalse(a.approved)
+                """
+        self.assertFalse(False)
+        self.assertEqual("hej", 74)

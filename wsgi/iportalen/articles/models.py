@@ -23,7 +23,7 @@ class Article(models.Model):
 
     visible_from = models.DateTimeField()
     visible_to = models.DateTimeField()
-    approved = models.BooleanField(verbose_name='godkänd', default=False )
+    approved = models.BooleanField(verbose_name='godkänd', default=False)
 
     # access  # TODO: access restrictions
 
