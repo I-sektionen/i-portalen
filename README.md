@@ -65,6 +65,31 @@ cd ~/repos/i-portalen/
 pip install -r requirements.txt
 ```
 
+### Konfigurera din lokala databas
+1.  Starta mysql i en terminal: `mysql -u root -p`
+2.  Skriv in ditt lösenord och logga in.
+3.  Skapa databasen: `CREATE DATABASE django_iportalen CHARACTER SET UTF8;`
+4.  Skapa en mysql användare med rätt behörigheter:
+```CREATE USER <namn>@localhost IDENTIFIED BY '<lösenord>'```
+```GRANT ALL PRIVILEGES ON django_iportalen.* TO <namn>@localhost;```
+```GRANT ALL PRIVILEGES ON test_django_iportalen.* TO <namn>@localhost;```
+    *OBS: <namn> och <lösenord> som står i koden ovan måste bytas ut till något godtyckligt.
+    Dock utan mellanslag i namn eller lösenord!
+5.  Skriv in valt namn och lösenord (alltså <namn> och <lösenord> ovan) i 
+    filen som finns `i-portalen/wsgi/iportalen/iportalen/mysql_credentials`
+    Se till att ta bort det som är skrivet så att filen blir på formen:
+    ```password safsdf```
+    ```user django```
+6.  Migrera din databas. Hitta filen manage.py. Se därefter till att ha aktiverat din python miljö i 
+    terminalen du arbetar i (`workon i-portalen`). Skriv sedan:
+    ```python managey.py migrate```
+    Då skapas alla tabeller och relationer i databasen. 
+7.  Om du vill kan du skapa en superanvändare på din lokala miljö:
+    ```python manage.py createsuperuser```
+    Följ instruktionerna. 
+    
+    
+
 ### Ställ in Pycharm
 1. Starta pycharm med `pycharm` från terminalen.
 1. Öppna i-portalen projektet.
@@ -72,12 +97,14 @@ pip install -r requirements.txt
 1. Under __>Project: i-portalen__ klickar du på __Project interpreter__ och sedan på kugghjulet i högra hörnet och väljer __Add Local__ i sökfältet klistrar ni in `~/.envs/i-portalen/bin/python` om den inte hittar så får du navigera till `/home/användarnamn/.envs/i-portalen/bin/` och klicka på `python` själv.
 1. Klicka sedan på __>Languages & Frameworks__ i vänster menyn och sedan på django.
 1. Kryssa i __Enable Django Support__ och fyll i följande:
-  * Django project root: `~repos/i-portalen/iportalen`
+  * Django project root: `~repos/i-portalen/wsgi/iportalen_django`
   * Settings: `iportalen/settings.py`
   * Manage script: `manage.py`
 1. Klicka sedan på OK.
 1. Starta Django-servern med `Ctrl + Alt + R` och skriv `runserver`
 1. __Happy coding__
+
+TODO: Updatera ovan, test måste köras med `option:` ``-t ..``
 
 ## Sätt upp utvecklingsmiljö på Mac
 

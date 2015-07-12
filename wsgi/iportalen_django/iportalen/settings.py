@@ -17,11 +17,18 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print(BASE_DIR)
 
 #ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
+#ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 
+# Used to determined if being run on Openshift, Jenkins or local. Determines DB-connection settings.
 ON_PASS = False
+ON_JENKINS = False
 
 if ON_PASS:
     ALLOWED_HOSTS = ['*']
+    DEBUG = False
+    TEMPLATE_DEBUG = False
+elif ON_JENKINS:
+    ALLOWED_HOSTS = ['*']  # TODO: Should only allow localhost, and what about production?
     DEBUG = False
     TEMPLATE_DEBUG = False
 else:
@@ -33,7 +40,7 @@ else:
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '^+^i^1i94%j-hi+107xw(vf^mz4hg--#w0mw93+kc#&4vc=#=@'
+SECRET_KEY = '^+^i^1i94%j-hi+107xw(vf^mz4hg--#w0mw93+kc#&4vc=#=@'  # TODO: Make use of os.envion on openshift.
 
 # Application definition
 
@@ -84,7 +91,7 @@ TEMPLATES = [
         },
     },
 ]
-WSGI_APPLICATION = 'iportalen.wsgi.application'
+WSGI_APPLICATION = 'iportalen_django.wsgi.application'
 
 if ON_PASS:
     DATABASES = {
@@ -98,13 +105,16 @@ if ON_PASS:
         }
     }
 else:
+    from .helpers import get_mysql_credentials
+    mysql = get_mysql_credentials()  # Local db credentials.
+
     DATABASES = {
         'default': {
              'ENGINE': 'django.db.backends.mysql',
              'NAME': 'django_iportalen',
-             'USER': 'django_iportalen',
-             'PASSWORD': 'igL4r3aEPn70',
-             'HOST': 'jonathananderson.se',  # Högst temporär lösning...
+             'USER': mysql["user"],
+             'PASSWORD': mysql["password"],
+             'HOST': 'localhost',
              'PORT': '3306',
         }
     }

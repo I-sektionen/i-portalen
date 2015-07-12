@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 
+
 class Tag(models.Model):
     name = models.CharField(verbose_name='namn', max_length=255)
 
