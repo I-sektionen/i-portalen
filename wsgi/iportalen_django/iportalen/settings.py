@@ -16,16 +16,16 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print(BASE_DIR)
 
-#ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
+# Used to determined if being run on Openshift, Jenkins or local. Determines DB-connection settings.
+ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
 ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 
-# Used to determined if being run on Openshift, Jenkins or local. Determines DB-connection settings.
-ON_PASS = False
+
 
 if ON_PASS:
     ALLOWED_HOSTS = ['*']
-    DEBUG = False
-    TEMPLATE_DEBUG = False
+    DEBUG = True
+    TEMPLATE_DEBUG = True
 elif ON_JENKINS:
     ALLOWED_HOSTS = ['*']  # TODO: Should only allow localhost, and what about production?
     DEBUG = False
@@ -90,6 +90,7 @@ TEMPLATES = [
         },
     },
 ]
+
 WSGI_APPLICATION = 'iportalen.wsgi.application'
 
 if ON_PASS:
