@@ -104,7 +104,7 @@ pip install -r requirements.txt
 1. Starta Django-servern med `Ctrl + Alt + R` och skriv `runserver`
 1. __Happy coding__
 
-TODO: Updatera ovan, test måste köras med `option:` ``-t ..``
+TODO: Updatera ovan, test måste köras med `option:` ``-t ..`` 
 
 ## Sätt upp utvecklingsmiljö på Mac
 
