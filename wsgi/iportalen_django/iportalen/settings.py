@@ -91,7 +91,7 @@ TEMPLATES = [
         },
     },
 ]
-WSGI_APPLICATION = 'iportalen_django.wsgi.application'
+WSGI_APPLICATION = 'iportalen.wsgi.application'
 
 if ON_PASS:
     DATABASES = {
