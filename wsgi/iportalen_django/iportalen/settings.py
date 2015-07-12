@@ -17,11 +17,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print(BASE_DIR)
 
 #ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
-#ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
+ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 
 # Used to determined if being run on Openshift, Jenkins or local. Determines DB-connection settings.
 ON_PASS = False
-ON_JENKINS = False
 
 if ON_PASS:
     ALLOWED_HOSTS = ['*']
@@ -102,6 +101,17 @@ if ON_PASS:
             'PASSWORD': os.environ['OPENSHIFT_MYSQL_DB_PASSWORD'],
             'HOST': os.environ['OPENSHIFT_MYSQL_DB_HOST'],
             'PORT': os.environ['OPENSHIFT_MYSQL_DB_PORT']
+        }
+    }
+elif ON_JENKINS:
+     DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'django_iportalen',
+            'USER': 'mysql_jenkins',
+            'PASSWORD': '123123123HEJJE',  # Securely generated password.
+            'HOST': 'localhost',
+            'PORT': '3306'
         }
     }
 else:
