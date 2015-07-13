@@ -125,8 +125,8 @@ else:
              'NAME': 'django_iportalen',
              'USER': mysql["user"],
              'PASSWORD': mysql["password"],
-             'HOST': 'localhost',
-             'PORT': '3306',
+             'HOST': mysql["host"],
+             'PORT': mysql["port"],
         }
     }
 # Database
