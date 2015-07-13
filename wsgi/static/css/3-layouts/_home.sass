@@ -1,0 +1,46 @@
+#content
+    +display(flex)
+    +flex(1)
+    +flex-direction(column)
+    h4
+        font-weight: 600
+        color: $light-gray
+        margin-bottom: 1em
+    #news-feed
+        padding: 1em
+    #upcoming
+        padding: 1em
+    #sponsors
+        padding: 1em
+.hero
+    h1
+    display: none
+@media screen and (min-width: $breakpoint-large)
+    #content
+        +flex-direction(row)
+        margin: 0 auto
+        max-width: 1170px
+        +flex-wrap(wrap)
+    .hero
+        +display(flex)
+        +justify-content(center)
+        +align-items(center)
+        position: relative
+        height: 350px
+        background:
+            image: url(http://blog.liu.se/utbildningsbloggen/files/2012/07/liu_campusvalla.jpg)
+            size: cover
+            repeat: no-repeat
+            position: top center
+            attachment: fixed
+        h1
+            position:absolute
+            color: white
+        
+    #news-feed
+        height: 2000px
+        +flex(3)
+    #upcoming
+        +flex(2)
+    #sponsors
+        +flex(1)

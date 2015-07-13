@@ -1,0 +1,128 @@
+header
+
+    a
+        text-decoration: none
+        text-transform: uppercase
+        font-size: 18px
+        font-weight: 200
+
+        &:hover
+            color: darken(white, 15%)
+
+
+    nav
+        +display(flex)
+        +flex-direction(column)
+
+        // Place img and nav in row on large screens
+        @media screen and (min-width: $breakpoint-large)
+            +flex-direction()
+            +justify-content(space-around)
+            +align-items(flex-end)
+            //padding: 1em
+
+        img
+            padding: 1em
+            max-width: 10em
+            +flex-basis(100%)
+
+            @media screen and (min-width: $breakpoint-large)
+                padding: 1em
+                margin: 0
+
+    // Menu bar for mobile view
+    #menu-toggle
+        background: black
+        color: white
+        padding: 1em
+
+        //Hide menu toggle panel on large screens
+        @media screen and (min-width: $breakpoint-large)
+            display: none
+
+    // holds links for menu
+    #navigation-menu
+        +display(none)
+        +flex-direction(column)
+
+        @media screen and (min-width: $breakpoint-large)
+            +display(flex)
+            +flex-direction()
+            margin: 0
+            padding: 1em
+
+        & > li
+            margin-bottom: 1em
+            padding: 0.5em
+
+            @media screen and (min-width: $breakpoint-large)
+                margin: 0
+
+        li.more > a:after
+            content: ""
+
+        &.show
+            +display(flex)
+        //wrapper for all submenus under a particular menu item
+        .submenu-wrapper
+            +display(none)
+            +flex-direction(column)
+            background: darken(white, 3%)
+            margin: 1em 0
+            padding:  1em
+            box-shadow: 2px 2px 4px $light-gray
+
+            @media screen and (min-width: $breakpoint-large)
+                padding: 1em
+                +flex-direction()
+                +justify-content(space-around)
+                position: absolute
+                right: 13.37%
+                //opacity: 0.95
+                z-index: 1
+                border-radius: 3px
+                box-shadow: none
+
+            &.show
+                +display(flex)
+
+        .submenu
+            +display(flex)
+            +align-content(space-around)
+            +flex-direction(column)
+            font-weight: 200
+            a
+                text-transform: none
+
+            @media screen and (min-width: $breakpoint-large)
+                margin: 0 1.5em
+
+            // The first item in a list is treated as the heading for
+            // each submeu, i.e Föreningar
+
+            & > li:first-child
+                font-size: 22px
+                font-weight: 200
+                color: darken(white, 30%)
+                background: darken(white, 8%)
+                border-radius: 3px
+                //padding: 0.5em 0
+                //border-bottom: 1px dashed $light-gray
+                margin: 1em 0
+
+                @media screen and (min-width: $breakpoint-large)
+                    color: darken(white, 80%)
+                    background: none
+                    margin: 0 0 0.5em 0
+                    border-radius: 0
+                    border-bottom: 3px solid $isektionen-yellow
+
+            & > *
+                padding: 0.8em
+
+
+                @media screen and (min-width: $breakpoint-large)
+                    padding: 0.5em 0
+
+
+

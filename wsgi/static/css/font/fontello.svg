@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2015 by original authors @ fontello.com</metadata>
+<defs>
+<font id="fontello" horiz-adv-x="1000" >
+<font-face font-family="fontello" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="pencil" unicode="&#xe800;" d="m718 680q32-32 47-64t15-48l0-16-252-252-290-288-238-52 50 240 290 288 252 252q54 12 126-60z m-494-640l24 24q-2 44-52 94-22 22-45 35t-35 13l-14 2-22-24-18-80q28-16 46-34 24-24 36-48z" horiz-adv-x="780" />
+<glyph glyph-name="users" unicode="&#xe801;" d="m1000-90l-224 0 0 150q0 54-30 81t-154 89q40 30 40 84 0 16-13 33t-19 51q-2 8-14 16t-14 42q0 24 12 30-6 34-8 60-4 38 23 78t95 40 96-40 24-78l-8-60q12-6 12-30-2-34-14-42t-14-16q-6-34-19-51t-13-33q0-42 21-66t77-48q112-46 130-80 6-8 9-61t5-101l0-48z m-488 262q182-78 182-124l0-138-694 0 0 184q0 44 84 78 76 32 104 64t28 88q0 20-19 44t-25 68q-2 10-18 22t-20 56q0 14 3 23t7 13l4 2q-6 46-10 82-4 50 33 103t127 53 127-53 33-103l-10-82q14-8 14-38-4-44-20-56t-18-22q-6-44-25-68t-19-44q0-56 28-88t104-64z" horiz-adv-x="1000" />
+<glyph glyph-name="user" unicode="&#xe802;" d="m736 128q204-72 204-122l0-106-940 0 0 106q0 50 204 122 94 34 128 69t34 95q0 22-22 49t-32 73q-2 12-9 18t-14 8-14 17-9 43q0 16 5 26t9 12l4 4q-8 50-12 88-4 54 41 112t157 58 158-58 40-112l-12-88q18-8 18-42-2-28-9-43t-14-17-14-8-9-18q-8-48-31-74t-23-48q0-60 35-95t127-69z" horiz-adv-x="940" />
+<glyph glyph-name="calendar" unicode="&#xe803;" d="m800 700q42 0 71-29t29-71l0-600q0-40-29-70t-71-30l-700 0q-40 0-70 30t-30 70l0 600q0 42 30 71t70 29l46 0 0-100 160 0 0 100 290 0 0-100 160 0 0 100 44 0z m0-700l0 400-700 0 0-400 700 0z m-540 800l0-170-70 0 0 170 70 0z m450 0l0-170-70 0 0 170 70 0z" horiz-adv-x="900" />
+<glyph glyph-name="doc-text" unicode="&#xe804;" d="m212 308l0 90 280 0 0-90-280 0z m388 492q42 0 71-29t29-71l0-700q0-40-29-70t-71-30l-500 0q-40 0-70 30t-30 70l0 700q0 42 30 71t70 29l500 0z m0-800l0 700-500 0 0-700 500 0z m-110 592l0-88-280 0 0 88 280 0z m0-392l0-88-280 0 0 88 280 0z" horiz-adv-x="700" />
+</font>
+</defs>
+</svg>
