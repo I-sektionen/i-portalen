@@ -8,13 +8,17 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'iportalen.settings'
 
 ## GETTING-STARTED: make sure the next line points to your django project dir:
 sys.path.append(os.path.join(os.environ['OPENSHIFT_REPO_DIR'], 'wsgi', 'iportalen_django'))
-virtenv = os.environ['APPDIR'] + '/virtenv/'
+virtenv = os.environ['OPENSHIFT_REPO_DIR'] + '/python/virtenv/venv/'
+
 ## GETTING-STARTED: make sure the next line has the right python version:
 os.environ['PYTHON_EGG_CACHE'] = os.path.join(virtenv, 'lib/python3.3/site-packages')
 virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
+
 try:
-    execfile(virtualenv, dict(__file__=virtualenv))
+    exec(compile(open(virtenv, 'rb').read(), virtenv, 'exec'), dict(__file__=virtenv))
+    # execfile(virtualenv, dict(__file__=virtualenv))
 except:
+    print("ERROR!")  # Not sure where or if this shows up?
     pass
 
 import django.core.wsgi

@@ -14,7 +14,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print(BASE_DIR)
 
 # Used to determined if being run on Openshift, Jenkins or local. Determines DB-connection settings.
 ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
