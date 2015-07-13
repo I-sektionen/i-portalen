@@ -157,6 +157,10 @@ Följ instruktionerna ovan
 Resten löser sig på vägen.
 
 
+## Statiskt innehåll
+Javascript, css och annat statiskt innehåll kan läggas till genom att i appen det statiska tillhör så skapas en undermapp 'static' i den läggs ytterligare en mapp med samma namn som appen. Tex: `event/static/event`. Statiskt innehåll som inte hör till någon speciell app kan läggas direkt i wsgi/static. 
+
+
 ## Länkar
 * Rekommenderad Django tutorial: https://docs.djangoproject.com/en/1.8/intro/install/
 * Cheat Sheet: http://www.mercurytide.co.uk/media/resources/django-cheat-sheet-a4.pdf

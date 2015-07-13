@@ -146,11 +146,18 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.8/howto/static-files/
+# Extra locations where staticfiles can be found:
+"""
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     os.path.join(os.path.dirname(BASE_DIR), 'static')
 )
-STATIC_ROOT = 'staticfiles'
+"""
+# This is where all static files are put by 'collectstatic', it is
+# always done before the app is deployed on openshift.
+STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, "../static/"))
+print(STATIC_ROOT)
 
+# The url behind which static files are exposed. Not run by mod_wsgi but
+# Apache, i think, by Openshift.
 STATIC_URL = '/static/'
