@@ -8,7 +8,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'iportalen.settings'
 
 ## GETTING-STARTED: make sure the next line points to your django project dir:
 sys.path.append(os.path.join(os.environ['OPENSHIFT_REPO_DIR'], 'wsgi', 'iportalen_django'))
-virtenv = os.environ['OPENSHIFT_PYTHON_DIR'] + '/virtenv/venv/'
+virtenv = os.environ['OPENSHIFT_PYTHON_DIR'] + 'virtenv/venv/'
 
 ## GETTING-STARTED: make sure the next line has the right python version:
 #python/virtenv/venv/lib/python3.3/site-packages
