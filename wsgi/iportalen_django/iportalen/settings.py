@@ -14,7 +14,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print(BASE_DIR)
 
 # Used to determined if being run on Openshift, Jenkins or local. Determines DB-connection settings.
 ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
@@ -125,8 +124,8 @@ else:
              'NAME': 'django_iportalen',
              'USER': mysql["user"],
              'PASSWORD': mysql["password"],
-             'HOST': 'localhost',
-             'PORT': '3306',
+             'HOST': mysql["host"],
+             'PORT': mysql["port"],
         }
     }
 # Database
@@ -150,6 +149,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
+    os.path.join(os.path.dirname(BASE_DIR), 'static')
 )
 STATIC_ROOT = 'staticfiles'
 
