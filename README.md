@@ -70,9 +70,9 @@ pip install -r requirements.txt
 2.  Skriv in ditt lösenord och logga in.
 3.  Skapa databasen: `CREATE DATABASE django_iportalen CHARACTER SET UTF8;`
 4.  Skapa en mysql användare med rätt behörigheter:
-```CREATE USER <namn>@localhost IDENTIFIED BY '<lösenord>'```
-```GRANT ALL PRIVILEGES ON django_iportalen.* TO <namn>@localhost;```
-```GRANT ALL PRIVILEGES ON test_django_iportalen.* TO <namn>@localhost;```
+```CREATE USER '<namn>'@'localhost' IDENTIFIED BY '<lösenord>';```
+```GRANT ALL PRIVILEGES ON django_iportalen.* TO '<namn>'@'localhost';```
+```GRANT ALL PRIVILEGES ON test_django_iportalen.* TO '<namn>'@'localhost';```
     *OBS: <namn> och <lösenord> som står i koden ovan måste bytas ut till något godtyckligt.
     Dock utan mellanslag i namn eller lösenord!
 5.  Skriv in valt namn och lösenord (alltså <namn> och <lösenord> ovan) i 
