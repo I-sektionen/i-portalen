@@ -25,4 +25,11 @@ except IOError:
     pass
 
 import django.core.wsgi
+
+try:
+    import pymysql
+    pymysql.install_as_MySQLdb()
+except ImportError:
+    pass
+
 application = django.core.wsgi.get_wsgi_application()
