@@ -26,6 +26,15 @@ except IOError:
 
 import django.core.wsgi
 
+"""
+This part here imports pymysql and uses it instead of MySQLdb which is not proted to python3 yet.
+
+It might cause problems with advanced mysql-operations.
+
+The same trick is done in manage.py.
+
+//Isac
+"""
 try:
     import pymysql
     pymysql.install_as_MySQLdb()
