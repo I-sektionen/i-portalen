@@ -14,10 +14,10 @@ virtenv = os.environ['OPENSHIFT_PYTHON_DIR'] + 'virtenv/venv/'
 #python/virtenv/venv/lib/python3.3/site-packages
 os.environ['PYTHON_EGG_CACHE'] = os.path.join(virtenv, 'lib/python3.3/site-packages')
 #python/virtenv/venv/bin
-virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
+virtualenv = os.path.join(virtenv, 'bin/activate_this')
 
 try:
-    exec(compile(open(virtenv, 'rb').read(), virtenv, 'exec'), dict(__file__=virtenv))
+    exec(compile(open(virtualenv, 'rb').read(), virtualenv, 'exec'), dict(__file__=virtualenv))
     # execfile(virtualenv, dict(__file__=virtualenv))
 except:
     print("ERROR!")  # Not sure where or if this shows up?
