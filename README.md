@@ -6,6 +6,7 @@
   - [Skapa en virtuel miljö](#skapa-en-virtuel-milj)
   - [Klona ner gitprojektet](#klona-ner-gitprojektet)
   - [Installera beroenden till miljön](#installera-beroenden-till-milj-n)
+  - [Konfigurera din lokala databas](#konfigurera-din-lokala-databas)
   - [Ställ in Pycharm](#st-ll-in-pycharm)
 - [Sätt upp miljö på Mac (pycharm)](#satt-upp-utvecklingsmilj-p-mac)
 - [Pycharm tips](#pycharm-tips)
@@ -70,24 +71,26 @@ pip install -r requirements.txt
 2.  Skriv in ditt lösenord och logga in.
 3.  Skapa databasen: `CREATE DATABASE django_iportalen CHARACTER SET UTF8;`
 4.  Skapa en mysql användare med rätt behörigheter:
-```CREATE USER '<namn>'@'localhost' IDENTIFIED BY '<lösenord>';```
-```GRANT ALL PRIVILEGES ON django_iportalen.* TO '<namn>'@'localhost';```
-```GRANT ALL PRIVILEGES ON test_django_iportalen.* TO '<namn>'@'localhost';```
-    *OBS: <namn> och <lösenord> som står i koden ovan måste bytas ut till något godtyckligt.
-    Dock utan mellanslag i namn eller lösenord!
-5.  Skriv in valt namn och lösenord (alltså <namn> och <lösenord> ovan) i 
-    filen som finns `i-portalen/wsgi/iportalen/iportalen/mysql_credentials`
-    Se till att ta bort det som är skrivet så att filen blir på formen:
-    ```password safsdf```
-    ```user django```
-6.  Migrera din databas. Hitta filen manage.py. Se därefter till att ha aktiverat din python miljö i 
-    terminalen du arbetar i (`workon i-portalen`). Skriv sedan:
+```
+CREATE USER '<namn>'@'localhost' IDENTIFIED BY '<lösenord>';
+GRANT ALL PRIVILEGES ON django_iportalen.* TO <namn>@localhost;
+GRANT ALL PRIVILEGES ON test_django_iportalen.* TO <namn>@localhost;
+```
+    *OBS: <namn> och <lösenord> som står i koden ovan måste bytas ut till något godtyckligt. Dock utan mellanslag i namn eller lösenord!
+5.  Kopiera filen `i-portalen/wsgi/iportalen_django/iportalen/mysql_credentials.example` och spara den nya som `i-portalen/wsgi/iportalen_django/iportalen/mysql_credentials`
+5.  Skriv in valt namn och lösenord (alltså <namn> och <lösenord> ovan) i den nya filen och se till att ta bort det som är skrivet så att filen blir på formen:
+    ```
+    host localhost
+    port 3306
+    user django_iportalen
+    password top_secret_password
+    ```
+6.  Migrera din databas. Hitta filen manage.py. Se därefter till att ha aktiverat din python miljö i terminalen du arbetar i (`workon i-portalen`). Skriv sedan:
     ```python managey.py migrate```
     Då skapas alla tabeller och relationer i databasen. 
 7.  Om du vill kan du skapa en superanvändare på din lokala miljö:
     ```python manage.py createsuperuser```
     Följ instruktionerna. 
-    
     
 
 ### Ställ in Pycharm
