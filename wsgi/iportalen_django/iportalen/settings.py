@@ -160,4 +160,5 @@ print(STATIC_ROOT)
 
 # The url behind which static files are exposed. Not run by mod_wsgi but
 # Apache, i think, by Openshift.
+"""
 STATIC_URL = '/static/'
