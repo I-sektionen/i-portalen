@@ -76,7 +76,7 @@ CREATE USER '<namn>'@'localhost' IDENTIFIED BY '<lösenord>';
 GRANT ALL PRIVILEGES ON django_iportalen.* TO <namn>@localhost;
 GRANT ALL PRIVILEGES ON test_django_iportalen.* TO <namn>@localhost;
 ```
-    *OBS: <namn> och <lösenord> som står i koden ovan måste bytas ut till något godtyckligt. Dock utan mellanslag i namn eller lösenord!
+*OBS: <namn> och <lösenord> som står i koden ovan måste bytas ut till något godtyckligt. Dock utan mellanslag i namn eller lösenord!
 5.  Kopiera filen `i-portalen/wsgi/iportalen_django/iportalen/mysql_credentials.example` och spara den nya som `i-portalen/wsgi/iportalen_django/iportalen/mysql_credentials`
 5.  Skriv in valt namn och lösenord (alltså <namn> och <lösenord> ovan) i den nya filen och se till att ta bort det som är skrivet så att filen blir på formen:
     ```
