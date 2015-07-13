@@ -147,11 +147,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # Extra locations where staticfiles can be found:
-"""
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-    os.path.join(os.path.dirname(BASE_DIR), 'static')
-)
+if not ON_PASS:
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, "static"),
+        os.path.join(os.path.dirname(BASE_DIR), 'static')
+    )
 """
 # This is where all static files are put by 'collectstatic', it is
 # always done before the app is deployed on openshift.
