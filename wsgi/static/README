@@ -1,3 +1,9 @@
+This folder is used by Openshift. To serve static contents. Content not belonging
+to any special app can be put here, otherwise place the static content next to each app.
+
+
+Old Readme:
+
 Public, static content goes here.  Users can create rewrite rules to link to
 content in the static dir.  For example, django commonly uses /media/
 directories for static content.  For example in a .htaccess file in a
