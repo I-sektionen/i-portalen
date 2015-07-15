@@ -1,29 +1,20 @@
-{% load staticfiles %}
+{% extends "master.html" %}
+{# This file defines the front page and is a own kind of master page #}
 {% load article_tags %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{% static "css/app.css" %}">
-    <title>I-portalen</title>
-</head>
-<body>
-
 {% include "header.html" %}
 
-{% block body %}
-{%  endblock %}
 
-<section class="hero">
+{% block content %}
+    <section class="hero">
     <h1 id="hero-logo">Industriell ekonomi</h1>
 </section>
 <div id="content">
+
+
+    {# gets all articles via template tag #}
     {% get_all_articles as articles %}
     <section id="news-feed">
         <h4>Nyheter</h4>
-
         {% for article in articles %}
             <article class="news-preview">
                 <div class="meta">
@@ -36,10 +27,9 @@
                 </div>
                 <h5>{{ article.headline }}</h5>
                 <p>{{ article.lead|truncatewords_html:50 }}</p>
-                <a href="{{ article.get_absolute_url }}">Läs mer</a> # TODO fix layout of link, i.e change appearance to buttons
+                <a href="{{ article.get_absolute_url }}">Läs mer</a> <!--# TODO fix layout of link, i.e change appearance to buttons -->
             </article>
         {% endfor %}
-
     </section>
     <section id="upcoming">
         <h4>Kommande</h4>
@@ -60,28 +50,9 @@
             <button>Anmäl</button>
         </article>
     </section>
-    <section id="sponsors">
-        <h4>Sponsorer</h4>
-    </section>
-
 </div>
-<section id="footer">
-    <h4>footer</h4>
-    <div id="footer-content">Hello world</div>
-</section>
+{% endblock %}
 
-<div id="modal">
-    <section>
-        <h4>This is the modal header</h4>
-        <p>This is modal content</p>
-    </section>
-</div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src=" {% static "js/iportalen.js" %}"></script>
-
-
+{% include "scripts.html" %}
 </body>
-
 </html>
-
