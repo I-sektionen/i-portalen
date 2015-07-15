@@ -17,7 +17,7 @@
 {% for article in articles %}
     headline: {{ article.headline }}<br>
     lead: {{ article.lead|truncatewords_html:50 }}<br>
-    body: {{ article.body|urlizetrunc:30|linebreaks }}<br>
+    body: {{ article.body|markdown }}<br>
     user: {{ article.user }}<br>
     tags: {{ article.tags.all|safeseq|join:", " }}<br>
     created: {{ article.created|date:"Y-m-d H:i:s" }}<br>
