@@ -11,54 +11,41 @@
 </head>
 <body>
 
-    {% include "header.html" %}
+{% include "header.html" %}
 
-    {% block body %}
-    {%  endblock %}
+{% block body %}
+{%  endblock %}
 
-    <section class="hero">
-        <h1 id="hero-logo">Industriell ekonomi</h1>
-    </section>
-    <div id="content">
-        <!--
+<section class="hero">
+    <h1 id="hero-logo">Industriell ekonomi</h1>
+</section>
+<div id="content">
+    {% get_all_articles as articles %}
+    <section id="news-feed">
+        <h4>Nyheter</h4>
 
-                headline:
-                lead:
-                body: {{ article.body|urlizetrunc:30|linebreaks }}
-                user:
-                tags:
-                created: {{ article.created|date:"Y-m-d H:i:s" }}
-                modified: {{ article.modified|date:"Y-m-d H:i:s" }}
-
-        -->
-        {% get_all_articles as articles %}
-
-        <section id="news-feed">
-            <h4>Nyheter</h4>
-
-            {% for article in articles %}
-                <article class="news-preview">
-                    <div class="meta">
-                        <span class="date">{{ article.created|date:"Y-m-d" }}</span>
-                        <span class="author">{{ article.user }}</span>
-                        {# Don't render tags for articles without tags #}
-                        {% if article.tags.all  %}
-                            <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
-                        {% endif %}
-                    </div>
-                    <h5>{{ article.headline }}</h5>
-                    <p>{{ article.lead|truncatewords_html:50 }}</p>
-                    <button class="btn-read-more">Läs mer</button>
-                </article>
-            {% endfor %}
-        </section>
-
-                <section id="upcoming">
-            <h4>Kommande</h4>
-
-            <article class="event-preview">
-                <h5>Lunchföreläsning</h5>
+        {% for article in articles %}
+            <article class="news-preview">
                 <div class="meta">
+                    <span class="date">{{ article.created|date:"Y-m-d" }}</span>
+                    <span class="author">{{ article.user }}</span>
+                    {# Don't render tags for articles without tags #}
+                    {% if article.tags.all  %}
+                        <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
+                    {% endif %}
+                </div>
+                <h5>{{ article.headline }}</h5>
+                <p>{{ article.lead|truncatewords_html:50 }}</p>
+                <a href="{{ article.get_absolute_url }}">Läs mer</a> # TODO fix layout of link, i.e change appearance to buttons
+            </article>
+        {% endfor %}
+
+    </section>
+    <section id="upcoming">
+        <h4>Kommande</h4>
+        <article class="event-preview">
+            <h5>Lunchföreläsning</h5>
+            <div class="meta">
                     <span class="date">
                         <span class="meta-content">5 Jan 2015</span>
                     </span>
@@ -68,40 +55,33 @@
                     <span class="place">
                     <span class="meta-content">Märkesbacken</span>
                     </span>
-                    <!--
-                    <span class="attendees">
-                        <span class="meta-content">27/30</span>
-                    </span>
-                    <span class="last-sign-up">
-                        <span class="meta-content">5 Sep 2015</span>
-                    </span>-->
-                </div>
-                <button>Info</button>
-                <button>Anmäl</button>
-            </article>
-        </section>
-        <section id="sponsors">
-            <h4>Sponsorer</h4>
-        </section>
-
-    </div>
-    <section id="footer">
-        <h4>footer</h4>
-        <div id="footer-content">Hello world</div>
+            </div>
+            <button>Info</button>
+            <button>Anmäl</button>
+        </article>
+    </section>
+    <section id="sponsors">
+        <h4>Sponsorer</h4>
     </section>
 
-    <div id="modal">
-        <section>
-            <h4>This is the modal header</h4>
-            <p>This is modal content</p>
-        </section>
-    </div>
+</div>
+<section id="footer">
+    <h4>footer</h4>
+    <div id="footer-content">Hello world</div>
+</section>
+
+<div id="modal">
+    <section>
+        <h4>This is the modal header</h4>
+        <p>This is modal content</p>
+    </section>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src=" {% static "js/iportalen.js" %}"></script>
 
 
-    </body>
+</body>
 
 </html>
 
