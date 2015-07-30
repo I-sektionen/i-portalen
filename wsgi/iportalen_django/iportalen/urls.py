@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', combined_views_view.index, name='index'),
     url(r'^articles/', include(article_urls)),
+    url(r'^booking/', include('booking.urls'))
 ]
