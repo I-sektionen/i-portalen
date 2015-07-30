@@ -55,7 +55,6 @@ INSTALLED_APPS = (
     'combined_views',
     'events',
     'organisations',
-    'booking'
 
 )
 

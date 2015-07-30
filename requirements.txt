@@ -3,4 +3,3 @@ dj-static
 mysqlclient
 django-reversion
 markdown
-django-booking==0.7.1
