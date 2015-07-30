@@ -1,0 +1,11 @@
+{% extends "master.html" %}
+{% block title %}Bokningar{% endblock %}
+{% block content %}
+    {% if bookings %}
+    {% for booking in bookings %}
+        {{ booking }}
+    {% endfor %}
+    {% else %}
+    <p>Du har inga bokningar än.</p>
+    {% endif %}
+{% endblock %}
