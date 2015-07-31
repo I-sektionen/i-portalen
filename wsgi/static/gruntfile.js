@@ -7,7 +7,7 @@ module.exports = function (grunt) {
                     style: "expanded"
                 },
                 files: {
-                    'css/app.css': 'css/app.sass'
+                    'css/<%= pkg.name %>.css': 'css/app.sass'
                 },
             },
             dist: {
