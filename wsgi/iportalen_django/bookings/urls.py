@@ -3,5 +3,6 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'all/', views.index, name="index"),
+    url(r'book/(?P<bookable_id>[0-9]+)/', views.make_booking, name="make_booking"),
+    url(r'', views.index, name="index"),
 ]

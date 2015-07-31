@@ -1,0 +1,22 @@
+{% extends "master.html" %}
+{% block title %}Gör en bokning{% endblock %}
+{% block content %}
+    <form method="post" action="{% url "make_booking" bookable_id %}">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Boka</button>
+    </form>
+
+{% endblock %}
+
+{% block extra_scripts %}
+ <script>
+  $(function() {
+    $( ".datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+    });
+  });
+  </script>
+
+{% endblock %}

@@ -3,9 +3,18 @@
 {% block content %}
     {% if bookings %}
     {% for booking in bookings %}
-        {{ booking }}
+        <p>{{ booking }}</p>
     {% endfor %}
     {% else %}
     <p>Du har inga bokningar än.</p>
     {% endif %}
+
+    {% if bookables %}
+    {% for bookable in bookables %}
+    <a href="{% url 'make_booking' bookable.id%}"><p>Ny bokning av {{ bookable }}</p></a>
+    {% endfor %}
+    {% else %}
+    <p>Det finns inget att boka :( </p>
+    {% endif %}
+
 {% endblock %}
