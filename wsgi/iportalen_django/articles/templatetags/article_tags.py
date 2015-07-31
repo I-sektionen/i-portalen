@@ -1,7 +1,13 @@
 from django.utils import timezone
 from django.template.loader_tags import register
-
+import markdown as md
 from articles.models import Article, Tag
+from django import template
+from django.template.defaultfilters import stringfilter
+from django.utils.safestring import mark_safe
+register = template.Library()
+
+
 
 @register.assignment_tag
 def get_all_articles():
@@ -24,3 +30,8 @@ def get_article(pk):
 def get_tags():
     tags = Tag.objects.all().order_by('name')
     return tags
+
+@register.filter(is_safe=True)
+@stringfilter
+def markdown(text):
+    return mark_safe(md.markdown(text))

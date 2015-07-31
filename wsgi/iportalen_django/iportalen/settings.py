@@ -151,13 +151,14 @@ if not ON_PASS:
         os.path.join(BASE_DIR, "static"),
         os.path.join(os.path.dirname(BASE_DIR), 'static')
     )
-"""
+
 # This is where all static files are put by 'collectstatic', it is
 # always done before the app is deployed on openshift.
-STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, "../static/"))
-print(STATIC_ROOT)
+if ON_PASS:
+    STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, "../static/"))
 
+"""
 # The url behind which static files are exposed. Not run by mod_wsgi but
-# Apache, i think, by Openshift.
+# Apache, i think, on Openshift.
 """
 STATIC_URL = '/static/'
