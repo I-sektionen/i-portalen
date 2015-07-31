@@ -8,8 +8,16 @@ module.exports = function (grunt) {
                 },
                 files: {
                     'css/app.css': 'css/app.sass'
+                },
+            },
+            dist: {
+                options: {
+                    style: "compressed"
+                },
+                files: {
+                    'dist/<%= pkg.name %>.min.css': 'css/app.sass'
                 }
-            }
+            },
         },
         concat: {
             options: {
@@ -17,7 +25,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 src: ['js/src/*.js'],
-                dest: 'js/iportalen.js'
+                dest: 'js/<%= pkg.name %>.js'
             }
         },
         jshint: {
@@ -31,6 +39,16 @@ module.exports = function (grunt) {
                     document: true
                 }
             }
+        },
+        uglify: {
+            dist: {
+                src: ['<%= concat.dist.dest %>'],
+                dest: 'dist/<%= pkg.name %>.min.js'
+            },
+            options: {
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+            },
+
         },
         watch: {
             sass: {
@@ -48,4 +66,5 @@ module.exports = function (grunt) {
      */
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
     grunt.registerTask('default', ['sass:dev', 'watch', 'concat']);
+    grunt.registerTask('dist', ['sass:dist', 'uglify']);
 };
