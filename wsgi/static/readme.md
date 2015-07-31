@@ -65,9 +65,5 @@ För att använda SASS krävs följande är det lästtast att läsa instruktione
 ### Annat
 Utöver ren SASS används också  
 + Ett mixin-bibliotek som heter [Bourbon](http://bourbon.io "Bourbon")
-+ Ett grid-ramverk som heter [Neat](http://neat.bourbon.io "Neat")
-+ Stilbibliotek som heter [Bitters](http://bitters.bourbon.io "Bitters")
-+ ..och vissa saker är tagna från [Refills](http://refills.bourbon.io "Refills"), bara för att vi kan.
-
 ## JS & jQuery  
 Inga konstigheter här än så länge.
