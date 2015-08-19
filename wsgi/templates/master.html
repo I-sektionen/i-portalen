@@ -1,42 +1,34 @@
+{# This file defines the front page and is a own kind of master page #}
 {% load staticfiles %}
 {% load article_tags %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<link href="{% static "favicon.ico" %}" rel="shortcut icon" type="image/vnd.microsoft.icon">
-    <meta charset="UTF-8">
-    <title>I-portalen - {% block title %}{% endblock %}</title>
-{% block head %}{% endblock %}
-{% include 'css.html' %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "stylesheets.html" %}
+
+    <title>I-portalen - {% block page_subtitle %} {% endblock %}</title>
 </head>
+
 <body>
-{%  include 'top_menu.html' %}
-{% block content %}{% endblock %}
-<h3>Get all articles:</h3><hr>
-{% get_all_articles as articles %}
-{% for article in articles %}
-    headline: {{ article.headline }}<br>
-    lead: {{ article.lead|truncatewords_html:50 }}<br>
-    body: {{ article.body|markdown }}<br>
-    user: {{ article.user }}<br>
-    tags: {{ article.tags.all|safeseq|join:", " }}<br>
-    created: {{ article.created|date:"Y-m-d H:i:s" }}<br>
-    modified: {{ article.modified|date:"Y-m-d H:i:s" }}<br><hr>
-{% endfor %}
-<br>
+{% include "header.html" %}
 
-<h3>Get one article:</h3><hr>
-{% get_article pk=1 as article %}
-    headline: {{ article.headline }}<br>
-    lead: {{ article.lead|truncatewords_html:50 }}<br>
-    body: {{ article.body|urlizetrunc:30|linebreaks }}<br>
-    user: {{ article.user }}<br>
-    tags: {{ article.tags.all|safeseq|join:", " }}<br>
-    created: {{ article.created|date:"Y-m-d H:i:s" }}<br>
-    modified: {{ article.modified|date:"Y-m-d H:i:s" }}<br>
-<br>
+{% block content %}
 
-{% include 'scripts.html' %}
+    {% block sponsors %}
+        <section id="sponsors">
+            <h4>Sponsorer</h4>
+        </section>
+    {% endblock %}
+
+{% endblock %}
+
+{% include "footer.html" %}
+
+{% include "modal.html" %}
+
+{% include "scripts.html" %}
 
 </body>
 </html>

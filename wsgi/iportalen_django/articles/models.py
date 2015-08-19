@@ -43,6 +43,9 @@ class Article(models.Model):
     def __str__(self):
         return self.headline
 
+    def get_absolute_url(self):
+        return "/articles/%i/" % self.id
+
     class Meta:
         verbose_name = "Artikel"
         verbose_name_plural = "Artiklar"
