@@ -1,0 +1,62 @@
+article.event-preview
+    +display(flex)
+    +flex-wrap(wrap)
+    +align-items(center)
+    border-radius: 3px
+    border-left: 5px solid $isektionen-green
+    //padding: 15px 15px 15px 15px
+    box-shadow: 1px 1px 5px $light-gray
+    margin-bottom: 1em
+    padding: 0.5em 1em
+    &:hover
+        box-shadow: 4px 4px 16px $light-gray
+        +transition-duration(0.5s)
+        
+    h5
+        font-size: 14px
+        font-weight: 700
+    .meta
+        +display(flex)
+        +flex-wrap(wrap)
+        +justify-content(space-around)
+        +flex-basis(100%)
+        text-align: center
+        margin: 0.5em
+        & > span::before
+            font-family: 'FontAwesome'
+            padding: 1px
+
+        span
+            font-size: 18px
+            font-weight: 700
+            text-transform: uppercase
+            +display(flex)
+            +flex-direction(column)
+                
+        .date
+            &::before
+                content: "\f073"
+        .time
+            
+            &::before
+                content: "\f017"
+        
+        .place
+            &::before
+                content: "\f041"
+            
+        .attendees
+            &::before
+                content: 'Anmälda'
+        .last-sign-up
+            &::before
+                content: 'Sista anmälan'
+        
+        span.meta-content
+            padding: 0
+            font-weight: 200
+            font-size: 14px
+        
+    button
+        +flex(1)
+        margin: 0 1em

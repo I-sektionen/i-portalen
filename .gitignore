@@ -113,6 +113,11 @@ bower_components
 .bower-tmp
 
 
+### Node package manager ###
+
+node_modules/
+
+
 ### Linux ###
 *~
 
@@ -122,6 +127,14 @@ bower_components
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
 
+### Mac OSX ###
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 ### Windows ###
 # Windows image file caches
@@ -158,5 +171,10 @@ pip-selfcheck.json
 ### Sqlite3 ###
 *.sqlite3
 
-# Lets not push our mysql credentials all over the place #
-wsgi/iportalen_django/iportalen/mysql_credentials
+# Lets not push our mysql credentials all over the place:
+mysql_credentials
+
+
+### SASS ###
+.sass-cache
+*.css.map

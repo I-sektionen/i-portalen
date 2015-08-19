@@ -52,7 +52,6 @@ INSTALLED_APPS = (
     'reversion',
     'user_managements',
     'articles',
-    'combined_views',
     'events',
     'organisations',
     'bookings',
