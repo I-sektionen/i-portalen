@@ -1,11 +1,37 @@
 {% extends "master.html" %}
 {% block title %}Gör en bokning{% endblock %}
 {% block content %}
+    {% if week == 1 %}
+    <a href="{% url "make_booking" bookable_id year   %}"><button type="button">Bakåt</button></a>
+
+    {% endif %}
+    <a href=""><button type="button">Framåt</button></a>
     <form method="post" action="{% url "make_booking" bookable_id %}">
     {% csrf_token %}
-    {{ form }}
+    <div class="calendar">
+        {% for day in booking_status %}
+            <div class="cal-day" id="{{day.swe_date}}">
+                <div class="cal-day-header">
+                    <h4>{{ day.date }}</h4>
+                </div>
+                {% for slot in day.slots %}
+                    <div class="slot">
+                        <p>Start: {{ slot.0.start_time }}</p>
+                        <p>End: {{ slot.0.end_time }}</p>
+                        <p>Free: {{ slot.1 }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    <!-- End of calendar -->
+    </div>
     <button type="submit">Boka</button>
     </form>
+    <ul>
+    {% for slot in booked_slots %}
+        <li> {{ slot.slot }} | {{ slot.date}} </li>
+    {% endfor %}
+    </ul>
 
 {% endblock %}
 

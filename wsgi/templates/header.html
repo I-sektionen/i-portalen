@@ -6,7 +6,7 @@
             <span>MENU</span>
         </div>
         <ul id="navigation-menu" class="show">
-            <li><a href="#">Start</a>
+            <li><a href="/">Start</a>
             </li>
             <li><a href="#">Kalender</a>
             </li>
@@ -44,7 +44,13 @@
             </li>
             <li><a href="#">Studier</a>
             </li>
-            <li><a href="#">Tjänster</a>
+            <li class="more"><a href="#">Tjänster</a>
+                <div class="submenu-wrapper show">
+                    <ul class="submenu">
+                        <li>Här måste nått stå</li>
+                        <a href="{% url 'index' %}"><li>Bokningar</li></a>
+                    </ul>
+                </div>
             </li>
 
         </ul>

@@ -1,14 +1,18 @@
 {% extends "master.html" %}
 {% block title %}Bokningar{% endblock %}
 {% block content %}
+    <h1>Bokningar</h1>
+    <p>Här kan du administera dina aktuella bokningar samt göra nya.</p>
     {% if bookings %}
-    {% for booking in bookings %}
+        <h2>Dina tidigare bokningar:</h2>
+        {% for booking in bookings %}
         <p>{{ booking }}</p>
     {% endfor %}
     {% else %}
-    <p>Du har inga bokningar än.</p>
+    <p>Du har inga aktuella bokningar.</p>
     {% endif %}
 
+    <h2>Gör en ny bokning</h2>
     {% if bookables %}
     {% for bookable in bookables %}
     <a href="{% url 'make_booking' bookable.id%}"><p>Ny bokning av {{ bookable }}</p></a>
