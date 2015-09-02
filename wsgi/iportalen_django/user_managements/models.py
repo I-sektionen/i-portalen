@@ -59,6 +59,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     expected_exam_year = models.IntegerField(verbose_name='förväntat examens år', choices=YEAR_CHOICES, default=datetime.datetime.now().year+5)
     bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil')
     master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil', )
+    rfid_number = models.CharField(verbose_name='rfid', max_length=255, null=True, blank=True)
 
     objects = IUserManager()
     USERNAME_FIELD = 'username'

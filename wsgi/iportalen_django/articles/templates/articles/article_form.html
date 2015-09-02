@@ -1,0 +1,23 @@
+{% extends "master.html" %}
+{# This file defines the front page and is a own kind of master page #}
+{% load article_tags %}
+{% include "header.html" %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+
+    {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }} {{ field.help_text }}
+        </div>
+    {% endfor %}
+    <input type="submit" value="Submit" />
+</form>
+{% endblock %}
+
+{% include "scripts.html" %}
+</body>
+</html>
+

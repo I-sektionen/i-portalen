@@ -18,17 +18,25 @@ class Tag(models.Model):
 
 
 class Article(models.Model):
-    headline = models.CharField(verbose_name='rubrik', max_length=255)
-    lead = models.TextField(verbose_name='ingress', )
-    body = models.TextField(verbose_name='brödtext', )
+    headline = models.CharField(verbose_name='rubrik',
+                                max_length=255,
+                                help_text="Rubriken till Artikeln")
+    lead = models.TextField(verbose_name='ingress',
+                            help_text="Ingress som syns utan att klicka på artikeln.")
+    body = models.TextField(verbose_name='brödtext',
+                            help_text="Brödtext som syns efter att ha klickat på läs mer.")
 
-    visible_from = models.DateTimeField()
-    visible_to = models.DateTimeField()
+    visible_from = models.DateTimeField(verbose_name='publicering',
+                                        help_text="Datum för publicering")
+    visible_to = models.DateTimeField(verbose_name='avpublicering',
+                                      help_text="Datum för avpublicering.")
     approved = models.BooleanField(verbose_name='godkänd', default=False)
 
     # access  # TODO: access restrictions
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             verbose_name='användare',
+                             help_text="Skribent av texten")
     tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
 
     created = models.DateTimeField(editable=False)

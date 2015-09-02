@@ -4,6 +4,7 @@
 {% include "header.html" %}
 
 {% block content %}
+{% for article in articles %}
 <article class="news-preview">
     <div class="meta">
         <span class="date">{{ article.created|date:"Y-m-d" }}</span>
@@ -17,6 +18,7 @@
     <p>{{ article.lead|truncatewords_html:50 }}</p>
     <a href="{{ article.get_absolute_url }}"><button class="btn-read-more">Läs mer</button></a>
 </article>
+{% endfor %}
 {% endblock %}
 
 {% include "scripts.html" %}

@@ -5,7 +5,10 @@ from articles.models import Article, Tag
 from django import template
 from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
+import re
+
 register = template.Library()
+
 
 
 
@@ -34,4 +37,11 @@ def get_tags():
 @register.filter(is_safe=True)
 @stringfilter
 def markdown(text):
-    return mark_safe(md.markdown(text))
+    text = re.sub(r'([#]{2,})', '#', text)
+    text = re.sub(r'([=]{3,})', '', text)
+    text = re.sub(r'([-]{3,})', '', text)
+    text = re.sub(r'([`])', '', text)
+
+
+    text = md.markdown(text, safe_mode='escape', output_format='html5').replace("<hr>", "")
+    return mark_safe(text)
