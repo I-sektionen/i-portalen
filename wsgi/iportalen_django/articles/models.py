@@ -4,13 +4,13 @@ from django.conf import settings
 
 
 class Tag(models.Model):
-    name = models.CharField(verbose_name='namn', max_length=255)
+    name = models.CharField(verbose_name='namn', max_length=255, unique=True)
 
     def __str__(self):
-        return "<a href='" + self.get_absolute_url() + "/'>" + self.name + "</a>"
+        return self.name
 
     def get_absolute_url(self):
-        return "/tag/%i/" % self.id
+        return "/articles/tag/%s/" % self.name
 
     class Meta:
         verbose_name = "tagg"

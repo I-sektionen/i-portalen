@@ -42,6 +42,5 @@ def markdown(text):
     text = re.sub(r'([-]{3,})', '', text)
     text = re.sub(r'([`])', '', text)
 
-
     text = md.markdown(text, safe_mode='escape', output_format='html5').replace("<hr>", "")
     return mark_safe(text)

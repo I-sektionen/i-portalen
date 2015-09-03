@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from .models import Article
+from .models import Article, Tag
 from .forms import ArticleForm
 
 
@@ -42,3 +42,7 @@ def approve_article(request, article_id):
     a.approved = True
     a.save()
     return redirect(a)
+
+def articles_by_tag(request, tag_name):
+    articles = Tag.objects.get(name=tag_name).article_set.all()
+    return render(request, 'articles/articles.html', {'articles': articles})

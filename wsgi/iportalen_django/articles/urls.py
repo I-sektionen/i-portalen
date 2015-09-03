@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^approved/$', views.all_approved_articles, name='approved articles'),
     url(r'^unapproved/$', views.all_unapproved_articles, name='unapproved articles'),
     url(r'^(?P<article_id>[0-9]+)/approve$', views.approve_article, name='approve article'),
+    url(r'^tag/(?P<tag_name>\w+)/$', views.articles_by_tag, name='articles by tag'),
 ]
