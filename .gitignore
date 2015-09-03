@@ -172,7 +172,7 @@ pip-selfcheck.json
 *.sqlite3
 
 # Lets not push our mysql credentials all over the place #
-wsgi/iportalen/iportalen/mysql_credentials
+mysql_credentials
 
 
 ### SASS ###
