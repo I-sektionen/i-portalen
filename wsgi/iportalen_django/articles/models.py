@@ -30,13 +30,17 @@ class Article(models.Model):
                                         help_text="Datum för publicering")
     visible_to = models.DateTimeField(verbose_name='avpublicering',
                                       help_text="Datum för avpublicering.")
+    draft = models.BooleanField(verbose_name='utkast', default=False,
+                                help_text="Utkast kommer inte att publiceras")
     approved = models.BooleanField(verbose_name='godkänd', default=False)
 
-    # access  # TODO: access restrictions
+    author = models.CharField(max_length=255,
+                              verbose_name='skribent',
+                              help_text="Skribent av texten")
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              verbose_name='användare',
-                             help_text="Skribent av texten")
+                             help_text="Användaren som skrivit texten")
     tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
 
     created = models.DateTimeField(editable=False)

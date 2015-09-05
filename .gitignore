@@ -179,3 +179,4 @@ mysql_credentials
 ### SASS ###
 .sass-cache
 *.css.map
+wsgi/iportalen_django/iportalen/mysql_credentials
