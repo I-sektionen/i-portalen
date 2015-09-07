@@ -69,6 +69,8 @@ def articles_by_tag(request, tag_name):
     articles = Tag.objects.get(name=tag_name).article_set.all(approved=True)
     return render(request, 'articles/articles.html', {'articles': articles})
 
+
+@login_required()
 def articles_by_user(request):
     articles = request.user.article_set.all()
     return render(request, 'articles/articles.html', {'articles': articles})

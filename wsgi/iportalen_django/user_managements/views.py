@@ -16,7 +16,7 @@ def login(request):
             if user.is_active:
                 auth_login(request, user)
                 try:
-                    return redirect(request.POST['next'])
+                    return redirect(request.GET['next'])
                 except:
                     return redirect('/')
             else:

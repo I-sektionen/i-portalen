@@ -56,11 +56,10 @@
                     <div class="submenu-wrapper show">
                         <ul class="submenu">
                         <li>Logga in</li>
-                            <form action="/user/login" method="post">
+                            <form action="/user/login?next={{ request.get_full_path }}" method="post">
                                 {% csrf_token %}
                                 <li><input type="text" name="username" placeholder="ABCDE123">
                                 <li><input type="password" name="password" placeholder="********"></li>
-                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
                                 <li><input type="submit"></li>
                             </form>
                         </ul>
