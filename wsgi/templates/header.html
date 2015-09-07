@@ -47,8 +47,18 @@
             <li><a href="#">Tjänster</a>
             </li>
             {% if request.user.is_authenticated %}
-                <li>
+                <li class="more">
                     <a href="#">{{ request.user }}</a>
+                    <div class="submenu-wrapper show">
+                        <ul class="submenu">
+                            <li>{{ request.user }}</li>
+                            <li><a href="/user/logout">Logga ut</a></li>
+                            <form action="/user/logout" method="get">
+                                {% csrf_token %}
+                                <li><input type="submit" name="Logga ut" value="Logga ut"></li>
+                            </form>
+                        </ul>
+                    </div>
                 </li>
             {% else %}
                 <li class="more">
@@ -60,7 +70,7 @@
                                 {% csrf_token %}
                                 <li><input type="text" name="username" placeholder="ABCDE123">
                                 <li><input type="password" name="password" placeholder="********"></li>
-                                <li><input type="submit"></li>
+                                <li><input type="submit" name="Logga in" value="Logga in"></li>
                             </form>
                         </ul>
                     </div>
