@@ -42,7 +42,7 @@ def single_article(request, article_id):
     return render(request, 'articles/article.html', {'article': article})
 
 def all_articles(request):
-    articles = Article.objects.all(approved=True)
+    articles = Article.objects.filter(approved=True)
     return render(request, 'articles/articles.html', {'articles': articles})
 
 def all_approved_articles(request):
