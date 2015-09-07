@@ -1,7 +1,5 @@
 {% extends "master.html" %}
-{# This file defines the front page and is a own kind of master page #}
 {% load article_tags %}
-{% include "header.html" %}
 
 {% block content %}
 {% for article in articles %}
@@ -20,7 +18,3 @@
 </article>
 {% endfor %}
 {% endblock %}
-
-{% include "scripts.html" %}
-</body>
-</html>

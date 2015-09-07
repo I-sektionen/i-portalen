@@ -1,7 +1,5 @@
 {% extends "master.html" %}
-{# This file defines the front page and is a own kind of master page #}
 {% load article_tags %}
-{% include "header.html" %}
 
 {% block content %}
 <article class="news-preview">
@@ -18,7 +16,3 @@
     <a href="{{ article.get_absolute_url }}"><button class="btn-read-more">Läs mer</button></a>
 </article>
 {% endblock %}
-
-{% include "scripts.html" %}
-</body>
-</html>
