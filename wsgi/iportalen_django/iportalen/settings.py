@@ -160,3 +160,6 @@ if ON_PASS:
 # Apache, i think, on Openshift.
 """
 STATIC_URL = '/static/'
+
+#  This url is where you can log in. The login_required decorator uses this constant.
+LOGIN_URL = 'login_view' #  TODO: Use a named view instead.

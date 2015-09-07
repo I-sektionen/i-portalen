@@ -1,8 +1,11 @@
 from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Article, Tag
 from .forms import ArticleForm
 
+
+@login_required()
 def create_or_modify_article(request, article_id=None):
     if request.user.is_authenticated():
         a = None
