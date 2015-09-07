@@ -46,6 +46,28 @@
             </li>
             <li><a href="#">Tjänster</a>
             </li>
+            {% if request.user.is_authenticated %}
+                <li>
+                    <a href="#">{{ request.user }}</a>
+                </li>
+            {% else %}
+                <li class="more">
+                    <a href="#">Logga in</a>
+                    <div class="submenu-wrapper show">
+                        <ul class="submenu">
+                        <li>Logga in</li>
+                            <form action="/users/login" method="post">
+                                {% csrf_token %}
+                                <li><input type="text" name="liu-id" placeholder="ABCDE123">
+                                <li><input type="password" name="password" placeholder="********"></li>
+                                <input type="hidden" name="from_url" value="{{ request.get_full_path }}">
+                                <li><input type="submit"></li>
+                            </form>
+                        </ul>
+                    </div>
+                </li>
+            {% endif %}
+
 
         </ul>
     </nav>
