@@ -3,14 +3,15 @@
 {% load article_tags %}
 {% include "header.html" %}
 
-
-{% block content %}
-    <section class="hero">
+<!--
+<section class="hero">
     <h1 id="hero-logo">Industriell ekonomi</h1>
 </section>
+-->
+
+{% block content %}
+
 <div id="content">
-
-
     {# gets all articles via template tag #}
     {% get_all_articles as articles %}
     <section id="news-feed">
@@ -31,6 +32,7 @@
             </article>
         {% endfor %}
     </section>
+    <!--
     <section id="upcoming">
         <h4>Kommande</h4>
         <article class="event-preview">
@@ -50,6 +52,7 @@
             <button>Anmäl</button>
         </article>
     </section>
+    -->
 </div>
 {% endblock %}
 
