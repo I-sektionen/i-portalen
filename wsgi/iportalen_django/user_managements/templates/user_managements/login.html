@@ -7,7 +7,7 @@
     {% if message %}
         <p>{{ message }}</p>
     {% endif %}
-<form action="login" method="post">
+<form action="{{ request.get_full_path }}" method="post">
     {% csrf_token %}
     <input type="text" name="username" placeholder="ABCDE123">
     <input type="password" name="password" placeholder="********">
