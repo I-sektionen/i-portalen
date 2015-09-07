@@ -58,9 +58,9 @@
                         <li>Logga in</li>
                             <form action="/user/login" method="post">
                                 {% csrf_token %}
-                                <li><input type="text" name="liu-id" placeholder="ABCDE123">
+                                <li><input type="text" name="username" placeholder="ABCDE123">
                                 <li><input type="password" name="password" placeholder="********"></li>
-                                <input type="hidden" name="from_url" value="{{ request.get_full_path }}">
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
                                 <li><input type="submit"></li>
                             </form>
                         </ul>

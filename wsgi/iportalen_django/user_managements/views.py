@@ -8,7 +8,7 @@ def logout_view(request):
 
 def login(request):
     if request.method == 'POST':
-        username = request.POST['liu-id']
+        username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username.lower(), password=password)
         if user is not None:
@@ -16,7 +16,7 @@ def login(request):
             if user.is_active:
                 auth_login(request, user)
                 try:
-                    return redirect(request.POST['from_url'])
+                    return redirect(request.POST['next'])
                 except:
                     return redirect('/')
             else:
