@@ -132,3 +132,11 @@ def articles_by_user(request):
     return render(request, 'articles/my_articles.html', {'approved_articles': approved_articles,
                                                          'unapproved_articles': unapproved_articles,
                                                          'draft_articles': draft_articles})
+
+@login_required()
+def delete_article(request, article_id):
+    article = Article.objects.get(pk=article_id)
+    if article.draft and request.user == article.user:
+        article.delete()
+        return redirect(articles_by_user)
+    raise PermissionDenied

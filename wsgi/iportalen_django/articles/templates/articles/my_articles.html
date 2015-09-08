@@ -56,6 +56,8 @@
         <p>{{ article.lead|truncatewords_html:50 }}</p>
         <a href="{{ article.get_absolute_url }}"><button class="btn-read-more">Läs mer</button></a>
         <a href="{{ article.get_absolute_url }}edit"><button class="btn-read-more">Ändra</button></a>
+        <a href="{{ article.get_absolute_url }}delete"><button class="btn-read-more">Ta bort</button></a>
+
     </article>
     {% endfor %}
     </div>

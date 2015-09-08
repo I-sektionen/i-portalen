@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^(?P<article_id>[0-9]+)/unapprove$', views.unapprove_article, name='unapproves article'),
     url(r'^tag/(?P<tag_name>\w+)/$', views.articles_by_tag, name='articles by tag'),
     url(r'^user/$', views.articles_by_user, name='articles by user'),
+    url(r'^(?P<article_id>[0-9]+)/delete/$', views.delete_article, name='delete article'),
 
 ]
