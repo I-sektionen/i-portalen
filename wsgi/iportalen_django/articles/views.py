@@ -58,6 +58,7 @@ def all_articles(request):
     articles = Article.objects.filter(approved=True)
     return render(request, 'articles/articles.html', {'articles': articles})
 
+@login_required()
 def all_unapproved_articles(request):
     if request.user.has_perm("articles.can_approve_article"):
         articles = Article.objects.filter(approved=False, draft=False)
@@ -65,6 +66,7 @@ def all_unapproved_articles(request):
     else:
         raise PermissionDenied
 
+@login_required()
 def approve_article(request, article_id):
     if request.user.has_perm("articles.can_approve_article"):
         a = Article.objects.get(pk=article_id)
@@ -77,6 +79,7 @@ def approve_article(request, article_id):
     else:
         raise PermissionDenied
 
+@login_required()
 def unapprove_article(request, article_id):
     if request.user.has_perm("articles.can_approve_article"):
         a = Article.objects.get(pk=article_id)
