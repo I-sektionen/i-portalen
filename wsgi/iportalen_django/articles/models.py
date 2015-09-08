@@ -46,6 +46,8 @@ class Article(models.Model):
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
 
+    replacing = models.ForeignKey('self', null=True, default=None)
+
     def save(self, *args, **kwargs):
         if not self.id:
             self.created = timezone.now()
