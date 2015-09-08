@@ -9,6 +9,7 @@
     {% include "stylesheets.html" %}
 
     <title>I-portalen - {% block page_subtitle %} {% endblock %}</title>
+{% block head %} {% endblock %}
 </head>
 
 <body>
@@ -29,6 +30,6 @@
 {% include "modal.html" %}
 
 {% include "scripts.html" %}
-
+{% block after_scripts %}{% endblock %}
 </body>
 </html>
