@@ -2,8 +2,10 @@ from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from .models import Article, Tag
 from .forms import ArticleForm
+
 
 
 @login_required()
@@ -55,7 +57,9 @@ def single_article(request, article_id):
 
 
 def all_articles(request):
-    articles = Article.objects.filter(approved=True)
+    articles = Article.objects.filter(approved=True,
+                                      visible_from__lte=timezone.now(),
+                                      visible_to__gte=timezone.now())
     return render(request, 'articles/articles.html', {'articles': articles})
 
 @login_required()
