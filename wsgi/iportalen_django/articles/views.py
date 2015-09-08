@@ -7,7 +7,6 @@ from .models import Article, Tag
 from .forms import ArticleForm
 
 
-
 @login_required()
 def create_or_modify_article(request, article_id=None):
     if request.user.is_authenticated():
@@ -46,13 +45,12 @@ def create_or_modify_article(request, article_id=None):
         raise PermissionDenied
 
 
-
 def single_article(request, article_id):
     article = Article.objects.get(pk=article_id)
     if article.approved:
         return render(request, 'articles/article.html', {'article': article})
     elif request.user == article.user:
-        return render(request,'articles/article.html', {'article': article})
+        return render(request, 'articles/article.html', {'article': article})
     raise PermissionDenied
 
 
@@ -62,6 +60,7 @@ def all_articles(request):
                                       visible_to__gte=timezone.now())
     return render(request, 'articles/articles.html', {'articles': articles})
 
+
 @login_required()
 def all_unapproved_articles(request):
     if request.user.has_perm("articles.can_approve_article"):
@@ -69,6 +68,7 @@ def all_unapproved_articles(request):
         return render(request, 'articles/approve_articles.html', {'articles': articles})
     else:
         raise PermissionDenied
+
 
 @login_required()
 def approve_article(request, article_id):
@@ -83,13 +83,19 @@ def approve_article(request, article_id):
     else:
         raise PermissionDenied
 
+
 @login_required()
 def unapprove_article(request, article_id):
     if request.user.has_perm("articles.can_approve_article"):
         a = Article.objects.get(pk=article_id)
         a.draft = True
         a.save()
-        message = "Artikeln har gått tillbaka till draft läget, maila gärna " + a.user.email + " med en förklaring."
+        message = ("Artikeln har gått tillbaka till draft läget, maila gärna <a href='mailto:" +
+                   a.user.email +
+                   "?Subject=Avslag%20publicering%20av%20artikel' target='_top'>" +
+                   a.user.email +
+                   "</a> med en förklaring.<br>" +
+                   "<a href='/articles/unapproved'>Tillbaka till listan över artiklar att godkänna.</a>")
         return render(request, 'articles/confirmation.html', {'message': message})
     else:
         raise PermissionDenied
