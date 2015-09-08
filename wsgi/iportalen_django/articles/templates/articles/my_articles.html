@@ -3,7 +3,7 @@
 
 {% block content %}
     <div>
-    Approved articles
+    <h3>Godkända artiklar</h3>
     {% for article in approved_articles %}
     <article class="news-preview">
         <div class="meta">
@@ -17,12 +17,12 @@
         <h5>{{ article.headline }}</h5>
         <p>{{ article.lead|truncatewords_html:50 }}</p>
         <a href="{{ article.get_absolute_url }}"><button class="btn-read-more">Läs mer</button></a>
-        <a href="{{ article.get_absolute_url }}edit"><button class="btn-read-more">Äsndra</button></a>
+        <a href="{{ article.get_absolute_url }}edit"><button class="btn-read-more">Ändra</button></a>
     </article>
     {% endfor %}
     </div>
     <div>
-    Unapproved articles
+    <h3>Artiklar som väntar på godkännande</h3>
     {% for article in unapproved_articles %}
     <article class="news-preview">
         <div class="meta">
@@ -41,7 +41,7 @@
     {% endfor %}
     </div>
     <div>
-    Draft articles
+    <h3>Utkast till artiklar</h3>
     {% for article in draft_articles %}
     <article class="news-preview">
         <div class="meta">

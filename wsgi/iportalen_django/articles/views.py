@@ -90,11 +90,11 @@ def unapprove_article(request, article_id):
         a = Article.objects.get(pk=article_id)
         a.draft = True
         a.save()
-        message = ("Artikeln har gått tillbaka till draft läget, maila gärna <a href='mailto:" +
+        message = ("Artikeln har gått tillbaka till utkast läget, maila gärna <a href='mailto:" +
                    a.user.email +
                    "?Subject=Avslag%20publicering%20av%20artikel' target='_top'>" +
                    a.user.email +
-                   "</a> med en förklaring.<br>" +
+                   "</a> med en förklaring till avslaget.<br>" +
                    "<a href='/articles/unapproved'>Tillbaka till listan över artiklar att godkänna.</a>")
         return render(request, 'articles/confirmation.html', {'message': message})
     else:
