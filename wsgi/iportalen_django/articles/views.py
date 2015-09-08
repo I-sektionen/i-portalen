@@ -3,11 +3,13 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.utils import timezone
+from django.db import transaction
 from .models import Article, Tag
 from .forms import ArticleForm
 
 
 @login_required()
+@transaction.atomic
 def create_or_modify_article(request, article_id=None):
     if request.user.is_authenticated():
         a = None
@@ -23,8 +25,18 @@ def create_or_modify_article(request, article_id=None):
             # check whether it's valid:
             if form.is_valid():
                 a = form.save(commit=False)
+                if a.approved:
+                    try:
+                        a.replacing_id = a.id
+                        a.approved = False
+                        a.id = None
+                    except:
+                        pass
                 if not request.user.has_perm("articles.can_approve_article"):
                     a.approved = False
+                else:
+                    a.approved = True
+
                 if hasattr(a, "user"):
                     a.save()
                 else:
@@ -64,13 +76,14 @@ def all_articles(request):
 @login_required()
 def all_unapproved_articles(request):
     if request.user.has_perm("articles.can_approve_article"):
-        articles = Article.objects.filter(approved=False, draft=False)
+        articles = Article.objects.filter(approved=False, draft=False, visible_to__gte=timezone.now())
         return render(request, 'articles/approve_articles.html', {'articles': articles})
     else:
         raise PermissionDenied
 
 
 @login_required()
+@transaction.atomic
 def approve_article(request, article_id):
     if request.user.has_perm("articles.can_approve_article"):
         a = Article.objects.get(pk=article_id)
@@ -79,6 +92,10 @@ def approve_article(request, article_id):
             return HttpResponseForbidden()
         a.approved = True
         a.save()
+        if a.replacing:
+            old = Article.objects.get(pk=a.replacing_id)
+            old.visible_to = timezone.now()
+            old.save()
         return redirect(all_unapproved_articles)
     else:
         raise PermissionDenied
@@ -108,9 +125,9 @@ def articles_by_tag(request, tag_name):
 
 @login_required()
 def articles_by_user(request):
-    approved_articles = request.user.article_set.filter(approved=True)
-    unapproved_articles = request.user.article_set.filter(approved=False, draft=False)
-    draft_articles = request.user.article_set.filter(draft=True)
+    approved_articles = request.user.article_set.filter(approved=True, visible_to__gte=timezone.now())
+    unapproved_articles = request.user.article_set.filter(approved=False, draft=False, visible_to__gte=timezone.now())
+    draft_articles = request.user.article_set.filter(draft=True, visible_to__gte=timezone.now())
 
     return render(request, 'articles/my_articles.html', {'approved_articles': approved_articles,
                                                          'unapproved_articles': unapproved_articles,
