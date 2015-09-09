@@ -11,6 +11,9 @@
         {% if article.tags.all  %}
             <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
         {% endif %}
+    {% if article.replacing  %}
+            <span>Replacing <a href="{{ article.replacing.get_absolute_url }}">{{ article.replacing }}</a></span>
+    {% endif %}
     </div>
     <h5>{{ article.headline }}</h5>
     <p>{{ article.lead|truncatewords_html:50 }}</p>
