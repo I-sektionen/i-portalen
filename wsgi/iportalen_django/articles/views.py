@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponseForbidden
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -26,16 +26,9 @@ def create_or_modify_article(request, article_id=None):
             if form.is_valid():
                 a = form.save(commit=False)
                 if a.approved:
-                    try:
-                        a.replacing_id = a.id
-                        a.approved = False
-                        a.id = None
-                    except:
-                        pass
-                if not request.user.has_perm("articles.can_approve_article"):
+                    a.replacing_id = a.id
                     a.approved = False
-                else:
-                    a.approved = True
+                    a.id = None
 
                 if hasattr(a, "user"):
                     a.save()
