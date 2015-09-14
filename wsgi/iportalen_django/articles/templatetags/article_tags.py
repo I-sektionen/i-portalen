@@ -1,8 +1,7 @@
-from itertools import chain
 from django.utils import timezone
 from django.template.loader_tags import register
 import markdown as md
-from articles.models import Article, Tag
+from articles.models import Article
 from django import template
 from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
@@ -28,19 +27,6 @@ def get_article(pk):
     except Article.DoesNotExist:
         article = None
     return article
-
-
-@register.assignment_tag
-def get_tags(user):
-    free_tags = Tag.objects.filter(group__exact=None)
-
-    user_tags = []
-    user_groups = user.groups.all()
-    for group in user_groups:
-        user_tags = list(chain(group.tag_set.all(), user_tags))
-
-    tags = list(chain(free_tags, user_tags))
-    return tags
 
 
 @register.filter(is_safe=True)

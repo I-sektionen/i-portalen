@@ -7,19 +7,21 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('auth', '0006_require_contenttypes_0002'),
+        ('events', '0005_remove_event_tags'),
         ('articles', '0007_article_replacing'),
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='tag',
-            name='group',
-            field=models.ManyToManyField(blank=True, to='auth.Group', null=True),
+        migrations.RemoveField(
+            model_name='article',
+            name='tags',
         ),
         migrations.AlterField(
             model_name='article',
             name='replacing',
-            field=models.ForeignKey(blank=True, to='articles.Article', default=None, null=True),
+            field=models.ForeignKey(to='articles.Article', blank=True, null=True, default=None),
+        ),
+        migrations.DeleteModel(
+            name='Tag',
         ),
     ]
