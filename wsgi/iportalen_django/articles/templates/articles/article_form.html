@@ -60,7 +60,12 @@
 
             {{ form.tags.errors }}
             {{ form.tags.label_tag }}
-            {{ form.tags }}
+            {% get_tags request.user as tags %}
+            <select multiple="multiple" id="id_tags" name="tags">
+                {% for tag in tags %}
+                <option value="{{ tag.id }}">{{ tag.name }}</option>
+                {% endfor %}
+            </select>
             {{ form.tags.help_text }}
             <br>
             <br>

@@ -11,43 +11,40 @@ from .forms import ArticleForm
 @login_required()
 @transaction.atomic
 def create_or_modify_article(request, article_id=None):
-    if request.user.is_authenticated():
-        a = None
-        if article_id:
-            a = Article.objects.get(pk=article_id)
-            if not a.user == request.user and not request.user.has_perm("articles.change_article"):
-                # hasn't permission to change
-                raise PermissionDenied
+    a = None
+    if article_id:
+        a = Article.objects.get(pk=article_id)
+        if not a.user == request.user and not request.user.has_perm("articles.change_article"):
+            # hasn't permission to change
+            raise PermissionDenied
 
-        if request.method == 'POST':
-            form = ArticleForm(request.POST, instance=a)
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, instance=a)
 
-            # check whether it's valid:
-            if form.is_valid():
-                a = form.save(commit=False)
-                if a.approved:
-                    a.replacing_id = a.id
-                    a.approved = False
-                    a.id = None
+        # check whether it's valid:
+        if form.is_valid(user=request.user):
+            a = form.save(commit=False)
+            if a.approved:
+                a.replacing_id = a.id
+                a.approved = False
+                a.id = None
 
-                if hasattr(a, "user"):
-                    a.save()
-                else:
-                    a.user = request.user
-                    a.save()
-                form.save_m2m()
-                if a.draft:
-                    return redirect(articles_by_user)
-                else:
-                    message = "Din artikel är nu skickad för granskning."
-                    return render(request, "articles/confirmation.html", {'message': message})
-
+            if hasattr(a, "user"):
+                a.save()
+            else:
+                a.user = request.user
+                a.save()
+            form.save_m2m()
+            if a.draft:
+                return redirect(articles_by_user)
+            else:
+                message = "Din artikel är nu skickad för granskning."
+                return render(request, "articles/confirmation.html", {'message': message})
         else:
-            form = ArticleForm(instance=a)
             return render(request, 'articles/article_form.html', {'form': form})
     else:
-        # Error not logged in
-        raise PermissionDenied
+        form = ArticleForm(instance=a)
+        return render(request, 'articles/article_form.html', {'form': form})
 
 
 def single_article(request, article_id):

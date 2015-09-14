@@ -1,10 +1,12 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+from django.contrib.auth.models import Group
 
 
 class Tag(models.Model):
     name = models.CharField(verbose_name='namn', max_length=255, unique=True)
+    group = models.ManyToManyField(Group, blank=True, null=True)
 
     def __str__(self):
         return self.name
