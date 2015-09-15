@@ -1,5 +1,5 @@
 from django.db import models
-from articles.models import Tag
+from tags.models import Tag
 from django.conf import settings
 from django.utils import timezone
 
