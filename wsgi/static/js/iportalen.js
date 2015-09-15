@@ -8,16 +8,62 @@ $(document).ready(function () {
     menuToggle.on('click', function (event) {
         event.preventDefault();
         navigationMenu.toggleClass('show');
-        console.log("menuToggle click");
     });
 
-    $('#navigation-menu > li').on('touchstart click', function (event) {
+    $('#navigation-menu > li.more').on('click', function (event) {
+        // Does NOT prevents the doubleclick (hover and click on the first click) while on touchdevices
+        if (!$(event.target).closest('.submenu-wrapper').length && $('.submenu-wrapper').hasClass("show")) {
+            closeSubMenu();
+            console.log("Closing submenu click");
+        } else {
+            // I can't use the openSubMenu since "this" dosen't follow with it -
+            // might work on a solution on this later
+            //openSubMenu();
+
+            $(".submenu-wrapper").removeClass("show");
+            $(this).children(".submenu-wrapper").addClass("show");
+            console.log("Opening submenu click");
+        }
+    });
+
+    // Works the hover aspect while not on a mobile device
+    $('#navigation-menu > li').hover(openSubMenu);
+
+    function openSubMenu() {
+        if (!$(this).children(".submenu-wrapper").hasClass("show")){
+            closeSubMenu();
+            $(this).children(".submenu-wrapper").addClass('show');
+            console.log("Opening submenu - hover")
+        }
+    };
+
+    function closeSubMenu() {
+        if ($(".submenu-wrapper").hasClass("show")){
+            $(".submenu-wrapper").removeClass("show");
+            console.log("Closing submenu - hover")
+        };
+    };
+
+    // Closes the hover aspect of the menu when mouse gets on another part of the page
+    $(".nav-bar").on('mouseover', closeSubMenu);
+    $('.hero').on('mouseover', closeSubMenu);
+
+    /*
+    This was supposed to be a solution to the double-hover-click
+    But I can only either get the submenus on touch-devi to work
+    or the submenus on non-touch.. Need to look into this some more
+    but right now it is best to just have a need for doube-touch while
+    on a mobile device
+    */
+    /*
+    $('#navigation-menu > li.more').on('touchstart click', function (event) {
         event.stopPropagation();
         event.preventDefault();
-        // Prevents the doubleclick while on touchdevices
+        // Prevents the doubleclick (hover and click on the first click) while on touchdevices
         if(event.handled !== true) {
-            if ($(".submenu-wrapper").hasClass("show")) {
+            if (!$(event.target).closest('.submenu-wrapper').length && $('.submenu-wrapper').hasClass("show")) {
                 closeSubMenu();
+                console.log("Closing submenu click");
             } else {
                 // I can't use the openSubMenu since "this" dosen't follow with it -
                 // might work on a solution on this later
@@ -25,28 +71,13 @@ $(document).ready(function () {
 
                 $(".submenu-wrapper").removeClass("show");
                 $(this).children(".submenu-wrapper").addClass("show");
+                console.log("Opening submenu click");
             }
             event.handled = true;
         } else {
             return false;
         }
     });
-
-    // Works the hover aspect while not on a mobile device
-    $('#navigation-menu > li ').hover(openSubMenu);
-
-
-    function openSubMenu() {
-        closeSubMenu();
-        $(this).children(".submenu-wrapper").addClass('show');
-    };
-
-    function closeSubMenu() {
-        $(".submenu-wrapper").removeClass("show");
-    };
-
-    // Closes the hover aspect of the menu when mouse gets on another part of the page
-    $(".nav-bar").on('mouseover', closeSubMenu);
-    $('.hero').on('mouseover', closeSubMenu);
+*/
 
 });
