@@ -2,6 +2,7 @@ import datetime
 from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.core.urlresolvers import reverse
 from .managers import IUserManager
 
 
@@ -64,6 +65,21 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     objects = IUserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
+
+    #This is where the menu options for a specific user is determined.
+    @property
+    def get_menu_choices(self):
+        menu_choices = []  # List of extra menu choices.
+
+        menu_choices.append(('Skapa Artikel', reverse('create article')))  # Everyone can create article.
+
+        if self.has_perm("articles.can_approve_article"):
+            menu_choices.append(('Godkänn Artiklar', reverse('unapproved articles')))  # Users with permission to edit articles.
+
+        if self.is_staff:
+            menu_choices.append(('Admin', '/admin'))
+
+        return menu_choices
 
     def get_full_name(self):
         #fullname = self.first_name+" "+self.last_name

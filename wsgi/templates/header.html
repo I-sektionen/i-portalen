@@ -52,11 +52,10 @@
                     <div class="submenu-wrapper">
                         <ul class="submenu">
                             <li>{{ request.user }}</li>
+                            {% for item in request.user.get_menu_choices %}
+                            <li><a href="{{ item.1 }}">{{ item.0 }}</a></li>
+                            {% endfor %}
                             <li><a href="/user/logout">Logga ut</a></li>
-                            <form action="/user/logout" method="get">
-                                {% csrf_token %}
-                                <li><input type="submit" name="Logga ut" value="Logga ut"></li>
-                            </form>
                         </ul>
                     </div>
                 </li>
