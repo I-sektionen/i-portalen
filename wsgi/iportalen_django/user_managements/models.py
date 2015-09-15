@@ -74,10 +74,10 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         menu_choices.append(('Skapa Artikel', reverse('create article')))  # Everyone can create article.
 
         if self.has_perm("articles.can_approve_article"):
-            menu_choices.append(('Godkänn Artiklar', reverse('unapproved articles')))  # Users with permission to edit articles.
+            menu_choices.append(('Godkänn Artiklar', reverse('unapproved articles')))  # With perm to edit articles.
 
         if self.is_staff:
-            menu_choices.append(('Admin', '/admin'))
+            menu_choices.append(('Admin', '/admin'))  # Staff users who can access Admin page.
 
         return menu_choices
 
