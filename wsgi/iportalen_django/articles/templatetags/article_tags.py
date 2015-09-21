@@ -39,3 +39,12 @@ def markdown(text):
 
     text = md.markdown(text, safe_mode='escape', output_format='html5').replace("<hr>", "")
     return mark_safe(text)
+
+
+@register.assignment_tag
+def get_user_articles(user):
+    approved_articles = user.article_set.filter(approved=True, visible_to__gte=timezone.now())
+    unapproved_articles = user.article_set.filter(approved=False, draft=False, visible_to__gte=timezone.now())
+    draft_articles = user.article_set.filter(draft=True, visible_to__gte=timezone.now())
+
+    return {'approved_articles':approved_articles, 'unapproved_articles':unapproved_articles, 'draft_articles':draft_articles}

@@ -56,3 +56,10 @@ class CustomUserChangeForm(UserChangeForm):
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
         return self.initial["password"]
+
+
+class ChangeUserInfoForm(forms.ModelForm):
+    class Meta:
+        model = IUser
+        fields = ('username', 'first_name', 'last_name', 'address', 'zip_code', 'city', 'gender', 'allergies', 'start_year', 'expected_exam_year')
+

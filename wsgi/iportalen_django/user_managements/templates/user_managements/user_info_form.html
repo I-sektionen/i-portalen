@@ -1,0 +1,96 @@
+{% extends "master.html" %}
+{% load staticfiles %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static "articles/Markdown.css" %}" />
+{% endblock %}
+{% block content %}
+
+    <div>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+
+            {{ form.username.errors }}
+            {{ form.username.label_tag }}
+            {{ form.username }}
+            {{ form.username.help_text }}
+            <br>
+            <br>
+
+            {{ form.first_name.errors }}
+            {{ form.first_name.label_tag }}
+            {{ form.first_name }}
+            {{ form.first_name.help_text }}
+            <br>
+            <br>
+
+            {{ form.last_name.errors }}
+            {{ form.last_name.label_tag }}
+            {{ form.last_name }}
+            {{ form.last_name.help_text }}
+            <br>
+            <br>
+
+            {{ form.address.errors }}
+            {{ form.address.label_tag }}
+            {{ form.address }}
+            {{ form.address.help_text }}
+            <br>
+            <br>
+
+            {{ form.zip_code.errors }}
+            {{ form.zip_code.label_tag }}
+            {{ form.zip_code }}
+            {{ form.zip_code.help_text }}
+            <br>
+            <br>
+
+            {{ form.city.errors }}
+            {{ form.city.label_tag }}
+            {{ form.city }}
+            {{ form.city.help_text }}
+            <br>
+            <br>
+
+            {{ form.gender.errors }}
+            {{ form.gender.label_tag }}
+            {{ form.gender }}
+            {{ form.gender.help_text }}
+            <br>
+            <br>
+
+
+            {{ form.allergies.errors }}
+            {{ form.allergies.label_tag }}
+            {{ form.allergies }}
+            {{ form.allergies.help_text }}
+            <br>
+            <br>
+
+
+            {{ form.start_year.errors }}
+            {{ form.start_year.label_tag }}
+            {{ form.start_year }}
+            {{ form.start_year.help_text }}
+            <br>
+            <br>
+
+            {{ form.expected_exam_year.errors }}
+            {{ form.expected_exam_year.label_tag }}
+            {{ form.expected_exam_year }}
+            {{ form.expected_exam_year.help_text }}
+            <br>
+            <br>
+
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+
+{% endblock %}
+{% block after_scripts %}
+    <script type="text/javascript" src="{% static "articles/Markdown.Converter.js" %}"></script>
+    <script type="text/javascript" src="{% static "articles/Markdown.Sanitizer.js" %}"></script>
+    <script type="text/javascript" src="{% static "articles/Markdown.Editor.js" %}"></script>
+    <script type="text/javascript" src="{% static "articles/preview_article.js" %}"></script>
+{% endblock %}

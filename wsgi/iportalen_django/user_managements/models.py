@@ -56,8 +56,8 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     city = models.CharField(verbose_name='ort', max_length=255, null=True, blank=True)
     gender = models.CharField(verbose_name='kön', max_length=255, null=True, blank=True)
     allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
-    start_year = models.IntegerField(verbose_name='start år', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
-    expected_exam_year = models.IntegerField(verbose_name='förväntat examens år', choices=YEAR_CHOICES, default=datetime.datetime.now().year+5)
+    start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
+    expected_exam_year = models.IntegerField(verbose_name='förväntat examensår', choices=YEAR_CHOICES, default=datetime.datetime.now().year+5)
     bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil')
     master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil', )
     rfid_number = models.CharField(verbose_name='rfid', max_length=255, null=True, blank=True)
@@ -72,6 +72,10 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         menu_choices = []  # List of extra menu choices.
 
         menu_choices.append(('Skapa Artikel', reverse('create article')))  # Everyone can create article.
+
+        menu_choices.append(('Min sida', reverse('mypage_view') ))
+
+        menu_choices.append(('Mina Artiklar', reverse('articles by user')))
 
         if self.has_perm("articles.can_approve_article"):
             menu_choices.append(('Godkänn Artiklar', reverse('unapproved articles')))  # With perm to edit articles.

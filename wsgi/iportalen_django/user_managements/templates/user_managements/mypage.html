@@ -1,0 +1,33 @@
+{% extends "master.html" %}
+{# This file defines the front page and is a own kind of master page #}
+{% include "header.html" %}
+
+{% block content %}
+    <p>Hello world!</p>
+    {% with u=request.user %}
+
+    <p>{{ u.username}}</p>
+    <p>{{ u.email }}</p>
+    <p>{{ u.first_name|default:"You have not entered any info"}}</p>
+    <p>{{ u.last_name|default:"You have not entered any info"}}</p>
+    <p>{{ u.p_nr|default:"You have not entered any info"}}</p>
+    <p>{{ u.address|default:"You have not entered any info"}}</p>
+    <p>{{ u.zip_code|default:"You have not entered any info"}}</p>
+    <p>{{ u.city|default:"You have not entered any info"}}</p>
+    <p>{{ u.gender|default:"You have not entered any info"}}</p>
+    <p>{{ u.allergies|default:"You have not entered any info"}}</p>
+    <p>{{ u.start_year|default:"You have not entered any info"}}</p>
+    <p>{{ u.expected_exam_year|default:"You have not entered any info"}}</p>
+
+    {% endwith %}
+
+
+    <a href="/user/change_user_info"><button>Ändra info</button></a>
+
+
+{% endblock %}
+
+
+{% include "scripts.html" %}
+</body>
+</html>
