@@ -10,11 +10,11 @@ $(document).ready(function () {
         navigationMenu.toggleClass('show');
     });
 
-    $('#navigation-menu > li.more').on('click', function (event) {
+
+    $('#navigation-menu > li ').on('click', function (event) {
         // Does NOT prevents the doubleclick (hover and click on the first click) while on touchdevices
         if (!$(event.target).closest('.submenu-wrapper').length && $('.submenu-wrapper').hasClass("show")) {
             closeSubMenu();
-            console.log("Closing submenu click");
         } else {
             // I can't use the openSubMenu since "this" dosen't follow with it -
             // might work on a solution on this later
@@ -22,7 +22,6 @@ $(document).ready(function () {
 
             $(".submenu-wrapper").removeClass("show");
             $(this).children(".submenu-wrapper").addClass("show");
-            console.log("Opening submenu click");
         }
     });
 
@@ -33,14 +32,12 @@ $(document).ready(function () {
         if (!$(this).children(".submenu-wrapper").hasClass("show")){
             closeSubMenu();
             $(this).children(".submenu-wrapper").addClass('show');
-            console.log("Opening submenu - hover")
         }
     };
 
     function closeSubMenu() {
         if ($(".submenu-wrapper").hasClass("show")){
             $(".submenu-wrapper").removeClass("show");
-            console.log("Closing submenu - hover")
         };
     };
 

@@ -8,9 +8,9 @@
         <ul id="navigation-menu" class="show">
             <li><a href="/">Start</a>
             </li>
-            <li><a href="#">Kalender</a>
+            <li><a href="javascript:void(0);">Kalender</a>
             </li>
-            <li class="more"><a href="#">Om sektionen</a>
+            <li class="more"><a href="javascript:void(0);">Om sektionen</a>
                 <!-- A WRAPPER TO CONTROL FLEX DIRECTION FOR SUBMENUS -->
                 <div class="submenu-wrapper">
                     <ul class="submenu">
@@ -42,13 +42,13 @@
                     </ul>
                 </div>
             </li>
-            <li><a href="#">Studier</a>
+            <li><a href="javascript:void(0);">Studier</a>
             </li>
-            <li><a href="#">Tjänster</a>
+            <li><a href="javascript:void(0);">Tjänster</a>
             </li>
             {% if request.user.is_authenticated %}
                 <li class="more">
-                    <a href="#">{{ request.user }}</a>
+                    <a href="javascript:void(0);">{{ request.user }}</a>
                     <div class="submenu-wrapper">
                         <ul class="submenu">
                             <li>{{ request.user }}</li>
@@ -61,7 +61,7 @@
                 </li>
             {% else %}
                 <li class="more">
-                    <a href="#">Logga in</a>
+                    <a href="javascript:void(0);">Logga in</a>
                     <div class="submenu-wrapper">
                         <ul class="submenu">
                         <li>Logga in</li>
