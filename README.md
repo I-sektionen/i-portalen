@@ -52,11 +52,11 @@ Använd sedan `workon i-portalen` för att öppna miljön och `deactivate` för 
 ### Klona ner gitprojektet
 1. Skapa en mapp: `mkdir ~/repos`
 1. Navigera in i mappen: `cd ~/repos`
-1. Klona projektet*: `git clone git@gitlab.ida.liu.se:isaek808/i-portalen.git`  
+1. Klona projektet*: `git clone https://github.com/I-sektionen/i-portalen.git`
   *Fungerar det inte har du förmodligen inte lagt in din sshnyckel:
      1. `ssh-keygen -t rsa -C "$your_email"`
      2. `cat ~/.ssh/id_rsa.pub`
-     3. Kopiera nyckeln och klistra in här: https://gitlab.ida.liu.se/profile/keys/new
+     3. Kopiera nyckeln och klistra in här: https://github.com/settings/ssh
 1. Checka ut lämplig branch ex. `git checkout development`
 
 ### Installera beroenden till miljön
