@@ -1,6 +1,6 @@
 __author__ = 'jonathan'
 from django.template.loader_tags import register
-
+from django.utils import timezone
 from user_managements.models import BachelorProfile, MasterProfile, IUser
 
 @register.assignment_tag
@@ -24,4 +24,3 @@ def get_bachelor_profiles():
 def get_master_profiles():
     profiles = MasterProfile.objects.all().order_by('name')
     return profiles
-

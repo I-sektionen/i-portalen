@@ -4,6 +4,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.urlresolvers import reverse
 from .managers import IUserManager
+from articles.templatetags.article_tags import get_user_articles
+
 
 
 YEAR_CHOICES = []
@@ -69,13 +71,22 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     #This is where the menu options for a specific user is determined.
     @property
     def get_menu_choices(self):
+
         menu_choices = []  # List of extra menu choices.
 
         menu_choices.append(('Skapa Artikel', reverse('create article')))  # Everyone can create article.
 
         menu_choices.append(('Min sida', reverse('mypage_view') ))
 
-        menu_choices.append(('Mina Artiklar', reverse('articles by user')))
+        #Need some python magic here, so the other three rows are not necessary,
+        #can't figure it out, also a bit tired right now
+        article_dict = get_user_articles(self)
+        approved_articles = article_dict['approved_articles']
+        unapproved_articles = article_dict['unapproved_articles']
+        draft_articles = article_dict['draft_articles']
+
+        if approved_articles or unapproved_articles or draft_articles:
+             menu_choices.append(('Mina Artiklar', reverse('articles by user')))
 
         if self.has_perm("articles.can_approve_article"):
             menu_choices.append(('Godkänn Artiklar', reverse('unapproved articles')))  # With perm to edit articles.

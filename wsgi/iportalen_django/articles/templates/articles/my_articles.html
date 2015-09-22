@@ -2,6 +2,7 @@
 {% load article_tags %}
 
 {% block content %}
+    {% if approved_articles %}
     <div>
     <h3>Godkända artiklar</h3>
     {% for article in approved_articles %}
@@ -21,6 +22,8 @@
     </article>
     {% endfor %}
     </div>
+    {% endif %}
+    {% if unapproved_articles %}
     <div>
     <h3>Artiklar som väntar på godkännande</h3>
     {% for article in unapproved_articles %}
@@ -40,6 +43,8 @@
     </article>
     {% endfor %}
     </div>
+    {% endif %}
+    {% if draft_articles %}
     <div>
     <h3>Utkast till artiklar</h3>
     {% for article in draft_articles %}
@@ -61,4 +66,5 @@
     </article>
     {% endfor %}
     </div>
+    {% endif %}
 {% endblock %}
