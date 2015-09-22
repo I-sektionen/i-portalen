@@ -149,15 +149,21 @@ Följ instruktionerna ovan
 2. Ta dig till din virtuella miljö i repot med hjälp av ``cd``, hitta dig in till filen ``activate``, brukar ligga i ``/usr/i-portalenblabla/bin/activate``
 3. Redigera denna filen i nano genom att skriva ``nano activate``
 4. Ta dig ned till följande den i filen:
+
 ```
 _OLD_VIRTUAL_PATH="$PATH"
 PATH="$VIRTUAL_ENV/bin:$PATH"
 export PATH
 ```
+
 Lägg där till ``PATH="$PATH:/usr/local/bin/"`` innan ``export PATH``. Spara filen genom ctrl+o och enter och gå ur nano med ctrl+x.
+
 5. Starta virtuella miljön genom terminalen med ``source activate``
+
 6. Skriv ``pip install mysqlclient`` för att installera mysqlclient manuellt
+
 7. Avaktivera din virtuella miljö med ``deactivate``
+
 8. Dubbelkolla i PyCharm att din virtuella miljö nu har ``mysqlclient`` installerat
 
 ### Configurera django och fixa en lokal server
