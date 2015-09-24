@@ -813,30 +813,14 @@ article.event-preview button {
 }
 
 #content {
-  display: -webkit-box;
-  display: -moz-box;
-  display: box;
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  box-flex: 1;
-  -webkit-flex: 1;
-  -moz-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  -webkit-box-orient: vertical;
-  -moz-box-orient: vertical;
-  box-orient: vertical;
-  -webkit-box-direction: normal;
-  -moz-box-direction: normal;
-  box-direction: normal;
-  -webkit-flex-direction: column;
-  -moz-flex-direction: column;
-  flex-direction: column;
-  -ms-flex-direction: column;
+  max-width: 68em;
+  margin-left: auto;
+  margin-right: auto;
+}
+#content::after {
+  clear: both;
+  content: "";
+  display: table;
 }
 #content h4 {
   font-weight: 600;
@@ -859,53 +843,18 @@ article.event-preview button {
 
 @media screen and (min-width: 50em) {
   #content {
-    -webkit-box-orient: horizontal;
-    -moz-box-orient: horizontal;
-    box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -moz-box-direction: normal;
-    box-direction: normal;
-    -webkit-flex-direction: row;
-    -moz-flex-direction: row;
-    flex-direction: row;
-    -ms-flex-direction: row;
-    margin: 0 auto;
-    max-width: 1170px;
-    -webkit-box-lines: multiple;
-    -moz-box-lines: multiple;
-    box-lines: multiple;
-    -webkit-flex-wrap: wrap;
-    -moz-flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
+    max-width: 68em;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #content::after {
+    clear: both;
+    content: "";
+    display: table;
   }
 
   .hero {
-    display: -webkit-box;
-    display: -moz-box;
-    display: box;
-    display: -webkit-flex;
-    display: -moz-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -moz-box-pack: center;
-    box-pack: center;
-    -webkit-justify-content: center;
-    -moz-justify-content: center;
-    -ms-justify-content: center;
-    -o-justify-content: center;
-    justify-content: center;
-    -ms-flex-pack: center;
-    -webkit-box-align: center;
-    -moz-box-align: center;
-    box-align: center;
-    -webkit-align-items: center;
-    -moz-align-items: center;
-    -ms-align-items: center;
-    -o-align-items: center;
-    align-items: center;
-    -ms-flex-align: center;
+    display: block;
     position: relative;
     height: 350px;
     background-image: url(http://blog.liu.se/utbildningsbloggen/files/2012/07/liu_campusvalla.jpg);
@@ -916,37 +865,39 @@ article.event-preview button {
   }
   .hero h1 {
     color: white;
+    position: relative;
+    text-align: center;
+    top: 40%;
   }
 
   #news-feed {
-    height: 2000px;
-    -webkit-box-flex: 3;
-    -moz-box-flex: 3;
-    box-flex: 3;
-    -webkit-flex: 3;
-    -moz-flex: 3;
-    -ms-flex: 3;
-    flex: 3;
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 65.88078%;
+  }
+  #news-feed:last-child {
+    margin-right: 0;
   }
 
   #upcoming {
-    -webkit-box-flex: 2;
-    -moz-box-flex: 2;
-    box-flex: 2;
-    -webkit-flex: 2;
-    -moz-flex: 2;
-    -ms-flex: 2;
-    flex: 2;
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 31.76157%;
+  }
+  #upcoming:last-child {
+    margin-right: 0;
   }
 
   #sponsors {
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    box-flex: 1;
-    -webkit-flex: 1;
-    -moz-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 6.17215%;
+  }
+  #sponsors:last-child {
+    margin-right: 0;
   }
 }
 
