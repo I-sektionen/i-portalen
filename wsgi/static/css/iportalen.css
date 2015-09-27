@@ -842,15 +842,57 @@ article.event-preview button {
 }
 
 @media screen and (min-width: 50em) {
-  #content {
+  #outer-content {
     max-width: 68em;
     margin-left: auto;
     margin-right: auto;
   }
-  #content::after {
+  #outer-content::after {
     clear: both;
     content: "";
     display: table;
+  }
+  #outer-content #content {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 82.94039%;
+  }
+  #outer-content #content:last-child {
+    margin-right: 0;
+  }
+  #outer-content #content #news-feed {
+    float: left;
+    display: block;
+    margin-right: 2.84259%;
+    width: 58.86297%;
+  }
+  #outer-content #content #news-feed:last-child {
+    margin-right: 0;
+  }
+  #outer-content #content #upcoming {
+    float: left;
+    display: block;
+    margin-right: 2.84259%;
+    width: 38.29445%;
+  }
+  #outer-content #content #upcoming:last-child {
+    margin-right: 0;
+  }
+  #outer-content #sponsors {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 14.70196%;
+    padding: 1em;
+  }
+  #outer-content #sponsors:last-child {
+    margin-right: 0;
+  }
+  #outer-content #sponsors h4 {
+    font-weight: 600;
+    color: #cccccc;
+    margin-bottom: 1em;
   }
 
   .hero {
@@ -868,36 +910,6 @@ article.event-preview button {
     position: relative;
     text-align: center;
     top: 40%;
-  }
-
-  #news-feed {
-    float: left;
-    display: block;
-    margin-right: 2.35765%;
-    width: 65.88078%;
-  }
-  #news-feed:last-child {
-    margin-right: 0;
-  }
-
-  #upcoming {
-    float: left;
-    display: block;
-    margin-right: 2.35765%;
-    width: 31.76157%;
-  }
-  #upcoming:last-child {
-    margin-right: 0;
-  }
-
-  #sponsors {
-    float: left;
-    display: block;
-    margin-right: 2.35765%;
-    width: 6.17215%;
-  }
-  #sponsors:last-child {
-    margin-right: 0;
   }
 }
 

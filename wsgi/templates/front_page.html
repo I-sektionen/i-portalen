@@ -3,12 +3,13 @@
 {% load article_tags %}
 {% include "header.html" %}
 
+{% block hero %}
 <section class="hero">
     <h1 id="hero-logo">Industriell ekonomi</h1>
 </section>
+{% endblock %}
 
 {% block content %}
-
 <div id="content">
     {# gets all articles via template tag #}
     {% get_all_articles as articles %}

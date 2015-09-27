@@ -9,21 +9,24 @@
     {% include "stylesheets.html" %}
     <link rel="shortcut icon" type="image/png" href="{% static "favicon.ico" %}"/>
     <title>I-portalen{% block page_subtitle %} {% endblock %}</title>
-{% block head %} {% endblock %}
+    {% block head %} {% endblock %}
 </head>
 
 <body>
 {% include "header.html" %}
 
-{% block content %}
+{% block hero %}
+{% endblock %}
 
+<div id="outer-content">
+    {% block content %}
+    {% endblock %}
     {% block sponsors %}
         <section id="sponsors">
             <h4>Sponsorer</h4>
         </section>
     {% endblock %}
-
-{% endblock %}
+</div>
 
 {% include "footer.html" %}
 
