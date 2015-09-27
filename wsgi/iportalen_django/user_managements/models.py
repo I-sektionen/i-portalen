@@ -2,7 +2,10 @@ import datetime
 from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.core.urlresolvers import reverse
 from .managers import IUserManager
+from articles.templatetags.article_tags import get_user_articles
+
 
 
 YEAR_CHOICES = []
@@ -55,8 +58,8 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     city = models.CharField(verbose_name='ort', max_length=255, null=True, blank=True)
     gender = models.CharField(verbose_name='kön', max_length=255, null=True, blank=True)
     allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
-    start_year = models.IntegerField(verbose_name='start år', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
-    expected_exam_year = models.IntegerField(verbose_name='förväntat examens år', choices=YEAR_CHOICES, default=datetime.datetime.now().year+5)
+    start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
+    expected_exam_year = models.IntegerField(verbose_name='förväntat examensår', choices=YEAR_CHOICES, default=datetime.datetime.now().year+5)
     bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil')
     master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil', )
     rfid_number = models.CharField(verbose_name='rfid', max_length=255, null=True, blank=True)
@@ -64,6 +67,34 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     objects = IUserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
+
+    #This is where the menu options for a specific user is determined.
+    @property
+    def get_menu_choices(self):
+
+        menu_choices = []  # List of extra menu choices.
+
+        menu_choices.append(('Skapa Artikel', reverse('create article')))  # Everyone can create article.
+
+        menu_choices.append(('Min sida', reverse('mypage_view') ))
+
+        #Need some python magic here, so the other three rows are not necessary,
+        #can't figure it out, also a bit tired right now
+        article_dict = get_user_articles(self)
+        approved_articles = article_dict['approved_articles']
+        unapproved_articles = article_dict['unapproved_articles']
+        draft_articles = article_dict['draft_articles']
+
+        if approved_articles or unapproved_articles or draft_articles:
+             menu_choices.append(('Mina Artiklar', reverse('articles by user')))
+
+        if self.has_perm("articles.can_approve_article"):
+            menu_choices.append(('Godkänn Artiklar', reverse('unapproved articles')))  # With perm to edit articles.
+
+        if self.is_staff:
+            menu_choices.append(('Admin', '/admin'))  # Staff users who can access Admin page.
+
+        return menu_choices
 
     def get_full_name(self):
         #fullname = self.first_name+" "+self.last_name

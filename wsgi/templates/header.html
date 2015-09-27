@@ -6,13 +6,13 @@
             <span>MENU</span>
         </div>
         <ul id="navigation-menu" class="show">
-            <li><a href="#">Start</a>
+            <li><a href="/">Start</a>
             </li>
-            <li><a href="#">Kalender</a>
+            <li><a href="javascript:void(0);">Kalender</a>
             </li>
-            <li class="more"><a href="#">Om sektionen</a>
+            <li class="more"><a href="javascript:void(0);">Om sektionen</a>
                 <!-- A WRAPPER TO CONTROL FLEX DIRECTION FOR SUBMENUS -->
-                <div class="submenu-wrapper show">
+                <div class="submenu-wrapper">
                     <ul class="submenu">
                         <li>Sektionen</li>
                         <li><a href="#">Styret</a></li>
@@ -42,28 +42,27 @@
                     </ul>
                 </div>
             </li>
-            <li><a href="#">Studier</a>
+            <li><a href="javascript:void(0);">Studier</a>
             </li>
-            <li><a href="#">Tjänster</a>
+            <li><a href="javascript:void(0);">Tjänster</a>
             </li>
             {% if request.user.is_authenticated %}
                 <li class="more">
-                    <a href="#">{{ request.user }}</a>
-                    <div class="submenu-wrapper show">
+                    <a href="javascript:void(0);">{{ request.user }}</a>
+                    <div class="submenu-wrapper">
                         <ul class="submenu">
                             <li>{{ request.user }}</li>
+                            {% for item in request.user.get_menu_choices %}
+                            <li><a href="{{ item.1 }}">{{ item.0 }}</a></li>
+                            {% endfor %}
                             <li><a href="/user/logout">Logga ut</a></li>
-                            <form action="/user/logout" method="get">
-                                {% csrf_token %}
-                                <li><input type="submit" name="Logga ut" value="Logga ut"></li>
-                            </form>
                         </ul>
                     </div>
                 </li>
             {% else %}
                 <li class="more">
-                    <a href="#">Logga in</a>
-                    <div class="submenu-wrapper show">
+                    <a href="javascript:void(0);">Logga in</a>
+                    <div class="submenu-wrapper">
                         <ul class="submenu">
                         <li>Logga in</li>
                             <form action="/user/login?next={{ request.get_full_path }}" method="post">

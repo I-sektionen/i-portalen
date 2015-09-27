@@ -1,20 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
-
-
-class Tag(models.Model):
-    name = models.CharField(verbose_name='namn', max_length=255, unique=True)
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return "/articles/tag/%s/" % self.name
-
-    class Meta:
-        verbose_name = "tagg"
-        verbose_name_plural = "taggar"
+from tags.models import Tag
 
 
 class Article(models.Model):
@@ -45,6 +32,8 @@ class Article(models.Model):
 
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
+
+    replacing = models.ForeignKey('self', null=True, blank=True, default=None)
 
     def save(self, *args, **kwargs):
         if not self.id:

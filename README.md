@@ -52,11 +52,11 @@ Använd sedan `workon i-portalen` för att öppna miljön och `deactivate` för 
 ### Klona ner gitprojektet
 1. Skapa en mapp: `mkdir ~/repos`
 1. Navigera in i mappen: `cd ~/repos`
-1. Klona projektet*: `git clone git@gitlab.ida.liu.se:isaek808/i-portalen.git`  
+1. Klona projektet*: `git clone https://github.com/I-sektionen/i-portalen.git`
   *Fungerar det inte har du förmodligen inte lagt in din sshnyckel:
      1. `ssh-keygen -t rsa -C "$your_email"`
      2. `cat ~/.ssh/id_rsa.pub`
-     3. Kopiera nyckeln och klistra in här: https://gitlab.ida.liu.se/profile/keys/new
+     3. Kopiera nyckeln och klistra in här: https://github.com/settings/ssh
 1. Checka ut lämplig branch ex. `git checkout development`
 
 ### Installera beroenden till miljön
@@ -77,17 +77,20 @@ GRANT ALL PRIVILEGES ON django_iportalen.* TO <namn>@localhost;
 GRANT ALL PRIVILEGES ON test_django_iportalen.* TO <namn>@localhost;
 ```
 *OBS: <namn> och <lösenord> som står i koden ovan måste bytas ut till något godtyckligt. Dock utan mellanslag i namn eller lösenord!
+
 5.  Kopiera filen `i-portalen/wsgi/iportalen_django/iportalen/mysql_credentials.example` och spara den nya som `i-portalen/wsgi/iportalen_django/iportalen/mysql_credentials`
-5.  Skriv in valt namn och lösenord (alltså <namn> och <lösenord> ovan) i den nya filen och se till att ta bort det som är skrivet så att filen blir på formen:
+    Skriv in valt namn och lösenord (alltså <namn> och <lösenord> ovan) i den nya filen och se till att ta bort det som är skrivet så att filen blir på formen:
     ```
     host localhost
     port 3306
     user django_iportalen
     password top_secret_password
     ```
+
 6.  Migrera din databas. Hitta filen manage.py. Se därefter till att ha aktiverat din python miljö i terminalen du arbetar i (`workon i-portalen`). Skriv sedan:
     ```python managey.py migrate```
-    Då skapas alla tabeller och relationer i databasen. 
+    Då skapas alla tabeller och relationer i databasen.
+
 7.  Om du vill kan du skapa en superanvändare på din lokala miljö:
     ```python manage.py createsuperuser```
     Följ instruktionerna. 
@@ -127,6 +130,11 @@ Följ instruktionerna ovan
 ### Klona ner projektet
 Följ instruktionerna ovan
 
+### Konfigurera din lokala databas
+1. I terminalen skriv ``brew install mysql``
+2. Start din mysql server genom att skriva ``mysqld`` i terminalen. Detta fönster går nu att stänga, trots att den klagar på att process ska stängas. (Du kommer att behöva starta din mysql server med ``mysqld`` varje gång du har startat om din dator)
+3. Följ sedan instruktionerna ovan.
+
 ### Skapa virtuell miljö
 1. Starta Pycharm och öppna projektet (repot) genom ``File > Open``
 2. Öppna ``Preferences ⌘, `` för Pycharm
@@ -134,6 +142,29 @@ Följ instruktionerna ovan
 4. Klicka på kugghjulet vid `` Project interpreter `` och välj `` Create virtualenv ``
 5. Ge miljön ett namn tex. `` iportalen_virtualEnv `` och väl `` base interpreter `` till `` python 3.x ``
 6. När det är klart: se till att `` pip `` och `` setuptools `` finns med i din interpreter
+7. Öppna valfri fil i projektet, t.ex. setup.py och tryck på "Install Requirments" som kommer upp som en gul popup
+
+### Om mysqlclient inte går att installer och den klagar på att den inte hittar mysql_config
+1. Starta terminalen och skriv ``which mysql_config``, du borde få ut något som är typ ``/usr/local/bin/mysql_config``, skriv då ner detta utan mysql_config, så i detta fall spara ``/usr/local/bin``
+2. Ta dig till din virtuella miljö i repot med hjälp av ``cd``, hitta dig in till filen ``activate``, brukar ligga i ``/usr/i-portalenblabla/bin/activate``
+3. Redigera denna filen i nano genom att skriva ``nano activate``
+4. Ta dig ned till följande den i filen:
+
+```
+_OLD_VIRTUAL_PATH="$PATH"
+PATH="$VIRTUAL_ENV/bin:$PATH"
+export PATH
+```
+
+Lägg där till ``PATH="$PATH:/usr/local/bin/"`` innan ``export PATH``. Spara filen genom ctrl+o och enter och gå ur nano med ctrl+x.
+
+5. Starta virtuella miljön genom terminalen med ``source activate``
+
+6. Skriv ``pip install mysqlclient`` för att installera mysqlclient manuellt
+
+7. Avaktivera din virtuella miljö med ``deactivate``
+
+8. Dubbelkolla i PyCharm att din virtuella miljö nu har ``mysqlclient`` installerat
 
 ### Configurera django och fixa en lokal server
 

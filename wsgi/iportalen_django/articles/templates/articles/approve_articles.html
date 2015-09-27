@@ -1,0 +1,25 @@
+{% extends "master.html" %}
+{% load article_tags %}
+
+{% block content %}
+{% for article in articles %}
+<article class="news-preview">
+    <div class="meta">
+        <span class="date">{{ article.created|date:"Y-m-d" }}</span>
+        <span class="author">{{ article.author }}</span>
+        {# Don't render tags for articles without tags #}
+        {% if article.tags.all  %}
+            <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
+        {% endif %}
+    {% if article.replacing  %}
+            <span>Replacing <a href="{{ article.replacing.get_absolute_url }}">{{ article.replacing }}</a></span>
+    {% endif %}
+    </div>
+    <h5>{{ article.headline }}</h5>
+    <p>{{ article.lead|truncatewords_html:50 }}</p>
+
+    <a href="{{ article.get_absolute_url }}approve"><button class="btn-read-more">Godkänn</button></a>
+    <a href="{{ article.get_absolute_url }}unapprove"><button class="btn-read-more">Avslå</button></a>
+</article>
+{% endfor %}
+{% endblock %}

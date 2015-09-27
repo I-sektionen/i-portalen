@@ -1,7 +1,5 @@
 #content
-    +display(flex)
-    +flex(1)
-    +flex-direction(column)
+    +outer-container()
     h4
         font-weight: 600
         color: $light-gray
@@ -13,18 +11,13 @@
     #sponsors
         padding: 1em
 .hero
-    h1
     display: none
-@media screen and (min-width: $breakpoint-large)
++media($desktop)
     #content
-        +flex-direction(row)
-        margin: 0 auto
-        max-width: 1170px
-        +flex-wrap(wrap)
+        +outer-container()
+        //margin: 0 auto
     .hero
-        +display(flex)
-        +justify-content(center)
-        +align-items(center)
+        +display(block)
         position: relative
         height: 350px
         background:
@@ -34,13 +27,14 @@
             position: top center
             attachment: fixed
         h1
-            position:absolute
             color: white
-        
+            +position(relative)
+            text-align: center
+            top: 40%
+
     #news-feed
-        height: 2000px
-        +flex(3)
+        +span-columns(8)
     #upcoming
-        +flex(2)
+        +span-columns(4)
     #sponsors
-        +flex(1)
+        +span-columns(1)
