@@ -49,9 +49,6 @@ class ArticleForm(forms.ModelForm):
             for tag_group in tag_groups:
                 if tag_group not in user_groups:
                     has_permission = False
-                    print('No!')
                     self.add_error('tags', 'Du har inte behörighet att använda {:} tagen.'.format(tag))
                     break
-                print('Yes...')
-        print(u)
         return has_permission

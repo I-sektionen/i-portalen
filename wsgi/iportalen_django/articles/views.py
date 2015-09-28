@@ -39,12 +39,12 @@ def create_or_modify_article(request, article_id=None):
                 return redirect(articles_by_user)
             else:
                 message = "Din artikel är nu skickad för granskning."
-                return render(request, "articles/confirmation.html", {'message': message})
+                return render(request, "articles/confirmation.html", {'message': message, 'article_id': article_id})
         else:
-            return render(request, 'articles/article_form.html', {'form': form})
+            return render(request, 'articles/article_form.html', {'form': form, 'article_id': article_id})
     else:
         form = ArticleForm(instance=a)
-        return render(request, 'articles/article_form.html', {'form': form})
+        return render(request, 'articles/article_form.html', {'form': form, 'article_id': article_id})
 
 
 def single_article(request, article_id):

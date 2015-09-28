@@ -2,6 +2,7 @@ from django.utils import timezone
 from django.template.loader_tags import register
 import markdown as md
 from articles.models import Article
+from tags.models import Tag
 from django import template
 from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
@@ -48,3 +49,12 @@ def get_user_articles(user):
     draft_articles = user.article_set.filter(draft=True, visible_to__gte=timezone.now())
 
     return {'approved_articles':approved_articles, 'unapproved_articles':unapproved_articles, 'draft_articles':draft_articles}
+
+@register.assignment_tag
+def select_tag_status(article_id, tag_id):
+    if article_id == None:
+        return ""
+    elif Tag.objects.get(pk=tag_id) in Article.objects.get(pk=article_id).tags.all():
+        return "selected"
+    else:
+        return ""
