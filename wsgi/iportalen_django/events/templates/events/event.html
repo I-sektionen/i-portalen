@@ -1,0 +1,26 @@
+{% extends "master.html" %}
+
+{% block content %}
+    <div id="content">
+        <h4>{{ event.headline }}</h4>
+
+        <p>
+            {{ event.lead }}
+        </p>
+        <p>
+            {{ event.body }}
+        </p>
+
+        {% if event.enable_registration %}
+            <form method="post" action="{% url "register_to_event" event.pk %}">
+                {% csrf_token %}
+                <button type="submit" title="snälla">Anmäl mig</button>
+            </form>
+        {% endif %}
+        {% if event.participants.all %}
+            {% for participant in event.participants.all %}
+                {{ participant }}
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

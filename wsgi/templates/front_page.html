@@ -1,6 +1,7 @@
 {% extends "master.html" %}
 {# This file defines the front page and is a own kind of master page #}
 {% load article_tags %}
+{% load event_tags %}
 {% include "header.html" %}
 
 {% block hero %}
@@ -49,6 +50,28 @@
                 <button>Info</button>
                 <button>Anmäl</button>
             </article>
+            {% get_all_events as events %}
+            {% for event in events %}
+            <article class="event-preview">
+                <h5>{{ event.headline }}</h5>
+                <div class="meta">
+                    <span class="date">
+                            <span class="meta-content">{{ event.start|date:"d N Y" }}</span>
+                    </span>
+                    <span class="time">
+                        <span class="meta-content">{{ event.start|time:"H:i" }}</span>
+                    </span>
+                    <span class="place">
+                        <span class="meta-content">{{ event.location }}</span>
+                    </span>
+                </div>
+                <button><a href="{% url "event" event.pk %}">Info</a></button>
+                {% if event.enable_registration %}
+                    <button>Anmäl</button>
+                {% endif %}
+
+            </article>
+            {% endfor %}
         </section>
     </div>
 {% endblock %}

@@ -1,7 +1,10 @@
 from django.db import models
-from tags.models import Tag
 from django.conf import settings
 from django.utils import timezone
+
+
+from tags.models import Tag
+from .exceptions import CouldNotRegisterException
 
 
 class Event(models.Model):
@@ -18,13 +21,39 @@ class Event(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')
     tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
 
+    location = models.CharField(max_length=30)
+
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
 
     start = models.DateTimeField(verbose_name='start')
     end = models.DateTimeField(verbose_name='slut')
+
     enable_registration = models.BooleanField(verbose_name='kan anmäla sig')
     registration_limit = models.IntegerField(verbose_name='max antal anmälningar', blank=True, null=True)
+    participants = models.ManyToManyField(settings.AUTH_USER_MODEL,
+                                          related_name="participates_on",
+                                          verbose_name="deltagare",
+                                          blank=True)
+
+    # This method determines if a specific user can register to an event.
+    def register_user(self, user):
+
+        # possible to register?
+        if not self.enable_registration:
+            raise CouldNotRegisterException(event=self, reason="registering är avstängd")
+
+        # To many participants?
+        if self.participants.count() >= self.registration_limit:
+            raise CouldNotRegisterException(event=self, reason="maxantalet deltagare är uppnått")
+
+        # Has the start date passed?
+        if self.start < timezone.now():
+            raise CouldNotRegisterException(event=self, reason="starttiden har passerats")
+
+        self.participants.add(user)
+
+
 
     class Meta:
         verbose_name = "Arrangemang"
