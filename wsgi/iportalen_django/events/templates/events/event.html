@@ -3,7 +3,17 @@
 {% block content %}
     <div id="content">
         <h4>{{ event.headline }}</h4>
-
+        <div class="meta">
+            <span class="date">
+                    <span class="meta-content">{{ event.start|date:"d N Y" }}</span>
+            </span>
+            <span class="time">
+                <span class="meta-content">{{ event.start|time:"H:i" }}</span>
+            </span>
+            <span class="place">
+                <span class="meta-content">{{ event.location }}</span>
+            </span>
+        </div>
         <p>
             {{ event.lead }}
         </p>
