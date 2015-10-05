@@ -21,6 +21,12 @@ class ArticleForm(forms.ModelForm):
             'visible_to': forms.DateTimeInput(),
         }
 
+    # This overrides the constructor, and adds the class datetimepicker.
+    def __init__(self, *args, **kwargs):
+        super(ArticleForm, self).__init__(*args, **kwargs)
+        self.fields['visible_from'].widget.attrs['class'] = 'datetimepicker'
+        self.fields['visible_to'].widget.attrs['class'] = 'datetimepicker'
+
     def is_valid(self, **kwargs):
         valid = super(ArticleForm, self).is_valid()
 
