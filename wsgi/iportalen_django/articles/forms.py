@@ -15,8 +15,8 @@ class ArticleForm(forms.ModelForm):
             },
         }
         widgets = {
-            'lead': forms.Textarea(attrs={'cols': 80, 'rows': 20}),
-            'body': forms.Textarea(attrs={'cols': 80, 'rows': 20, 'class': 'wmd-input', 'id': 'wmd-input-body'}),
+            'lead': forms.Textarea(attrs={'cols': 65, 'rows': 5}),
+            'body': forms.Textarea(attrs={'cols': 65, 'rows': 15, 'class': 'wmd-input', 'id': 'wmd-input-body'}),
             'visible_from': forms.DateTimeInput(),
             'visible_to': forms.DateTimeInput(),
         }

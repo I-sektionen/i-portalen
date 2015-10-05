@@ -6,106 +6,110 @@
     <link rel="stylesheet" type="text/css" href="{% static "articles/Markdown.css" %}" />
 {% endblock %}
 {% block content %}
+    <div class="wrapper">
+        <div class="editPart">
+            <form action="" method="post">
+                <h4>Create Article</h4>
+                {% csrf_token %}
+                {{ form.non_field_errors }}
 
-    <div>
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
+                {{ form.headline.errors }}
+                <div class="bubble">{{ form.headline.help_text }}</div><div class="triangle"></div>
+                <h6>{{ form.headline.label_tag }}</h6>
+                {{ form.headline }}
 
-            {{ form.headline.errors }}
-            {{ form.headline.label_tag }}
-            {{ form.headline }}
-            {{ form.headline.help_text }}
-            <br>
-            <br>
+                <br>
+                <br>
 
-            {{ form.lead.errors }}
-            {{ form.lead.label_tag }}
-            {{ form.lead }}
-            {{ form.lead.help_text }}
-            <br>
-            <br>
+                {{ form.lead.errors }}
+                <h6>{{ form.lead.label_tag }}</h6>
+                {{ form.lead }}
+                <div class="helpText">{{ form.lead.help_text }}</div>
+                <br>
+                <br>
 
-            {{ form.body.errors }}
-            {{ form.body.label_tag }}
-            <div class="wmd-panel">
-                <div id="wmd-button-bar-body"></div>
-                {{ form.body }}
-            </div>
+                {{ form.body.errors }}
+                <h6>{{ form.body.label_tag }}</h6>
+                <div class="wmd-panel">
+                    <div id="wmd-button-bar-body"></div>
+                    {{ form.body }}
+                </div>
 
 
-            {{ form.body.help_text }}
-            <br>
-            <br>
+                <div class="helpText">{{ form.body.help_text }}</div>
+                <br>
+                <br>
 
-            {{ form.visible_from.errors }}
-            {{ form.visible_from.label_tag }}
-            {{ form.visible_from }}
-            {{ form.visible_from.help_text }}
-            <br>
-            <br>
+                <div class = "publication">
+                    <div class ="publicOn">
+                        {{ form.visible_from.errors }}
+                        <h6>{{ form.visible_from.label_tag }}</h6>
+                        {{ form.visible_from }}
+                        <div class="helpText">{{ form.visible_from.help_text }}</div>
+                    </div>
+                    <div class ="publicOff">
+                        {{ form.visible_to.errors }}
+                        <h6>{{ form.visible_to.label_tag }}</h6>
+                        {{ form.visible_to }}
+                        <div class="helpText">{{ form.visible_to.help_text }}</div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                {{ form.author.errors }}
+                <h6>{{ form.author.label_tag }}</h6>
+                {{ form.author }}
+                <div class="helpText">{{ form.author.help_text }}</div>
+                <br>
+                <br>
 
-            {{ form.visible_to.errors }}
-            {{ form.visible_to.label_tag }}
-            {{ form.visible_to }}
-            {{ form.visible_to.help_text }}
-            <br>
-            <br>
+                {{ form.tags.errors }}
+                <h6>{{ form.tags.label_tag }}</h6>
+                {% get_tags request.user as tags %}
+                <select multiple="multiple" id="id_tags" name="tags">
+                    {% for tag in tags %}
+                    <option value="{{ tag.id }}">{{ tag.name }}</option>
+                    {% endfor %}
+                </select>
+                <div class="helpText">{{ form.tags.help_text }}</div>
+                <br>
+                <br>
 
-            {{ form.author.errors }}
-            {{ form.author.label_tag }}
-            {{ form.author }}
-            {{ form.author.help_text }}
-            <br>
-            <br>
+                {{ form.draft.errors }}
+                <h6>{{ form.draft.label_tag }}</h6>
+                {{ form.draft }}
+                <div class="helpText">{{ form.draft.help_text }}</div>
+                <br>
+                <br>
 
-            {{ form.tags.errors }}
-            {{ form.tags.label_tag }}
-            {% get_tags request.user as tags %}
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+        <div class="review">
+            <h4>Article Review</h4>
+            <article class="news-preview">
+                <div class="meta">
+                    <span class="date" id="date_collapsed"></span>
+                    <span class="author" id="author_collapsed"></span>
+                    <span class="tags" id="tags_collapsed"></span>
+                </div>
+                <h5 id="headline_collapsed"></h5>
+                <p id="lead_collapsed"></p>
+                <a href=""><button class="btn-read-more">Läs mer</button></a>
+            </article>
 
-            <select multiple="multiple" id="id_tags" name="tags">
-                {% for tag in tags %}
-                {% select_tag_status article_id tag.id as selected %}
-                <option value="{{ tag.id }}" {{ selected }}>{{ tag.name }}</option>
-                {% endfor %}
-            </select>
-            {{ form.tags.help_text }}
-            <br>
-            <br>
+            <article class="news-preview">
+                <div class="meta">
+                    <span class="date" id="date_expanded"></span>
+                    <span class="author" id="author_expanded"></span>
+                        <span class="tags" id="tags_expanded"></span>
+                </div>
+                <h5 id="headline_expanded"></h5>
+                <p id="lead_expanded"></p>
+                <div id="wmd-preview-body" class="wmd-panel wmd-preview"></div>
+            </article>
 
-            {{ form.draft.errors }}
-            {{ form.draft.label_tag }}
-            {{ form.draft }}
-            {{ form.draft.help_text }}
-            <br>
-            <br>
-
-            <input type="submit" value="Submit" />
-        </form>
-    </div>
-    <div>
-        <article class="news-preview">
-            <div class="meta">
-                <span class="date" id="date_collapsed"></span>
-                <span class="author" id="author_collapsed"></span>
-                <span class="tags" id="tags_collapsed"></span>
-            </div>
-            <h5 id="headline_collapsed"></h5>
-            <p id="lead_collapsed"></p>
-            <a href=""><button class="btn-read-more">Läs mer</button></a>
-        </article>
-
-        <article class="news-preview">
-            <div class="meta">
-                <span class="date" id="date_expanded"></span>
-                <span class="author" id="author_expanded"></span>
-                    <span class="tags" id="tags_expanded"></span>
-            </div>
-            <h5 id="headline_expanded"></h5>
-            <p id="lead_expanded"></p>
-            <div id="wmd-preview-body" class="wmd-panel wmd-preview"></div>
-        </article>
-
+        </div>
     </div>
 {% endblock %}
 {% block after_scripts %}

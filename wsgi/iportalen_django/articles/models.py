@@ -29,7 +29,6 @@ class Article(models.Model):
                              verbose_name='användare',
                              help_text="Användaren som skrivit texten")
     tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
-
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
 
