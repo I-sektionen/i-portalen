@@ -4,12 +4,11 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.urlresolvers import reverse
 from .managers import IUserManager
-from articles.templatetags.article_tags import get_user_articles
-
+from django.utils import timezone
 
 
 YEAR_CHOICES = []
-for r in range((datetime.datetime.now().year-10), (datetime.datetime.now().year+10)):
+for r in range(1969, (datetime.datetime.now().year+10)):
     YEAR_CHOICES.append((r,r))
 
 
@@ -80,12 +79,8 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
         #Need some python magic here, so the other three rows are not necessary,
         #can't figure it out, also a bit tired right now
-        article_dict = get_user_articles(self)
-        approved_articles = article_dict['approved_articles']
-        unapproved_articles = article_dict['unapproved_articles']
-        draft_articles = article_dict['draft_articles']
 
-        if approved_articles or unapproved_articles or draft_articles:
+        if self.article_set.all():
              menu_choices.append(('Mina Artiklar', reverse('articles by user')))
 
         if self.has_perm("articles.can_approve_article"):
