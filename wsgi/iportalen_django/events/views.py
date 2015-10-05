@@ -14,6 +14,10 @@ def event(request, pk):
 
 
 @login_required()
+def create_event(request):
+    return None
+
+@login_required()
 def register_to_event(request, pk):
     if request.method == "POST":
         fetched_event = get_object_or_404(Event, pk=pk)

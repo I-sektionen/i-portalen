@@ -53,7 +53,7 @@ INSTALLED_APPS = (
     'articles',
     'events',
     'organisations',
-
+    'iportalen',
 )
 
 MIDDLEWARE_CLASSES = (
