@@ -80,7 +80,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         #Need some python magic here, so the other three rows are not necessary,
         #can't figure it out, also a bit tired right now
 
-        if self.article_set.all():
+        if self.article_set.filter(visible_to__gte=timezone.now()):
              menu_choices.append(('Mina Artiklar', reverse('articles by user')))
 
         if self.has_perm("articles.can_approve_article"):
