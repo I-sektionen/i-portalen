@@ -15,7 +15,7 @@ class Organisation(models.Model):
         (FORENINGAR, "Föreningar"),
         (UTSKOTT, "Utskott"),
     )
-    slash_validator = RegexValidator(r'^[^/]+$')
+    slash_validator = RegexValidator(r'^[^/]+$', "Kan inte innehålla '/'")
 
     name = models.CharField(max_length=255, unique=True, null=False, validators=[slash_validator])
     description = models.TextField(null=True, blank=True)
@@ -24,6 +24,7 @@ class Organisation(models.Model):
     leader = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, related_name="leader")
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="members", blank=True)
     organisation_type = models.CharField(max_length=1, choices=ORGANISATION_TYPE_CHOICES, default=NOT_IN_MENU)
+    parent_organisation = models.ForeignKey('self', null=True, blank=True, related_name="parent")
 
     def __str__(self):
         return self.name
