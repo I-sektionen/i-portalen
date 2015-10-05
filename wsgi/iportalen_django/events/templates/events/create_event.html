@@ -1,0 +1,14 @@
+{% extends "master.html" %}
+
+{% block content %}
+
+<div id="container">
+    <h4>Skapa ett event</h4>
+    <form method="post" action="{% url "create event" %}">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Skicka in</button>
+    </form>
+</div>
+
+{% endblock %}

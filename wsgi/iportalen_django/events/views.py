@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
+from .forms import EventForm
 from .models import Event
 from .exceptions import CouldNotRegisterException
 # Create your views here.
@@ -15,7 +16,21 @@ def event(request, pk):
 
 @login_required()
 def create_event(request):
-    return None
+    if request.method == "POST":
+        form = EventForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("front_page")
+        else:
+            return render(request, 'events/create_event.html', {
+                'form': form,
+            })
+
+    form = EventForm
+    return render(request, 'events/create_event.html', {
+        'form': form,
+    })
+
 
 @login_required()
 def register_to_event(request, pk):
