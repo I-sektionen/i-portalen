@@ -19,8 +19,11 @@ def create_event(request):
     if request.method == "POST":
         form = EventForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect("front_page")
+            new_event = form.save(commit=False)
+            new_event.user = request.user
+            new_event.approved = False
+            new_event.save()
+            return redirect("front page")
         else:
             return render(request, 'events/create_event.html', {
                 'form': form,
