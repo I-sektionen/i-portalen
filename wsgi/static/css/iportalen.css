@@ -274,15 +274,16 @@ body ul {
   list-style-type: none;
 }
 body button {
-  background-color: white;
+  background-color: #fad53f;
   font-family: "Lato", sans-serif;
-  border-radius: 0.3em;
+  color: white;
+  border-radius: 0.1em;
   text-transform: uppercase;
   border: 0;
-  font-size: 12px;
+  font-size: 13px;
   padding: 5px;
-  box-shadow: 1px 2px 4px #cccccc;
-  min-width: 6em;
+  box-shadow: 1px 2px 2px #cccccc;
+  min-width: 8em;
   font-weight: 700;
   text-align: center;
 }
@@ -292,6 +293,12 @@ body button:hover {
   transition-duration: 0.1s;
   background: #fee16b;
   color: white;
+}
+body form {
+  padding: 10px;
+}
+body form input {
+  border-radius: 5px;
 }
 
 #footer {
