@@ -27,10 +27,8 @@
                 <button type="submit" title="snälla">Anmäl mig</button>
             </form>
         {% endif %}
-        {% if event.participants.all %}
-            {% for participant in event.participants.all %}
-                {{ participant }}
-            {% endfor %}
+        {% if can_administer %}
+            <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
         {% endif %}
     </div>
 {% endblock %}
