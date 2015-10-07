@@ -80,6 +80,13 @@ class Event(models.Model):
         if not self.enable_registration:
             raise CouldNotRegisterException(event=self, reason="registering är avstängd")
 
+        # Already registered?
+        try:
+            EntryAsPreRegistered.objects.get(event__exact=self, user__exact=user)
+            raise CouldNotRegisterException(event=self, reason="du är redan registrerad")
+        except ObjectDoesNotExist:
+            pass
+
         # To many participants?
         if self.number_of_preregistrations >= self.registration_limit:
             raise CouldNotRegisterException(event=self, reason="maxantalet deltagare är uppnått")
@@ -89,6 +96,11 @@ class Event(models.Model):
             raise CouldNotRegisterException(event=self, reason="starttiden har passerats")
 
         EntryAsPreRegistered(user=user, event=self).save()
+        try:
+            entry = EntryAsReserve.objects.get(user__exact=user, event__exact=self)
+            entry.delete()
+        except ObjectDoesNotExist:
+            pass
 
     def deregister_user(self, user):
         # Deregistration time has passed.
