@@ -1,8 +1,13 @@
 {% extends "master.html" %}
 {% load article_tags %}
-
+{% block hero %}
+<section class="hero">
+    <h1 id="hero-logo">Kolla vilken cool artikel!</h1>
+</section>
+{% endblock %}
 {% block content %}
-<article class="news-preview">
+<article class="news-single-view">
+    <h5>{{ article.headline }}</h5>
     <div class="meta">
         <span class="date">{{ article.created|date:"Y-m-d" }}</span>
         <span class="author">{{ article.author }}</span>
@@ -11,8 +16,7 @@
             <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
         {% endif %}
     </div>
-    <h5>{{ article.headline }}</h5>
-    <p>{{ article.lead|truncatewords_html:50 }}{{ article.body|markdown }}</p>
-    <a href="{{ article.get_absolute_url }}"><button class="btn-read-more">Läs mer</button></a>
+    <p class="article-lead">{{ article.lead }}</p>
+    <p>{{ article.body|markdown }}</p>
 </article>
 {% endblock %}
