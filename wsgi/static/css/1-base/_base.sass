@@ -9,7 +9,7 @@ body
         list-style-type: none
         
     button
-        background-color: $isektionen-better-yellow
+        background-color: $light-gray
         font-family: $font-body
         color: white
         border-radius: 0.1em
@@ -19,16 +19,24 @@ body
         padding: 5px
         box-shadow: 1px 2px 2px $light-gray
         min-width: 8em
-        font-weight: 700
+        font-weight: 800
         text-align: center
         &:hover
-            //box-shadow: 2px 2px 8px $light-gray
             +transition-duration(0.1s)
-            background: tint($isektionen-yellow, 40%)
+            background: darken($light-gray, 5%)
             color: white
-    form
-        padding: 10px
-        input
-            border-radius: 5px
 
+    .regular
+        @extend button
+        background-color: $isektionen-better-yellow
+        &:hover
+            +transition-duration(0.1s)
+            background: darken($isektionen-better-yellow, 5%)
+            color: white
 
+    .confirm
+        @extend button
+        background-color: $isektionen-green
+        &:hover
+            +transition-duration(0.1s)
+            background: darken($isektionen-green, 5%)
