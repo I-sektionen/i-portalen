@@ -18,8 +18,8 @@ urlpatterns = [
     url(r'^articles/', include(article_urls)),
     url(r'^user/', include(user_urls)),
     url(r'event/', include(event_urls)),
-    url(r'create_content', view=create_content, name="create content")
-    url(r'^organisations/', include(org_urls))
+    url(r'create_content/', view=create_content, name="create content"),
+    url(r'^organisations/', include(org_urls)),
 ]
 if not settings.ON_PASS:
     urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
