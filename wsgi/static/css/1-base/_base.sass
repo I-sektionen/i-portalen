@@ -9,19 +9,34 @@ body
         list-style-type: none
         
     button
-        background-color: white
+        background-color: $light-gray
         font-family: $font-body
-        border-radius: 0.3em
+        color: white
+        border-radius: 0.1em
         text-transform: uppercase
         border: 0
-        font-size: 12px
+        font-size: 13px
         padding: 5px
-        box-shadow: 1px 2px 4px $light-gray
-        min-width: 6em
-        font-weight: 700
+        box-shadow: 1px 2px 2px $light-gray
+        min-width: 8em
+        font-weight: 800
         text-align: center
         &:hover
-            //box-shadow: 2px 2px 8px $light-gray
             +transition-duration(0.1s)
-            background: tint($isektionen-yellow, 40%)
+            background: darken($light-gray, 5%)
             color: white
+
+    .regular
+        @extend button
+        background-color: $isektionen-better-yellow
+        &:hover
+            +transition-duration(0.1s)
+            background: darken($isektionen-better-yellow, 5%)
+            color: white
+
+    .confirm
+        @extend button
+        background-color: $isektionen-green
+        &:hover
+            +transition-duration(0.1s)
+            background: darken($isektionen-green, 5%)

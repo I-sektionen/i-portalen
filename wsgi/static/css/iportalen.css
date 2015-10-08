@@ -104,30 +104,30 @@ code, kbd, pre, samp {
   font-size: 1em;
 }
 
-button, input, optgroup, select, textarea {
+button, body .regular, body .confirm, input, optgroup, select, textarea {
   color: inherit;
   font: inherit;
   margin: 0;
 }
 
-button {
+button, body .regular, body .confirm {
   overflow: visible;
 }
 
-button, select {
+button, body .regular, body .confirm, select {
   text-transform: none;
 }
 
-button, html input[type="button"], input[type="reset"], input[type="submit"] {
+button, body .regular, body .confirm, html input[type="button"], input[type="reset"], input[type="submit"] {
   -webkit-appearance: button;
   cursor: pointer;
 }
 
-button[disabled], html input[disabled] {
+button[disabled], body [disabled].regular, body [disabled].confirm, html input[disabled] {
   cursor: default;
 }
 
-button::-moz-focus-inner, input::-moz-focus-inner {
+button::-moz-focus-inner, body .regular::-moz-focus-inner, body .confirm::-moz-focus-inner, input::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
@@ -273,25 +273,45 @@ body ul {
   padding: 0;
   list-style-type: none;
 }
-body button {
-  background-color: white;
+body button, body .regular, body .confirm {
+  background-color: #cccccc;
   font-family: "Lato", sans-serif;
-  border-radius: 0.3em;
+  color: white;
+  border-radius: 0.1em;
   text-transform: uppercase;
   border: 0;
-  font-size: 12px;
+  font-size: 13px;
   padding: 5px;
-  box-shadow: 1px 2px 4px #cccccc;
-  min-width: 6em;
-  font-weight: 700;
+  box-shadow: 1px 2px 2px #cccccc;
+  min-width: 8em;
+  font-weight: 800;
   text-align: center;
 }
-body button:hover {
+body button:hover, body .regular:hover, body .confirm:hover {
   -webkit-transition-duration: 0.1s;
   -moz-transition-duration: 0.1s;
   transition-duration: 0.1s;
-  background: #fee16b;
+  background: #bfbfbf;
   color: white;
+}
+body .regular {
+  background-color: #f9d026;
+}
+body .regular:hover {
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  background: #f9ca0d;
+  color: white;
+}
+body .confirm {
+  background-color: #2D701E;
+}
+body .confirm:hover {
+  -webkit-transition-duration: 0.1s;
+  -moz-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  background: #255c19;
 }
 
 #footer {
@@ -816,7 +836,7 @@ article.event-preview {
   padding: 0.5em 1em;
 }
 article.event-preview:hover {
-  box-shadow: 4px 4px 16px #cccccc;
+  box-shadow: 4px 4px 15px #cccccc;
   -webkit-transition-duration: 0.5s;
   -moz-transition-duration: 0.5s;
   transition-duration: 0.5s;
@@ -902,7 +922,7 @@ article.event-preview .meta span.meta-content {
   font-weight: 200;
   font-size: 14px;
 }
-article.event-preview button {
+article.event-preview button, article.event-preview body .regular, body article.event-preview .regular, article.event-preview body .confirm, body article.event-preview .confirm {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   box-flex: 1;
