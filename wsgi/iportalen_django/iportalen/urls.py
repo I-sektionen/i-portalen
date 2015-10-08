@@ -14,7 +14,7 @@ from organisations import urls as org_urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', TemplateView.as_view(template_name="front page")),
+    url(r'^$', TemplateView.as_view(template_name="front_page.html"), name="front page"),
     url(r'^articles/', include(article_urls)),
     url(r'^user/', include(user_urls)),
     url(r'event/', include(event_urls)),

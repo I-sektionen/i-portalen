@@ -15,36 +15,35 @@ from .exceptions import CouldNotRegisterException
 # - See all reserves.
 
 
-class Event(models.Model):
 # Event model which holds basic data about an event.
+class Event(models.Model):
+
+    #  Description:
     headline = models.CharField(verbose_name='rubrik', max_length=255)
     lead = models.TextField(verbose_name='ingress', )
     body = models.TextField(verbose_name='brödtext', )
+    location = models.CharField(max_length=30)
+
+    start = models.DateTimeField(verbose_name='eventets start')  # When the event starts.
+    end = models.DateTimeField(verbose_name='eventets slut')  # When the event ends.
+
+    enable_registration = models.BooleanField(verbose_name='användare kan anmäla sig')
+    registration_limit = models.IntegerField(verbose_name='maximalt antal anmälningar', blank=True, null=True)
+
+    # Dagar innan start för avanmälan. Räknas bakåt från 'start'
+    deregister_delta = models.PositiveIntegerField(verbose_name='dagar innan start för senaste avanmälan', default=1)
 
     visible_from = models.DateTimeField()
-    visible_to = models.DateTimeField()
-    approved = models.BooleanField(verbose_name='godkänd', default=False )
 
-    # access  # TODO: access restrictions
-
+    #  Access rights
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')  # User with admin rights/creator.
     # The group which has admin rights. If left blank is it only the user who can admin.
     admin_group = models.ForeignKey(Group, blank=True, null=True)
     tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
 
-    location = models.CharField(max_length=30)
-
+    approved = models.BooleanField(verbose_name='godkänd', default=False)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
-
-    start = models.DateTimeField(verbose_name='start')  # When the event starts.
-    end = models.DateTimeField(verbose_name='slut')  # When the event ends.
-    published_from = models.DateTimeField(verbose_name='anmälningsstart', null=True, blank=True)  # When event is published
-
-    enable_registration = models.BooleanField(verbose_name='kan anmäla sig')
-    # "start - deregister_delta" gives last dergistration date+time, defaults to one day.
-    deregister_delta = models.DurationField(verbose_name='anmälningsslut', default=timezone.timedelta(days=1))
-    registration_limit = models.IntegerField(verbose_name='max antal anmälningar', blank=True, null=True)
 
     @property
     def preregistrations(self):
@@ -104,7 +103,7 @@ class Event(models.Model):
 
     def deregister_user(self, user):
         # Deregistration time has passed.
-        if self.start-self.deregister_delta < timezone.now():
+        if self.start-timezone.timedelta(days=self.deregister_delta) < timezone.now():
             return CouldNotRegisterException(event=self, reason="avanmälningstiden har passerats")
         found = False
         try:
@@ -183,6 +182,7 @@ class EntryAsParticipant(models.Model):
     event = models.ForeignKey(Event, verbose_name="arrangemang")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')
     timestamp = models.DateTimeField(auto_now_add=True)
+
     class Meta:
         verbose_name = "Deltagare"
         verbose_name_plural = "Deltagare"

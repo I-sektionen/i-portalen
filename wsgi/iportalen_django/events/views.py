@@ -12,10 +12,6 @@ from .exceptions import CouldNotRegisterException
 def view_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
     can_administer = event.can_administer(request.user)
-    messages.info(request, "Hej hej bloggen!")
-    messages.success(request, "Success!")
-    messages.warning(request, "Warning")
-    messages.error(request, "Nej nej bloggen!")
     return render(request, "events/event.html", {
         "event": event,
         "can_administer": can_administer,
@@ -31,6 +27,7 @@ def create_event(request):
             event.user = request.user
             event.approved = False
             event.save()
+            messages.success(request, "Ditt evenemang än nu skapat, det väntar nu på att godkännas av infU.")
             return redirect("front page")
         else:
             return render(request, 'events/create_event.html', {
@@ -49,8 +46,9 @@ def register_to_event(request, pk):
         event = get_object_or_404(Event, pk=pk)
         try:
             event.register_user(request.user)
+            messages.success(request, "Du är nu registrerad på eventet.")
         except CouldNotRegisterException as err:
-            print("Fel, kunde inte registrera dig på " + err.event.headline + " för att " + err.reason)
+            messages.error(request, "Fel, kunde inte registrera dig på " + err.event.headline + " för att " + err.reason + ".")
     return redirect("event", pk=pk)
 
 

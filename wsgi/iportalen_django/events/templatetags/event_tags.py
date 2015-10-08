@@ -8,7 +8,7 @@ def get_all_events():
     events = Event.objects.filter(
         approved=True,
         visible_from__lte=timezone.now(),
-        visible_to__gte=timezone.now()
+        end__gte=timezone.now()
     ).order_by('-modified')
     return events
 
