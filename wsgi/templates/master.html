@@ -14,7 +14,16 @@
 
 <body>
 {% include "header.html" %}
-
+{% if messages %}
+<div id="message-box">
+    {% for message in messages %}
+    <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        <span>{{ message }}</span>
+    <button type="button" onclick="closeMessage(this)">&times;</button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 {% block hero %}
 {% endblock %}
 

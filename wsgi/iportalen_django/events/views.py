@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
+from django.contrib import messages
 
 from .forms import EventForm
 from .models import Event
@@ -11,6 +12,10 @@ from .exceptions import CouldNotRegisterException
 def view_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
     can_administer = event.can_administer(request.user)
+    messages.info(request, "Hej hej bloggen!")
+    messages.success(request, "Success!")
+    messages.warning(request, "Warning")
+    messages.error(request, "Nej nej bloggen!")
     return render(request, "events/event.html", {
         "event": event,
         "can_administer": can_administer,
@@ -70,3 +75,8 @@ def participants_list(request, pk):
     else:
         return HttpResponseForbidden  # Nope.
 
+
+def check_in(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    if request.method == "POST":
+        print("Add me!")

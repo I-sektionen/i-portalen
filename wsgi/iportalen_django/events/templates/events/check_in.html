@@ -1,0 +1,11 @@
+{% extends "master.html" %}
+
+{% block content %}
+    <div id="content">
+        <form method="post" action="{% url "check in" event.pk %}">
+            {% csrf_token %}
+            <input type="text" name="input">
+            <button type="submit">Skicka</button>
+        </form>
+    </div>
+{% endblock %}
