@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Used to determined if being run on Openshift, Jenkins or local. Determines DB-connection settings.
@@ -54,6 +55,7 @@ INSTALLED_APPS = (
     'events',
     'organisations',
     'iportalen',
+    'storages',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -143,7 +145,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_media')
 # Static files (CSS, JavaScript, Images)
 # Extra locations where staticfiles can be found:
 if not ON_PASS:
@@ -157,12 +159,35 @@ if not ON_PASS:
 # always done before the app is deployed on openshift.
 if ON_PASS:
     STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, "../static/"))
+    MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
+
+AWS_ACCESS_KEY_ID = 'AKIAJSDYCW44P4UNOZQQ'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'iportalen-us'
+
+S3_URL = 'https://{0}.s3.amazonaws.com/'.format(AWS_STORAGE_BUCKET_NAME)
+STATIC_URL = os.environ.get('STATIC_URL', S3_URL + 'static/')
+
+DEFAULT_FILE_STORAGE = 'iportalen.storage.MediaRootS3BotoStorage'
+
+STATICFILES_STORAGE = 'iportalen.storage.StaticRootS3BotoStorage'
+
+MEDIA_URL = os.environ.get('MEDIA_URL', S3_URL + 'media/')
+
+
+AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
+    'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+    'Cache-Control': 'max-age=94608000',
+}
+
+
 
 """
 # The url behind which static files are exposed. Not run by mod_wsgi but
 # Apache, i think, on Openshift.
 """
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
+
+# STATIC_URL = '/static/' # commented out because os s3
+# MEDIA_URL = '/media/'
 #  This url is where you can log in. The login_required decorator uses this constant.
 LOGIN_URL = 'login_view' #  TODO: Use a named view instead.
