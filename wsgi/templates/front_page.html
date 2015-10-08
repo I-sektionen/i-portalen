@@ -27,7 +27,7 @@
                 </div>
                 <h5>{{ article.headline }}</h5>
                 <p>{{ article.lead|truncatewords_html:50 }}</p>
-                <a href="{{ article.get_absolute_url }}">Läs mer</a> <!--# TODO fix layout of link, i.e change appearance to buttons -->
+                <a href="{{ article.get_absolute_url }}"><button class="regular">Läs mer</button></a> <!--# TODO fix layout of link, i.e change appearance to buttons -->
             </article>
         {% endfor %}
     </section>
