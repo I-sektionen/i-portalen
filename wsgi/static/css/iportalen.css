@@ -346,8 +346,8 @@ body .confirm:hover {
 header a {
   text-decoration: none;
   text-transform: uppercase;
-  font-size: 18px;
-  font-weight: 200;
+  font-size: 14px;
+  font-weight: 400;
 }
 header a:hover {
   color: #d9d9d9;
@@ -465,7 +465,7 @@ header #navigation-menu {
 }
 header #navigation-menu > li {
   margin-bottom: 1em;
-  padding: 0.5em;
+  padding: 0 0.5em;
 }
 @media screen and (min-width: 50em) {
   header #navigation-menu > li {
