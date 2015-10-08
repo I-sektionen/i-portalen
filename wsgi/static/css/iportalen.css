@@ -719,7 +719,7 @@ article.event-preview {
   padding: 0.5em 1em;
 }
 article.event-preview:hover {
-  box-shadow: 4px 4px 16px #cccccc;
+  box-shadow: 4px 4px 15px #cccccc;
   -webkit-transition-duration: 0.5s;
   -moz-transition-duration: 0.5s;
   transition-duration: 0.5s;
