@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 __author__ = 'jonathan'
 from django.template.loader_tags import register
 from organisations.models import Organisation
@@ -11,3 +13,21 @@ def get_all_organisations():
 def get_organisation(pk):
     organisation = Organisation.objects.get(pk=pk)
     return organisation
+
+@register.assignment_tag
+def get_menu_organisations():
+    organisations = {
+        "sektionen": list(Organisation.objects.filter(
+            organisation_type=Organisation.SEKTIONEN,
+            parent_organisation=None
+        ).order_by('name')),
+        "utskott": list(Organisation.objects.filter(
+            organisation_type=Organisation.UTSKOTT,
+            parent_organisation=None
+        ).order_by('name')),
+        "foreningar": list(Organisation.objects.filter(
+            organisation_type=Organisation.FORENINGAR,
+            parent_organisation=None
+        ).order_by('name')),
+    }
+    return organisations
