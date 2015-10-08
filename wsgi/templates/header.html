@@ -19,13 +19,6 @@
                         <li>Sektionen</li>
                         {% for o in menu_orgs.sektionen %}
                             <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
-                            {% if o.children_organisations %}
-                                <ul class="child_organisations">
-                                    {% for c in o.children_organisations %}
-                                        <li><a href="{{ c.get_absolute_url }}">{{ c|title }}</a></li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
                         {% endfor %}
 
                     </ul>
@@ -33,13 +26,6 @@
                         <li>Utskott</li>
                         {% for o in menu_orgs.utskott %}
                             <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
-                            {% if o.children_organisations %}
-                                <ul class="child_organisations">
-                                    {% for c in o.children_organisations %}
-                                        <li><a href="{{ c.get_absolute_url }}">{{ c|title }}</a></li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
                         {% endfor %}
 
                     </ul>
@@ -47,13 +33,6 @@
                         <li>Föreningar</li>
                         {% for o in menu_orgs.foreningar %}
                             <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
-                            {% if o.children_organisations %}
-                                <ul class="child_organisations">
-                                    {% for c in o.children_organisations %}
-                                        <li><a href="{{ c.get_absolute_url }}">{{ c|title }}</a></li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
                         {% endfor %}
                     </ul>
                 </div>

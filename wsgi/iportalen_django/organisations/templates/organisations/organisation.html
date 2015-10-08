@@ -2,6 +2,15 @@
 {% load article_tags %}
 
 {% block content %}
-{{ organisation.name }}
-    <img src="{{ MEDIA_URL }}{{ organisation.image }}">
+    <div class="view_organisation">
+        <div class="meta">
+            <span class="name">{{ organisation.name }}</span>
+            <span class="contact_ifno">{{ organisation.contact_info }}</span>
+            <span class="leader">{{ organisation.leader }}</span>
+            <span class="members">{% for m in organisation.members.all %}{{ m.username }}{% endfor %}</span>
+            <span class="name">{{ organisation.organisation_type }}</span>
+            {{ organisation.description|markdown }}
+            <img src="{{ MEDIA_URL }}{{ organisation.image }}" height="{{ organisation.IMAGE_HEIGHT }}" width="{{ organisation.IMAGE_WIDTH }}">
+        </div>
+    </div>
 {% endblock %}

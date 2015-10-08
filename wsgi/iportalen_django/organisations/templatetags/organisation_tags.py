@@ -30,35 +30,4 @@ def get_menu_organisations():
             parent_organisation=None
         ).order_by('name')),
     }
-    sektionen_children = Organisation.objects.filter(
-            ~Q(parent_organisation=None), organisation_type=Organisation.SEKTIONEN,
-        ).order_by('name')
-    for u in sektionen_children:
-        for p in organisations["sektionen"]:
-            if p.name == u.parent_organisation.name:
-                if hasattr(p, "children_organisations"):
-                    p.children_organisations.append(u)
-                else:
-                    p.children_organisations = [u]
-    utskott_children = Organisation.objects.filter(
-            ~Q(parent_organisation=None), organisation_type=Organisation.UTSKOTT,
-        ).order_by('name')
-    for u in utskott_children:
-        for p in organisations["utskott"]:
-            if p.name == u.parent_organisation.name:
-                if hasattr(p, "children_organisations"):
-                    p.children_organisations.append(u)
-                else:
-                    p.children_organisations = [u]
-    foreningar_children = Organisation.objects.filter(
-            ~Q(parent_organisation=None), organisation_type=Organisation.FORENINGAR,
-        ).order_by('name')
-    for u in foreningar_children:
-        for p in organisations["foreningar"]:
-            if p.name == u.parent_organisation.name:
-                if hasattr(p, "children_organisations"):
-                    p.children_organisations.append(u)
-                else:
-                    p.children_organisations = [u]
-
     return organisations
