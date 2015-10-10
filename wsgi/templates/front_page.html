@@ -21,11 +21,12 @@
                         <span class="date">{{ article.created|date:"Y-m-d" }}</span>
                         <span class="author">{{ article.author }}</span>
                         {# Don't render tags for articles without tags #}
-                        {% if article.tags.all  %}
+                        {% if article.tags.all %}
                             <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
                         {% endif %}
                     </div>
                     <h5>{{ article.headline }}</h5>
+
                     <p>{{ article.lead|truncatewords_html:50 }}</p>
                     <a href="{{ article.get_absolute_url }}">Läs mer</a>
 
@@ -35,20 +36,29 @@
         <section id="upcoming">
             <h4>Kommande</h4>
             <article class="event-preview">
-                <h5>Lunchföreläsning</h5>
+                <h7>Lunchföreläsning med McKinsey</h7>
+
                 <div class="meta">
-                    <span class="date">
-                        <span class="meta-content">5 Jan 2015</span>
-                    </span>
-                    <span class="time">
-                        <span class="meta-content">17:15</span>
-                    </span>
-                    <span class="place">
-                    <span class="meta-content">Märkesbacken</span>
-                    </span>
+                    <div class="event-preview-meta">
+                        <span class="meta-content">Om 4 dagar</span>
+                    </div>
+                    <div class="event-preview-meta">
+                        <span class="meta-content">Klockan: 17:15</span>
+                    </div>
+                    <div class="event-preview-meta">
+                        <span class="meta-content">Anmälda: (23/24)</span>
+                    </div>
+                    <!--
+                    <div class="event-preview-meta">
+                    <span class="place"></span>
+                        <span class="meta-content">Märkesbacken</span>
+                    </div>-->
                 </div>
-                <a href="http://google.com"><button class="default">Info</button></a>
+                <a href="http://google.com">
+                    <button class="default">Info</button>
+                </a>
                 <button class="primary">Anmäl</button>
+
             </article>
         </section>
     </div>
