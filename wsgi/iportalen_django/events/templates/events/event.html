@@ -1,0 +1,34 @@
+{% extends "master.html" %}
+
+{% block content %}
+    <div id="content">
+        <h4>{{ event.headline }}</h4>
+        <div class="meta">
+            <span class="date">
+                    <span class="meta-content">{{ event.start|date:"d N Y" }}</span>
+            </span>
+            <span class="time">
+                <span class="meta-content">{{ event.start|time:"H:i" }}</span>
+            </span>
+            <span class="place">
+                <span class="meta-content">{{ event.location }}</span>
+            </span>
+        </div>
+        <p>
+            {{ event.lead }}
+        </p>
+        <p>
+            {{ event.body }}
+        </p>
+
+        {% if event.enable_registration %}
+            <form method="post" action="{% url "register_to_event" event.pk %}">
+                {% csrf_token %}
+                <button type="submit" title="snälla">Anmäl mig</button>
+            </form>
+        {% endif %}
+        {% if can_administer %}
+            <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
+        {% endif %}
+    </div>
+{% endblock %}

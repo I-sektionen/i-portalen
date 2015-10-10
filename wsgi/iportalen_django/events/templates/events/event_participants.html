@@ -1,0 +1,26 @@
+{% extends "master.html" %}
+
+{% block content %}
+    <div id="content">
+    <p>Antal deltagare: {{ event.number_of_preregistrations }}</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Liu-id</th><th>Förnamn</th><th>Efternamn</th><th>Tid</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in event.preregistrations %}
+                    {% with participant=entry.user %}
+                    <tr>
+                        <td>{{ participant.username }}</td>
+                        <td>{{ participant.first_name }}</td>
+                        <td>{{ participant.last_name }}</td>
+                        <td>{{ entry.timestamp }}</td>
+                    </tr>
+                    {% endwith %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

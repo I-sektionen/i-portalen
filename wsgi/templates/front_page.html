@@ -1,6 +1,7 @@
 {% extends "master.html" %}
 {# This file defines the front page and is a own kind of master page #}
 {% load article_tags %}
+{% load event_tags %}
 {% include "header.html" %}
 
 {% block hero %}
@@ -35,20 +36,27 @@
         </section>
         <section id="upcoming">
             <h4>Kommande</h4>
+            {% get_all_events as events %}
+            {% for event in events %}
             <article class="event-preview">
-                <h7>Lunchföreläsning med McKinsey</h7>
-
+                <h5>{{ event.headline }}</h5>
                 <div class="meta">
-                        <p class="meta-content">5 sep 2015</p>
-                        <p class="meta-content">Kl 17:15</p>
-                    <!--
-                    <div class="event-preview-meta">
-                    <span class="place"></span>
-                        <span class="meta-content">Märkesbacken</span>
-                    </div>-->
+                    <span class="date">
+                            <span class="meta-content">{{ event.start|date:"d N Y" }}</span>
+                    </span>
+                    <span class="time">
+                        <span class="meta-content">17:15</span>
+                    </span>
+                    <span class="place">
+                    <span class="meta-content">Märkesbacken</span>
+                    </span>
                 </div>
-                <a href="http://google.com">Läs mer</a>
+                <a href="{% url "event" event.pk %}"><button>Info</button></a>
+                {% if event.enable_registration %}
+                    <a href="{% url "event" event.pk %}"><button>Anmäl</button></a>
+                {% endif %}
             </article>
+            {% endfor %}
         </section>
     </div>
 {% endblock %}
