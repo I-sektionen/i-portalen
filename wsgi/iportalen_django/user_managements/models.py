@@ -73,7 +73,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
         menu_choices = []  # List of extra menu choices.
 
-        menu_choices.append(('Skapa Artikel', reverse('create article')))  # Everyone can create article.
+        menu_choices.append(('Lägg upp innehåll', reverse('create content')))  # Everyone can create article.
 
         menu_choices.append(('Min sida', reverse('mypage_view') ))
 

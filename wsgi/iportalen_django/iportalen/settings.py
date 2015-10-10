@@ -53,7 +53,7 @@ INSTALLED_APPS = (
     'articles',
     'events',
     'organisations',
-
+    'iportalen',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -83,6 +83,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -150,6 +151,7 @@ if not ON_PASS:
         os.path.join(BASE_DIR, "static"),
         os.path.join(os.path.dirname(BASE_DIR), 'static')
     )
+    MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
 
 # This is where all static files are put by 'collectstatic', it is
 # always done before the app is deployed on openshift.
@@ -161,6 +163,6 @@ if ON_PASS:
 # Apache, i think, on Openshift.
 """
 STATIC_URL = '/static/'
-
+MEDIA_URL = '/media/'
 #  This url is where you can log in. The login_required decorator uses this constant.
 LOGIN_URL = 'login_view' #  TODO: Use a named view instead.

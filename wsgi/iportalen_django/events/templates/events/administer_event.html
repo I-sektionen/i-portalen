@@ -1,0 +1,11 @@
+{% extends "master.html"%}
+
+{% block content %}
+<div id="content">
+    <ul>
+        <a href="{% url "event_participants" event.pk %}"><li>Se deltagare</li></a>
+        <li>Ändra event</li>
+        <li>Starta incheckning</li>
+    </ul>
+</div>
+{% endblock %}

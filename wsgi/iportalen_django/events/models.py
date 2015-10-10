@@ -1,34 +1,137 @@
 from django.db import models
-from tags.models import Tag
 from django.conf import settings
 from django.utils import timezone
+from django.contrib.auth.models import Group
+from django.core.exceptions import ObjectDoesNotExist
+
+from tags.models import Tag
+from .exceptions import CouldNotRegisterException
+# A user can register and deregister
+# The admin can:
+# - Change properties of an event
+# - Check-in users
+# - See all participants during the event (if check-in is used)
+# - See all pre-registrations
+# - See all reserves.
 
 
+# Event model which holds basic data about an event.
 class Event(models.Model):
+
+    #  Description:
     headline = models.CharField(verbose_name='rubrik', max_length=255)
     lead = models.TextField(verbose_name='ingress', )
     body = models.TextField(verbose_name='brödtext', )
+    location = models.CharField(max_length=30)
+
+    start = models.DateTimeField(verbose_name='eventets start')  # When the event starts.
+    end = models.DateTimeField(verbose_name='eventets slut')  # When the event ends.
+
+    enable_registration = models.BooleanField(verbose_name='användare kan anmäla sig')
+    registration_limit = models.IntegerField(verbose_name='maximalt antal anmälningar', blank=True, null=True)
+
+    # Dagar innan start för avanmälan. Räknas bakåt från 'start'
+    deregister_delta = models.PositiveIntegerField(verbose_name='dagar innan start för senaste avanmälan', default=1)
 
     visible_from = models.DateTimeField()
-    visible_to = models.DateTimeField()
-    approved = models.BooleanField(verbose_name='godkänd', default=False )
 
-    # access  # TODO: access restrictions
-
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')
+    #  Access rights
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')  # User with admin rights/creator.
+    # The group which has admin rights. If left blank is it only the user who can admin.
+    admin_group = models.ForeignKey(Group, blank=True, null=True)
     tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
 
+    approved = models.BooleanField(verbose_name='godkänd', default=False)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
 
-    start = models.DateTimeField(verbose_name='start')
-    end = models.DateTimeField(verbose_name='slut')
-    enable_registration = models.BooleanField(verbose_name='kan anmäla sig')
-    registration_limit = models.IntegerField(verbose_name='max antal anmälningar', blank=True, null=True)
+    @property
+    def preregistrations(self):
+        q = EntryAsPreRegistered.objects.filter(event__exact=self)
+        return q
+
+    @property
+    def reserves(self):
+        q = EntryAsReserve.objects.filter(event__exact=self)
+        return q
+
+    @property
+    def participants(self):
+        q = EntryAsParticipant.objects.filter(event__exact=self)
+        return q
+
+    @property
+    def number_of_preregistrations(self):
+        return EntryAsPreRegistered.objects.filter(event__exact=self).count()
+
+    @property
+    def number_of_reserves(self):
+        return EntryAsReserve.objects.filter(event__exact=self).count()
+
+    @property
+    def number_of_checked_in_participants(self):
+        return EntryAsParticipant.objects.filter(event__exact=self).count()
+
+    #  This method determines if a specific user can register to an event.
+    def register_user(self, user):
+
+        # possible to register?
+        if not self.enable_registration:
+            raise CouldNotRegisterException(event=self, reason="registering är avstängd")
+
+        # Already registered?
+        try:
+            EntryAsPreRegistered.objects.get(event__exact=self, user__exact=user)
+            raise CouldNotRegisterException(event=self, reason="du är redan registrerad")
+        except ObjectDoesNotExist:
+            pass
+
+        # To many participants?
+        if self.number_of_preregistrations >= self.registration_limit:
+            raise CouldNotRegisterException(event=self, reason="maxantalet deltagare är uppnått")
+
+        # Has the start date passed?
+        if self.start < timezone.now():
+            raise CouldNotRegisterException(event=self, reason="starttiden har passerats")
+
+        EntryAsPreRegistered(user=user, event=self).save()
+        try:
+            entry = EntryAsReserve.objects.get(user__exact=user, event__exact=self)
+            entry.delete()
+        except ObjectDoesNotExist:
+            pass
+
+    def deregister_user(self, user):
+        # Deregistration time has passed.
+        if self.start-timezone.timedelta(days=self.deregister_delta) < timezone.now():
+            return CouldNotRegisterException(event=self, reason="avanmälningstiden har passerats")
+        found = False
+        try:
+            entry = EntryAsPreRegistered.objects.get(event__exact=self, user__exact=user)
+            entry.delete()
+            found = True
+        except ObjectDoesNotExist:
+            pass
+        if not found:
+            try:
+                entry = EntryAsReserve.objects.get(event__exact=self, user__exact=user)
+                entry.delete()
+                found = True
+            except ObjectDoesNotExist:
+                pass
+        return found
+
+    def can_administer(self, user):
+        if user != self.user:
+            if self.admin_group is None:
+                return False
+            elif self.admin_group not in user.groups:  # I LOVE PYTHON <3
+                return False
+        return True
 
     class Meta:
         verbose_name = "Arrangemang"
-        verbose_name_plural = "Arrangemanger"
+        verbose_name_plural = "Arrangemang"
         permissions = (('can_approve_article', 'Can approve article'),)
 
     def save(self, *args, **kwargs):
@@ -41,31 +144,48 @@ class Event(models.Model):
         return self.headline
 
 
-class EntryDeadline(models.Model):
-    description = models.TextField(verbose_name='beskrivning')
-    entry_from = models.DateTimeField(verbose_name='anmälningsstart')
-    entry_to = models.DateTimeField(verbose_name='anmälningsslut')
-    event = models.ForeignKey(Event, verbose_name='arrangemang')
-    enable_unregistration = models.BooleanField(verbose_name='kan avanmäla sig')
+######################################################################
+#  Entry models are used for the logic behind users standing in line  #
+######################################################################
+
+# Used to track the order of reserves for an event.
+class EntryAsReserve(models.Model):
+    event = models.ForeignKey(Event)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Anmälningsperiod"
-        verbose_name_plural = "Anmälningsperioder"
+        verbose_name = "Reserv"
+        verbose_name_plural = "Reserver"
 
     def __str__(self):
-        return str(self.event) + " | " + self.description
+        return str(self.user) + " reserv på " + str(self.event)
 
 
-class Entry(models.Model):
+# Used to track the pre-registered users for an event.
+class EntryAsPreRegistered(models.Model):
     event = models.ForeignKey(Event, verbose_name='arrangemang')
-    deadline = models.ForeignKey(EntryDeadline, verbose_name='anmälningsperiod')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')
-    registered_time = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
     no_show = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Anmälning"
         verbose_name_plural = "Anmälningar"
+
+    def __str__(self):
+        return str(self.user) + " anmäld på: " + str(self.event)
+
+
+# Used to track the people check in on an event. (Actually participating)
+class EntryAsParticipant(models.Model):
+    event = models.ForeignKey(Event, verbose_name="arrangemang")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Deltagare"
+        verbose_name_plural = "Deltagare"
 
     def __str__(self):
         return str(self.event) + " | " + str(self.user)
