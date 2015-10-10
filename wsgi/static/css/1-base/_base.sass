@@ -1,42 +1,7 @@
 body
-    font-family: $font-body
-    +display(flex)
-    margin: 0
-    +flex-direction(column)
-    
-    ul
-        padding: 0
-        list-style-type: none
-        
-    button
-        background-color: $light-gray
-        font-family: $font-body
-        color: white
-        border-radius: 0.1em
-        text-transform: uppercase
-        border: 0
-        font-size: 13px
-        padding: 5px
-        box-shadow: 1px 2px 2px $light-gray
-        min-width: 8em
-        font-weight: 800
-        text-align: center
-        &:hover
-            +transition-duration(0.1s)
-            background: darken($light-gray, 5%)
-            color: white
+  margin: 0
+ul
+  padding: 0
+  list-style-type: none
 
-    .regular
-        @extend button
-        background-color: $isektionen-better-yellow
-        &:hover
-            +transition-duration(0.1s)
-            background: darken($isektionen-better-yellow, 5%)
-            color: white
 
-    .confirm
-        @extend button
-        background-color: $isektionen-green
-        &:hover
-            +transition-duration(0.1s)
-            background: darken($isektionen-green, 5%)
