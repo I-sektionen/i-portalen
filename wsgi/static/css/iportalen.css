@@ -599,20 +599,6 @@ header #navigation-menu .submenu > * {
     padding: 0.5em 0;
   }
 }
-header #navigation-menu .child_organisations {
-  padding-left: 2em;
-}
-header #navigation-menu .child_organisations > li {
-  padding: 0.5em;
-}
-@media screen and (min-width: 50em) {
-  header #navigation-menu .child_organisations {
-    padding-left: 0.75em;
-  }
-  header #navigation-menu .child_organisations > li {
-    padding: 0.25em;
-  }
-}
 
 article.news-preview {
   display: -webkit-box;
@@ -817,7 +803,7 @@ article.event-preview:hover {
 }
 article.event-preview .meta p {
   margin: 5px 0;
-  font-size: 16pt;
+  font-size: 14pt;
 }
 
 #modal {
@@ -872,7 +858,7 @@ article.event-preview .meta p {
 #message-box > div:last-child {
   margin-right: 0;
 }
-#message-box > div > button {
+#message-box > div > button, #message-box > div > .default, #message-box > div > .primary, #message-box > div > .success {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   box-flex: 1;
@@ -884,7 +870,7 @@ article.event-preview .meta p {
   background: transparent;
   box-shadow: 0 0 0 0;
 }
-#message-box > div > button:hover {
+#message-box > div > button:hover, #message-box > div > .default:hover, #message-box > div > .primary:hover, #message-box > div > .success:hover {
   color: black;
 }
 #message-box > div > span {
