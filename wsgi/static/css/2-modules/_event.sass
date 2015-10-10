@@ -1,14 +1,16 @@
 article.event-preview
     border-radius: 3px
-    border-left: 5px solid $isektionen-green
+    border-left: 3px solid $isektionen-green
     box-shadow: 1px 1px 4px $light-gray
     margin-bottom: 1em
     padding: 0.5em 1em
     &:hover
-        box-shadow: 2px 2px 4px $light-gray
+        //box-shadow: 2px 2px 4px $light-gray
         +transition-duration(0.5s)
 
     .meta
         p
             margin: 5px 0
             font-size: 14pt
+            +media($desktop)
+                font-size: 12pt
