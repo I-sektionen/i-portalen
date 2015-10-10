@@ -1,7 +1,4 @@
 article.event-preview
-    +display(flex)
-    +flex-wrap(wrap)
-    +align-items(center)
     border-radius: 3px
     border-left: 5px solid $isektionen-green
     box-shadow: 1px 1px 4px $light-gray
@@ -12,30 +9,6 @@ article.event-preview
         +transition-duration(0.5s)
 
     .meta
-        +display(flex)
-        +flex-wrap(wrap)
-        +justify-content(space-around)
-        +flex-basis(100%)
-        text-align: center
-        margin: 0.5em
-
-        +media($desktop)
-            +flex-wrap(wrap)
-            +justify-content()
-            +flex-basis()
-
-        span
-            font-size: 14px
-            font-weight: 700
-            text-transform: uppercase
-            +display(flex)
-            +flex-direction(column)
-            +media($desktop)
-                +display(inline)
-                +flex-direction()
-                +flex(1)
-        
-        span.meta-content
-            padding: 0
-            font-weight: 200
-            font-size: 14px
+        p
+            margin: 5px 0
+            font-size: 16pt
