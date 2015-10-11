@@ -182,3 +182,4 @@ mysql_credentials
 
 wsgi/static/*
 wsgi/iportalen_django/iportalen/mysql_credentials
+wsgi/media

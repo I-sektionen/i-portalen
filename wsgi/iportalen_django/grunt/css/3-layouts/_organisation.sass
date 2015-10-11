@@ -1,7 +1,4 @@
 #organisation
-  +display(flex)
-  +flex-direction(column)
-  +span-columns(10)
   margin-bottom: 1em
   h1
     font-weight: 700
@@ -12,15 +9,18 @@
     text-align: left
     color: $isektionen-green
     margin-bottom: 0.5em
-  img
-    +span-columns(10)
-    margin-bottom: 1em
+  #organisation-image
+    padding-top: 15px
+    img
+      +span-columns(10)
+      width: 100%
+      margin-bottom: 1em
+
   #organisation-presentation
-    +span-columns(10)
     h1
       text-align: left
-      font-weight: 700
-      font-size: 30px
+      font-weight: 600
+      font-size: 22px
       color: $gray
       margin-bottom: .1em
       border-bottom: none
@@ -29,14 +29,45 @@
     padding: 0px 15px 15px 15px
     margin-bottom: 1em
   #organisation-contact-info
-    +span-columns(10)
     border-radius: 3px
     border-left: 3px solid $isektionen-brightyellow
     padding: 0px 15px 15px 15px
     margin-bottom: 1em
+    p
+      margin-bottom: 0.4em
   #organisation-members
-    +span-columns(10)
     border-radius: 3px
     border-left: 3px solid $isektionen-brightyellow
     padding: 0px 15px 15px 15px
     margin-bottom: 1em
+    ul
+      padding-top: 0px
+      margin-top: 0.2em
+
++media($desktop)
+  #organisation
+    +display(flex)
+    +flex-direction(column)
+    +span-columns(10)
+    #organisation-image
+      +span-columns(3 of 10)
+      img
+        +span-columns(10)
+    #organisation-presentation
+      +span-columns(6 of 10)
+    #organisation-contact-info
+      +span-columns(3 of 10)
+    #organisation-members
+      +span-columns(3 of 10)
+    #events
+      +span-columns(3 of 10)
+    #news-feed
+      +span-columns(10)
+
+
+
+
+
+
+
+
