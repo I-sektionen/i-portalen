@@ -176,7 +176,7 @@ if ON_PASS:
 
     STATICFILES_STORAGE = 'iportalen.storage.StaticRootS3BotoStorage'
 
-    MEDIA_URL = os.environ.get('MEDIA_URL', S3_URL + 'media/')
+    MEDIA_URL = os.environ.get('MEDIA_URL', S3_URL + 'client/')
 
     AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
         'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
