@@ -3,16 +3,19 @@ header
   a
     text-decoration: none
     text-transform: uppercase
-    font-size: 18px
-    font-weight: 200
-
+    font-size: 14px
+    font-weight: 400
+    text-decoration: none
+    color: black
     &:hover
       color: darken(white, 15%)
-
+      text-decoration: none
+    &:visited
+      color: black
+      text-decoration: none
   nav
     +display(flex)
     +flex-direction(column)
-
     // Place img and nav in row on large screens
     +media($desktop)
       +flex-direction()
@@ -52,7 +55,7 @@ header
 
     & > li
       margin-bottom: 1em
-      padding: 0.5em
+      padding: 0 0.5em
 
       +media($desktop)
         margin: 0
@@ -117,6 +120,5 @@ header
           border-bottom: 3px solid $isektionen-yellow
       & > *
         padding: 0.8em
-
         +media($desktop)
           padding: 0.5em 0
