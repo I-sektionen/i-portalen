@@ -7,7 +7,7 @@ module.exports = function (grunt) {
                     style: "expanded"
                 },
                 files: {
-                    'css/<%= pkg.name %>.css': '../local_static/css/app.sass'
+                    '../local_static/css/<%= pkg.name %>.css': 'css/app.sass'
                 },
             },
             dist: {
@@ -15,7 +15,7 @@ module.exports = function (grunt) {
                     style: "compressed"
                 },
                 files: {
-                    'dist/<%= pkg.name %>.min.css': 'css/app.sass'
+                    '../../static/<%= pkg.name %>.min.css': 'css/app.sass'
                 }
             },
         },
