@@ -20,7 +20,7 @@
         {{ organisation.contact_info|markdown }}
     </section>
     <section id="organisation-members">
-        <span class="leader">{{ organisation.leader }}</span>
+        <span class="leader">{{ organisation.leader.first_name }} {{ organisation.leader.last_name }}</span>
         <span class="members">{% for m in organisation.members.all %}{{ m.username }}{% endfor %}</span>
         <span class="name">{{ organisation.organisation_type }}</span>
     </section>
