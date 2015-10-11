@@ -1,5 +1,6 @@
 {% extends "master.html" %}
 {% load article_tags %}
+{% load event_tags %}
 
 {% block content %}
     <section id="organisation">
@@ -21,11 +22,11 @@
         <div id="organisation-members">
             <strong>{{ organisation.leader.first_name }} {{ organisation.leader.last_name }}</strong>
             <ul>
-            {% for m in organisation.members.all %}
-                {% if m.username != organisation.leader.username %}
-                <li>{{ m.first_name }} {{ m.last_name }}</li>
-                {% endif %}
-            {% endfor %}
+                {% for u in organisation.group.user_set.all %}
+                    {% ifnotequal organisation.leader.pk u.pk %}
+                    <li>{{ u.first_name }} {{ u.last_name }}</li>
+                    {% endifnotequal %}
+                {% endfor %}
             </ul>
         </div>
         <section id="events">
