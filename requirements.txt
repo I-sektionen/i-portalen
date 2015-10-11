@@ -3,3 +3,5 @@ dj-static
 mysqlclient
 django-reversion
 markdown
+django-storages-redux
+boto

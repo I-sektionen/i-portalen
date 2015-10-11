@@ -7,7 +7,7 @@ module.exports = function (grunt) {
                     style: "expanded"
                 },
                 files: {
-                    'css/<%= pkg.name %>.css': 'css/app.sass'
+                    '../local_static/css/<%= pkg.name %>.css': 'css/app.sass'
                 },
             },
             dist: {
@@ -15,7 +15,7 @@ module.exports = function (grunt) {
                     style: "compressed"
                 },
                 files: {
-                    'dist/<%= pkg.name %>.min.css': 'css/app.sass'
+                    '../iportalen/static/iportalen/css/<%= pkg.name %>.min.css': 'css/app.sass'
                 }
             },
         },
@@ -25,7 +25,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 src: ['js/src/*.js'],
-                dest: 'js/<%= pkg.name %>.js'
+                dest: '../local_static/js/<%= pkg.name %>.js'
             }
         },
         jshint: {
@@ -43,7 +43,7 @@ module.exports = function (grunt) {
         uglify: {
             dist: {
                 src: ['<%= concat.dist.dest %>'],
-                dest: 'dist/<%= pkg.name %>.min.js'
+                dest: '../iportalen/static/iportalen/js/<%= pkg.name %>.min.js'
             },
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
