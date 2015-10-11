@@ -3,30 +3,70 @@
 
 {% block content %}
     <section id="organisation">
-    <h1>{{ organisation.name }}</h1>
+        <h1>{{ organisation.name }}</h1>
 
-    <section id="organisation-presentation">
-        {{ organisation.description|markdown }}
+        <div id="organisation-presentation">
+            {{ organisation.description|markdown }}
+        </div>
+        {% if organisation.image %}
+            <div id="organisation-image">
+                <img src="{{ MEDIA_URL }}{{ organisation.image }}" >
+            </div>
+        {% endif %}
+        <h4>Kontaktuppgifter</h4>
+        <div id="organisation-contact-info">
+            {{ organisation.contact_info|markdown }}
+        </div>
+        <h4>Medlemmar</h4>
+        <div id="organisation-members">
+            <strong>{{ organisation.leader.first_name }} {{ organisation.leader.last_name }}</strong>
+            <ul>
+            {% for m in organisation.members.all %}
+                {% if m.username != organisation.leader.username %}
+                <li>{{ m.first_name }} {{ m.last_name }}</li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </div>
+        <section id="events">
+            {% get_all_events as events %}
+            <h4>Event</h4>
+            {% for event in events %}
+            <article class="event-preview">
+                <h7>{{ event.headline }}</h7>
+                <div class="meta">
+                    <p class="meta-content">{{ event.start|date:"d N Y" }}</p>
+                        <p class="meta-content">Kl. {{ event.start|time:"H:i" }}</p>
+                </div>
+                <a href="{% url "event" event.pk %}">Läs mer</a>
+            <!--
+                {% if event.enable_registration %}
+                    <a href="{% url "event" event.pk %}"><button>Anmäl</button></a>
+                {% endif %}-->
+            </article>
+            {% endfor %}
+        </section>
+
+        <section id="news-feed">
+            {% get_all_articles as articles %}
+            <h4>Nyheter</h4>
+            {% for article in articles %}
+                <article class="news-preview">
+                    <div class="meta">
+                        <span class="date">{{ article.created|date:"Y-m-d" }}</span>
+                        <span class="author">{{ article.author }}</span>
+                        {# Don't render tags for articles without tags #}
+                        {% if article.tags.all %}
+                            <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
+                        {% endif %}
+                    </div>
+                    <h5>{{ article.headline }}</h5>
+
+                    <p>{{ article.lead|truncatewords_html:50 }}</p>
+                    <a href="{{ article.get_absolute_url }}">Läs mer</a>
+                </article>
+            {% endfor %}
+        </section>
     </section>
-    {% if organisation.image %}
-        {% comment %}
-        height="{{ organisation.IMAGE_HEIGHT }}" width="{{ organisation.IMAGE_WIDTH }}"
 
-        <img src="{{ MEDIA_URL }}{{ organisation.image }}" >
-
-        {% endcomment %}
-    {% endif %}
-    <section id="organisation-contact-info">
-        {{ organisation.contact_info|markdown }}
-    </section>
-    <section id="organisation-members">
-        <span class="leader">{{ organisation.leader.first_name }} {{ organisation.leader.last_name }}</span>
-        <span class="members">{% for m in organisation.members.all %}{{ m.username }}{% endfor %}</span>
-        <span class="name">{{ organisation.organisation_type }}</span>
-    </section>
-
-
-
-
-    </section>
 {% endblock %}

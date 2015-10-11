@@ -157,8 +157,8 @@ if not ON_PASS:
         os.path.join(BASE_DIR, "local_static"),
     )
 
-    MEDIA_URL = "media/"
-    MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = os.path.join(BASE_DIR, "../media/")
 
 # This is the s3 settings for Openshift.
 if ON_PASS:
