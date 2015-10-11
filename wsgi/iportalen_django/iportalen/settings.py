@@ -152,8 +152,8 @@ USE_TZ = True
 # Extra locations where staticfiles can be found:
 if not ON_PASS:
     STATIC_URL = "/static/"
-    print(os.path.join(BASE_DIR, "local_static/"))
-    #STATIC_ROOT = os.path.join(BASE_DIR, "local_static/")
+    print(os.path.join(BASE_DIR, "../static"))
+    STATIC_ROOT = os.path.join(BASE_DIR, "../static/")
 
     STATICFILES_DIRS = (
         os.path.join(BASE_DIR, "local_static"),
