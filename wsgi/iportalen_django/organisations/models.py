@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.http import urlquote
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import Group
+from tags.models import Tag
 
 
 # Create your models here.
@@ -46,11 +47,6 @@ class Organisation(models.Model):
                                null=True,
                                blank=True,
                                related_name="leader")
-    #members = models.ManyToManyField(settings.AUTH_USER_MODEL,
-    #                                 verbose_name='Medlemmar',
-    #                                 help_text="Medlemmar i organisationen",
-    #                                 related_name="members",
-    #                                 blank=True)
     organisation_type = models.CharField(verbose_name='Meny',
                                          help_text="Under vilken menyrubrik ska organisationen ligga, "
                                                    "(Gäller inte om en föräldrar organisation är vald)",
@@ -69,6 +65,7 @@ class Organisation(models.Model):
                               null=True,
                               blank=True,
                               related_name="group")
+
 
     def __str__(self):
         return self.name

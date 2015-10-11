@@ -58,3 +58,14 @@ def select_tag_status(article_id, tag_id):
         return "selected"
     else:
         return ""
+
+@register.assignment_tag
+def get_group_articles(group_pk):
+    tags = Tag.objects.filter(group=group_pk).distinct().values('pk')
+    articles = Article.objects.filter(
+        tags__in=tags,
+        approved=True,
+        visible_from__lte=timezone.now(),
+        visible_to__gte=timezone.now()
+    )
+    return articles

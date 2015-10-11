@@ -29,27 +29,31 @@
                 {% endfor %}
             </ul>
         </div>
+    {% if organisation.group_id %}
         <section id="events">
-            {% get_all_events as events %}
-            <h4>Event</h4>
-            {% for event in events %}
-            <article class="event-preview">
-                <h7>{{ event.headline }}</h7>
-                <div class="meta">
-                    <p class="meta-content">{{ event.start|date:"d N Y" }}</p>
-                        <p class="meta-content">Kl. {{ event.start|time:"H:i" }}</p>
-                </div>
-                <a href="{% url "event" event.pk %}">Läs mer</a>
-            <!--
-                {% if event.enable_registration %}
-                    <a href="{% url "event" event.pk %}"><button>Anmäl</button></a>
-                {% endif %}-->
-            </article>
-            {% endfor %}
+            {% get_group_events organisation.group_id as events %}
+            {% if events %}
+                <h4>Event</h4>
+                {% for event in events %}
+                <article class="event-preview">
+                    <h7>{{ event.headline }}</h7>
+                    <div class="meta">
+                        <p class="meta-content">{{ event.start|date:"d N Y" }}</p>
+                            <p class="meta-content">Kl. {{ event.start|time:"H:i" }}</p>
+                    </div>
+                    <a href="{% url "event" event.pk %}">Läs mer</a>
+                <!--
+                    {% if event.enable_registration %}
+                        <a href="{% url "event" event.pk %}"><button>Anmäl</button></a>
+                    {% endif %}-->
+                </article>
+                {% endfor %}
+            {% endif %}
         </section>
 
         <section id="news-feed">
-            {% get_all_articles as articles %}
+            {% get_group_articles organisation.group_id as articles %}
+            {% if articles %}
             <h4>Nyheter</h4>
             {% for article in articles %}
                 <article class="news-preview">
@@ -67,7 +71,9 @@
                     <a href="{{ article.get_absolute_url }}">Läs mer</a>
                 </article>
             {% endfor %}
+        {% endif %}
         </section>
+    {% endif %}
     </section>
 
 {% endblock %}
