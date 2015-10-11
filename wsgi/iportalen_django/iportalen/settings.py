@@ -146,25 +146,21 @@ USE_L10N = True
 USE_TZ = True
 
 
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static_media')
-# Static files (CSS, JavaScript, Images)
+# Target folder of collectstatic.
 
-# Extra locations where staticfiles can be found:
+# Staticfiles settings for local dev environment:
 if not ON_PASS:
-    STATIC_URL = "/static/"
-    print(os.path.join(BASE_DIR, "../static"))
     STATIC_ROOT = os.path.join(BASE_DIR, "../static/")
+    STATIC_URL = "/static/"
 
     STATICFILES_DIRS = (
         os.path.join(BASE_DIR, "local_static"),
-    #    os.path.join(os.path.dirname(BASE_DIR), 'static')
     )
 
     MEDIA_URL = "media/"
     MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
 
-# This is where all static files are put by 'collectstatic', it is
-# always done before the app is deployed on openshift.
+# This is the s3 settings for Openshift.
 if ON_PASS:
     STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, "../static/"))
     MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
@@ -182,19 +178,9 @@ if ON_PASS:
 
     MEDIA_URL = os.environ.get('MEDIA_URL', S3_URL + 'media/')
 
-
-AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
-    'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
-    'Cache-Control': 'max-age=94608000',
-}
-
-
-"""
-# The url behind which static files are exposed. Not run by mod_wsgi but
-# Apache, i think, on Openshift.
-"""
-# STATIC_URL = '/static/' # commented out because os s3
-# MEDIA_URL = '/media/'
-#  This url is where you can log in. The login_required decorator uses this constant.
+    AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
+        'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+        'Cache-Control': 'max-age=94608000',
+    }
 
 LOGIN_URL = 'login_view'
