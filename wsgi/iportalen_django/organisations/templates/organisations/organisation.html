@@ -2,6 +2,8 @@
 {% load article_tags %}
 
 {% block content %}
+    <h1></h1>
+    <section id="organisation-presentation"></section>
     <div class="view_organisation">
         <div class="meta">
             <span class="name">{{ organisation.name }}</span>
@@ -10,7 +12,9 @@
             <span class="members">{% for m in organisation.members.all %}{{ m.username }}{% endfor %}</span>
             <span class="name">{{ organisation.organisation_type }}</span>
             {{ organisation.description|markdown }}
+            {% if organisation.image %}
             <img src="{{ MEDIA_URL }}{{ organisation.image }}" height="{{ organisation.IMAGE_HEIGHT }}" width="{{ organisation.IMAGE_WIDTH }}">
+            {% endif %}
         </div>
     </div>
 {% endblock %}
