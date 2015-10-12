@@ -1,7 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
+from django.core.exceptions import PermissionDenied
 from django.contrib import messages
+from django.utils import timezone
+from django.db import transaction
 
 from .forms import EventForm
 from .models import Event
@@ -90,3 +93,41 @@ def check_in(request, pk):
     event = get_object_or_404(Event, pk=pk)
     if request.method == "POST":
         print("Add me!")
+
+
+@login_required()
+def all_unapproved_events(request):
+    if request.user.has_perm("event.can_approve_event"):
+        events = Event.objects.filter(approved=False, end__gte=timezone.now())
+        return render(request, 'events/approve_event.html', {'events': events})
+    else:
+        raise PermissionDenied
+
+
+@login_required()
+@transaction.atomic
+def approve_event(request, event_id):
+    if request.user.has_perm("event.can_approve_event"):
+        a = Event.objects.get(pk=event_id)
+        a.approved = True
+        a.save()
+        return redirect(all_unapproved_events)
+    else:
+        raise PermissionDenied
+
+
+@login_required()
+def unapprove_event(request, event_id):
+    if request.user.has_perm("event.can_approve_event"):
+        a = Event.objects.get(pk=event_id)
+        # a.draft = True
+        a.save()
+        message = ("Eventet har gått tillbaka till utkast läget, maila gärna <a href='mailto:" +
+                   a.user.email +
+                   "?Subject=Avslag%20publicering%20av%20event' target='_top'>" +
+                   a.user.email +
+                   "</a> med en förklaring till avslaget.<br>" +
+                   "<a href='/event/unapproved'>Tillbaka till listan över artiklar att godkänna.</a>")
+        return render(request, 'articles/confirmation.html', {'message': message})
+    else:
+        raise PermissionDenied
