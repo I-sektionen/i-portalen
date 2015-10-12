@@ -12,9 +12,11 @@ from .exceptions import CouldNotRegisterException
 def view_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
     can_administer = event.can_administer(request.user)
+
     return render(request, "events/event.html", {
         "event": event,
         "can_administer": can_administer,
+        "registered": event.registered(request.user),
     })
 
 
@@ -53,6 +55,15 @@ def register_to_event(request, pk):
 
 
 @login_required()
+def register_as_reserve(request, pk):
+    if request.method == "POST":
+        event = get_object_or_404(Event, pk=pk)
+        entry = event.register_reserve(request.user)
+        messages.success(request, "Du är nu anmäld som reserv på eventet, du har plats nr. " + str(entry.position()) + ".")
+    return redirect("event", pk=pk)
+
+
+@login_required()
 def administer_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
     if event.can_administer(request.user):
@@ -74,6 +85,7 @@ def participants_list(request, pk):
         return HttpResponseForbidden  # Nope.
 
 
+@login_required()
 def check_in(request, pk):
     event = get_object_or_404(Event, pk=pk)
     if request.method == "POST":

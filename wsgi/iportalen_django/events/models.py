@@ -47,18 +47,27 @@ class Event(models.Model):
 
     @property
     def preregistrations(self):
-        q = EntryAsPreRegistered.objects.filter(event__exact=self)
-        return q
+        query = EntryAsPreRegistered.objects.filter(event__exact=self)
+        list = []
+        for el in query:
+            list.append(el.user)
+        return list
 
     @property
     def reserves(self):
         q = EntryAsReserve.objects.filter(event__exact=self)
-        return q
+        list = []
+        for el in q:
+            list.append(el.user)
+        return list
 
     @property
     def participants(self):
         q = EntryAsParticipant.objects.filter(event__exact=self)
-        return q
+        list = []
+        for el in q:
+            list.append(el.user)
+        return list
 
     @property
     def number_of_preregistrations(self):
@@ -71,6 +80,11 @@ class Event(models.Model):
     @property
     def number_of_checked_in_participants(self):
         return EntryAsParticipant.objects.filter(event__exact=self).count()
+
+    # Is the event full?
+    @property
+    def full(self):
+        return self.number_of_preregistrations >= self.registration_limit
 
     #  This method determines if a specific user can register to an event.
     def register_user(self, user):
@@ -121,6 +135,24 @@ class Event(models.Model):
                 pass
         return found
 
+    def register_reserve(self, user):
+        # Check for weirdness:
+        if user in self.reserves:
+            raise CouldNotRegisterException(event=self, reason="du är redan registrerad som reserv")
+
+        if user in self.participants:
+            raise CouldNotRegisterException(event=self, reason="du är anmäld som deltagare")
+
+        # Register as reserve
+        entry = EntryAsReserve(event=self, user=user)
+        entry.save()
+        return entry
+
+    def registered(self, user):
+        if (user in self.preregistrations) or (user in self.reserves):
+            return True
+        return False
+
     def can_administer(self, user):
         if user != self.user:
             if self.admin_group is None:
@@ -153,6 +185,14 @@ class EntryAsReserve(models.Model):
     event = models.ForeignKey(Event)
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    def position(self):
+        entries = EntryAsReserve.objects.filter(event__exact=self.event).order_by("timestamp")
+
+        for pos, entry in enumerate(entries):
+            if entries[pos] == entry:
+                return pos+1
+        return None
 
     class Meta:
         verbose_name = "Reserv"
