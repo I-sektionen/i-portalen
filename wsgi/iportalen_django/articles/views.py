@@ -14,10 +14,10 @@ def create_or_modify_article(request, article_id=None):
     a = None
     if article_id:
         a = Article.objects.get(pk=article_id)
-        if not a.user == request.user and not request.user.has_perm("articles.change_article"):
+        if (a.user != request.user or not request.user.has_perm("articles.change_article")) \
+                and not request.user.has_perm("articles.can_approve_article"):
             # hasn't permission to change
             raise PermissionDenied
-
     if request.method == 'POST':
         form = ArticleForm(request.POST, instance=a)
         # check whether it's valid:
