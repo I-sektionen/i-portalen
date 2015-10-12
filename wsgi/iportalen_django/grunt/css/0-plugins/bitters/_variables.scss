@@ -16,25 +16,17 @@ $small-spacing: $base-spacing / 2;
 $base-z-index: 0;
 
 // Colors
-$blue: #477dca;
 $dark-gray: #333;
 $medium-gray: #999;
 $light-gray: #ddd;
-$isektionen-brightgreen: #7ba66d;
+$blue: #1e77d6;
+$red: #e33c3c;
 $isektionen-green: #2D701E;
-$isektionen-yellow: #fecd09;
-$isektionen-brightyellow: #ffde7c;
+$isektionen-yellow: darken(rgba(250, 213, 63, 1), 5%);
 
-
-$isektionen-better-yellow: darken(rgba(250, 213, 63, 1), 5%);
-$isektionen-brightyellow: #ffde7c;
-
-// Button colors
-$info-blue: #1e77d6;
-$error-red: #e33c3c;
 // Font Colors
 $base-font-color: $dark-gray;
-$action-color: $isektionen-better-yellow;
+$action-color: $isektionen-yellow;
 $link-color: $isektionen-green;
 
 // Border
