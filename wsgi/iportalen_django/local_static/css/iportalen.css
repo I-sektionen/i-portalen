@@ -466,12 +466,12 @@ header #navigation-menu {
     padding: 1em;
   }
 }
-header #navigation-menu > li {
+header #navigation-menu li {
   margin-bottom: 1em;
   padding: 0 0.5em;
 }
 @media screen and (min-width: 50em) {
-  header #navigation-menu > li {
+  header #navigation-menu li {
     margin: 0;
   }
 }
@@ -982,6 +982,87 @@ article.event-preview .meta p {
   font-weight: bold;
 }
 
+@media screen and (min-width: 50em) {
+  #outer-content .outer-form-div {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 57.35098%;
+    margin-left: 25.58941%;
+  }
+  #outer-content .outer-form-div:last-child {
+    margin-right: 0;
+  }
+  #outer-content .outer-form-div .form-div {
+    position: static;
+    margin: 100px;
+    padding: 20px 20px 20px;
+    max-width: 350px;
+    background: white;
+    border: 1px black solid;
+    box-shadow: 5px 5px 2.5px 0px rgba(0, 0, 0, 0.75);
+  }
+  #outer-content .outer-form-div .form-div h4 {
+    margin: -20px -20px 21px;
+    line-height: 40px;
+    text-align: center;
+    text-shadow: 0 1px white;
+    background: #f3f3f3;
+    border-bottom: 1px solid #cfcfcf;
+    border-radius: 3px 3px 0 0;
+    linear-gradient: top, whiteffd, #eef2f5;
+    box-shadow: 0 1px #f5f5f5;
+  }
+  #outer-content .outer-form-div .form-div:before {
+    content: "";
+    position: relative;
+    top: -8px;
+    right: -8px;
+    bottom: -8px;
+    left: -8px;
+    z-index: -1;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+  }
+  #outer-content .outer-form-div .form-div .login-form {
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    box-orient: vertical;
+    -webkit-box-direction: normal;
+    -moz-box-direction: normal;
+    box-direction: normal;
+    -webkit-flex-direction: column;
+    -moz-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-direction: column;
+    /*.username-holder
+     * margin: 20px */
+    /*.password-holder
+     * margin: 20px */
+  }
+  #outer-content .outer-form-div .form-div .login-form input {
+    border: 1px solid black;
+    margin: 10px;
+    padding: 0 10px;
+    width: 200px;
+    height: 34px;
+  }
+  #outer-content .outer-form-div .form-div .login-form input:focus {
+    outline-offset: 0;
+  }
+  #outer-content .outer-form-div .form-div .login-form .submit-holder {
+    max-width: 10em;
+    border: none;
+    outline: none;
+  }
+}
 #content {
   max-width: 68em;
   margin-left: auto;
@@ -1080,6 +1161,7 @@ article.event-preview .meta p {
     position: relative;
     text-align: center;
     top: 40%;
+    text-shadow: -2px 0 black, -2px 0 black, -2px 0 black, -2px 0 black;
   }
 }
 #organisation {
