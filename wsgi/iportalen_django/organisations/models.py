@@ -1,9 +1,9 @@
 from django.conf import settings
 from django.db import models
 from django.utils.http import urlquote
-from django.core.validators import RegexValidator
 from django.contrib.auth.models import Group
 from tags.models import Tag
+from utils.validators import slash_validator
 
 
 # Create your models here.
@@ -20,7 +20,7 @@ class Organisation(models.Model):
     )
     IMAGE_HEIGHT = 320
     IMAGE_WIDTH = 480
-    slash_validator = RegexValidator(r'^[^/]+$', "Kan inte innehålla '/'")
+
 
     name = models.CharField(verbose_name='Namn',
                             help_text="Namn för organisationen",
