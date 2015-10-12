@@ -6,7 +6,6 @@ from django.utils import timezone
 from django.db import transaction
 from .models import Article, Tag
 from .forms import ArticleForm
-from .templatetags.article_tags import get_user_articles
 
 
 @login_required()
@@ -115,25 +114,7 @@ def articles_by_tag(request, tag_name):
 
 @login_required()
 def articles_by_user(request):
-    #I think this is a better solution since otherwise we will have the same code
-    #both here and in article_tags, but I might have misunderstood the purpose of article_tags.py
-    #also, might be a better way to return the dictionary instead of how I have done it, but
-    #could only get this way to work.
-
-    #Also return article_dict instead of {'approved_articles': approved_articles, 'unapproved_articles': unapproved_articles, 'draft_articles': draft_articles}
-    #to me it seems to be an easier code to read, and also not just a duplicate of the code in article_tags
-
-    #This was the other solution:
-    #approved_articles = article_dict['approved_articles']
-    #unapproved_articles = article_dict['unapproved_articles']
-    #draft_articles = article_dict['draft_articles']
-    #approved_articles = request.user.article_set.filter(approved=True, visible_to__gte=timezone.now())
-    #unapproved_articles = request.user.article_set.filter(approved=False, draft=False, visible_to__gte=timezone.now())
-    #draft_articles = request.user.article_set.filter(draft=True, visible_to__gte=timezone.now())
-    #Now it's only one row:
-
-    article_dict = get_user_articles(request.user)
-
+    article_dict = Article.objects.get_user_articles(request.user)
     return render(request, 'articles/my_articles.html', article_dict)
 
 @login_required()
