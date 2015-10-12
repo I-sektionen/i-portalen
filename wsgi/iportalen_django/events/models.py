@@ -132,7 +132,7 @@ class Event(models.Model):
     class Meta:
         verbose_name = "Arrangemang"
         verbose_name_plural = "Arrangemang"
-        permissions = (('can_approve_article', 'Can approve article'),)
+        permissions = (('can_approve_event', 'Can approve event'),)
 
     def save(self, *args, **kwargs):
         if not self.id:

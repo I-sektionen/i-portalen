@@ -19,8 +19,8 @@
     <h5>{{ article.headline }}</h5>
     <p>{{ article.lead|truncatewords_html:50 }}</p>
 
-    <a href="{{ article.get_absolute_url }}approve"><button class="btn-read-more">Godkänn</button></a>
-    <a href="{{ article.get_absolute_url }}unapprove"><button class="btn-read-more">Avslå</button></a>
+    <a href="{% url "approve article" article.pk %}"><button class="btn-read-more">Godkänn</button></a>
+    <a href="{% url "unapproves article" article.pk %}"><button class="btn-read-more">Avslå</button></a>
 </article>
 {% endfor %}
 {% endblock %}

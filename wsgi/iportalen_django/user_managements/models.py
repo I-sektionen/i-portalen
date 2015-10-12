@@ -84,7 +84,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
              menu_choices.append(('Mina Artiklar', reverse('articles by user')))
 
         if self.has_perm("articles.can_approve_article"):
-            menu_choices.append(('Godkänn Artiklar', reverse('unapproved articles')))  # With perm to edit articles.
+            menu_choices.append(('Godkänn Innehåll', reverse('approve content')))  # With perm to edit articles.
 
         if self.is_staff:
             menu_choices.append(('Admin', '/admin'))  # Staff users who can access Admin page.
