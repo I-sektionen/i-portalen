@@ -1,5 +1,5 @@
 {% extends "master.html" %}
-
+{% load iportalen_tags %}
 {% block content %}
     <div id="content">
         <h4>{{ event.headline }}</h4>
@@ -18,7 +18,7 @@
             {{ event.lead }}
         </p>
         <p>
-            {{ event.body }}
+            {{ event.body|markdown }}
         </p>
 
         {% if event.enable_registration %}
