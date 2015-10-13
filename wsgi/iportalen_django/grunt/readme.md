@@ -50,6 +50,14 @@ För att installera de moduler som finns definerade i `package.json` skriver man
 npm install
 ````
 
+Någon pushade och gick hem från mötet utan att uppdatera guiden...
+
+````Bash
+sudo gem install bitters
+bitters install
+````
+
+
 Vill du installera egna moduler görs detta genom kommandot
 ````Bash
 npm install <module> --save-dev
