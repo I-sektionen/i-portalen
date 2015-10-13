@@ -11,6 +11,13 @@ div.event-container
         span
             padding-right: 1em
 
+div#event-form
+    @include span-columns(6 of 10)
+    .errorlist
+        color: $red
+
+div#markdown-preview
+    @include span-columns(4 of 10)
 
 article.event-preview
     border-radius: 3px
@@ -28,3 +35,4 @@ article.event-preview
             font-size: 14pt
             +media($large-screen)
                 font-size: 12pt
+

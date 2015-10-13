@@ -1320,6 +1320,29 @@ div.event-container .meta span {
   padding-right: 1em;
 }
 
+div#event-form {
+  float: left;
+  display: block;
+  margin-right: 2.84259%;
+  width: 58.86297%;
+}
+div#event-form:last-child {
+  margin-right: 0;
+}
+div#event-form .errorlist {
+  color: #e33c3c;
+}
+
+div#markdown-preview {
+  float: left;
+  display: block;
+  margin-right: 2.84259%;
+  width: 38.29445%;
+}
+div#markdown-preview:last-child {
+  margin-right: 0;
+}
+
 article.event-preview {
   border-radius: 3px;
   border-left: 3px solid #2D701E;

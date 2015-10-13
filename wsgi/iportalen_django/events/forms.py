@@ -16,9 +16,9 @@ class EventForm(forms.ModelForm):
         self.fields['start'].widget.attrs['class'] = 'datetimepicker'
         self.fields['end'].widget.attrs['class'] = 'datetimepicker'
         self.fields['lead'].widget.attrs['cols'] = 40
-        self.fields['lead'].widget.attrs['rows'] = 10
+        self.fields['lead'].widget.attrs['rows'] = 3
         self.fields['body'].widget.attrs['cols'] = 40
-        self.fields['body'].widget.attrs['rows'] = 20
+        self.fields['body'].widget.attrs['rows'] = 15
         self.fields['body'].widget.attrs['class'] = 'wmd-input'
         self.fields['body'].widget.attrs['id'] = 'wmd-input-body'
 

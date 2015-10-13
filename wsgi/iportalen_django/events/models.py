@@ -22,7 +22,7 @@ class Event(models.Model):
     headline = models.CharField(verbose_name='rubrik', max_length=255)
     lead = models.TextField(verbose_name='ingress', )
     body = models.TextField(verbose_name='brödtext', )
-    location = models.CharField(max_length=30)
+    location = models.CharField(max_length=30, verbose_name="plats")
 
     start = models.DateTimeField(verbose_name='eventets start')  # When the event starts.
     end = models.DateTimeField(verbose_name='eventets slut')  # When the event ends.
@@ -31,14 +31,18 @@ class Event(models.Model):
     registration_limit = models.IntegerField(verbose_name='maximalt antal anmälningar', blank=True, null=True)
 
     # Dagar innan start för avanmälan. Räknas bakåt från 'start'
-    deregister_delta = models.PositiveIntegerField(verbose_name='dagar innan start för senaste avanmälan', default=1)
+    deregister_delta = models.PositiveIntegerField(verbose_name='Senaste avanmälan, dagar.',
+                                                   default=1,
+                                                   help_text="Är dagar innan eventet börjar. 1 betyder att en användare kan avanmäla sig senast en dag innan eventet börjar. ")
 
-    visible_from = models.DateTimeField()
+    visible_from = models.DateTimeField(verbose_name="evenemanget är synligt ifrån")
 
     #  Access rights
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')  # User with admin rights/creator.
     # The group which has admin rights. If left blank is it only the user who can admin.
-    admin_group = models.ForeignKey(Group, blank=True, null=True)
+    admin_group = models.ForeignKey(Group, blank=True, null=True,
+                                    verbose_name="grupp som kan administrera",
+                                    help_text="Utöver den användare som skapar eventet.")
     tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
 
     approved = models.BooleanField(verbose_name='godkänd', default=False)
