@@ -1309,7 +1309,7 @@ article.news-single-view .btn-read-more {
 div.event-container {
   border-radius: 3px;
   border-left: 3px solid #2D701E;
-  box-shadow: 1px 1px 4px #cccccc;
+  box-shadow: 1px 1px 4px #ddd;
   margin-bottom: 1em;
   padding: 0.5em 1em;
 }
