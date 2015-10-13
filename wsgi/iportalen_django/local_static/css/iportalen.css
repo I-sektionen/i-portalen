@@ -788,6 +788,20 @@ article.news-single-view .btn-read-more {
     top: 40%;
   }
 }
+div.event-container {
+  border-radius: 3px;
+  border-left: 3px solid #2D701E;
+  box-shadow: 1px 1px 4px #cccccc;
+  margin-bottom: 1em;
+  padding: 0.5em 1em;
+}
+div.event-container p.lead {
+  font-style: italic;
+}
+div.event-container .meta span {
+  padding-right: 1em;
+}
+
 article.event-preview {
   border-radius: 3px;
   border-left: 3px solid #2D701E;

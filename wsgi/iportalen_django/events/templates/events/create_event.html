@@ -83,31 +83,20 @@
 </div>
 <div>
 <br>
-<h2>This should be a Event preview!!!!</h2>
-    <h2>You have to edit /grunt/js/src/preview_article to only listen to article page and then copy it and do something similar to event</h2>
-
-    <article class="news-preview">
+    <h4 id="headline_collapsed"></h4>
+    <article class="event-preview">
         <div class="meta">
-            <span class="date" id="date_collapsed"></span>
-            <span class="author" id="author_collapsed"></span>
-            <span class="tags" id="tags_collapsed"></span>
+            <p class="meta-content">16 okt 2015</p>
+            <p class="meta-content">Kl. 12.15</p>
         </div>
-        <h5 id="headline_collapsed"></h5>
-        <p id="lead_collapsed"></p>
-        <a href=""><button class="btn-read-more">Läs mer</button></a>
+        <a href="#"><button>Läs mer</button></a>
+        <a href="#"><button>Anmäl</button></a>
     </article>
-
-    <article class="news-preview">
-        <div class="meta">
-            <span class="date" id="date_expanded"></span>
-            <span class="author" id="author_expanded"></span>
-                <span class="tags" id="tags_expanded"></span>
-        </div>
-        <h5 id="headline_expanded"></h5>
+    <div class="event-container">
+        <h4 id="headline_expanded"></h4>
         <p id="lead_expanded"></p>
-        <div id="wmd-preview-body" class="wmd-panel wmd-preview"></div>
-    </article>
-
+        <p id="wmd-preview-body" class="wmd-panel wmd-preview"></p>
+    </div>
 </div>
 
 {% endblock %}
