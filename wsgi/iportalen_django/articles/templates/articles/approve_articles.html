@@ -21,6 +21,8 @@
 
     <a href="{% url "approve article" article.pk %}"><button class="btn-read-more">Godkänn</button></a>
     <a href="{% url "unapproves article" article.pk %}"><button class="btn-read-more">Avslå</button></a>
+    <a href="{% url "edit article" article.pk %}"><button class="btn-read-more">Gör ändringar</button></a>
+
 </article>
 {% endfor %}
 {% endblock %}
