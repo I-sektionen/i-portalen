@@ -5,10 +5,12 @@ from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.utils import timezone
 from django.db import transaction
+from django.core.exceptions import ObjectDoesNotExist
 
-from .forms import EventForm
+from .forms import EventForm, CheckForm
 from .models import Event
 from .exceptions import CouldNotRegisterException
+from user_managements.models import IUser
 # Create your views here.
 
 
@@ -78,6 +80,16 @@ def administer_event(request, pk):
 
 
 @login_required()
+def preregistrations_list(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    if event.can_administer(request.user):
+        return render(request, 'events/event_preregistrations.html', {
+            'event': event,
+        })
+    else:
+        return HttpResponseForbidden  # Nope.
+
+@login_required()
 def participants_list(request, pk):
     event = get_object_or_404(Event, pk=pk)
     if event.can_administer(request.user):
@@ -91,9 +103,49 @@ def participants_list(request, pk):
 @login_required()
 def check_in(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    if request.method == "POST":
-        print("Add me!")
+    reserve = False
+    if request.method == 'POST':
+        form = CheckForm(request.POST)
+        if form.is_valid():
+            liu_id = form.cleaned_data["liu"]
+            event_user = None
+            try:
+                event_user = IUser.objects.get(username=liu_id)
+            except ObjectDoesNotExist:
+                messages.error(request, "Användaren finns in i databasen")
+                form = CheckForm()
+                return render(request, 'events/event_check_in.html', {
+                'form': form, 'event.pk': event.pk
+            })
+            if event_user in event.preregistrations or form.cleaned_data["force_check_in"] == True:
+                try:
+                    event.check_in(IUser.objects.get(username=liu_id))
+                    messages.success(request, "Det lyckades")
+                    return render(request, 'events/event_check_in.html', {
+                        'form': form, 'event.pk': event.pk
+                     })
+                except:
+                    messages.error(request, "Redan anmäld som deltagere")
+            else:
+                if event_user in event.reserves:
+                    messages.error(request, "Användare är anmäld som reserv")
+                    reserve = True
+                    print(form.cleaned_data["force_check_in"])
+                    return render(request, 'events/event_check_in.html', {'form': form, 'event.pk': event.pk, 'reserve': reserve})
+                else:
+                    messages.error(request, "Användare inte anmäld på eventet")
+                    form = CheckForm()
+                    return render(request, 'events/event_check_in.html', {'form': form, 'event.pk': event.pk})
 
+        else:
+            return render(request, 'events/event_check_in.html', {
+                'form': form, 'event.pk': event.pk
+            })
+
+    form = CheckForm
+    return render(request, 'events/event_check_in.html', {
+        'form': form, 'event.pk': event.pk
+    })
 
 @login_required()
 def all_unapproved_events(request):
