@@ -112,7 +112,7 @@ def check_in(request, pk):
             try:
                 event_user = IUser.objects.get(username=liu_id)
             except ObjectDoesNotExist:
-                messages.error(request, "Användaren finns in i databasen")
+                messages.error(request, "Användaren finns inte i databasen")
                 form = CheckForm()
                 return render(request, 'events/event_check_in.html', {
                 'form': form, 'event.pk': event.pk
@@ -129,13 +129,10 @@ def check_in(request, pk):
             else:
                 if event_user in event.reserves:
                     messages.error(request, "Användare är anmäld som reserv")
-                    reserve = True
-                    print(form.cleaned_data["force_check_in"])
-                    return render(request, 'events/event_check_in.html', {'form': form, 'event.pk': event.pk, 'reserve': reserve})
                 else:
                     messages.error(request, "Användare inte anmäld på eventet")
-                    form = CheckForm()
-                    return render(request, 'events/event_check_in.html', {'form': form, 'event.pk': event.pk})
+                reserve = True
+                return render(request, 'events/event_check_in.html', {'form': form, 'event.pk': event.pk, 'reserve': reserve})
 
         else:
             return render(request, 'events/event_check_in.html', {
