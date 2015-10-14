@@ -41,8 +41,8 @@ class Event(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')  # User with admin rights/creator.
     # The group which has admin rights. If left blank is it only the user who can admin.
     admin_group = models.ForeignKey(Group, blank=True, null=True,
-                                    verbose_name="grupp som kan administrera",
-                                    help_text="Utöver den användare som skapar eventet.")
+                                    verbose_name="grupp som kan administrera eventet.",
+                                    help_text="Utöver den användare som nu skapar eventet.")
     tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
 
     approved = models.BooleanField(verbose_name='godkänd', default=False)

@@ -95,37 +95,45 @@
     <div id="markdown-preview">
             <h3>Förhandsgranskningar:</h3>
             <article class="event-preview">
-            <h4 id="headline_collapsed"></h4>
+            <h4 class="headline_preview"></h4>
                 <div class="meta">
-                    <p class="meta-content">16 okt 2015</p>
-                    <p class="meta-content">Kl. 12.15</p>
+                    <p class="meta-content start_preview_date"></p>
+                    <p class="meta-content id_start_preview_time"></p>
                 </div>
                 <a href="#"><button>Läs mer</button></a>
-                <a href="#"><button>Anmäl</button></a>
+                <a href="#"><button class="enable_registration_preview">Anmäl</button></a>
             </article>
 
-            <h4 id="headline_expanded"></h4>
+            <h4 class="headline_preview"></h4>
             <div class="event-container">
                 <div class="meta">
                     <span class="date">
                             <i class="fa fa-calendar"></i>
-                            <span class="meta-content">12 Oktober 2015</span>
+                            <span class="meta-content start_preview_date"></span>
                     </span>
 
                     <span class="time">
                         <i class="fa fa-clock-o"></i>
-                        <span class="meta-content">Kl. 12.15</span>
+                        <span class="meta-content start_preview_time"></span>
                     </span>
 
                     <span class="place">
                         <i class="fa fa-map-o"></i>
-                        <span class="meta-content">C4</span>
+                        <span class="meta-content place_preview"></span>
                     </span>
                 </div>
-                <p class="lead" id="lead_expanded"></p>
-                <a href="#"><button>Anmäl mig</button></a>
+                <p class="lead" id="lead_preview"></p>
+                <a href="#"><button class="enable_registration_preview">Anmäl mig</button></a>
                 <p id="wmd-preview-body" class="wmd-panel wmd-preview"></p>
             </div>
         </div>
 </div>
+{% endblock %}
+
+{% block after_scripts %}
+    <script>
+        jQuery(document).ready(function(){
+            event_preview();
+        });
+    </script>
 {% endblock %}

@@ -1,6 +1,7 @@
 /**
  * Created by jonathan on 2015-09-08.
  */
+/*
 (function () {
         //var converter1 = Markdown.getConverter();
         var converter1 = Markdown.getSanitizingConverter();
@@ -94,3 +95,4 @@ function displayVals() {
 }
 $( "select" ).change( displayVals );
 displayVals();
+*/
