@@ -5,55 +5,47 @@
 {% load event_tags %}
 {% include "header.html" %}
 
-{% block hero %}
-    <section class="hero">
-        <h1 id="hero-logo">i-portalen</h1>
-    </section>
-{% endblock %}
-
 {% block content %}
-    <div id="content">
-        {# gets all articles via template tag #}
-        {% get_all_articles as articles %}
-        <section id="news-feed">
-            <h4>Nyheter</h4>
-            {% for article in articles %}
-                <article class="news-preview">
-                    <div class="meta">
-                        <span class="date">{{ article.created|date:"Y-m-d" }}</span>
-                        <span class="author">{{ article.author }}</span>
-                        {# Don't render tags for articles without tags #}
-                        {% if article.tags.all %}
-                            <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
-                        {% endif %}
-                    </div>
-                    <h5>{{ article.headline }}</h5>
+    {# gets all articles via template tag #}
+    {% get_all_articles as articles %}
+    <section id="news-feed">
+        <h1>Nyheter</h1>
+        {% for article in articles %}
+            <article class="news-preview">
+                <div class="meta">
+                    <span class="date">{{ article.created|date:"Y-m-d" }}</span>
+                    <span class="author">{{ article.author }}</span>
+                    {# Don't render tags for articles without tags #}
+                    {% if article.tags.all %}
+                        <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
+                    {% endif %}
+                </div>
+                <h5>{{ article.headline }}</h5>
 
-                    <p>{{ article.lead|truncatewords_html:50 }}</p>
-                    <a href="{{ article.get_absolute_url }}">Läs mer</a>
+                <p>{{ article.lead|truncatewords_html:50 }}</p>
+                <a href="{{ article.get_absolute_url }}">Läs mer</a>
 
-                </article>
-            {% endfor %}
-        </section>
-        <section id="upcoming">
-            <h4>Kommande</h4>
-            {% get_all_events as events %}
-            {% for event in events %}
+            </article>
+        {% endfor %}
+    </section>
+    <section id="upcoming">
+        <h1>Kommande</h1>
+        {% get_all_events as events %}
+        {% for event in events %}
             <article class="event-preview">
-                <h7>{{ event.headline }}</h7>
+                <h4>{{ event.headline }}</h4>
                 <div class="meta">
                     <p class="meta-content">{{ event.start|date:"d N Y" }}</p>
-                        <p class="meta-content">Kl. {{ event.start|time:"H:i" }}</p>
+                    <p class="meta-content">Kl. {{ event.start|time:"H:i" }}</p>
                 </div>
                 <a href="{% url "event" event.pk %}">Läs mer</a>
-            <!--
+                <!--
                 {% if event.enable_registration %}
                     <a href="{% url "event" event.pk %}"><button>Anmäl</button></a>
                 {% endif %}-->
             </article>
-            {% endfor %}
-        </section>
-    </div>
+        {% endfor %}
+    </section>
 {% endblock %}
 
 {% include "scripts.html" %}

@@ -15,8 +15,8 @@ class ArticleForm(forms.ModelForm):
             },
         }
         widgets = {
-            'lead': forms.Textarea(attrs={'cols': 80, 'rows': 20}),
-            'body': forms.Textarea(attrs={'cols': 80, 'rows': 20, 'class': 'wmd-input', 'id': 'wmd-input-body'}),
+            'lead': forms.Textarea(attrs={}),
+            'body': forms.Textarea(attrs={'class': 'wmd-input', 'id': 'wmd-input-body'}),
         }
 
     # This overrides the constructor, and adds the class datetimepicker.

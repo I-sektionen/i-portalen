@@ -16,7 +16,7 @@ header
     +display(flex)
     +flex-direction(column)
     // Place img and nav in row on large screens
-    +media($large-screen)
+    +media($large-screen-up)
       +flex-direction()
       +justify-content(space-around)
       +align-items(flex-end)
@@ -27,7 +27,7 @@ header
       max-width: 10em
       +flex-basis(100%)
 
-      +media($large-screen)
+      +media($large-screen-up)
         padding: 1em
         margin: 0
 
@@ -38,7 +38,7 @@ header
     padding: 1em
 
     //Hide menu toggle panel on large screens
-    +media($large-screen)
+    +media($large-screen-up)
       display: none
 
   // holds links for menu
@@ -46,7 +46,7 @@ header
     +display(none)
     +flex-direction(column)
 
-    +media($large-screen)
+    +media($large-screen-up)
       +display(flex)
       +flex-direction()
       margin: 0
@@ -56,7 +56,7 @@ header
       margin-bottom: 1em
       padding: 0 0.5em
 
-      +media($large-screen)
+      +media($large-screen-up)
         margin: 0
 
     li.more > a:after
@@ -73,7 +73,7 @@ header
       padding:  1em
       box-shadow: 2px 2px 4px $light-gray
 
-      +media($large-screen)
+      +media($large-screen-up)
         padding: 1em
         +flex-direction()
         +justify-content(space-around)
@@ -95,7 +95,7 @@ header
       a
         text-transform: none
 
-      +media($large-screen)
+      +media($large-screen-up)
         margin: 0 1.5em
 
       // The first item in a list is treated as the heading for
@@ -111,7 +111,7 @@ header
         //border-bottom: 1px dashed $light-gray
         margin: 1em 0
 
-        +media($large-screen)
+        +media($large-screen-up)
           color: darken(white, 80%)
           background: none
           margin: 0 0 0.5em 0
@@ -119,5 +119,5 @@ header
           border-bottom: 3px solid $isektionen-yellow
       & > *
         padding: 0.8em
-        +media($large-screen)
+        +media($large-screen-up)
           padding: 0.5em 0

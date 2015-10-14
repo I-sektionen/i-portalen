@@ -1,4 +1,21 @@
 #article-create-form
-  +span-columns(5 of 10)
+  +span-columns(12)
+  +media($large-screen)
+    +span-columns(7 of 7)
+  #article-create-form-text
+    textarea
+      height: 100px
+    +media($large-screen)
+      +span-columns(4 of 6)
+  #article-create-form-meta
+    padding: 1em
+    +media($large-screen)
+      +span-columns(3)
+    background: $light-gray
+    border-radius: $base-border-radius
+  #article-create-form-buttons
+    margin-top: 1em
+    +span-columns(12)
+
 #article-create-preview
-  +span-columns(5 of 10)
+  display: none
