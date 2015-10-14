@@ -1,20 +1,22 @@
 {% extends "master.html" %}
 {% load iportalen_tags %}
+{% load organisation_tags %}
 {% load article_tags %}
 {% load event_tags %}
 
 {% block content %}
     <section id="organisation">
+    {% if organisation.image %}
+        <div id="organisation-image">
+            <img src="{{ MEDIA_URL }}{{ organisation.image }}" >
+        </div>
+    {% endif %}
         <h1>{{ organisation.name }}</h1>
 
         <div id="organisation-presentation">
             {{ organisation.description|markdown }}
         </div>
-        {% if organisation.image %}
-            <div id="organisation-image">
-                <img src="{{ MEDIA_URL }}{{ organisation.image }}" >
-            </div>
-        {% endif %}
+
         <h4>Kontaktuppgifter</h4>
         <div id="organisation-contact-info">
             {{ organisation.contact_info|markdown }}
@@ -30,6 +32,18 @@
                 {% endfor %}
             </ul>
         </div>
+
+    {% get_child_organisations organisation.pk as children %}
+        {% if children %}
+        <div id="sub-organisations">
+            <h4>Grupper</h4>
+            <ul>
+                {% for c in children %}
+                    <li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
     {% if organisation.group_id %}
         <section id="events">
             {% get_group_events organisation.group_id as events %}
