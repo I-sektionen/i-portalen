@@ -44,18 +44,30 @@
       padding-top: 0px
       margin-top: 0.2em
 
+  #sub-organisations
+    border-radius: 3px
+    border-left: 3px solid $isektionen-yellow
+    padding: 0px 15px 15px 15px
+    margin-bottom: 1em
+    ul
+      padding-top: 0px
+      margin-top: 0.2em
+
 +media($large-screen)
   #organisation
+
     +display(flex)
     +flex-direction(column)
     +span-columns(10)
     #organisation-image
-      +span-columns(3 of 10)
+      +span-columns(10 of 10)
       img
-        +span-columns(10)
+        width: 100%
     #organisation-presentation
       +span-columns(6 of 10)
     #organisation-contact-info
+      +span-columns(3 of 10)
+    #sub-organisations
       +span-columns(3 of 10)
     #organisation-members
       +span-columns(3 of 10)

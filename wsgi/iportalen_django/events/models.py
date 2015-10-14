@@ -157,6 +157,11 @@ class Event(models.Model):
             return True
         return False
 
+    def check_in(self, user):
+        if user in self.participants:
+            raise CouldNotRegisterException(event=self, reason="Du är redan anmäld som deltagare")
+        EntryAsParticipant(user=user, event=self).save()
+
     def can_administer(self, user):
         if user != self.user:
             if self.admin_group is None:

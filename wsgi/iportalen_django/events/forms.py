@@ -23,5 +23,6 @@ class EventForm(forms.ModelForm):
         self.fields['body'].widget.attrs['id'] = 'wmd-input-body'
 
 
-
-
+class CheckForm(forms.Form):
+    liu = forms.CharField(max_length=10)
+    force_check_in = forms.BooleanField(required=False)

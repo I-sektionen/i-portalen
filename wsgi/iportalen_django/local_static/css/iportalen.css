@@ -1779,6 +1779,16 @@ article.event-preview .meta p {
   padding-top: 0px;
   margin-top: 0.2em;
 }
+#organisation #sub-organisations {
+  border-radius: 3px;
+  border-left: 3px solid #f9d026;
+  padding: 0px 15px 15px 15px;
+  margin-bottom: 1em;
+}
+#organisation #sub-organisations ul {
+  padding-top: 0px;
+  margin-top: 0.2em;
+}
 
 @media screen and (min-width: 900px) {
   #organisation {
@@ -1811,19 +1821,13 @@ article.event-preview .meta p {
     float: left;
     display: block;
     margin-right: 2.84259%;
-    width: 28.01019%;
+    width: 100%;
   }
   #organisation #organisation-image:last-child {
     margin-right: 0;
   }
   #organisation #organisation-image img {
-    float: left;
-    display: block;
-    margin-right: 2.35765%;
-    width: 82.94039%;
-  }
-  #organisation #organisation-image img:last-child {
-    margin-right: 0;
+    width: 100%;
   }
   #organisation #organisation-presentation {
     float: left;
@@ -1841,6 +1845,15 @@ article.event-preview .meta p {
     width: 28.01019%;
   }
   #organisation #organisation-contact-info:last-child {
+    margin-right: 0;
+  }
+  #organisation #sub-organisations {
+    float: left;
+    display: block;
+    margin-right: 2.84259%;
+    width: 28.01019%;
+  }
+  #organisation #sub-organisations:last-child {
     margin-right: 0;
   }
   #organisation #organisation-members {
