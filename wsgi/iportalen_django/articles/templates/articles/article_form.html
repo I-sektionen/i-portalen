@@ -3,7 +3,8 @@
 {% load tag_tags %}
 {% load staticfiles %}
 {% block content %}
-    <div>
+    <h1>Skapa artikel</h1>
+    <div id="article-create-form">
         <form action="" method="post">
             {% csrf_token %}
             {{ form.non_field_errors }}
@@ -12,15 +13,11 @@
             {{ form.headline.label_tag }}
             {{ form.headline }}
             {{ form.headline.help_text }}
-            <br>
-            <br>
 
             {{ form.lead.errors }}
             {{ form.lead.label_tag }}
             {{ form.lead }}
             {{ form.lead.help_text }}
-            <br>
-            <br>
 
             {{ form.body.errors }}
             {{ form.body.label_tag }}
@@ -29,31 +26,22 @@
                 {{ form.body }}
             </div>
 
-
             {{ form.body.help_text }}
-            <br>
-            <br>
 
             {{ form.visible_from.errors }}
             {{ form.visible_from.label_tag }}
             {{ form.visible_from }}
             {{ form.visible_from.help_text }}
-            <br>
-            <br>
 
             {{ form.visible_to.errors }}
             {{ form.visible_to.label_tag }}
             {{ form.visible_to }}
             {{ form.visible_to.help_text }}
-            <br>
-            <br>
 
             {{ form.author.errors }}
             {{ form.author.label_tag }}
             {{ form.author }}
             {{ form.author.help_text }}
-            <br>
-            <br>
 
             {{ form.tags.errors }}
             {{ form.tags.label_tag }}
@@ -61,25 +49,20 @@
 
             <select multiple="multiple" id="id_tags" name="tags">
                 {% for tag in tags %}
-                {% select_tag_status article_id tag.id as selected %}
-                <option value="{{ tag.id }}" {{ selected }}>{{ tag.name }}</option>
+                    {% select_tag_status article_id tag.id as selected %}
+                    <option value="{{ tag.id }}" {{ selected }}>{{ tag.name }}</option>
                 {% endfor %}
             </select>
             {{ form.tags.help_text }}
-            <br>
-            <br>
-
             {{ form.draft.errors }}
             {{ form.draft.label_tag }}
             {{ form.draft }}
             {{ form.draft.help_text }}
-            <br>
-            <br>
-
             <input type="submit" value="Submit" />
         </form>
+
     </div>
-    <div>
+    <div id="article-create-preview">
         <article class="news-preview">
             <div class="meta">
                 <span class="date" id="date_collapsed"></span>
@@ -95,12 +78,12 @@
             <div class="meta">
                 <span class="date" id="date_expanded"></span>
                 <span class="author" id="author_expanded"></span>
-                    <span class="tags" id="tags_expanded"></span>
+                <span class="tags" id="tags_expanded"></span>
             </div>
             <h5 id="headline_expanded"></h5>
             <p id="lead_expanded"></p>
             <div id="wmd-preview-body" class="wmd-panel wmd-preview"></div>
         </article>
-
     </div>
+
 {% endblock %}
