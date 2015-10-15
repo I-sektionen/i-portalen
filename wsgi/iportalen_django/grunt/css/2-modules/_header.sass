@@ -1,17 +1,10 @@
 header
   +outer-container()
   a
-    text-decoration: none
+    color: $dark-gray
     text-transform: uppercase
-    font-size: 14px
-    font-weight: 400
-    text-decoration: none
-    color: black
     &:hover
-      color: darken(white, 15%)
-      text-decoration: none
-    &:visited
-      color: black
+      color: tint($dark-gray, 10%)
       text-decoration: none
   nav
     +span-columns(12)
@@ -19,7 +12,6 @@ header
       +span-columns(12 of 12)
       +media($large-screen-up)
         +span-columns(2 of 12)
-        margin: 0
       padding: 1em
       max-width: 10em
 
@@ -36,58 +28,46 @@ header
 
   // holds links for menu
   #navigation-menu
+    margin-top: 1em
     +display(none)
-    +flex-direction(column)
-
     +media($large-screen-up)
-      +span-columns(12)
-      margin: 0
       padding: 1em
-
+      +span-columns(10 of 12)
     li
       margin-bottom: 1em
-      padding: 0 0.5em
-
+      padding: 0 1em
       +media($large-screen-up)
         margin: 0
-
-    li.more > a:after
-      content: ""
-
+        display: inline
+    .more
+      &:hover > .submenu-wrapper
+        +span-columns(12)
+      &:after
+        content: '\25BE'
     &.show
-      +display(flex)
+      +span-columns(12)
     //wrapper for all submenus under a particular menu item
     .submenu-wrapper
       +display(none)
-      +flex-direction(column)
-      background: darken(white, 3%)
-      margin: 1em 0
+      background: darken(white, 1%)
       padding:  1em
       box-shadow: 2px 2px 4px $light-gray
 
       +media($large-screen-up)
+        +display(none)
         padding: 1em
-        +flex-direction()
-        +justify-content(space-around)
-        position: absolute
-        right: 13.37%
         //opacity: 0.95
-        z-index: 1
-        border-radius: 3px
-        box-shadow: none
 
-      &.show
-        +display(flex)
+        border-radius: 3px
+
+      &:hover
+        +position(absolute)
+        z-index: 1
 
     .submenu
-      +display(flex)
-      +align-content(space-around)
-      +flex-direction(column)
-      font-weight: 200
-      a
-        text-transform: none
-
+      +span-columns(12)
       +media($large-screen-up)
+        +span-columns(4)
         margin: 0 1.5em
 
       // The first item in a list is treated as the heading for
