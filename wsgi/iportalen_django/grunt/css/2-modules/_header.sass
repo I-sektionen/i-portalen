@@ -1,4 +1,5 @@
 header
+  +outer-container()
   a
     text-decoration: none
     text-transform: uppercase
@@ -13,26 +14,18 @@ header
       color: black
       text-decoration: none
   nav
-    +display(flex)
-    +flex-direction(column)
-    // Place img and nav in row on large screens
-    +media($large-screen-up)
-      +flex-direction()
-      +justify-content(space-around)
-      +align-items(flex-end)
-    //padding: 1em
-
+    +span-columns(12)
     img
+      +span-columns(12 of 12)
+      +media($large-screen-up)
+        +span-columns(2 of 12)
+        margin: 0
       padding: 1em
       max-width: 10em
-      +flex-basis(100%)
-
-      +media($large-screen-up)
-        padding: 1em
-        margin: 0
 
   // Menu bar for mobile view
   #menu-toggle
+    +span-columns(12)
     background: black
     color: white
     padding: 1em
@@ -47,8 +40,7 @@ header
     +flex-direction(column)
 
     +media($large-screen-up)
-      +display(flex)
-      +flex-direction()
+      +span-columns(12)
       margin: 0
       padding: 1em
 
