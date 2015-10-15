@@ -42,7 +42,12 @@
                 {{ form.draft.errors }}
                 {{ form.draft.label_tag }}
                 {{ form.draft }}
-                {{ form.draft.help_text }}
+            {{ form.visible_from.errors }}
+            {{ form.visible_from.label_tag }}
+            {{ form.visible_from }}
+                        {{ form.visible_to.errors }}
+            {{ form.visible_to.label_tag }}
+            {{ form.visible_to }}
             </div>
             <div id="article-create-form-buttons">
                 <button type="submit" value=>Publicera</button>
