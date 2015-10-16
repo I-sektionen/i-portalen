@@ -42,8 +42,11 @@ $(document).ready(function () {
     };
 
     // Closes the hover aspect of the menu when mouse gets on another part of the page
-    $(".nav-bar").on('mouseover', closeSubMenu);
+    $(".nav-bar, .hero, #outer-content > #container, div#container, #content, section#sponsors").on('mouseover', closeSubMenu);
     $('.hero').on('mouseover', closeSubMenu);
+    $("nav").on('mouseover', closeSubMenu);
+    $('div, section, p, h1, h2, h3, h4').on('mouseover', closeSubMenu);
+
 
     /*
     This was supposed to be a solution to the double-hover-click

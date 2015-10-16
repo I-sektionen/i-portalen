@@ -31,3 +31,8 @@ def get_menu_organisations():
         ).order_by('name')),
     }
     return organisations
+
+@register.assignment_tag
+def get_child_organisations(org_pk):
+    organisations = Organisation.objects.filter(parent_organisation_id=org_pk).order_by('name')
+    return organisations
