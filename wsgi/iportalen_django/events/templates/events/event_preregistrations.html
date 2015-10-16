@@ -2,7 +2,7 @@
 
 {% block content %}
     <div id="content">
-    <p>Antal deltagare: {{ event.number_of_participants }}</p>
+    <p>Antal deltagare: {{ event.number_of_preregistrations }}</p>
         <table>
             <thead>
                 <tr>
@@ -10,7 +10,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for entry in event.participants %}
+                {% for entry in event.preregistrations %}
                     <tr>
                         <td>{{ entry.username }}</td>
                         <td>{{ entry.first_name }}</td>
