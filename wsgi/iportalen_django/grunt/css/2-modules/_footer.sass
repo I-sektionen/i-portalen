@@ -1,12 +1,9 @@
 #footer
-    background: white
+    +fill-parent()
+    background: $light-gray
     height: 150px
     #footer-content
-        +display(flex)
-        padding: 20px
+        +span-columns(8)
+        +shift(1)
         +align-items(center)
-
-        +media($large-screen)
-            margin: 0 auto
-            max-width: 970px
 

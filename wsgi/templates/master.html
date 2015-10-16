@@ -14,31 +14,37 @@
 <body>
 {% include "header.html" %}
 {% if messages %}
-<div id="message-box">
-    {% for message in messages %}
-    <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-        <span>{{ message }}</span>
-    <button type="button" onclick="closeMessage(this)">&times;</button>
+    <div id="message-box">
+        {% for message in messages %}
+            <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                <span>{{ message }}</span>
+                <button type="button" onclick="closeMessage(this)">&times;</button>
+            </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
 {% endif %}
 {% block hero %}
+    <section class="hero">
+        <h1 id="hero-logo">i-portalen</h1>
+    </section>
 {% endblock %}
 
-<div id="outer-content">
-    {% block content %}
-    {% endblock %}
-    {% block sponsors %}
-        <section id="sponsors">
-            <h4>Sponsorer</h4>
-            <img src="http://placehold.it/200x100">
-            <img src="http://placehold.it/200x100">
-            <img src="http://placehold.it/200x100">
-            <img src="http://placehold.it/200x100">
-            <img src="http://placehold.it/200x100">
-        </section>
-    {% endblock %}
+<!-- THIS SPANS 12 COLUMNS -->
+<div id="container">
+<!-- 10 NEAT COLS -->
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <!-- 2 NEAT COLS -->
+        <div id="sponsors">
+            <h1>Sponsorer</h1>
+            <div class="sponsor-placeholder"></div>
+            <div class="sponsor-placeholder"></div>
+            <div class="sponsor-placeholder"></div>
+            <div class="sponsor-placeholder"></div>
+            <div class="sponsor-placeholder"></div>
+        </div>
 </div>
 
 {% include "footer.html" %}

@@ -15,8 +15,12 @@ class ArticleForm(forms.ModelForm):
             },
         }
         widgets = {
-            'lead': forms.Textarea(attrs={'cols': 80, 'rows': 20}),
-            'body': forms.Textarea(attrs={'cols': 80, 'rows': 20, 'class': 'wmd-input', 'id': 'wmd-input-body'}),
+            'headline': forms.TextInput(attrs={'placeholder': 'Artikelns rubrik'}),
+            'lead': forms.Textarea(attrs={'placeholder': 'Ingressen är den text som syns i nyhetsflödet på startsidan'}),
+            'body': forms.Textarea(attrs={'placeholder': 'Låt orden flöda fritt! Lite mer detaljerat kanske?',
+                                          'class': 'wmd-input', 'id': 'wmd-input-body'}),
+            'visible_to': forms.DateTimeInput(),
+            'visible_from': forms.DateTimeInput()
         }
 
     # This overrides the constructor, and adds the class datetimepicker.
