@@ -3,42 +3,45 @@
 {% get_menu_organisations as menu_orgs %}
 <header role="banner">
     <nav role="navigation">
-        <img src=" {% static "iportalen/logo.svg" %}" alt="logo">
+        <img src=" {% static "iportalen/isektionen_logo.png" %}" alt="logo">
         <div id="menu-toggle">
             <span>MENU</span>
         </div>
         <ul id="navigation-menu" class="show">
             <li><a href="/">Start</a>
             </li>
-            <!--<li><a href="">Kalender</a>-->
+            <li><a href="">Kalender</a>
             </li>
             <li class="more"><a href="">Om sektionen</a>
                 <!-- A WRAPPER TO CONTROL FLEX DIRECTION FOR SUBMENUS -->
                 <div class="submenu-wrapper">
-                    <ul class="submenu">
-                        <li>Sektionen</li>
-                        {% for o in menu_orgs.sektionen %}
-                            <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
-                        {% endfor %}
-                    </ul>
-                    <ul class="submenu">
-                        <li>Utskott</li>
-                        {% for o in menu_orgs.utskott %}
-                            <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
-                        {% endfor %}
-                    </ul>
-                    <ul class="submenu">
-                        <li>Föreningar</li>
-                        {% for o in menu_orgs.foreningar %}
-                            <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
-                        {% endfor %}
-                    </ul>
+                    <div class="submenu-container">
+                        <ul class="submenu">
+                            <li>Sektionen</li>
+                            {% for o in menu_orgs.sektionen %}
+                                <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <ul class="submenu">
+                            <li>Utskott</li>
+                            {% for o in menu_orgs.utskott %}
+                                <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <ul class="submenu">
+                            <li>Föreningar</li>
+                            {% for o in menu_orgs.foreningar %}
+                                <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </li>
-           <!-- <li><a href="">Studier</a>
-            </li>-->
-            <!--<li><a href="">Tjänster</a>
-            </li>-->
+            <li><a href="">Studier</a>
+            </li>
+            <li><a href="">Tjänster</a>
+            </li>
+        <!--
             {% if request.user.is_authenticated %}
                 <li class="more">
                     <a href="">{{ request.user }}</a>
@@ -46,7 +49,7 @@
                         <ul class="submenu">
                             <li>{{ request.user }}</li>
                             {% for item in request.user.get_menu_choices %}
-                            <li><a href="{{ item.1 }}">{{ item.0 }}</a></li>
+                                <li><a href="{{ item.1 }}">{{ item.0 }}</a></li>
                             {% endfor %}
                             <li><a href="/user/logout">Logga ut</a></li>
                         </ul>
@@ -57,7 +60,7 @@
                     <a href=""><button class="primary">Logga in</button></a>
                     <div class="submenu-wrapper">
                         <ul class="submenu">
-                        <li>Logga in</li>
+                            <li>Logga in</li>
                             <form action="/user/login?next={{ request.get_full_path }}" method="post">
                                 {% csrf_token %}
                                 <li><input type="text" name="username" placeholder="ABCDE123">
@@ -68,8 +71,54 @@
                     </div>
                 </li>
             {% endif %}
+            -->
 
 
         </ul>
     </nav>
 </header>
+<!--
+<header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+    <a href="javascript:void(0)" class="logo">
+      <img src="{% static "iportalen/isektionen_logo.png" %}" alt="Logo Image">
+    </a>
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">MENU</a>
+    <nav role="navigation">
+      <ul id="js-navigation-menu" class="navigation-menu show">
+        <li class="nav-link"><a href="javascript:void(0)">Products</a></li>
+        <li class="nav-link"><a href="javascript:void(0)">About Us</a></li>
+        <li class="nav-link"><a href="javascript:void(0)">Contact</a></li>
+        <li class="nav-link more"><a href="javascript:void(0)">More</a>
+          <ul class="submenu">
+            <li><a href="javascript:void(0)">Submenu Item</a></li>
+            <li><a href="javascript:void(0)">Another Item</a></li>
+            <li class="more"><a href="javascript:void(0)">Item with submenu</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0)">Sub-submenu Item</a></li>
+                <li><a href="javascript:void(0)">Another Item</a></li>
+              </ul>
+            </li>
+            <li class="more"><a href="javascript:void(0)">Another submenu</a>
+              <ul class="submenu">
+                <li><a href="javascript:void(0)">Sub-submenu</a></li>
+                <li><a href="javascript:void(0)">An Item</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <div class="navigation-tools">
+      <div class="search-bar">
+        <form role="search">
+          <input type="search" placeholder="Enter Search" />
+          <button type="submit">
+            <img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/search-icon.png" alt="Search Icon">
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+-->

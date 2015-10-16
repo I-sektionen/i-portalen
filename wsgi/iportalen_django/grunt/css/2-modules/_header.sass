@@ -3,6 +3,7 @@
 
 header
   +outer-container()
+  z-index: 9999
   a
     color: $dark-gray
     text-transform: uppercase
@@ -36,6 +37,8 @@ header
     +media($large-screen-up)
       padding: 1em
       +span-columns(10 of 12)
+    &.show
+      +span-columns(12)
     li
       margin-bottom: 1em
       padding: 0 1em
@@ -43,54 +46,52 @@ header
         margin: 0
         display: inline
     .more
-      &:hover > .submenu-wrapper
-        +span-columns(12)
       &:after
         content: '\25BE'
-    &.show
-      +span-columns(12)
     //wrapper for all submenus under a particular menu item
     .submenu-wrapper
       +display(none)
-      background: darken(white, 1%)
+      background: transparentize($white, 0.1)
       padding:  1em
       box-shadow: 2px 2px 4px $light-gray
-
       +media($large-screen-up)
-        +display(none)
-        padding: 1em
-        //opacity: 0.95
-        border-radius: 3px
-      &:hover
+        box-shadow: none
         +position(absolute)
-        z-index: 1
+        width: 100%
+        left: 0
+        top: 4.5em
+      .submenu-container
+        +outer-container()
 
-    .submenu
-      +span-columns(12)
-      +media($large-screen-up)
-        +span-columns(4)
-        margin: 0 1.5em
-
-      // The first item in a list is treated as the heading for
-      // each submeu, i.e Föreningar
-
-      & > li:first-child
-        font-size: 22px
-        font-weight: 200
-        color: darken(white, 30%)
-        background: darken(white, 8%)
-        border-radius: 3px
-        //padding: 0.5em 0
-        //border-bottom: 1px dashed $light-gray
-        margin: 1em 0
-
+      .submenu:first-child
+        +shift(2)
+      .submenu
+        +span-columns(12)
         +media($large-screen-up)
-          color: darken(white, 80%)
-          background: none
-          margin: 0 0 0.5em 0
-          border-radius: 0
-          border-bottom: 3px solid $isektionen-yellow
-      & > *
-        padding: 0.8em
-        +media($large-screen-up)
-          padding: 0.5em 0
+          +span-columns(2 of 8)
+
+
+        // The first item in a list is treated as the heading for
+        // each submeu, i.e Föreningar
+
+        & > li:first-child
+          font-size: 22px
+          font-weight: 200
+          color: darken(white, 30%)
+          background: darken(white, 8%)
+          border-radius: 3px
+          margin: 1em 0
+
+          +media($large-screen-up)
+            font-size: 26px
+            font-weight: 200
+            color: $dark-gray
+            background: none
+            border-radius: 0
+            margin: 0
+            padding: 0
+        & > *
+          padding: 0.8em
+          +media($large-screen-up)
+            padding: 0.5em 0
+            display: block
