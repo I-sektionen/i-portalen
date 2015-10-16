@@ -15,7 +15,6 @@
                 {{ form.lead.errors }}
                 {{ form.lead.label_tag }}
                 {{ form.lead }}
-
                 {{ form.body.errors }}
                 {{ form.body.label_tag }}
                 <div class="wmd-panel">
@@ -30,24 +29,20 @@
 
                 {{ form.tags.errors }}
                 {{ form.tags.label_tag }}
-                {% get_tags request.user as tags %}
+                {{ form.tags }}
 
-                <select multiple="multiple" id="id_tags" name="tags">
-                    {% for tag in tags %}
-                        {% select_tag_status article_id tag.id as selected %}
-                        <option value="{{ tag.id }}" {{ selected }}>{{ tag.name }}</option>
-                    {% endfor %}
-                </select>
                 {{ form.tags.help_text }}
                 {{ form.draft.errors }}
+
                 {{ form.draft.label_tag }}
                 {{ form.draft }}
-            {{ form.visible_from.errors }}
-            {{ form.visible_from.label_tag }}
-            {{ form.visible_from }}
-                        {{ form.visible_to.errors }}
-            {{ form.visible_to.label_tag }}
-            {{ form.visible_to }}
+                {{ form.draft.help_text }}
+                {{ form.visible_from.errors }}
+                {{ form.visible_from.label_tag }}
+                {{ form.visible_from }}
+                {{ form.visible_to.errors }}
+                {{ form.visible_to.label_tag }}
+                {{ form.visible_to }}
             </div>
             <div id="article-create-form-buttons">
                 <button type="submit" value=>Publicera</button>

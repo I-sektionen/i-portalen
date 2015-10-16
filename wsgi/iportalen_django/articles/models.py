@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+import datetime
 from tags.models import Tag
 from .managers import ArticleManager
 
@@ -8,18 +9,18 @@ from .managers import ArticleManager
 class Article(models.Model):
     headline = models.CharField(verbose_name='rubrik',
                                 max_length=255,
-                                help_text="Rubriken till Artikeln")
+                                help_text="Rubriken till artikeln")
     lead = models.TextField(verbose_name='ingress',
-                            help_text="Ingress som syns utan att klicka på artikeln.")
+                            help_text="Ingressen är den text som syns i nyhetsflödet")
     body = models.TextField(verbose_name='brödtext',
-                            help_text="Brödtext som syns efter att ha klickat på läs mer.")
+                            help_text="Brödtext syns när en artikel visas enskilt")
 
     visible_from = models.DateTimeField(verbose_name='publicering',
-                                        help_text="Datum för publicering")
+                                        help_text="Publiceringsdatum", default=datetime.datetime.now)
     visible_to = models.DateTimeField(verbose_name='avpublicering',
-                                      help_text="Datum för avpublicering.")
+                                      help_text="Avpubliceringsdatum", default=lambda: datetime.datetime.now()+datetime.timedelta(days=30))
     draft = models.BooleanField(verbose_name='utkast', default=False,
-                                help_text="Utkast kommer inte att publiceras")
+                                help_text="Sparar utan att publicera")
     approved = models.BooleanField(verbose_name='godkänd', default=False)
 
     author = models.CharField(max_length=255,
