@@ -3,65 +3,30 @@
 {% load iportalen_tags %}
 
 {% block content %}
-    {% for article in articles %}
-        {{ article.headline }}
-    {% endfor %}
+        <h1>Artiklar</h1>
+        <table>
+            <thead>
+            <th>Rubrik</th>
+            <th>Publiceringsdatum</th>
+            <th>Ändra</th>
+            <th>Status</th>
+            </thead>
+            <tbody>
+            {% for article in user_articles %}
+                <tr>
+                    <td><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></td>
+                    <td>{{ article.created|date:"Y-m-d" }}</td>
+                    <td><a href="{{ article.get_absolute_url }}edit"><button>Ändra</button></a></td>
+                    {% if article.draft %}
+                        <td>Utkast</td>
+                    {% elif article.draft = False and article.approved  = False %}
+                        <td>Väntar på godkännande</td>
+                    {% elif article.approved %}
+                        <td>Publicerad</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    {% if approved_articles %}
-        <h1>Godkända artiklar</h1>
-        <table>
-            <thead>
-            <th>Rubrik</th>
-            <th>Publiceringsdatum</th>
-            <th>Ändra</th>
-            </thead>
-            <tbody>
-            {% for article in approved_articles %}
-                <tr>
-                    <td><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></td>
-                    <td>{{ article.created|date:"Y-m-d" }}</td>
-                    <td><a href="{{ article.get_absolute_url }}edit"><button>Ändra</button></a></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
-    {% if unapproved_articles %}
-            <h1>Artiklar som väntar på godkännande</h1>
-            <table>
-                <thead>
-                <th>Rubrik</th>
-                <th>Publiceringsdatum</th>
-                <th>Ändra</th>
-                </thead>
-                <tbody>
-                {% for article in unapproved_articles %}
-                    <tr>
-                        <td><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></td>
-                        <td>{{ article.created|date:"Y-m-d" }}</td>
-                        <td><a href="{{ article.get_absolute_url }}edit"><button>Ändra</button></a></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-    {% endif %}
-    {% if draft_articles %}
-       <h1>Utkast artiklar</h1>
-        <table>
-            <thead>
-            <th>Rubrik</th>
-            <th>Publiceringsdatum</th>
-            <th>Ändra</th>
-            </thead>
-            <tbody>
-            {% for article in draft_articles %}
-                <tr>
-                    <td><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></td>
-                    <td>{{ article.created|date:"Y-m-d" }}</td>
-                    <td><a href="{{ article.get_absolute_url }}edit"><button>Ändra</button></a></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
 {% endblock %}
