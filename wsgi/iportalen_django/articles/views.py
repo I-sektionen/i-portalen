@@ -114,8 +114,8 @@ def articles_by_tag(request, tag_name):
 
 @login_required()
 def articles_by_user(request):
-    article_dict = Article.objects.get_user_articles(request.user)
-    return render(request, 'articles/my_articles.html', article_dict)
+    user_articles = request.user.article_set.filter(visible_to__gte=timezone.now()).order_by('-created')
+    return render(request, 'articles/my_articles.html', {'user_articles': user_articles})
 
 @login_required()
 def delete_article(request, article_id):

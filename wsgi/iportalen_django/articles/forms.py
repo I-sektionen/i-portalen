@@ -15,7 +15,6 @@ class ArticleForm(forms.ModelForm):
             },
         }
         widgets = {
-            'lead': forms.Textarea(attrs={}),
             'body': forms.Textarea(attrs={'class': 'wmd-input', 'id': 'wmd-input-body'}),
         }
 
@@ -24,6 +23,12 @@ class ArticleForm(forms.ModelForm):
         super(ArticleForm, self).__init__(*args, **kwargs)
         self.fields['visible_from'].widget.attrs['class'] = 'datetimepicker'
         self.fields['visible_to'].widget.attrs['class'] = 'datetimepicker'
+        self.fields['headline'].widget.attrs['placeholder'] = self.fields['headline'].help_text
+        self.fields['lead'].widget.attrs['placeholder'] = self.fields['lead'].help_text
+        self.fields['body'].widget.attrs['placeholder'] = self.fields['body'].help_text
+        self.fields['visible_to'].widget.attrs['placeholder'] = self.fields['visible_to'].help_text
+        self.fields['visible_from'].widget.attrs['placeholder'] = self.fields['visible_from'].help_text
+        self.fields['draft'].widget.attrs['placeholder'] = self.fields['draft'].help_text
 
     def is_valid(self, **kwargs):
         valid = super(ArticleForm, self).is_valid()
