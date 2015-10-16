@@ -5,6 +5,7 @@ import datetime
 from tags.models import Tag
 from .managers import ArticleManager
 from utils.validators import less_than_160_characters_validator
+from utils.time import now_plus_one_month
 
 
 class Article(models.Model):
@@ -22,7 +23,7 @@ class Article(models.Model):
                                         default=datetime.datetime.now)
     visible_to = models.DateTimeField(verbose_name='avpublicering',
                                       help_text="Avpubliceringsdatum",
-                                      default=lambda: datetime.datetime.now()+datetime.timedelta(days=30))
+                                      default=now_plus_one_month)
     draft = models.BooleanField(verbose_name='utkast', default=False,
                                 help_text="Sparar utan att publicera")
     approved = models.BooleanField(verbose_name='godkänd', default=False)
