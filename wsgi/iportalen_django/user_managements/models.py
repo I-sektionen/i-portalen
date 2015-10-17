@@ -87,6 +87,9 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         if self.is_staff:
             menu_choices.append(('Admin', '/admin'))  # Staff users who can access Admin page.
 
+        if self.has_perm("user_managements.add_iuser"):
+            menu_choices.append(("Lägg till Liu-idn i whitelist", reverse('add users to whitelist')))
+
         return menu_choices
 
     def get_full_name(self):

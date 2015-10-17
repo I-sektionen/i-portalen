@@ -63,3 +63,12 @@ class ChangeUserInfoForm(forms.ModelForm):
         model = IUser
         fields = ('username', 'first_name', 'last_name', 'address', 'zip_code', 'city', 'gender', 'allergies', 'start_year', 'expected_exam_year')
 
+class AddWhiteListForm(forms.Form):
+    users = forms.CharField(
+        widget=forms.Textarea(attrs={"rows": 15, "placeholder":"abcde123\nfghij456\nklmno789\n..."}),
+        help_text="Ange ett liu-id per rad inga andra tecken är tillåtna."
+
+    )
+    def __init__(self, *args, **kwargs):
+        super(AddWhiteListForm, self).__init__(*args, **kwargs)
+        self.fields['users'].label = "Lista med Liu-id:n att lägga till:"
