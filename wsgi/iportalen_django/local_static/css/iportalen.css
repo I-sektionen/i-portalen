@@ -1124,7 +1124,7 @@ article.news-single-view .btn-read-more {
 div.event-container {
   border-radius: 3px;
   border-left: 3px solid #2D701E;
-  box-shadow: 1px 1px 4px #ddd;
+  box-shadow: 1px 1px 4px #f7f7f7;
   margin-bottom: 1em;
   padding: 0.5em 1em;
 }
@@ -1588,121 +1588,99 @@ article.event-preview .meta p {
   padding-top: 0px;
   margin-top: 0.2em;
 }
-#organisation #sub-organisations {
-  border-radius: 3px;
-  border-left: 3px solid #f9d026;
-  padding: 0px 15px 15px 15px;
-  margin-bottom: 1em;
+#organisation #organisation {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  box-orient: vertical;
+  -webkit-box-direction: normal;
+  -moz-box-direction: normal;
+  box-direction: normal;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-direction: column;
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 82.94039%;
 }
-#organisation #sub-organisations ul {
-  padding-top: 0px;
-  margin-top: 0.2em;
+#organisation #organisation:last-child {
+  margin-right: 0;
+}
+#organisation #organisation #organisation-image {
+  float: left;
+  display: block;
+  margin-right: 2.84259%;
+  width: 100%;
+}
+#organisation #organisation #organisation-image:last-child {
+  margin-right: 0;
+}
+#organisation #organisation #organisation-image img {
+  width: 100%;
+}
+#organisation #organisation #organisation-presentation {
+  float: left;
+  display: block;
+  margin-right: 2.84259%;
+  width: 58.86297%;
+}
+#organisation #organisation #organisation-presentation:last-child {
+  margin-right: 0;
+}
+#organisation #organisation #organisation-contact-info {
+  float: left;
+  display: block;
+  margin-right: 2.84259%;
+  width: 28.01019%;
+}
+#organisation #organisation #organisation-contact-info:last-child {
+  margin-right: 0;
+}
+#organisation #organisation #sub-organisations {
+  float: left;
+  display: block;
+  margin-right: 2.84259%;
+  width: 28.01019%;
+}
+#organisation #organisation #sub-organisations:last-child {
+  margin-right: 0;
+}
+#organisation #organisation #organisation-members {
+  float: left;
+  display: block;
+  margin-right: 2.84259%;
+  width: 28.01019%;
+}
+#organisation #organisation #organisation-members:last-child {
+  margin-right: 0;
+}
+#organisation #organisation #events {
+  float: left;
+  display: block;
+  margin-right: 2.84259%;
+  width: 28.01019%;
+}
+#organisation #organisation #events:last-child {
+  margin-right: 0;
+}
+#organisation #organisation #news-feed {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 82.94039%;
+}
+#organisation #organisation #news-feed:last-child {
+  margin-right: 0;
 }
 
-@media screen and (min-width: 900px) {
-  #organisation {
-    display: -webkit-box;
-    display: -moz-box;
-    display: box;
-    display: -webkit-flex;
-    display: -moz-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -moz-box-orient: vertical;
-    box-orient: vertical;
-    -webkit-box-direction: normal;
-    -moz-box-direction: normal;
-    box-direction: normal;
-    -webkit-flex-direction: column;
-    -moz-flex-direction: column;
-    flex-direction: column;
-    -ms-flex-direction: column;
-    float: left;
-    display: block;
-    margin-right: 3.57866%;
-    width: 125.89467%;
-  }
-  #organisation:last-child {
-    margin-right: 0;
-  }
-  #organisation #organisation-image {
-    float: left;
-    display: block;
-    margin-right: 2.84259%;
-    width: 100%;
-  }
-  #organisation #organisation-image:last-child {
-    margin-right: 0;
-  }
-  #organisation #organisation-image img {
-<<<<<<< HEAD
-    float: left;
-    display: block;
-    margin-right: 3.57866%;
-    width: 125.89467%;
-  }
-  #organisation #organisation-image img:last-child {
-    margin-right: 0;
-=======
-    width: 100%;
->>>>>>> master
-  }
-  #organisation #organisation-presentation {
-    float: left;
-    display: block;
-    margin-right: 2.84259%;
-    width: 58.86297%;
-  }
-  #organisation #organisation-presentation:last-child {
-    margin-right: 0;
-  }
-  #organisation #organisation-contact-info {
-    float: left;
-    display: block;
-    margin-right: 2.84259%;
-    width: 28.01019%;
-  }
-  #organisation #organisation-contact-info:last-child {
-    margin-right: 0;
-  }
-  #organisation #sub-organisations {
-    float: left;
-    display: block;
-    margin-right: 2.84259%;
-    width: 28.01019%;
-  }
-  #organisation #sub-organisations:last-child {
-    margin-right: 0;
-  }
-  #organisation #organisation-members {
-    float: left;
-    display: block;
-    margin-right: 2.84259%;
-    width: 28.01019%;
-  }
-  #organisation #organisation-members:last-child {
-    margin-right: 0;
-  }
-  #organisation #events {
-    float: left;
-    display: block;
-    margin-right: 2.84259%;
-    width: 28.01019%;
-  }
-  #organisation #events:last-child {
-    margin-right: 0;
-  }
-  #organisation #news-feed {
-    float: left;
-    display: block;
-    margin-right: 3.57866%;
-    width: 125.89467%;
-  }
-  #organisation #news-feed:last-child {
-    margin-right: 0;
-  }
-}
 #article-create-form {
   float: left;
   display: block;
