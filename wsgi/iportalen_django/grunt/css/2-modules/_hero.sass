@@ -1,0 +1,15 @@
+.hero
+  display: none
+  +media($large-screen-up)
+    height: 350px
+    background:
+      image: url(http://blog.liu.se/utbildningsbloggen/files/2012/07/liu_campusvalla.jpg)
+      size: cover
+      repeat: no-repeat
+      position: top center
+      attachment: fixed
+  h1
+    +position(relative)
+    text-align: center
+    top: 40%
+    font-size: 48px
