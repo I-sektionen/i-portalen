@@ -13,5 +13,6 @@
         {% for item in request.user.get_menu_choices %}
             <li><a href="{{ item.1 }}">{{ item.0 }}</a></li>
         {% endfor %}
+        <li><a href="/user/logout">Logga ut</li>
     </ul>
 </div>
