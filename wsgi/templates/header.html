@@ -42,39 +42,14 @@
             </li>
             <li><a href="">Tjänster</a>
             </li>
-        <!--
-            {% if request.user.is_authenticated %}
-                <li class="more">
-                    <a href="">{{ request.user }}</a>
-                    <div class="submenu-wrapper">
-                        <ul class="submenu">
-                            <li>{{ request.user }}</li>
-                            {% for item in request.user.get_menu_choices %}
-                                <li><a href="{{ item.1 }}">{{ item.0 }}</a></li>
-                            {% endfor %}
-                            <li><a href="/user/logout">Logga ut</a></li>
-                        </ul>
-                    </div>
-                </li>
-            {% else %}
-                <li class="more">
-                    <a href=""><button class="primary">Logga in</button></a>
-                    <div class="submenu-wrapper">
-                        <ul class="submenu">
-                            <li>Logga in</li>
-                            <form action="/user/login?next={{ request.get_full_path }}" method="post">
-                                {% csrf_token %}
-                                <li><input type="text" name="username" placeholder="ABCDE123">
-                                <li><input type="password" name="password" placeholder="********"></li>
-                                <li><input type="submit" name="Logga in" value="Logga in"></li>
-                            </form>
-                        </ul>
-                    </div>
-                </li>
-            {% endif %}
-
-            -->
-
         </ul>
+        <ul id="user-menu-tool">
+            {% if request.user.is_authenticated %}
+                <li><a href=""><button>Användarpanel</button></a></li>
+                <!--<li><a href="/user/logout"><button>Logga ut</button></a></li>-->
+            {% else %}
+                <li><a href="/user/login"><button>Logga in</button></a></li>
+                </ul>
+            {% endif %}
     </nav>
 </header>

@@ -736,9 +736,43 @@ header #menu-toggle #menu-toggle-button {
     display: none;
   }
 }
+header #user-menu-tool {
+  padding: 1em;
+  background-color: #e6e6e6;
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+}
+header #user-menu-tool:last-child {
+  margin-right: 0;
+}
+header #user-menu-tool li {
+  display: inline;
+}
+@media screen and (min-width: 900px) {
+  header #user-menu-tool {
+    background: none;
+    background: none;
+    float: left;
+    display: block;
+    margin-right: 3.57866%;
+    width: 22.316%;
+  }
+  header #user-menu-tool:last-child {
+    margin-right: 0;
+  }
+}
 header #navigation-menu {
   padding: 1em;
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
   display: none;
+}
+header #navigation-menu:last-child {
+  margin-right: 0;
 }
 @media screen and (min-width: 900px) {
   header #navigation-menu {
@@ -747,7 +781,7 @@ header #navigation-menu {
     display: block;
     margin-right: 3.57866%;
     width: 61.158%;
-    margin-left: 25.89467%;
+    margin-left: 0%;
   }
   header #navigation-menu:last-child {
     margin-right: 0;
@@ -757,7 +791,7 @@ header #navigation-menu.show {
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 65.88078%;
+  width: 100%;
 }
 header #navigation-menu.show:last-child {
   margin-right: 0;
@@ -786,9 +820,16 @@ header #navigation-menu .more:after {
 }
 header #navigation-menu .submenu-wrapper {
   display: none;
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
   background: rgba(255, 255, 255, 0.95);
   padding: 1em;
   box-shadow: 2px 2px 4px #f7f7f7;
+}
+header #navigation-menu .submenu-wrapper:last-child {
+  margin-right: 0;
 }
 @media screen and (min-width: 900px) {
   header #navigation-menu .submenu-wrapper {
@@ -799,7 +840,6 @@ header #navigation-menu .submenu-wrapper {
     position: absolute;
     left: 0;
     right: 0;
-    margin: 0 auto;
   }
 }
 header #navigation-menu .submenu-wrapper .submenu-container {

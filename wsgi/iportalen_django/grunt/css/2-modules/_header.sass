@@ -50,16 +50,27 @@ header
     +media($large-screen-up)
       display: none
 
+  #user-menu-tool
+    padding: 1em
+    background-color: lighten($dark-gray, 70%)
+    +span-columns(12)
+    li
+      display: inline
+    +media($large-screen-up)
+      +background(none)
+      +span-columns(2)
+
   // holds links for menu
   #navigation-menu
     padding: 1em
+    +span-columns(12)
     +display(none)
     +media($large-screen-up)
       margin-top: 0.5em
       +span-columns(5 of 8)
-      +shift(2)
+      +shift(0)
     &.show
-      +span-columns(8)
+      +span-columns(12)
     li
       margin-bottom: 1em
       padding: 0 1em
@@ -74,10 +85,10 @@ header
         &:hover > .submenu-wrapper
           visibility: visible
           min-height: 250px
-
     //wrapper for all submenus under a particular menu item
     .submenu-wrapper
       +display(none)
+      +span-columns(12)
       background: transparentize($white, 0.05)
       padding:  1em
       box-shadow: 2px 2px 4px $light-gray
@@ -89,8 +100,7 @@ header
         +position(absolute)
         left: 0
         right: 0
-        margin: 0 auto
-        //top: 100%
+        //top: 3.18em
       .submenu-container
         +outer-container()
       //this is used to shift the submenu columns towards the middle
@@ -128,3 +138,5 @@ header
           +media($large-screen-up)
             padding: 0.5em 0
             display: block
+
+
