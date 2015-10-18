@@ -1,0 +1,18 @@
+#user-panel
+  background-color: $light-gray
+  +position(fixed, 80px -240px null null)
+  width: 250px
+  padding: 30px
+  height: 500px
+  +transition(0.3s ease-in-out)
+
+#user-panel-checkbox:checked
+  & + #user-panel
+    right: 0px
+
+#user-panel-checkbox
+  display: none
+#toggle-lable
+  cursor: pointer
+#user-panel-toggle
+  cursor: pointer

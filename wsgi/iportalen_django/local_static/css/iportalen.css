@@ -652,7 +652,6 @@ header {
   margin-right: auto;
   height: 4em;
   background-color: white;
-  z-index: 2;
 }
 header::after {
   clear: both;
@@ -1397,6 +1396,40 @@ article.event-preview .meta p {
     outline: none;
   }
 }
+#user-panel {
+  background-color: #f7f7f7;
+  position: fixed;
+  top: 80px;
+  right: -240px;
+  width: 250px;
+  padding: 30px;
+  height: 500px;
+  -webkit-transition: 0.3s ease-in-out;
+  -moz-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+
+#user-panel-checkbox:checked + #user-panel {
+  right: 0px;
+}
+
+#user-panel-checkbox {
+  display: none;
+}
+
+#toggle-lable {
+  cursor: pointer;
+}
+
+#user-panel-toggle {
+  cursor: pointer;
+}
+
+#master-container {
+  position: relative;
+  z-index: -1;
+}
+
 #container {
   max-width: 68em;
   margin-left: auto;

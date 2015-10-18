@@ -1,0 +1,9 @@
+<input type="checkbox" id="user-panel-checkbox">
+<div id="user-panel">
+    <h2>Hej {{ request.user.first_name }}</h2>
+    <ul>
+        {% for item in request.user.get_menu_choices %}
+            <li><a href="{{ item.1 }}">{{ item.0 }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

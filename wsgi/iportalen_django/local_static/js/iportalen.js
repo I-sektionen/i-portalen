@@ -4050,6 +4050,7 @@ $(document).ready(function () {
     var menuToggle = $('#menu-toggle').unbind();
     var navigationMenu = $('#navigation-menu').removeClass('show');
     var submenuWrapper = $('#submenu-wrapper').removeClass('show');
+    var userPanelCheckbox = $('#user-panel-checkbox')
 
     if ($(window).width() < 900) {
         $('li.more').click(function (e) {
@@ -4061,6 +4062,13 @@ $(document).ready(function () {
         event.preventDefault();
         navigationMenu.toggleClass('show');
     });
+
+    /**
+    $('#user-panel-toggle').click(function () {
+        console.log("hello")
+        userPanelCheckbox.prop("checked", !checkBoxes.prop("checked"));
+    })**/
+
 });
 ;/**
  * Created by jonathan on 2015-09-08.
