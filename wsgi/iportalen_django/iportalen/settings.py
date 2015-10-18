@@ -184,6 +184,7 @@ if ON_PASS:
     }
 
 LOGIN_URL = 'login_view'
+
 #Email settings:
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
