@@ -14,6 +14,7 @@ from django.contrib.auth.views import (
     password_reset_done,
     password_reset_complete
 )
+from utils.kobra import get_user_by_liu_id, LiuGetterError, LiuNotFoundError
 
 
 
@@ -140,3 +141,18 @@ def reset_done(request):
 def reset_complete(request):
     messages.info(request, "Du har ett nytt lösenord, testa det.")
     return redirect(reverse("login_view"))
+
+def update_user_from_kobra(request, liu_id):
+    try:
+        user = IUser.objects.get(username=liu_id)
+        kobra_dict = get_user_by_liu_id(liu_id)
+        print(kobra_dict)
+    except IUser.DoesNotExist:
+        messages.info(request, "Personen finns inte i systemet.")
+        return redirect("/")
+    except LiuNotFoundError:
+        messages.info(request, "Kan inte ansluta till kobra.")
+        return redirect("/")
+    except LiuGetterError:
+        messages.info(request, "Fel i anslutingen till kobra.")
+        return redirect("/")
