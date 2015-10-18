@@ -145,7 +145,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Target folder of collectstatic.
 
 # Staticfiles settings for local dev environment:
