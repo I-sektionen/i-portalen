@@ -1,11 +1,18 @@
+$header-link-font-size: 16px
+$header-link-color: $dark-gray
+
 header
   +outer-container()
   z-index: 9999
   a
-    color: $dark-gray
+    font-size: $header-link-font-size
+    color: $header-link-color
     text-transform: uppercase
+    +media($large-screen-up)
+      font-size: 14px
+      font-weight: 400
     &:hover
-      color: tint($dark-gray, 10%)
+      color: lighten($dark-gray, 30%)
       text-decoration: none
   nav
     +span-columns(12)
@@ -49,15 +56,20 @@ header
         content: '\25BE'
       +media($large-screen-up)
         &:hover > .submenu-wrapper
-          display: block
+          visibility: visible
+          height: 350px
 
     //wrapper for all submenus under a particular menu item
     .submenu-wrapper
       +display(none)
       background: transparentize($white, 0.1)
+
       padding:  1em
       box-shadow: 2px 2px 4px $light-gray
       +media($large-screen-up)
+        display: block
+        visibility: hidden
+        padding: 1em
         box-shadow: none
         +position(absolute)
         width: 120em
@@ -67,8 +79,9 @@ header
       .submenu-container
         +outer-container()
       //this is used to shift the column in towards the middle
-      .submenu:first-child
-        +shift(2)
+      +media($large-screen-up)
+        .submenu:first-child
+          +shift(2)
 
       .submenu
         +span-columns(12)

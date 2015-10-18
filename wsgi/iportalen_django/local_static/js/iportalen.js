@@ -4051,12 +4051,15 @@ $(document).ready(function () {
     var navigationMenu = $('#navigation-menu').removeClass('show');
     var submenuWrapper = $('#submenu-wrapper').removeClass('show');
 
-    $('li.more').click(function(e){
-        e.preventDefault()
+    // only use click on mobile view
+    if ($(window).width() < 900) {
+        $('li.more').click(function (e) {
+            e.preventDefault()
 
-        $(this).children('.submenu-wrapper').slideToggle('fast')
+            $(this).children('.submenu-wrapper').slideToggle('fast')
 
-    })
+        })
+    }
 
     menuToggle.on('click', function (event) {
         event.preventDefault();

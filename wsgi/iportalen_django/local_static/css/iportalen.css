@@ -658,11 +658,18 @@ header::after {
   display: table;
 }
 header a {
+  font-size: 16px;
   color: #333;
   text-transform: uppercase;
 }
+@media screen and (min-width: 900px) {
+  header a {
+    font-size: 14px;
+    font-weight: 400;
+  }
+}
 header a:hover {
-  color: #474747;
+  color: gray;
   text-decoration: none;
 }
 header nav {
@@ -757,7 +764,8 @@ header #navigation-menu .more:after {
 }
 @media screen and (min-width: 900px) {
   header #navigation-menu .more:hover > .submenu-wrapper {
-    display: block;
+    visibility: visible;
+    height: 350px;
   }
 }
 header #navigation-menu .submenu-wrapper {
@@ -768,6 +776,9 @@ header #navigation-menu .submenu-wrapper {
 }
 @media screen and (min-width: 900px) {
   header #navigation-menu .submenu-wrapper {
+    display: block;
+    visibility: hidden;
+    padding: 1em;
     box-shadow: none;
     position: absolute;
     width: 120em;
@@ -786,8 +797,10 @@ header #navigation-menu .submenu-wrapper .submenu-container::after {
   content: "";
   display: table;
 }
-header #navigation-menu .submenu-wrapper .submenu:first-child {
-  margin-left: 17.05961%;
+@media screen and (min-width: 900px) {
+  header #navigation-menu .submenu-wrapper .submenu:first-child {
+    margin-left: 17.05961%;
+  }
 }
 header #navigation-menu .submenu-wrapper .submenu {
   float: left;
