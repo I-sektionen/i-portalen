@@ -42,6 +42,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
     # basic fields
     username = models.CharField(verbose_name='LiU-ID', unique=True, max_length=8, validators=[liu_id_validator])
+    email = models.EmailField(verbose_name='Email')
     first_name = models.CharField(verbose_name='förnamn', max_length=50, null=True, blank=True)
     last_name = models.CharField(verbose_name='efternamn', max_length=50, null=True, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True, verbose_name='gick med datum')
@@ -104,7 +105,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     def _get_email(self):
         return self.username + "@student.liu.se"
 
-    email = property(_get_email)
+    # email = property(_get_email)
 
     def __str__(self):
         return self.username

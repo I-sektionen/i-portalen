@@ -8,6 +8,12 @@ from .models import IUser
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from utils.text import random_string_generator
+from django.contrib.auth.views import (
+    password_reset_confirm,
+    password_reset,
+    password_reset_done,
+    password_reset_complete
+)
 
 
 
@@ -77,8 +83,8 @@ def add_users_to_white_list(request):
             errors = False
 
             for liu_id in list_of_liu_id:
-                temp_user = IUser(username=liu_id.lower())
-                temp_user.password = random_string_generator()
+                temp_user = IUser(username=liu_id.lower(), email=liu_id.lower()+"@student.liu.se")
+                temp_user.set_password(random_string_generator())
                 try:
                     temp_user.validate_unique()
                 except ValidationError:
@@ -112,3 +118,25 @@ def set_user_as_member(request):
     request.user.is_active = True
     request.user.save()
     return redirect("/")
+
+
+def reset(request):
+    return password_reset(request, template_name='user_managements/reset/pw_res.html',
+                          email_template_name='user_managements/reset/pw_res_email.html',
+                          subject_template_name='user_managements/reset/pw_res_email_subject.txt',)
+
+
+def reset_confirm(request, uidb64=None, token=None):
+    return password_reset_confirm(request, template_name='user_managements/reset/pw_res_confirm.html',
+                                  uidb64=uidb64,
+                                  token=token,
+                                  post_reset_redirect=reverse('front page'))
+
+def reset_done(request):
+    # return password_reset_done(request, template_name='user_managements/reset/pw_res_done.html')
+    messages.info(request, "Ett mail kommer inom kort skickas till mailadressen som angavs. I den finns en länk för att skapa ett nytt lösenord.")
+    return redirect("/")
+
+def reset_complete(request):
+    messages.info(request, "Du har ett nytt lösenord, testa det.")
+    return redirect(reverse("login_view"))
