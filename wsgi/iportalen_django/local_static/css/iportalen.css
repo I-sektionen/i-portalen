@@ -673,6 +673,32 @@ header a:hover {
   color: gray;
   text-decoration: none;
 }
+header #menu-toggle {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+  background: #333;
+  color: white;
+  padding: 1em;
+}
+header #menu-toggle:last-child {
+  margin-right: 0;
+}
+header #menu-toggle #menu-toggle-title {
+  float: left;
+  margin-top: 0.5em;
+}
+header #menu-toggle #menu-toggle-button {
+  float: right;
+  font-size: 22px;
+  cursor: pointer;
+}
+@media screen and (min-width: 900px) {
+  header #menu-toggle {
+    display: none;
+  }
+}
 header nav {
   float: left;
   display: block;
@@ -709,35 +735,8 @@ header nav img:last-child {
     margin-right: 0;
   }
 }
-header #menu-toggle {
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 100%;
-  background: #333;
-  color: white;
-  padding: 1em;
-}
-header #menu-toggle:last-child {
-  margin-right: 0;
-}
-header #menu-toggle #menu-toggle-title {
-  float: left;
-  margin-top: 0.5em;
-}
-header #menu-toggle #menu-toggle-button {
-  float: right;
-  font-size: 22px;
-  cursor: pointer;
-}
-@media screen and (min-width: 900px) {
-  header #menu-toggle {
-    display: none;
-  }
-}
 header #user-menu-tool {
   padding: 1em;
-  background-color: #e6e6e6;
   float: left;
   display: block;
   margin-right: 2.35765%;
@@ -745,6 +744,15 @@ header #user-menu-tool {
 }
 header #user-menu-tool:last-child {
   margin-right: 0;
+}
+header #user-menu-tool .button-small {
+  text-align: center;
+  background-color: #f9d026;
+  padding: 0.4em;
+  border-radius: 3px;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 400;
 }
 header #user-menu-tool li {
   display: inline;
@@ -761,8 +769,10 @@ header #user-menu-tool li {
   header #user-menu-tool:last-child {
     margin-right: 0;
   }
-  header #user-menu-tool label {
-    margin-top: 0.5em;
+  header #user-menu-tool .button-small {
+    max-width: 120px;
+    font-weight: 400;
+    font-size: 14px;
   }
 }
 header #navigation-menu {
@@ -783,7 +793,6 @@ header #navigation-menu:last-child {
     display: block;
     margin-right: 3.57866%;
     width: 61.158%;
-    margin-left: 0%;
   }
   header #navigation-menu:last-child {
     margin-right: 0;

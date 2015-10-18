@@ -15,20 +15,6 @@ header
     &:hover
       color: lighten($dark-gray, 30%)
       text-decoration: none
-  nav
-    +span-columns(12)
-    img
-      text-align: center
-      +span-columns(6 of 12)
-      +shift(3)
-      //max-width: 10em
-      padding-top: 1em
-      padding-bottom: 1em
-      +media($large-screen-up)
-        +span-columns(1 of 8)
-        +shift(0)
-        padding-top: 1em
-        padding-bottom: 0
 
 
   // Menu bar for mobile view
@@ -48,18 +34,46 @@ header
     //Hide menu toggle panel on large screens
     +media($large-screen-up)
       display: none
+  nav
+    +span-columns(12)
+    img
+      text-align: center
+      +span-columns(6 of 12)
+      +shift(3)
+      //max-width: 10em
+      padding-top: 1em
+      padding-bottom: 1em
+      +media($large-screen-up)
+        +span-columns(1 of 8)
+        +shift(0)
+        padding-top: 1em
+        padding-bottom: 0
+
+
+
 
   #user-menu-tool
     padding: 1em
-    background-color: lighten($dark-gray, 70%)
+    //background-color: lighten($dark-gray, 70%)
     +span-columns(12)
+    .button-small
+      text-align: center
+
+      background-color: $isektionen-yellow
+      padding: 0.4em
+      border-radius: $base-border-radius
+      color: $white
+      text-transform: uppercase
+      font-weight: 400
     li
       display: inline
     +media($large-screen-up)
       +background(none)
       +span-columns(2)
-      label
-        margin-top: 0.5em
+      .button-small
+        max-width: 120px
+        font-weight: 400
+        font-size: 14px
 
   // holds links for menu
   #navigation-menu
@@ -69,7 +83,6 @@ header
     +media($large-screen-up)
       margin-top: 0.5em
       +span-columns(5 of 8)
-      +shift(0)
     &.show
       +span-columns(12)
     li

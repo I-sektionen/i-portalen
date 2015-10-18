@@ -46,7 +46,7 @@
         <ul id="user-menu-tool">
             {% if request.user.is_authenticated %}
                 <li>
-                    <label id="user-panel-toggle" for="user-panel-checkbox">Mitt konto ☰</label>
+                    <label id="user-panel-toggle" for="user-panel-checkbox" class="button-small">Mitt konto</span></label>
                 </li>
             {% else %}
                 <li><a href="/user/login"><button>Logga in</button></a></li>
