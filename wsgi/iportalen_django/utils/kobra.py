@@ -26,8 +26,8 @@ def get_user_by_rfid(rfid):
 def _make_call_to_kobra(payload):
     user = "***REMOVED***"
     password = "***REMOVED***"  # Very secret :)
-
-    r = requests.post("https://kobra.ks.liu.se/students/api", auth=(user, password), data=payload)
+    s = requests.Session()
+    r = s.post("https://kobra.ks.liu.se/students/api", auth=(user, password), data=payload, verify=False)
     if not r.status_code == requests.codes.ok:
         if r.status_code == 404:
             raise LiuNotFoundError
