@@ -12,6 +12,9 @@
 </head>
 
 <body>
+<input type="checkbox" id="user-panel-checkbox">
+{% include "userpanel.html" %}
+<div id="master-container">
 {% include "header.html" %}
 {% if messages %}
     <div id="message-box">
@@ -43,9 +46,11 @@
             <div class="sponsor-placeholder"></div>
         </div>
 </div>
-
-{% include "userpanel.html" %}
 {% include "footer.html" %}
+</div>
+
+
+
 
 {% include "modal.html" %}
 
