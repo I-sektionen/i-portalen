@@ -22,7 +22,8 @@
     {% endwith %}
 
 
-    <a href="/user/change_user_info"><button>Ändra info</button></a>
+    <a href="{% url "change_user_info_view" %}"><button>Ändra info</button></a>
+    <a href="{% url "password_change" %}"><button>Byt lösenord</button></a>
 
 
 {% endblock %}

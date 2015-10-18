@@ -1,0 +1,9 @@
+{% extends "master.html" %}
+
+{% block content %}
+    <p>Du måste bli medlem i I-sektionen innan du kan utnyttja sektionens tjänster.</p>
+    <p>Om du väljer att navigera ifrån den här sidan utan att bli medlem eller väljer att inte bli medlem kommer du inte kunna logga in på iportalen igen.</p>
+
+    <a href="{% url "become member" %}"><button>Jag vill bli medlem.</button></a>
+    <a href="{% url "logout_view" %}"><button>Jag vill INTE bli medlem.</button></a>
+{% endblock %}
