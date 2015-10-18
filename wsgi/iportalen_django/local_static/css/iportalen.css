@@ -708,16 +708,6 @@ header nav {
 header nav:last-child {
   margin-right: 0;
 }
-@media screen and (min-width: 900px) {
-  header nav {
-    display: block;
-  }
-  header nav::after {
-    clear: both;
-    content: "";
-    display: table;
-  }
-}
 header nav img {
   text-align: center;
   float: left;
