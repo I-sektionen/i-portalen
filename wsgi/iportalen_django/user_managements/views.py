@@ -11,11 +11,8 @@ from utils.text import random_string_generator
 from django.contrib.auth.views import (
     password_reset_confirm,
     password_reset,
-    password_reset_done,
-    password_reset_complete
 )
 from utils.kobra import get_user_by_liu_id, LiuGetterError, LiuNotFoundError
-
 
 
 def logout_view(request):
@@ -146,13 +143,17 @@ def update_user_from_kobra(request, liu_id):
     try:
         user = IUser.objects.get(username=liu_id)
         kobra_dict = get_user_by_liu_id(liu_id)
-        print(kobra_dict)
+        user.email = kobra_dict['email']
+        user.last_name = kobra_dict['last_name']
+        user.first_name = kobra_dict['first_name']
+        user.rfid_number = kobra_dict['rfid_number']
+        user.p_nr = kobra_dict['personal_number']
+        user.save()
+        messages.info(request, "{:} har uppdaterats i databasen.".format(liu_id))
     except IUser.DoesNotExist:
-        messages.info(request, "Personen finns inte i systemet.")
-        return redirect("/")
+        messages.error(request, "Personen finns inte i systemet.")
     except LiuNotFoundError:
-        messages.info(request, "Kan inte ansluta till kobra.")
-        return redirect("/")
+        messages.error(request, "Kan inte ansluta till kobra.")
     except LiuGetterError:
-        messages.info(request, "Fel i anslutingen till kobra.")
-        return redirect("/")
+        messages.error(request, "Fel i anslutingen till kobra.")
+    return render(request, "user_managements/kobra.html")
