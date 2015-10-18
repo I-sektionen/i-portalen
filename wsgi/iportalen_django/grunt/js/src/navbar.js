@@ -14,7 +14,7 @@ $(document).ready(function () {
     }
     menuToggle.on('click', function (event) {
         event.preventDefault();
-        navigationMenu.toggleClass('show');
+        navigationMenu.slideToggle('fast');
     });
 
     /**
