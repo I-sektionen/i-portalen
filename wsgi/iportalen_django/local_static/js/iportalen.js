@@ -4056,7 +4056,6 @@ $(document).ready(function () {
 
         $(this).children('.submenu-wrapper').slideToggle('fast')
 
-
     })
 
     menuToggle.on('click', function (event) {

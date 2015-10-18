@@ -748,8 +748,17 @@ header #navigation-menu li {
     display: inline;
   }
 }
+header #navigation-menu .more {
+  position: relative;
+  display: inline-block;
+}
 header #navigation-menu .more:after {
   content: "▾";
+}
+@media screen and (min-width: 900px) {
+  header #navigation-menu .more:hover > .submenu-wrapper {
+    display: block;
+  }
 }
 header #navigation-menu .submenu-wrapper {
   display: none;
@@ -761,9 +770,10 @@ header #navigation-menu .submenu-wrapper {
   header #navigation-menu .submenu-wrapper {
     box-shadow: none;
     position: absolute;
-    width: 100%;
-    left: 0;
-    top: 4.5em;
+    width: 120em;
+    left: -50em;
+    margin: 0;
+    top: 100%;
   }
 }
 header #navigation-menu .submenu-wrapper .submenu-container {

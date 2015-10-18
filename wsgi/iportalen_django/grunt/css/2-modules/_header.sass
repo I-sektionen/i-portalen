@@ -43,8 +43,14 @@ header
         margin: 0
         display: inline
     .more
+      position: relative
+      display: inline-block
       &:after
         content: '\25BE'
+      +media($large-screen-up)
+        &:hover > .submenu-wrapper
+          display: block
+
     //wrapper for all submenus under a particular menu item
     .submenu-wrapper
       +display(none)
@@ -54,9 +60,10 @@ header
       +media($large-screen-up)
         box-shadow: none
         +position(absolute)
-        width: 100%
-        left: 0
-        top: 4.5em
+        width: 120em
+        left: -50em
+        margin: 0
+        top: 100%
       .submenu-container
         +outer-container()
       //this is used to shift the column in towards the middle
