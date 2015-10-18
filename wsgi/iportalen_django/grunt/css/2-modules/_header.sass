@@ -3,7 +3,9 @@ $header-link-color: $dark-gray
 
 header
   +outer-container()
-  z-index: 9999
+  height: 4em
+  background-color: white
+  z-index: 2
   a
     font-size: $header-link-font-size
     color: $header-link-color
@@ -17,18 +19,32 @@ header
   nav
     +span-columns(12)
     img
-      +span-columns(12 of 12)
+      text-align: center
+      +span-columns(6 of 12)
+      +shift(3)
+      //max-width: 10em
+      padding-top: 1em
+      padding-bottom: 1em
       +media($large-screen-up)
-        +span-columns(2 of 12)
-      padding: 1em
-      max-width: 10em
+        +span-columns(1 of 8)
+        +shift(0)
+        padding-top: 1em
+        padding-bottom: 0
+
 
   // Menu bar for mobile view
   #menu-toggle
     +span-columns(12)
-    background: black
+    background: $dark-gray
     color: white
     padding: 1em
+    #menu-toggle-title
+      float: left
+      margin-top: 0.5em
+    #menu-toggle-button
+      float: right
+      font-size: 22px
+      cursor: pointer
 
     //Hide menu toggle panel on large screens
     +media($large-screen-up)
@@ -36,11 +52,12 @@ header
 
   // holds links for menu
   #navigation-menu
-    margin-top: 1em
+    padding: 1em
     +display(none)
     +media($large-screen-up)
-      padding: 1em
-      +span-columns(10 of 12)
+      margin-top: 1em
+      +span-columns(8 of 12)
+      +shift(0)
     &.show
       +span-columns(12)
     li
@@ -50,7 +67,7 @@ header
         margin: 0
         display: inline
     .more
-      position: relative
+      //position: relative
       display: inline-block
       &:after
         content: '\25BE'
@@ -63,30 +80,32 @@ header
     .submenu-wrapper
       +display(none)
       background: transparentize($white, 0.1)
-
       padding:  1em
       box-shadow: 2px 2px 4px $light-gray
       +media($large-screen-up)
         display: block
         visibility: hidden
-        padding: 1em
+        padding: 0
         box-shadow: none
         +position(absolute)
-        width: 120em
-        left: -50em
-        margin: 0
-        top: 100%
+        left: 0
+        right: 0
+        margin: 0 auto
+        //top: 100%
       .submenu-container
         +outer-container()
       //this is used to shift the column in towards the middle
       +media($large-screen-up)
+
         .submenu:first-child
-          +shift(2)
+          +shift(1)
 
       .submenu
         +span-columns(12)
         +media($large-screen-up)
           +span-columns(2 of 8)
+          padding: 2em
+
 
         // The first item in a list is treated as the heading for
         // each submeu, i.e Föreningar

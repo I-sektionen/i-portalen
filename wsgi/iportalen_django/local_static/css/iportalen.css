@@ -650,7 +650,9 @@ header {
   max-width: 68em;
   margin-left: auto;
   margin-right: auto;
-  z-index: 9999;
+  height: 4em;
+  background-color: white;
+  z-index: 2;
 }
 header::after {
   clear: both;
@@ -682,12 +684,14 @@ header nav:last-child {
   margin-right: 0;
 }
 header nav img {
+  text-align: center;
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 100%;
-  padding: 1em;
-  max-width: 10em;
+  width: 48.82117%;
+  margin-left: 25.58941%;
+  padding-top: 1em;
+  padding-bottom: 1em;
 }
 header nav img:last-child {
   margin-right: 0;
@@ -696,8 +700,11 @@ header nav img:last-child {
   header nav img {
     float: left;
     display: block;
-    margin-right: 2.35765%;
-    width: 14.70196%;
+    margin-right: 3.57866%;
+    width: 9.36867%;
+    margin-left: 0%;
+    padding-top: 1em;
+    padding-bottom: 0;
   }
   header nav img:last-child {
     margin-right: 0;
@@ -708,12 +715,21 @@ header #menu-toggle {
   display: block;
   margin-right: 2.35765%;
   width: 100%;
-  background: black;
+  background: #333;
   color: white;
   padding: 1em;
 }
 header #menu-toggle:last-child {
   margin-right: 0;
+}
+header #menu-toggle #menu-toggle-title {
+  float: left;
+  margin-top: 0.5em;
+}
+header #menu-toggle #menu-toggle-button {
+  float: right;
+  font-size: 22px;
+  cursor: pointer;
 }
 @media screen and (min-width: 900px) {
   header #menu-toggle {
@@ -721,16 +737,17 @@ header #menu-toggle:last-child {
   }
 }
 header #navigation-menu {
-  margin-top: 1em;
+  padding: 1em;
   display: none;
 }
 @media screen and (min-width: 900px) {
   header #navigation-menu {
-    padding: 1em;
+    margin-top: 1em;
     float: left;
     display: block;
     margin-right: 2.35765%;
-    width: 82.94039%;
+    width: 65.88078%;
+    margin-left: 0%;
   }
   header #navigation-menu:last-child {
     margin-right: 0;
@@ -756,7 +773,6 @@ header #navigation-menu li {
   }
 }
 header #navigation-menu .more {
-  position: relative;
   display: inline-block;
 }
 header #navigation-menu .more:after {
@@ -778,13 +794,12 @@ header #navigation-menu .submenu-wrapper {
   header #navigation-menu .submenu-wrapper {
     display: block;
     visibility: hidden;
-    padding: 1em;
+    padding: 0;
     box-shadow: none;
     position: absolute;
-    width: 120em;
-    left: -50em;
-    margin: 0;
-    top: 100%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
   }
 }
 header #navigation-menu .submenu-wrapper .submenu-container {
@@ -799,7 +814,7 @@ header #navigation-menu .submenu-wrapper .submenu-container::after {
 }
 @media screen and (min-width: 900px) {
   header #navigation-menu .submenu-wrapper .submenu:first-child {
-    margin-left: 17.05961%;
+    margin-left: 8.5298%;
   }
 }
 header #navigation-menu .submenu-wrapper .submenu {
@@ -817,6 +832,7 @@ header #navigation-menu .submenu-wrapper .submenu:last-child {
     display: block;
     margin-right: 3.57866%;
     width: 22.316%;
+    padding: 2em;
   }
   header #navigation-menu .submenu-wrapper .submenu:last-child {
     margin-right: 0;
