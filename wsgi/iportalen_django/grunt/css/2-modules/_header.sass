@@ -55,11 +55,11 @@ header
     padding: 1em
     +display(none)
     +media($large-screen-up)
-      margin-top: 1em
-      +span-columns(8 of 12)
-      +shift(0)
+      margin-top: 0.5em
+      +span-columns(5 of 8)
+      +shift(2)
     &.show
-      +span-columns(12)
+      +span-columns(8)
     li
       margin-bottom: 1em
       padding: 0 1em
@@ -67,19 +67,18 @@ header
         margin: 0
         display: inline
     .more
-      //position: relative
       display: inline-block
       &:after
         content: '\25BE'
       +media($large-screen-up)
         &:hover > .submenu-wrapper
           visibility: visible
-          height: 350px
+          min-height: 250px
 
     //wrapper for all submenus under a particular menu item
     .submenu-wrapper
       +display(none)
-      background: transparentize($white, 0.1)
+      background: transparentize($white, 0.05)
       padding:  1em
       box-shadow: 2px 2px 4px $light-gray
       +media($large-screen-up)
@@ -94,17 +93,15 @@ header
         //top: 100%
       .submenu-container
         +outer-container()
-      //this is used to shift the column in towards the middle
+      //this is used to shift the submenu columns towards the middle
       +media($large-screen-up)
-
         .submenu:first-child
-          +shift(1)
-
+          +shift(2)
       .submenu
         +span-columns(12)
         +media($large-screen-up)
           +span-columns(2 of 8)
-          padding: 2em
+          margin-top: 2em
 
 
         // The first item in a list is treated as the heading for
