@@ -9,7 +9,7 @@ class IUserManager(BaseUserManager):
             raise ValueError('User must have a username')
 
         user = self.model(username=username)
-
+        user.email = username+"@student.liu.se"
         user.is_active = True
         user.set_password(password)
         user.save(using=self._db)

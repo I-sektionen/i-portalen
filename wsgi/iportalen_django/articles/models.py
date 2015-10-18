@@ -4,6 +4,8 @@ from django.conf import settings
 import datetime
 from tags.models import Tag
 from .managers import ArticleManager
+from utils.validators import less_than_160_characters_validator
+from utils.time import now_plus_one_month
 
 
 class Article(models.Model):
@@ -11,14 +13,17 @@ class Article(models.Model):
                                 max_length=255,
                                 help_text="Rubriken till artikeln")
     lead = models.TextField(verbose_name='ingress',
-                            help_text="Ingressen är den text som syns i nyhetsflödet")
+                            help_text="Ingressen är den text som syns i nyhetsflödet. Max 160 tecken.",
+                            validators=[less_than_160_characters_validator])
     body = models.TextField(verbose_name='brödtext',
-                            help_text="Brödtext syns när en artikel visas enskilt")
+                            help_text="Brödtext syns när en artikel visas enskilt.")
 
     visible_from = models.DateTimeField(verbose_name='publicering',
-                                        help_text="Publiceringsdatum", default=datetime.datetime.now)
+                                        help_text="Publiceringsdatum",
+                                        default=datetime.datetime.now)
     visible_to = models.DateTimeField(verbose_name='avpublicering',
-                                      help_text="Avpubliceringsdatum", default=lambda: datetime.datetime.now()+datetime.timedelta(days=30))
+                                      help_text="Avpubliceringsdatum",
+                                      default=now_plus_one_month)
     draft = models.BooleanField(verbose_name='utkast', default=False,
                                 help_text="Sparar utan att publicera")
     approved = models.BooleanField(verbose_name='godkänd', default=False)

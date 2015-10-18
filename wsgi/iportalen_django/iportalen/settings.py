@@ -145,7 +145,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Target folder of collectstatic.
 
 # Staticfiles settings for local dev environment:
@@ -184,3 +183,10 @@ if ON_PASS:
     }
 
 LOGIN_URL = 'login_view'
+
+# Email settings:
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'noreply@i-portalen.se'
+EMAIL_HOST_PASSWORD = 't7pEPRaR3sTe'

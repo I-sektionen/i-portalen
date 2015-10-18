@@ -1,12 +1,37 @@
 from django.conf.urls import url, patterns
+from django.contrib.auth.views import password_change, password_change_done
+from .views import (
+    logout_view,
+    login,
+    my_page_view,
+    change_user_info_view,
+    add_users_to_white_list,
+    set_user_as_member,
+    reset_confirm,
+    reset_done,
+    reset,
+    reset_complete,
+)
 
-from .views import logout_view, login, my_page_view, change_user_info_view
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^logout$', logout_view, name='logout_view'),
-    # url(r'login', 'django.contrib.auth.views.login', {'template_name': 'user_managments/login.html'}, name='login_view')
     url(r'^login$', login, name='login_view'),
+    url(r'^$', my_page_view, name='mypage_view'),
     url(r'^my_page$', my_page_view, name='mypage_view'),
     url(r'^change_user_info$', change_user_info_view, name='change_user_info_view'),
+    url(r'^add_users_to_whitelist$', view=add_users_to_white_list, name='add users to whitelist'),
+    url(r'^become_member$', view=set_user_as_member, name="become member"),
 
-   )
+    url(r'^reset/$', view=reset, name='password_reset'),  # 1:a starta genom att ange liu-mail
+    url(r'^reset/done/$', view=reset_done, name='password_reset_done'),  # 2:a Visar text om att ett mail skickats
+    url(r'^reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', view=reset_confirm,
+        name='password_reset_confirm'),  # 3:e skapa nytt lösenord
+    url(r'^reset/complete/$', view=reset_complete, name='password_reset_complete'),  # 4:e lösenord ändrat och klart
+
+
+    url(r'password_change/$', password_change, {"template_name": 'user_managements/change_pw.html'},
+        name="password_change"),
+    url(r'password_change/done$', password_change_done, {"template_name":'user_managements/change_pw_done.html'},
+        name="password_change_done"),
+]

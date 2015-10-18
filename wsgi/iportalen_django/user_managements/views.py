@@ -1,8 +1,20 @@
+from django.core.exceptions import ValidationError, PermissionDenied
+from django.db import transaction
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import ChangeUserInfoForm
+from .forms import ChangeUserInfoForm, AddWhiteListForm
+from .models import IUser
 from django.core.urlresolvers import reverse
+from django.contrib import messages
+from utils.text import random_string_generator
+from django.contrib.auth.views import (
+    password_reset_confirm,
+    password_reset,
+    password_reset_done,
+    password_reset_complete
+)
+
 
 
 def logout_view(request):
@@ -17,19 +29,26 @@ def login(request):
         if user is not None:
             # the password verified for the user
             if user.is_active:
+                not_member = False
+                if user.last_login is None:
+                    not_member = True
                 auth_login(request, user)
+                if not_member:
+                    user.is_active = False
+                    user.save()
+                    return render(request, "user_managements/membership.html")
                 try:
                     return redirect(request.GET['next'])
                 except:
                     return redirect('/')
             else:
-                return render(request, "user_managements/login.html",
-                          {'message': "The password is valid, but the account has been disabled!"})
+                messages.error(request, "Lösenordet är korrekt, men kontot är avstängt! Om detta inte bör vara fallet var god kontakta info@isektionen.se")
+                return render(request, "user_managements/login.html")
                 # The password is valid, but the account has been disabled!
         else:
             # the authentication system was unable to verify the username and password
-            return render(request, "user_managements/login.html",
-                          {'message': "The username and password were incorrect."})
+            messages.error(request, "Fel Liu-id eller lösenord.")
+            return render(request, "user_managements/login.html")
     else:
         return render(request, "user_managements/login.html")
 
@@ -50,3 +69,74 @@ def change_user_info_view(request):
     else:
         form = ChangeUserInfoForm(instance=user)
         return render(request, "user_managements/user_info_form.html", {'form':form})
+
+@login_required()
+@transaction.atomic
+def add_users_to_white_list(request):
+    user = request.user
+    if not user.has_perm("user_managements.add_iuser"):
+        raise PermissionDenied
+    if request.method == 'POST':
+        form = AddWhiteListForm(request.POST)
+        if form.is_valid():
+            list_of_liu_id = form.cleaned_data['users'].splitlines()
+            errors = False
+
+            for liu_id in list_of_liu_id:
+                temp_user = IUser(username=liu_id.lower(), email=liu_id.lower()+"@student.liu.se")
+                temp_user.set_password(random_string_generator())
+                try:
+                    temp_user.validate_unique()
+                except ValidationError:
+                    messages.info(
+                        request,
+                        "Det finns redan en användare med Liu-id: {:}. Användaren har inte ändrats.".format(liu_id))
+                    continue
+                try:
+                    temp_user.clean_fields()
+                    temp_user.clean()
+                except ValidationError as e:
+                    errors = True
+                    str_error = ""
+                    for m in e.messages:
+                        str_error = str_error + " " + m
+                    messages.error(
+                        request,
+                        "Det uppstod ett fel för användaren med Liu-id: {:}.\n{:}".format(liu_id, str_error))
+                    continue
+                temp_user.save()
+            if errors:
+                messages.info(request, "De användare utan fel har skapats och kan nu återställa sitt lösenord.")
+            else:
+                messages.success(request, "De nya användarna har skapats och kan nu återställa sitt lösenord")
+    else:
+        form = AddWhiteListForm()
+    return render(request, "user_managements/add_whitelist.html", {'form':form})
+
+
+def set_user_as_member(request):
+    request.user.is_active = True
+    request.user.save()
+    return redirect("/")
+
+
+def reset(request):
+    return password_reset(request, template_name='user_managements/reset/pw_res.html',
+                          email_template_name='user_managements/reset/pw_res_email.html',
+                          subject_template_name='user_managements/reset/pw_res_email_subject.txt',)
+
+
+def reset_confirm(request, uidb64=None, token=None):
+    return password_reset_confirm(request, template_name='user_managements/reset/pw_res_confirm.html',
+                                  uidb64=uidb64,
+                                  token=token,
+                                  post_reset_redirect=reverse('front page'))
+
+def reset_done(request):
+    # return password_reset_done(request, template_name='user_managements/reset/pw_res_done.html')
+    messages.info(request, "Ett mail kommer inom kort skickas till mailadressen som angavs. I den finns en länk för att skapa ett nytt lösenord.")
+    return redirect("/")
+
+def reset_complete(request):
+    messages.info(request, "Du har ett nytt lösenord, testa det.")
+    return redirect(reverse("login_view"))

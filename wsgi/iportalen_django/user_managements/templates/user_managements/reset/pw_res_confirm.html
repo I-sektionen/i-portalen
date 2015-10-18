@@ -1,0 +1,12 @@
+{% extends 'master.html' %}
+{% block content %}
+    {% if validlink %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    {% else %}
+        <p>This reset link is no longer valid!</p>
+    {% endif %}
+{% endblock %}
