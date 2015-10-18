@@ -22,8 +22,8 @@ ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 
 if ON_PASS:
     ALLOWED_HOSTS = ['*']
-    DEBUG = False
-    TEMPLATE_DEBUG = False
+    DEBUG = True
+    TEMPLATE_DEBUG = True
 elif ON_JENKINS:
     ALLOWED_HOSTS = ['*']  # TODO: Should only allow localhost, and what about production?
     DEBUG = False
