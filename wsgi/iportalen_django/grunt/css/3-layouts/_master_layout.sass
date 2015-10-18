@@ -1,12 +1,17 @@
+#master-container
+  position: relative
+  +transition(0.5s ease-out)
+  +transform(translateX(0px))
+  z-index: 1
 #container
   +outer-container()
   #content
     padding: 1em
     +span-columns(12)
     +media($large-screen-up)
-      +span-columns(7)
+      +span-columns(6 of 8)
   #sponsors
     padding: 1em
     +span-columns(12)
     +media($large-screen-up)
-      +span-columns(1)
+      +span-columns(2 of 8)
