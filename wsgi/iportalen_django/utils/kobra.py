@@ -32,18 +32,15 @@ def _make_call_to_kobra(payload):
     # The flask server reverse checks the ip of iportalen-webgroup.rhcloud.com and only allows calls from that ip
     # Best regards Jonathan, Webmaster 2015-2016
     ##############################################################################
-    import requests
+    #import requests
     for k in payload:
         key = k
         value = payload[k]
-    r = requests.get("http://tornet.isektionen.se:8081/{:}/{:}/".format(key, value))
-    if not r.status_code == requests.codes.ok:
-        if r.status_code == 404:
-            raise LiuNotFoundError
-        else:
-            raise LiuGetterError
-    r.encoding = "iso-8859-1"
-    result_dict = json.loads(r.text, encoding="iso-8859-1")
+
+    import urllib3
+    http = urllib3.PoolManager()
+    r = http.request("GET", "http://tornet.isektionen.se:8081/{:}/{:}/".format(key, value))
+    result_dict = json.loads(r.data.decode('utf-8'), encoding="iso-8859-1")
     return result_dict
 
     # wget --quiet --method POST --header 'authorization: Basic aXNla3Rpb25lbi13ZWJiOjY4NDYzZTEwMzUzMzdhMTc3MDU4' --header 'cache-control: no-cache' --output-document - 'https://kobra.ks.liu.se/students/api?liu_id=jonan099'
