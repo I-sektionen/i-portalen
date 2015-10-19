@@ -45,32 +45,39 @@
                 {{ form.visible_to }}
             </div>
             <div id="article-create-form-buttons">
-                <button type="submit" value=>Publicera</button>
-                <button type="submit" value=>Granska</button>
-            </div>
-            <div id="article-create-preview">
-                <article class="news-preview">
-                    <div class="meta">
-                        <span class="date" id="date_collapsed"></span>
-                        <span class="author" id="author_collapsed"></span>
-                        <span class="tags" id="tags_collapsed"></span>
-                    </div>
-                    <h5 id="headline_collapsed"></h5>
-                    <p id="lead_collapsed"></p>
-                    <a href=""><button class="btn-read-more">Läs mer</button></a>
-                </article>
-
-                <article class="news-preview">
-                    <div class="meta">
-                        <span class="date" id="date_expanded"></span>
-                        <span class="author" id="author_expanded"></span>
-                        <span class="tags" id="tags_expanded"></span>
-                    </div>
-                    <h5 id="headline_expanded"></h5>
-                    <p id="lead_expanded"></p>
-                    <div id="wmd-preview-body" class="wmd-panel wmd-preview"></div>
-                </article>
+                <button type="submit">Publicera artikeln</button>
             </div>
         </form>
     </div>
+    <h2>Förhandsvisning av din artikel</h2>
+    <div id="article-create-preview">
+                <h3>Förhandsvisning kompakt format</h3>
+                <article class="news-preview">
+                    <div class="meta">
+                        <span class="date date_preview" id="date_collapsed"></span>
+                        <span class="author author_preview"></span>
+                        <span class="tags tags_preview"></span>
+                    </div>
+                    <h5 class="headline_preview"></h5>
+                    <p class="lead_preview"></p>
+                    <a href=""><button class="btn-read-more">Läs mer</button></a>
+                </article>
+                <h3>Expanderat format</h3>
+                <article class="news-preview">
+                    <div class="meta">
+                        <span class="date date_preview" id="date_expanded"></span>
+                        <span class="author author_preview"></span>
+                        <span class="tags tags_preview"></span>
+                    </div>
+                    <h5 class="headline_preview"></h5>
+                    <p class="lead_preview"></p>
+                    <div id="wmd-preview-body" class="wmd-panel wmd-preview"></div>
+                </article>
+            </div>
+
+{% endblock %}
+{% block after_scripts %}
+<script>
+    article_preview()
+</script>
 {% endblock %}
