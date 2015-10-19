@@ -7,11 +7,12 @@ It is modified during the deployment (to openshift).
 {% load staticfiles %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="{% static "iportalen/js/jquery.datetimepicker.full.min.js" %}"></script>
-<script src=" {% static "js/iportalen.js" %}"></script>
 {% load iportalen_tags %}
-{% comment %}
-<script src=" {% static "iportalen/js/iportalen.min.js" %}"></script>
+{% is_debug as in_debug %}
+
 {% if in_debug %}
+<script src=" {% static "js/iportalen.js" %}"></script>
 {% else %}
+<script src=" {% static "iportalen/js/iportalen.min.js" %}"></script>
 {% endif %}
-{% endcomment %}
+

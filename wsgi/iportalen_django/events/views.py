@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.utils import timezone
 from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
+import csv
+
 
 from .forms import EventForm, CheckForm
 from .models import Event
@@ -103,6 +105,7 @@ def participants_list(request, pk):
 @login_required()
 def check_in(request, pk):
     event = get_object_or_404(Event, pk=pk)
+    can_administer = event.can_administer(request.user)
     reserve = False
     if request.method == 'POST':
         form = CheckForm(request.POST)
@@ -115,14 +118,14 @@ def check_in(request, pk):
                 messages.error(request, "Användaren finns inte i databasen")
                 form = CheckForm()
                 return render(request, 'events/event_check_in.html', {
-                'form': form, 'event.pk': event.pk
+                'form': form, 'event': event, "can_administer": can_administer,
             })
             if event_user in event.preregistrations or form.cleaned_data["force_check_in"] == True:
                 try:
                     event.check_in(IUser.objects.get(username=liu_id))
                     messages.success(request, "Det lyckades")
                     return render(request, 'events/event_check_in.html', {
-                        'form': form, 'event.pk': event.pk
+                        'form': form, 'event': event, "can_administer": can_administer,
                      })
                 except:
                     messages.error(request, "Redan anmäld som deltagere")
@@ -132,16 +135,16 @@ def check_in(request, pk):
                 else:
                     messages.error(request, "Användare inte anmäld på eventet")
                 reserve = True
-                return render(request, 'events/event_check_in.html', {'form': form, 'event.pk': event.pk, 'reserve': reserve})
+                return render(request, 'events/event_check_in.html', {'form': form, 'event': event, 'reserve': reserve, "can_administer": can_administer,})
 
         else:
             return render(request, 'events/event_check_in.html', {
-                'form': form, 'event.pk': event.pk
+                'form': form, 'event': event, "can_administer": can_administer,
             })
 
     form = CheckForm
     return render(request, 'events/event_check_in.html', {
-        'form': form, 'event.pk': event.pk
+        'form': form, 'event': event, "can_administer": can_administer,
     })
 
 @login_required()
@@ -180,3 +183,36 @@ def unapprove_event(request, event_id):
         return render(request, 'articles/confirmation.html', {'message': message})
     else:
         raise PermissionDenied
+
+
+@login_required()
+def CSV_view_participants(request, pk):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="participants.txt"'
+
+    writer = csv.writer(response)
+    writer.writerow(['These are your participants:'])
+
+    event = get_object_or_404(Event, pk=pk)
+    participants = event.participants
+
+    for user in participants:
+        writer.writerow([user.username, user.first_name, user.last_name, user.email])
+
+    return response
+
+@login_required()
+def CSV_view_preregistrations(request, pk):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="preregistrations.txt"'
+
+    writer = csv.writer(response)
+    writer.writerow(['These are your preregistrations:'])
+
+    event = get_object_or_404(Event, pk=pk)
+    preregistrations = event.preregistrations
+
+    for user in preregistrations:
+        writer.writerow([user.username, user.first_name, user.last_name, user.email])
+
+    return response
