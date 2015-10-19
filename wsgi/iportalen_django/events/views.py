@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.utils import timezone
 from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
+import csv
+
 
 from .forms import EventForm, CheckForm
 from .models import Event
@@ -180,3 +182,36 @@ def unapprove_event(request, event_id):
         return render(request, 'articles/confirmation.html', {'message': message})
     else:
         raise PermissionDenied
+
+
+@login_required()
+def CSV_view_participants(request, pk):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="participants.txt"'
+
+    writer = csv.writer(response)
+    writer.writerow(['These are your participants:'])
+
+    event = get_object_or_404(Event, pk=pk)
+    participants = event.participants
+
+    for user in participants:
+        writer.writerow([user.username, user.first_name, user.last_name, user.email])
+
+    return response
+
+@login_required()
+def CSV_view_preregistrations(request, pk):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="preregistrations.txt"'
+
+    writer = csv.writer(response)
+    writer.writerow(['These are your preregistrations:'])
+
+    event = get_object_or_404(Event, pk=pk)
+    preregistrations = event.preregistrations
+
+    for user in preregistrations:
+        writer.writerow([user.username, user.first_name, user.last_name, user.email])
+
+    return response
