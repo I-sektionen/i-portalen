@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'(?P<pk>[0-9]+)/administer/preregistrations/$', view=preregistrations_list, name="event_preregistrations"),
     url(r'(?P<pk>[0-9]+)/administer/participants/$', view=participants_list, name="event_participants"),
     url(r'(?P<pk>[0-9]+)/administer/participants/download/$', view=CSV_view_participants, name="event_participants_download"),
-        url(r'(?P<pk>[0-9]+)/administer/preregistrations/download/$', view=CSV_view_preregistrations, name="event_preregistrations_download"),
+    url(r'(?P<pk>[0-9]+)/administer/preregistrations/download/$', view=CSV_view_preregistrations, name="event_preregistrations_download"),
     url(r'(?P<pk>[0-9]+)/administer/event_check_in/$', view=check_in, name="event_check_in"),
     url(r'^unapproved/$', view=all_unapproved_events, name='unapproved events'),
     url(r'^(?P<event_id>[0-9]+)/approve$', view=approve_event, name='approve event'),
