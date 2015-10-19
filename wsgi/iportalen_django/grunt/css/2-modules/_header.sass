@@ -1,123 +1,149 @@
+$header-link-font-size: 16px
+$header-link-color: $dark-gray
+
 header
+  +outer-container()
+  height: 4em
+  background-color: white
   a
-    text-decoration: none
+    font-size: $header-link-font-size
+    color: $header-link-color
     text-transform: uppercase
-    font-size: 14px
-    font-weight: 400
-    text-decoration: none
-    color: black
-    &:hover
-      color: darken(white, 15%)
-      text-decoration: none
-    &:visited
-      color: black
-      text-decoration: none
-  nav
-    +display(flex)
-    +flex-direction(column)
-    // Place img and nav in row on large screens
     +media($large-screen-up)
-      +flex-direction()
-      +justify-content(space-around)
-      +align-items(flex-end)
-    //padding: 1em
+      font-size: 14px
+      font-weight: 400
+    &:hover
+      color: lighten($dark-gray, 30%)
+      text-decoration: none
 
-    img
-      padding: 1em
-      max-width: 10em
-      +flex-basis(100%)
-
-      +media($large-screen-up)
-        padding: 1em
-        margin: 0
 
   // Menu bar for mobile view
   #menu-toggle
-    background: black
+    +span-columns(12)
+    background: $dark-gray
     color: white
     padding: 1em
+    #menu-toggle-title
+      float: left
+      margin-top: 0.5em
+    #menu-toggle-button
+      float: right
+      font-size: 22px
+      cursor: pointer
 
     //Hide menu toggle panel on large screens
     +media($large-screen-up)
       display: none
+  nav
+    +span-columns(12)
+    +media($large-screen-up)
+    img
+      text-align: center
+      +span-columns(6)
+      +shift(3)
+      //max-width: 10em
+      padding-top: 1em
+      padding-bottom: 1em
+      +media($large-screen-up)
+        +span-columns(1)
+        +shift(0)
+        padding-top: 1em
+        padding-bottom: 0
+
+  #user-menu-tool
+    padding: 1em
+    +span-columns(12)
+    +media($large-screen-up)
+      +shift(0)
+      +span-columns(2)
+
+    .button-small
+      text-align: center
+      background-color: $isektionen-yellow
+      padding: 0.4em
+      border-radius: $base-border-radius
+      color: $white
+      text-transform: uppercase
+      font-weight: 400
+      +media($large-screen-up)
+        max-width: 120px
+        font-weight: 400
+        font-size: 14px
+    li
+      display: inline
 
   // holds links for menu
   #navigation-menu
+    padding: 1em
+    +span-columns(12)
     +display(none)
-    +flex-direction(column)
-
     +media($large-screen-up)
-      +display(flex)
-      +flex-direction()
-      margin: 0
-      padding: 1em
-
+      margin-top: 0.5em
+      +span-columns(5)
+      +omega()
     li
       margin-bottom: 1em
-      padding: 0 0.5em
-
+      padding: 0 1em
       +media($large-screen-up)
         margin: 0
-
-    li.more > a:after
-      content: ""
-
-    &.show
-      +display(flex)
+        display: inline
+    .more
+      display: inline-block
+      &:after
+        content: '\25BE'
+      +media($large-screen-up)
+        &:hover > .submenu-wrapper
+          +display(block)
+          min-height: 250px
     //wrapper for all submenus under a particular menu item
     .submenu-wrapper
       +display(none)
-      +flex-direction(column)
-      background: darken(white, 3%)
-      margin: 1em 0
+      background: transparentize($white, 0.05)
       padding:  1em
       box-shadow: 2px 2px 4px $light-gray
-
       +media($large-screen-up)
-        padding: 1em
-        +flex-direction()
-        +justify-content(space-around)
-        position: absolute
-        right: 13.37%
-        //opacity: 0.95
-        z-index: 1
-        border-radius: 3px
+        display: none
+        padding: 0
         box-shadow: none
-
-      &.show
-        +display(flex)
-
-    .submenu
-      +display(flex)
-      +align-content(space-around)
-      +flex-direction(column)
-      font-weight: 200
-      a
-        text-transform: none
-
+        +position(absolute)
+        left: 0
+        right: 0
+        //top: 3.18em
+      .submenu-container
+        +outer-container()
+      //this is used to shift the submenu columns towards the middle
       +media($large-screen-up)
-        margin: 0 1.5em
-
-      // The first item in a list is treated as the heading for
-      // each submeu, i.e Föreningar
-
-      & > li:first-child
-        font-size: 22px
-        font-weight: 200
-        color: darken(white, 30%)
-        background: darken(white, 8%)
-        border-radius: 3px
-        //padding: 0.5em 0
-        //border-bottom: 1px dashed $light-gray
-        margin: 1em 0
-
+        .submenu:first-child
+          +shift(1)
+      .submenu
+        +span-columns(12)
         +media($large-screen-up)
-          color: darken(white, 80%)
-          background: none
-          margin: 0 0 0.5em 0
-          border-radius: 0
-          border-bottom: 3px solid $isektionen-yellow
-      & > *
-        padding: 0.8em
-        +media($large-screen-up)
-          padding: 0.5em 0
+          +span-columns(2)
+          margin-top: 2em
+
+        // The first item in a list is treated as the heading for
+        // each submeu, i.e Föreningar
+
+        & > li:first-child
+          font-size: 22px
+          font-weight: 200
+          color: darken(white, 30%)
+          background: darken(white, 8%)
+          border-radius: 3px
+          margin: 1em 0
+
+          +media($large-screen-up)
+            font-size: 26px
+            font-weight: 200
+            color: $dark-gray
+            background: none
+            border-radius: 0
+            margin: 0
+            padding: 0
+        & > *
+          padding: 0.8em
+          +media($large-screen-up)
+            padding: 0.5em 0
+            display: block
+
+
