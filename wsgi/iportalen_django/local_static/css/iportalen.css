@@ -923,12 +923,12 @@ header #navigation-menu .submenu-wrapper .submenu > * {
     background-position: top center;
     background-attachment: fixed;
   }
-}
-.hero h1 {
-  position: relative;
-  text-align: center;
-  top: 40%;
-  font-size: 48px;
+  .hero h1 {
+    position: relative;
+    text-align: center;
+    top: 40%;
+    font-size: 48px;
+  }
 }
 
 article.news-preview {
