@@ -105,6 +105,7 @@ def participants_list(request, pk):
 @login_required()
 def check_in(request, pk):
     event = get_object_or_404(Event, pk=pk)
+    can_administer = event.can_administer(request.user)
     reserve = False
     if request.method == 'POST':
         form = CheckForm(request.POST)
@@ -117,14 +118,14 @@ def check_in(request, pk):
                 messages.error(request, "Användaren finns inte i databasen")
                 form = CheckForm()
                 return render(request, 'events/event_check_in.html', {
-                'form': form, 'event.pk': event.pk
+                'form': form, 'event': event, "can_administer": can_administer,
             })
             if event_user in event.preregistrations or form.cleaned_data["force_check_in"] == True:
                 try:
                     event.check_in(IUser.objects.get(username=liu_id))
                     messages.success(request, "Det lyckades")
                     return render(request, 'events/event_check_in.html', {
-                        'form': form, 'event.pk': event.pk
+                        'form': form, 'event': event, "can_administer": can_administer,
                      })
                 except:
                     messages.error(request, "Redan anmäld som deltagere")
@@ -134,16 +135,16 @@ def check_in(request, pk):
                 else:
                     messages.error(request, "Användare inte anmäld på eventet")
                 reserve = True
-                return render(request, 'events/event_check_in.html', {'form': form, 'event.pk': event.pk, 'reserve': reserve})
+                return render(request, 'events/event_check_in.html', {'form': form, 'event': event, 'reserve': reserve, "can_administer": can_administer,})
 
         else:
             return render(request, 'events/event_check_in.html', {
-                'form': form, 'event.pk': event.pk
+                'form': form, 'event': event, "can_administer": can_administer,
             })
 
     form = CheckForm
     return render(request, 'events/event_check_in.html', {
-        'form': form, 'event.pk': event.pk
+        'form': form, 'event': event, "can_administer": can_administer,
     })
 
 @login_required()

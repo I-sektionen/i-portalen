@@ -19,7 +19,9 @@
                 {{ form.force_check_in.help_text }}
             {% endif %}
             <button type="submit">Checka in</button>
-
+            {% if can_administer %}
+                <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
+            {% endif %}
         </form>
     </div>
 {% endblock %}
