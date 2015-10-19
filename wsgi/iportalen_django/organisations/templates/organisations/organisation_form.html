@@ -1,0 +1,46 @@
+{% extends "master.html" %}
+{% load staticfiles %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static "articles/Markdown.css" %}" />
+{% endblock %}
+{% block content %}
+    <div>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+
+            {{ form.description.errors }}
+            {{ form.description.label_tag }}
+            {{ form.description }}
+            {{ form.description.help_text }}
+            <br>
+            <br>
+
+            {{ form.contact_info.errors }}
+            {{ form.contact_info.label_tag }}
+            {{ form.contact_info }}
+            {{ form.contact_info.help_text }}
+            <br>
+            <br>
+
+            {{ form.leader.errors }}
+            {{ form.leader.label_tag }}
+            {{ form.leader }}
+            {{ form.leader.help_text }}
+            <br>
+            <br>
+
+            {{ form.image.errors }}
+            {{ form.image.label_tag }}
+            {{ form.image }}
+            {{ form.image.help_text }}
+            <br>
+            <br>
+
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+
+{% endblock %}
+
