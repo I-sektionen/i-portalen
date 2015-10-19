@@ -143,9 +143,9 @@ def update_user_from_kobra(request, liu_id):
     try:
         user = IUser.objects.get(username=liu_id)
         kobra_dict = get_user_by_liu_id(liu_id)
-        user.email = kobra_dict['email']
-        user.last_name = kobra_dict['last_name']
-        user.first_name = kobra_dict['first_name']
+        user.email = kobra_dict['email'].lower()
+        user.last_name = kobra_dict['last_name'].lower()
+        user.first_name = kobra_dict['first_name'].lower()
         user.rfid_number = kobra_dict['rfid_number']
         user.p_nr = kobra_dict['personal_number']
         user.save()
