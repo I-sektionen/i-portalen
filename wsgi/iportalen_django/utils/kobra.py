@@ -29,7 +29,7 @@ def _make_call_to_kobra(payload):
     user = "isektionen-webb"
     password = "68463e1035337a177058"  # Very secret :)
     s = requests.Session()
-    s.mount('https://', SSLAdapter(ssl.PROTOCOL_TLSv1))
+    s.mount('https://', SSLAdapter(ssl.PROTOCOL_SSLv23))
     r = s.post("https://kobra.ks.liu.se/students/api", auth=(user, password), data=payload, verify=False, )
     if not r.status_code == requests.codes.ok:
         if r.status_code == 404:
