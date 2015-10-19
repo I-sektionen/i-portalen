@@ -1118,6 +1118,58 @@ article.news-single-view .btn-read-more {
     top: 40%;
   }
 }
+article.news-preview-organisation {
+  padding: 0px 15px 0px 15px;
+  margin-bottom: 0em;
+}
+article.news-preview-organisation .meta {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  border-top: 2px solid #dfddde;
+}
+article.news-preview-organisation .meta > span::before {
+  font-family: "FontAwesome";
+}
+article.news-preview-organisation .meta span {
+  margin-right: 1em;
+  padding: 10px 0;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+article.news-preview-organisation .meta .date::before {
+  padding-right: 0.5em;
+  content: "";
+}
+article.news-preview-organisation .meta .tags::before {
+  padding-right: 0.5em;
+  content: "";
+}
+article.news-preview-organisation .meta .author::before {
+  padding-right: 0.5em;
+  content: "";
+}
+article.news-preview-organisation p {
+  line-height: 1.5;
+  font-size: 14px;
+  margin: 1em 0;
+}
+article.news-preview-organisation .article-lead {
+  font-size: 14px;
+  font-style: italic;
+}
+
 article.event-preview {
   border-radius: 3px;
   border-left: 3px solid #2D701E;
@@ -1130,14 +1182,96 @@ article.event-preview:hover {
   -moz-transition-duration: 0.5s;
   transition-duration: 0.5s;
 }
-article.event-preview .meta p {
+article.event-preview .meta.meta {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+article.event-preview .meta.meta > span::before {
+  font-family: "FontAwesome";
+}
+article.event-preview .meta.meta span {
+  margin-right: 1em;
+  padding: 10px 0;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+article.event-preview .meta.meta .date::before {
+  padding-right: 0.5em;
+  content: "";
+}
+article.event-preview .meta.meta .time::before {
+  padding-right: 0.5em;
+  content: "";
+}
+article.event-preview p {
+  line-height: 1.5;
+  font-size: 14px;
+  margin: 1em 0;
+}
+article.event-preview p p {
   margin: 5px 0;
   font-size: 14pt;
 }
 @media screen and (min-width: 900px) {
-  article.event-preview .meta p {
+  article.event-preview p p {
     font-size: 12pt;
   }
+}
+
+article.event-preview-organisation {
+  padding: 0px 15px 0px 15px;
+  margin-bottom: 0em;
+}
+article.event-preview-organisation .meta {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  border-top: 2px solid #dfddde;
+}
+article.event-preview-organisation .meta > span::before {
+  font-family: "FontAwesome";
+}
+article.event-preview-organisation .meta span {
+  margin-right: 1em;
+  padding: 10px 0;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+article.event-preview-organisation .meta .date::before {
+  padding-right: 0.5em;
+  content: "";
+}
+article.event-preview-organisation .meta .time::before {
+  padding-right: 0.5em;
+  content: "";
+}
+article.event-preview-organisation p {
+  line-height: 1.5;
+  font-size: 14px;
+  margin: 1em 0;
 }
 
 #modal {
@@ -1619,7 +1753,11 @@ article.event-preview .meta p {
 }
 
 @media screen and (min-width: 900px) {
-  #organisation {
+  a button {
+    margin-top: 1em;
+  }
+
+  #organisation #organisation-info {
     display: -webkit-box;
     display: -moz-box;
     display: box;
@@ -1642,73 +1780,78 @@ article.event-preview .meta p {
     margin-right: 2.35765%;
     width: 82.94039%;
   }
-  #organisation:last-child {
+  #organisation #organisation-info:last-child {
     margin-right: 0;
   }
-  #organisation #organisation-image {
+  #organisation #organisation-info #organisation-image {
     float: left;
     display: block;
     margin-right: 2.84259%;
     width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
   }
-  #organisation #organisation-image:last-child {
+  #organisation #organisation-info #organisation-image:last-child {
     margin-right: 0;
   }
-  #organisation #organisation-image img {
+  #organisation #organisation-info #organisation-image img {
     width: 100%;
   }
-  #organisation #organisation-presentation {
+  #organisation #organisation-info #organisation-presentation-section1 {
     float: left;
     display: block;
     margin-right: 2.84259%;
     width: 58.86297%;
   }
-  #organisation #organisation-presentation:last-child {
+  #organisation #organisation-info #organisation-presentation-section1:last-child {
     margin-right: 0;
   }
-  #organisation #organisation-contact-info {
+  #organisation #organisation-info #organisation-presentation-section2 {
     float: left;
     display: block;
     margin-right: 2.84259%;
-    width: 28.01019%;
+    width: 38.29445%;
   }
-  #organisation #organisation-contact-info:last-child {
+  #organisation #organisation-info #organisation-presentation-section2:last-child {
     margin-right: 0;
   }
-  #organisation #sub-organisations {
-    float: left;
-    display: block;
-    margin-right: 2.84259%;
-    width: 28.01019%;
-  }
-  #organisation #sub-organisations:last-child {
-    margin-right: 0;
-  }
-  #organisation #organisation-members {
-    float: left;
-    display: block;
-    margin-right: 2.84259%;
-    width: 28.01019%;
-  }
-  #organisation #organisation-members:last-child {
-    margin-right: 0;
-  }
-  #organisation #events {
-    float: left;
-    display: block;
-    margin-right: 2.84259%;
-    width: 28.01019%;
-  }
-  #organisation #events:last-child {
-    margin-right: 0;
-  }
-  #organisation #news-feed {
+  #organisation #organisation-event-article {
     float: left;
     display: block;
     margin-right: 2.35765%;
     width: 82.94039%;
+    padding-top: 15px;
   }
-  #organisation #news-feed:last-child {
+  #organisation #organisation-event-article:last-child {
+    margin-right: 0;
+  }
+  #organisation #organisation-event-article h5 {
+    margin-bottom: 0em;
+  }
+  #organisation #organisation-event-article a {
+    font-size: 0.75em;
+  }
+  #organisation #organisation-event-article #events {
+    float: left;
+    display: block;
+    margin-right: 2.84259%;
+    width: 38.29445%;
+    border-left: 3px solid #2D701E;
+    padding: 15px;
+  }
+  #organisation #organisation-event-article #events:last-child {
+    margin-right: 0;
+  }
+  #organisation #organisation-event-article #news-feed {
+    float: left;
+    display: block;
+    margin-right: 2.84259%;
+    width: 58.86297%;
+    border-left: 3px solid #f9d026;
+    padding: 15px;
+  }
+  #organisation #organisation-event-article #news-feed:last-child {
     margin-right: 0;
   }
 }
