@@ -5,6 +5,7 @@
 ## Innehåll
 - [Grunt-kommandon](#grunt---kommandon)
 - [Installation](#installation)  
+     - [SASS](#SASS)
      - [Node](#node)
      - [Node package manager](#node-package-manager)
      - [Grunt](#grunt)
@@ -22,6 +23,13 @@ grunt dist
 ````
 
 ## Installation
+
+### SASS
+Installera genom att köra 
+
+````bash
+    sudo gem install -n /usr/local/bin sass
+````
 
 ### Node
 Ladda ner och installera [NodeJS](https://nodejs.org "Node JS")
