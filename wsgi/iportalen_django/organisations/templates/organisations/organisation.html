@@ -17,6 +17,7 @@
             {{ organisation.description|markdown }}
         </div>
 
+
         <h4>Kontaktuppgifter</h4>
         <div id="organisation-contact-info">
             {{ organisation.contact_info|markdown }}
@@ -66,6 +67,7 @@
             {% endif %}
         </section>
 
+
         <section id="news-feed">
             {% get_group_articles organisation.group_id as articles %}
             {% if articles %}
@@ -90,5 +92,7 @@
         </section>
     {% endif %}
     </section>
-
+    {% if request.user in organisation.group.user_set.all %}
+        <a href="{% url "edit_organisation" organisation.name %}"><button>Ändra info</button></a>
+    {% endif %}
 {% endblock %}
