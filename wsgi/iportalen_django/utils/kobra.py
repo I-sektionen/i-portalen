@@ -42,5 +42,3 @@ def _make_call_to_kobra(payload):
     r = http.request("GET", "http://tornet.isektionen.se:8443/{:}/{:}/".format(key, value))
     result_dict = json.loads(decode(25, r.data.decode('utf-8')), encoding="iso-8859-1")
     return result_dict
-
-    # wget --quiet --method POST --header 'authorization: Basic aXNla3Rpb25lbi13ZWJiOjY4NDYzZTEwMzUzMzdhMTc3MDU4' --header 'cache-control: no-cache' --output-document - 'https://kobra.ks.liu.se/students/api?liu_id=jonan099'

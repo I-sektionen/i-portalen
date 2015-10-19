@@ -139,7 +139,11 @@ def reset_complete(request):
     messages.info(request, "Du har ett nytt lösenord, testa det.")
     return redirect(reverse("login_view"))
 
+@login_required()
 def update_user_from_kobra(request, liu_id):
+    if not request.user.has_perm("user_managements.add_iuser"):
+        messages.error(request, "Du har inte rätt behörighet att updatera från kobra.")
+        return render(request, "user_managements/kobra.html")
     try:
         user = IUser.objects.get(username=liu_id)
         kobra_dict = get_user_by_liu_id(liu_id)
