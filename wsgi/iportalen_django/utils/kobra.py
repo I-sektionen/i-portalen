@@ -1,5 +1,7 @@
 __author__ = 'jonathan'
+from requests_toolbelt import SSLAdapter
 import requests
+import ssl
 import json
 
 
@@ -27,7 +29,8 @@ def _make_call_to_kobra(payload):
     user = "***REMOVED***"
     password = "***REMOVED***"  # Very secret :)
     s = requests.Session()
-    r = s.post("https://kobra.ks.liu.se/students/api", auth=(user, password), data=payload, verify=False)
+    s.mount('https://', SSLAdapter(ssl.PROTOCOL_TLSv1))
+    r = s.post("https://kobra.ks.liu.se/students/api", auth=(user, password), data=payload, verify=False, )
     if not r.status_code == requests.codes.ok:
         if r.status_code == 404:
             raise LiuNotFoundError
