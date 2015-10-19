@@ -54,27 +54,48 @@
       margin-top: 0.2em
 
 +media($large-screen)
+  a
+    button
+      margin-top: 1.0em
   #organisation
-
-    +display(flex)
-    +flex-direction(column)
-    +span-columns(10)
-    #organisation-image
-      +span-columns(10 of 10)
-      img
-        width: 100%
-    #organisation-presentation
-      +span-columns(6 of 10)
-    #organisation-contact-info
-      +span-columns(3 of 10)
-    #sub-organisations
-      +span-columns(3 of 10)
-    #organisation-members
-      +span-columns(3 of 10)
-    #events
-      +span-columns(3 of 10)
-    #news-feed
+    #organisation-info
+      +display(flex)
+      +flex-direction(column)
       +span-columns(10)
+      #organisation-image
+        +span-columns(10 of 10)
+        margin-left: auto
+        margin-right: auto
+        position: relative
+        img
+          width: 100%
+      #organisation-presentation-section1
+        +span-columns(6 of 10)
+      #organisation-presentation-section2
+        +span-columns(4 of 10)
+      //#organisation-presentation
+        +span-columns(6 of 10)
+      //#organisation-contact-info
+        +span-columns(4 of 10)
+      //#sub-organisations
+        +span-columns(4 of 10)
+      //#organisation-members
+        +span-columns(4 of 10)
+    #organisation-event-article
+      +span-columns(10)
+      padding-top: 15px
+      h5
+        margin-bottom: 0em
+      a
+        font-size: 0.75em
+      #events
+        +span-columns(4 of 10)
+        border-left: 3px solid $isektionen-green
+        padding: 15px
+      #news-feed
+        +span-columns(6 of 10)
+        border-left: 3px solid $isektionen-yellow
+        padding: 15px
 
 
 
