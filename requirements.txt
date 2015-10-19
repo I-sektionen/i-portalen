@@ -5,5 +5,3 @@ django-reversion
 markdown
 django-storages-redux
 boto
-requests
-requests_toolbelt
