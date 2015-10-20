@@ -216,3 +216,14 @@ def CSV_view_preregistrations(request, pk):
         writer.writerow([user.username, user.first_name, user.last_name, user.email])
 
     return response
+
+@login_required()
+def unregister(request, pk):
+    if request.method == "POST":
+        event = get_object_or_404(Event, pk=pk)
+        try:
+            event.deregister_user(request.user)
+            messages.success(request, "Du är nu avregistrerad på eventet.")
+        except CouldNotRegisterException as err:
+            messages.error(request, "Fel, kunde inte avregistrera dig på " + err.event.headline + " för att " + err.reason + ".")
+    return redirect("event", pk=pk)
