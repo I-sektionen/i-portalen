@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 import datetime
+import os
 from tags.models import Tag
 from .managers import ArticleManager
 from utils.validators import less_than_160_characters_validator
@@ -37,6 +38,12 @@ class Article(models.Model):
                              help_text="Användaren som skrivit texten")
     tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
 
+    attachment = models.FileField(verbose_name='Bifogad fil',
+                             help_text="Bifogad fil för artikel",
+                             upload_to="article_attachments",
+                             null=True,
+                             blank=True)
+
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
 
@@ -54,6 +61,9 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         return "/articles/%i/" % self.id
+
+    def filename(self):
+        return os.path.basename(self.attachment.name)
 
     class Meta:
         verbose_name = "Artikel"
