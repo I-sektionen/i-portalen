@@ -176,7 +176,7 @@ if ON_PASS:
         # .openshift/action_hooks/build.sh
         AWS_STORAGE_BUCKET_NAME = 'iportalen-us'
         pass
-
+ 
     S3_URL = 'https://{0}.s3.amazonaws.com/'.format(AWS_STORAGE_BUCKET_NAME)
     STATIC_URL = os.environ.get('STATIC_URL', S3_URL + 'static/')
 
