@@ -33,6 +33,16 @@ def login(request):
                 auth_login(request, user)
                 if not_member:
                     user.is_active = False
+                    try:
+                        kobra_dict = get_user_by_liu_id(user.username)
+                        user.email = kobra_dict['email'].lower()
+                        user.last_name = kobra_dict['last_name'].lower()
+                        user.first_name = kobra_dict['first_name'].lower()
+                        user.rfid_number = kobra_dict['rfid_number']
+                        user.p_nr = kobra_dict['personal_number']
+                        user.save()
+                    except:
+                        pass
                     user.save()
                     return render(request, "user_managements/membership.html")
                 try:
