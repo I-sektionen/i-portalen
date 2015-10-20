@@ -1969,9 +1969,6 @@ article.event-preview-organisation p {
   #organisation #organisation-info #organisation-image:last-child {
     margin-right: 0;
   }
-  #organisation #organisation-info #organisation-image img {
-    width: 100%;
-  }
   #organisation #organisation-info #organisation-presentation-section1 {
     float: left;
     display: block;

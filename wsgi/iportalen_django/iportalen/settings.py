@@ -108,7 +108,7 @@ elif ON_JENKINS:
      DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'django_iportalen',
+            'NAME': os.environ['JENKINS_DB_NAME'],
             'USER': 'mysql_jenkins',
             'PASSWORD': '123123123HEJJE',  # Securely generated password.
             'HOST': 'localhost',
