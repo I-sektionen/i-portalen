@@ -1,7 +1,7 @@
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db import transaction
 from .models import Article, Tag
@@ -19,7 +19,8 @@ def create_or_modify_article(request, article_id=None):
             # hasn't permission to change
             raise PermissionDenied
     if request.method == 'POST':
-        form = ArticleForm(request.POST, instance=a)
+        form = ArticleForm(request.POST, request.FILES, instance=a)
+
         # check whether it's valid:
         if form.is_valid(user=request.user):
             a = form.save(commit=False)
@@ -125,3 +126,12 @@ def delete_article(request, article_id):
         article.delete()
         return redirect(articles_by_user)
     raise PermissionDenied
+
+@login_required()
+def article_file_download(request, article_id):
+    article = Article.objects.get(pk=article_id)
+    article_filename = article.attachment
+    response = HttpResponse(article_filename)
+    response['Content-Disposition'] = 'attachment; filename="article_file.pdf"'
+
+    return response
