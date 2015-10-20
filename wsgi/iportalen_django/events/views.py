@@ -101,6 +101,18 @@ def participants_list(request, pk):
     else:
         return HttpResponseForbidden  # Nope.
 
+@login_required()
+def reserves_list(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    event_reserves = event.reserves()
+    if event.can_administer(request.user):
+        return render(request, 'events/event_reserves.html', {
+            'event': event,
+            'event_reserves': event_reserves,
+        })
+    else:
+        return HttpResponseForbidden  # Nope.
+
 
 @login_required()
 def check_in(request, pk):
@@ -227,3 +239,8 @@ def unregister(request, pk):
         except CouldNotRegisterException as err:
             messages.error(request, "Fel, kunde inte avregistrera dig på " + err.event.headline + " för att " + err.reason + ".")
     return redirect("event", pk=pk)
+
+
+def event_calender(request):
+    return render(request, "events/calender.html")
+
