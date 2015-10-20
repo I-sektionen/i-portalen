@@ -14,6 +14,7 @@ from .views import (
     CSV_view_participants,
     CSV_view_preregistrations,
     unregister,
+    event_calender,
 )
 
 urlpatterns = [
@@ -31,4 +32,5 @@ urlpatterns = [
     url(r'^unapproved/$', view=all_unapproved_events, name='unapproved events'),
     url(r'^(?P<event_id>[0-9]+)/approve$', view=approve_event, name='approve event'),
     url(r'^(?P<event_id>[0-9]+)/unapprove$', view=unapprove_event, name='unapprove event'),
+    url(r'^calender/$', view=event_calender, name='event_calender'),
 ]
