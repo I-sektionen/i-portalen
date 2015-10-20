@@ -166,7 +166,16 @@ if ON_PASS:
 
     AWS_ACCESS_KEY_ID = 'AKIAJSDYCW44P4UNOZQQ'
     AWS_SECRET_ACCESS_KEY = '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'
-    AWS_STORAGE_BUCKET_NAME = 'iportalen-us'
+
+    # Check if we are on the development instance:
+    try:
+        os.environ.get('DEVELOPMENT_ENVIRONMENT')
+        AWS_STORAGE_BUCKET_NAME = 'iportalen-development'
+    except KeyError:
+        # This mean we are on the production server. The DEVELOPMENT_ENVIRONMENT variable is set in
+        # .openshift/action_hooks/build.sh
+        AWS_STORAGE_BUCKET_NAME = 'iportalen-us'
+        pass
 
     S3_URL = 'https://{0}.s3.amazonaws.com/'.format(AWS_STORAGE_BUCKET_NAME)
     STATIC_URL = os.environ.get('STATIC_URL', S3_URL + 'static/')

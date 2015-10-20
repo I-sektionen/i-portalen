@@ -5,3 +5,4 @@
 # could be python, php, ruby, etc.
 
 # Activate VirtualEnv in order to use the correct libraries
+export DEVELOPMENT_ENVIRONMENT="1"
