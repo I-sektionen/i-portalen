@@ -1782,6 +1782,13 @@ article.event-preview-organisation p {
     margin-right: 0;
   }
 }
+#container #sponsors .sponsor {
+  min-height: 100px;
+  vertical-align: middle;
+}
+#container #sponsors img {
+  width: 100%;
+}
 
 #news-feed {
   float: left;
