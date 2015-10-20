@@ -1,23 +1,34 @@
-div.event-container
-    border-radius: 3px
-    border-left: 3px solid $isektionen-green
-    box-shadow: 1px 1px 4px $light-gray
-    margin-bottom: 1em
-    padding: 0.5em 1em
+#content
+    +display(flex)
+    +flex-wrap(wrap)
+    +span-columns(12)
+    .event-container
+        +omega()
+        +span-columns(8)
+        border-radius: 3px
+        border-left: 3px solid $isektionen-green
+        box-shadow: 1px 1px 4px $light-gray
+        margin-bottom: 1em
+        padding: 0.5em 1em
 
-    p.lead
-        font-style: italic
-    .meta
-        span
-            padding-right: 1.0em
+        p.lead
+            font-style: italic
+        .meta
+            span
+                padding-right: 1.0em
 
-div#event-form
-    @include span-columns(6 of 12)
+    .register-button
+        +span-columns(3)
+    .admin-event
+        +span-columns(3)
+
+#event-form
+    +span-columns(6)
     .errorlist
         color: $red
 
-div#markdown-preview
-    @include span-columns(6 of 12)
+#markdown-preview
+    +span-columns(6)
 
 article.event-preview
     border-radius: 3px

@@ -3,8 +3,6 @@
 {% load tag_tags %}
 {% load staticfiles %}
 {% block content %}
-
-<div id="content">
     <h2>Skapa ett event</h2>
     <p>Fyll i detaljer om eventet på formulärets vänstra sida.
         På den högra sidan finns en förhandsgranskning av hur eventet kommer att komma att se ut.
@@ -37,7 +35,7 @@
             {{ form.location.errors }}
             {{ form.location.help_text }}
             {{ form.location }}
-            <h4>Tids inställningar:</h4>
+            <h4>Tidsinställningar:</h4>
             <div class="half">
             {{ form.start.label_tag }}
             {{ form.start.errors }}
@@ -55,7 +53,7 @@
             {{ form.visible_from.help_text }}
             {{ form.visible_from }}
 
-            <h4>Deltagar inställningar:</h4>
+            <h4>Deltagarinställningar:</h4>
             <div>
             {{ form.enable_registration.label_tag }}
             {{ form.enable_registration.errors }}
@@ -73,7 +71,7 @@
             {{ form.deregister_delta.help_text }}
             {{ form.deregister_delta }}
 
-            <h4>Övriga inställningar:</h4>
+            <h4>Övrigainställningar:</h4>
             {{ form.admin_group.label_tag }}
             {{ form.admin_group.errors }}
             {{ form.admin_group.help_text }}
@@ -127,7 +125,6 @@
                 <p id="wmd-preview-body" class="wmd-panel wmd-preview"></p>
             </div>
         </div>
-</div>
 {% endblock %}
 
 {% block after_scripts %}
