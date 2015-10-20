@@ -1355,6 +1355,10 @@ article.event-preview .meta.meta .time::before {
   padding-right: 0.5em;
   content: "";
 }
+article.event-preview .meta.meta .location::before {
+  padding-right: 0.5em;
+  content: "";
+}
 article.event-preview p {
   line-height: 1.5;
   font-size: 14px;
@@ -1817,6 +1821,27 @@ article.event-preview-organisation p {
     width: 35.26334%;
   }
   #upcoming:last-child {
+    margin-right: 0;
+  }
+}
+
+#upcoming-calender {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+}
+#upcoming-calender:last-child {
+  margin-right: 0;
+}
+@media screen and (min-width: 900px) {
+  #upcoming-calender {
+    float: left;
+    display: block;
+    margin-right: 3.57866%;
+    width: 100%;
+  }
+  #upcoming-calender:last-child {
     margin-right: 0;
   }
 }

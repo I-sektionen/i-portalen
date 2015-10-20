@@ -36,6 +36,7 @@
                 <div class="meta">
                     <span class="date">{{ event.start|date:"d N Y" }}</span>
                     <span class="time">{{ event.start|time:"H:i" }}</span>
+                    <span class="location">{{ event.location }}</span>
                 </div>
                 <h4>{{ event.headline }}</h4>
                 <a href="{% url "event" event.pk %}">Läs mer</a>

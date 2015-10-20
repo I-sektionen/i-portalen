@@ -227,3 +227,7 @@ def unregister(request, pk):
         except CouldNotRegisterException as err:
             messages.error(request, "Fel, kunde inte avregistrera dig på " + err.event.headline + " för att " + err.reason + ".")
     return redirect("event", pk=pk)
+
+
+def event_calender(request):
+    return render(request, "events/calender.html")
