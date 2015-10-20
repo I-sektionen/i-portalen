@@ -3,6 +3,8 @@ from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
+from utils.validators import less_than_160_characters_validator
+
 
 from tags.models import Tag
 from .exceptions import CouldNotRegisterException
@@ -20,7 +22,7 @@ class Event(models.Model):
 
     #  Description:
     headline = models.CharField(verbose_name='rubrik', max_length=255)
-    lead = models.TextField(verbose_name='ingress', )
+    lead = models.TextField(verbose_name='ingress', help_text="Max 160 characters", validators=[less_than_160_characters_validator])
     body = models.TextField(verbose_name='brödtext', )
     location = models.CharField(max_length=30, verbose_name="plats")
 
