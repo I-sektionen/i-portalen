@@ -5,7 +5,7 @@
 {% block content %}
     <div id="article-create-form">
         <h1>Skapa artikel</h1>
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.non_field_errors }}
             <section id="article-create-form-text">
@@ -43,6 +43,11 @@
                 {{ form.visible_to.errors }}
                 {{ form.visible_to.label_tag }}
                 {{ form.visible_to }}
+
+                {{ form.attachment.errors }}
+                {{ form.attachment.label_tag }}
+                {{ form.attachment }}
+                {{ form.attachment.help_text }}
             </div>
             <div id="article-create-form-buttons">
                 <button type="submit">Publicera artikeln</button>
