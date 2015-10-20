@@ -13,6 +13,7 @@ from .views import (
     register_as_reserve,
     CSV_view_participants,
     CSV_view_preregistrations,
+    unregister,
 )
 
 urlpatterns = [
@@ -20,6 +21,7 @@ urlpatterns = [
     url(r'create_event/$', view=create_event, name="create event"),
     url(r'(?P<pk>[0-9]+)/register/$', view=register_to_event, name="register_to_event"),
     url(r'(?P<pk>[0-9]+)/register_reserve/$', view=register_as_reserve, name="register_as_reserve"),
+    url(r'(?P<pk>[0-9]+)/unregister/$', view=unregister, name="unregister"),
     url(r'(?P<pk>[0-9]+)/administer/$', view=administer_event, name="administer_event"),
     url(r'(?P<pk>[0-9]+)/administer/preregistrations/$', view=preregistrations_list, name="event_preregistrations"),
     url(r'(?P<pk>[0-9]+)/administer/participants/$', view=participants_list, name="event_participants"),

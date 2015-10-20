@@ -11,6 +11,10 @@
                 <div id="organisation-image">
                     <img src="{{ MEDIA_URL }}{{ organisation.image }}">
                 </div>
+            {% else %}
+                <div id="organisation-image">
+                    <img src="https://s3.amazonaws.com/iportalen-us/static/organisations/placeholder.png">
+                </div>
             {% endif %}
             <h1>{{ organisation.name }}</h1>
 
