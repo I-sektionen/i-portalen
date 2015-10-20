@@ -1874,7 +1874,8 @@ article.event-preview-organisation p {
   display: block;
   margin-right: 2.35765%;
   width: 82.94039%;
-  width: 100%;
+  max-width: 100%;
+  max-height: 300px;
   margin-bottom: 1em;
 }
 #organisation #organisation-image img:last-child {
