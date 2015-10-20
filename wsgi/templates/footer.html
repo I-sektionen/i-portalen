@@ -1,6 +1,26 @@
+{% load staticfiles %}
 <section id="footer">
     <div id="footer-content">
-        <h1>Footer</h1>
-
-        För mer information så kan du läsa här</div>
+        <div id="footer-left">
+            <a href="/"><img src=" {% static "iportalen/isektionen_logo.png" %}" alt="logo"></a>
+        </div>
+        <div id="footer-center">
+            <p>
+                I-sektionen<br>
+                Kårallen Tekniska Högskolan<br>
+                581 83 Linköping
+            </p>
+        </div>
+        <div id="footer-right">
+            <p>
+                <strong>Kontakt</strong><br>
+                Utgivare: <a href="mailto:info@isektionen.se">InfO</a><br>
+                Marknadsföring/Företag: <a href="mailto:naro@isektionen.se">NarU</a><br>
+                Tekniskt: <a href="mailto:webgroup@isektionen.se">Webgroup</a>
+            </p>
+        </div>
+        <div id="bottom">
+            <p><em>&copy; I-sektionen 2005-2015, ansvarig utgivare Informationsutskottets ordförande</em></p>
+        </div>
+    </div>
 </section>
