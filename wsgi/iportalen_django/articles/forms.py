@@ -8,7 +8,7 @@ from .models import Article, Tag
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ('headline', 'lead', 'body', 'visible_from', 'visible_to', 'author', 'tags', 'draft')
+        fields = ('headline', 'lead', 'body', 'visible_from', 'visible_to', 'author', 'tags', 'draft', 'attachment', )
         error_messages = {
             'headline': {
                 'max_length': _("Titeln är för lång"),

@@ -16,7 +16,7 @@ def organisation(request, organisation_name):
 def edit_organisation(request, organisation_name):
     my_organisation = Organisation.objects.get(name=organisation_name)
     if request.method == 'POST':
-        form = OrganisationForm(request.POST, instance=my_organisation)
+        form = OrganisationForm(request.POST, request.FILES, instance=my_organisation)
 
         if form.is_valid():
             form.save()
