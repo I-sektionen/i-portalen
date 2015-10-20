@@ -19,7 +19,9 @@
     </div>
     <p class="article-lead">{{ article.lead }}</p>
     <p>{{ article.body|markdown }}</p>
+{% if article.attachment %}
     <p>Bifogad fil: {{ article.filename }}</p>
     <a href="{% url "article_download" article.pk %}"><button type="button">Ladda ner</button></a>
+{% endif %}
 </article>
 {% endblock %}
