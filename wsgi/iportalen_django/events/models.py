@@ -67,6 +67,10 @@ class Event(models.Model):
             list.append(el.user)
         return list
 
+    def reserves(self):
+        return EntryAsReserve.objects.filter(event__exact=self)
+
+
     @property
     def participants(self):
         q = EntryAsParticipant.objects.filter(event__exact=self)
