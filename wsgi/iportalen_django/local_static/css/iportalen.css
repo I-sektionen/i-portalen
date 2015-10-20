@@ -1230,6 +1230,7 @@ article.event-preview {
   box-shadow: 1px 1px 4px #f7f7f7;
   margin-bottom: 1em;
   padding: 0.5em 1em;
+  padding-top: 0em;
 }
 article.event-preview:hover {
   -webkit-transition-duration: 0.5s;
