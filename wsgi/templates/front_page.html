@@ -33,11 +33,11 @@
         {% get_all_events as events %}
         {% for event in events %}
             <article class="event-preview">
-                <h4>{{ event.headline }}</h4>
                 <div class="meta">
-                    <p class="meta-content">{{ event.start|date:"d N Y" }}</p>
-                    <p class="meta-content">Kl. {{ event.start|time:"H:i" }}</p>
+                    <span class="date">{{ event.start|date:"d N Y" }}</span>
+                    <span class="time">{{ event.start|time:"H:i" }}</span>
                 </div>
+                <h4>{{ event.headline }}</h4>
                 <a href="{% url "event" event.pk %}">Läs mer</a>
                 <!--
                 {% if event.enable_registration %}
