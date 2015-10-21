@@ -578,7 +578,6 @@ body {
   line-height: 1.5;
 }
 
-h1,
 h2,
 h3,
 h4,
@@ -591,6 +590,8 @@ h6 {
 }
 
 h1 {
+  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+  line-height: 1.2;
   font-size: 2em;
 }
 
@@ -1870,16 +1871,12 @@ article.event-preview-organisation p {
   padding-top: 15px;
 }
 #organisation #organisation-image img {
-  float: left;
   display: block;
-  margin-right: 2.35765%;
-  width: 82.94039%;
+  margin-left: auto;
+  margin-right: auto;
   max-width: 100%;
   max-height: 300px;
   margin-bottom: 1em;
-}
-#organisation #organisation-image img:last-child {
-  margin-right: 0;
 }
 #organisation #organisation-presentation {
   border-radius: 3px;
@@ -1961,15 +1958,12 @@ article.event-preview-organisation p {
     display: block;
     margin-right: 2.35765%;
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
   }
   #organisation #organisation-info #organisation-image:last-child {
     margin-right: 0;
   }
   #organisation #organisation-info #organisation-image img {
-    width: 100%;
+    position: relative;
   }
   #organisation #organisation-info #organisation-presentation-section1 {
     float: left;

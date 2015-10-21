@@ -6,7 +6,7 @@ body {
   line-height: $base-line-height;
 }
 
-h1,
+
 h2,
 h3,
 h4,
@@ -19,7 +19,10 @@ h6 {
 }
 
 h1 {
+  font-family: $heading-font-family;
+  line-height: $heading-line-height;
   font-size: $base-font-size * 2;
+  
 }
 
 p {

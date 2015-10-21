@@ -6,16 +6,16 @@
 
     {% with u=request.user %}
 
-    <h3>Namn: {{ u.first_name|default:"You have not entered any info"|capfirst}}
-    {{ u.last_name|default:"You have not entered any info"|capfirst}}</h3>
+    <h3>Namn: {{ u.first_name|default:"Du har inte angett någon information"|capfirst}}
+    {{ u.last_name|default:"Du har inte angett någon information"|capfirst}}</h3>
     <h4>Liu-id: {{ u.username}}</h4>
-    <p>Adress: {{ u.address|default:"You have not entered any info"}} {{ u.zip_code|default:"You have not entered any info"}} {{ u.city|default:"You have not entered any info"}}</p>
-    <p>Allergier: {{ u.allergies|default:"You have not entered any info"}}</p>
+    <p>Adress: {{ u.address|default:"Du har inte angett någon information"}} {{ u.zip_code}} {{ u.city}}</p>
+    <p>Allergier: {{ u.allergies|default:"Du har inte angett någon information"}}</p>
 
     {% endwith %}
 
 
-    <a href="{% url "change_user_info_view" %}"><button>Ändra info</button></a>
+    <a href="{% url "change_user_info_view" %}"><button>Ändra uppgifter</button></a>
     <a href="{% url "password_change" %}"><button>Byt lösenord</button></a>
 
 

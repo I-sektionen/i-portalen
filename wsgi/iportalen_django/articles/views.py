@@ -84,8 +84,9 @@ def approve_article(request, article_id):
         a.save()
         if a.replacing:
             old = Article.objects.get(pk=a.replacing_id)
-            old.visible_to = timezone.now()
-            old.save()
+            old.delete()
+            a.pk = a.replacing_id
+            a.save()
         return redirect(all_unapproved_articles)
     else:
         raise PermissionDenied
