@@ -57,17 +57,15 @@
             </section>
         </section>
         <section id="organisation-event-article">
-            {% if organisation.group_id %}
-
                 <section id="news-feed">
-                    {% get_group_articles organisation.group_id as articles %}
+                    {% get_organisation_articles organisation.pk as articles %}
                     {% if articles %}
                         <h4>Nyheter</h4>
                         {% for article in articles %}
                             <article class="news-preview-organisation">
                                 <div class="meta">
                                     <span class="date">{{ article.created|date:"Y-m-d" }}</span>
-                                    <span class="author">{{ article.author }}</span>
+                                    <span class="author">{% if article.organisations.all %}{{ article.organisations.all|safeseq|join:", " }}{% else %}{{ article.author }}{% endif %}</span>
                                     {# Don't render tags for articles without tags #}
                                     {% if article.tags.all %}
                                         <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
@@ -80,7 +78,7 @@
                     {% endif %}
                 </section>
                 <section id="events">
-                    {% get_group_events organisation.group_id as events %}
+                    {% get_organisation_events organisation.pk as events %}
                     {% if events %}
                         <h4>Event</h4>
 
@@ -101,7 +99,6 @@
                         {% endfor %}
                     {% endif %}
                 </section>
-            {% endif %}
         </section>
     </section>
     {% if request.user in organisation.group.user_set.all %}

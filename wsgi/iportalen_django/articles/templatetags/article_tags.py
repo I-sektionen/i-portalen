@@ -2,6 +2,7 @@ from django.utils import timezone
 from django.template.loader_tags import register
 from articles.models import Article
 from tags.models import Tag
+from organisations.models import Organisation
 from django import template
 
 register = template.Library()
@@ -42,10 +43,8 @@ def select_tag_status(article_id, tag_id):
 
 
 @register.assignment_tag
-def get_group_articles(group_pk):
-    tags = Tag.objects.filter(group=group_pk).distinct().values('pk')
-    articles = Article.objects.filter(
-        tags__in=tags,
+def get_organisation_articles(organisation_pk):
+    articles = Organisation.objects.get(pk=organisation_pk).article_set.filter(
         approved=True,
         visible_from__lte=timezone.now(),
         visible_to__gte=timezone.now()
