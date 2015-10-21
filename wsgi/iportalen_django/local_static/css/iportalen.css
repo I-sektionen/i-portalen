@@ -954,7 +954,6 @@ header #navigation-menu .submenu-wrapper .submenu > * {
 @media screen and (min-width: 900px) {
   .hero {
     height: 250px;
-    background-image: url("../iportalen/hero_picture.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top center;
@@ -1160,7 +1159,6 @@ article.news-single-view .btn-read-more {
     display: block;
     position: relative;
     height: 250px;
-    background-image: url("../iportalen/hero_picture.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top center;
