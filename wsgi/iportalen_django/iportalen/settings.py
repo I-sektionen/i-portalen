@@ -23,15 +23,13 @@ ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 if ON_PASS:
     ALLOWED_HOSTS = ['*']
     DEBUG = False
-    TEMPLATE_DEBUG = False
 elif ON_JENKINS:
     ALLOWED_HOSTS = ['*']  # TODO: Should only allow localhost, and what about production?
     DEBUG = False
-    TEMPLATE_DEBUG = False
 else:
     ALLOWED_HOSTS = ['*']
     DEBUG = True
-    TEMPLATE_DEBUG = True
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
