@@ -1,5 +1,13 @@
 {% extends "master.html" %}
-
+{% block hero %}
+    <section class="hero">
+        <h1 id="hero-logo">500 &#8209; internal server error.</h1>
+    </section>
+{% endblock %}
 {% block content %}
-500
+    <div id="content">
+        <h2>500 - Internal server error</h2>
+        <h2>Det är inte ditt fel att det inte funkar, du har bara lyckats hitta en bugg som vi kommer att lösa!</h2>
+        <p><i>“Failure is success if we learn from it.”</i> - Malcolm Forbes</p>
+    </div>
 {% endblock %}

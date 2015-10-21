@@ -12,7 +12,7 @@ def get_all_events():
         approved=True,
         visible_from__lte=timezone.now(),
         end__gte=timezone.now()
-    ).order_by('-modified')
+    ).order_by('-start')
     return events
 
 @register.assignment_tag
