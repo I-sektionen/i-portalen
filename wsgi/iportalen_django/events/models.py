@@ -174,6 +174,10 @@ class Event(models.Model):
         EntryAsParticipant(user=user, event=self).save()
 
     def can_administer(self, user):
+        if user.is_anonymous:
+            return False
+        if user.groups is None:
+            return False
         if user != self.user:
             if self.admin_group is None:
                 return False
