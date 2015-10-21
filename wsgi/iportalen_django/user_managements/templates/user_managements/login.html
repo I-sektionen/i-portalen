@@ -14,7 +14,7 @@
             <h4>Logga in på I-Portalen</h4>
             <form class="login-form" action="{{ request.get_full_path }}" method="post">
             {% csrf_token %}
-            <input class="username-holder" type="text" name="username" placeholder="Användarnamn">
+            <input class="username-holder" type="text" name="username" placeholder="Liu-id">
             <input class="password-holder" type="password" name="password" placeholder="Lösenord">
             <input class="submit-holder primary" type="submit" value="Logga in">
             </form>
