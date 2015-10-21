@@ -101,7 +101,7 @@
                 </section>
         </section>
     </section>
-    {% if request.user in organisation.group.user_set.all %}
+    {% if request.user == organisation.leader %}
         <a href="{% url "edit_organisation" organisation.name %}">
             <button>Ändra info</button>
         </a>
