@@ -5,4 +5,10 @@
 # could be python, php, ruby, etc.
 
 # Activate VirtualEnv in order to use the correct libraries
-export DEVELOPMENT_ENVIRONMENT="1"
+
+# Set envrionment variables in data folder, if any. 
+
+if [ -f $OPENSHIFT_DATA_DIR"custom_environment_variables.sh" ]; then
+	sh $OPENSHIFT_DATA_DIR"customer_environment_variables.sh"
+fi
+
