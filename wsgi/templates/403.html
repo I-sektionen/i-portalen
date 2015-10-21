@@ -1,5 +1,15 @@
 {% extends "master.html" %}
-
+{% block hero %}
+    <section class="hero">
+        <h1 id="hero-logo">403 &#8209; här är det förbjudet!</h1>
+    </section>
+{% endblock %}
 {% block content %}
-403
+    <div id="content">
+        <h2>403 - här får du inte vara!</h2>
+        <h2>Du har hittat en sida du inte har tillgång till.</h2>
+        <br>
+        <br>
+        <p><i>“I'm just like you. I enjoy the forbidden fruits in life, too.”</i> - Mike Tyson</p>
+    </div>
 {% endblock %}
