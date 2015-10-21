@@ -13,7 +13,7 @@
         {% for article in articles %}
             <article class="news-preview">
                 <div class="meta">
-                    <span class="date">{{ article.created|date:"Y-m-d" }}</span>
+                    <span class="date">{{ article.visible_from|date:"d N Y" }}</span>
                     <span class="author">{% if article.organisations.all %}{{ article.organisations.all|safeseq|join:", " }}{% else %}{{ article.author }}{% endif %}</span>
                     {# Don't render tags for articles without tags #}
                     {% if article.tags.all %}
