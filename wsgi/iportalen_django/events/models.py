@@ -67,7 +67,7 @@ class Event(models.Model):
             list.append(el.user)
         return list
 
-    def reserves(self):
+    def reserves_object(self):
         return EntryAsReserve.objects.filter(event__exact=self)
 
 
