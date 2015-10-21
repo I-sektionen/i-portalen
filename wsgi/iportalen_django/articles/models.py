@@ -7,6 +7,7 @@ from tags.models import Tag
 from .managers import ArticleManager
 from utils.validators import less_than_160_characters_validator
 from utils.time import now_plus_one_month
+from organisations.models import Organisation
 
 
 class Article(models.Model):
@@ -31,7 +32,9 @@ class Article(models.Model):
 
     author = models.CharField(max_length=255,
                               verbose_name='skribent',
-                              help_text="Skribent av texten")
+                              null=True,
+                              blank=True,
+                              help_text="Skribent av texten, fyll bara i detta om ingen organisation valts.")
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              verbose_name='användare',
@@ -48,6 +51,11 @@ class Article(models.Model):
     modified = models.DateTimeField(editable=False)
 
     replacing = models.ForeignKey('self', null=True, blank=True, default=None)
+    organisations = models.ManyToManyField(Organisation,
+                                           blank=True,
+                                           default=None,
+                                           verbose_name='organisationer',
+                                           help_text="Organisation/organisationer som artikeln hör till" )
     objects = ArticleManager()
 
     def save(self, *args, **kwargs):
