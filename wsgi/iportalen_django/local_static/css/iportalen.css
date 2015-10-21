@@ -965,6 +965,7 @@ header #navigation-menu .submenu-wrapper .submenu > * {
     text-align: center;
     top: 40%;
     font-size: 48px;
+    text-shadow: 0 0 2px black;
   }
 }
 
@@ -1778,17 +1779,28 @@ article.event-preview-organisation p {
     display: block;
     margin-right: 3.57866%;
     width: 22.316%;
+    text-align: center;
   }
   #container #sponsors:last-child {
     margin-right: 0;
   }
 }
 #container #sponsors .sponsor {
-  min-height: 100px;
+  min-height: 60px;
   vertical-align: middle;
+  margin: 10px;
+  border: 1px solid #dfddde;
 }
 #container #sponsors img {
+  max-width: 100%;
+  max-height: 60px;
+  padding: 10px;
+}
+#container #sponsors h1 {
+  font-size: 1em;
   width: 100%;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #dfddde;
 }
 
 #news-feed {

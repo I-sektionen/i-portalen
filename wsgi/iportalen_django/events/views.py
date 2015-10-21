@@ -104,7 +104,7 @@ def participants_list(request, pk):
 @login_required()
 def reserves_list(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    event_reserves = event.reserves()
+    event_reserves = event.reserves_object()
     if event.can_administer(request.user):
         return render(request, 'events/event_reserves.html', {
             'event': event,
