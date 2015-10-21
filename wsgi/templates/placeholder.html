@@ -1,9 +1,9 @@
 {% extends "master.html" %}
-
+{% load staticfiles %}
 {% block hero %}
-    <section class="hero">
-        <h1 id="hero-logo">This page is under construction</h1>
-    </section>
+        <section class="hero" style="background-image:url({% static 'iportalen/hero_picture.jpg' %})">
+            <h1 id="hero-logo">i&#8209;portalen</h1>
+        </section>
 {% endblock %}
 
 {% block content %}
