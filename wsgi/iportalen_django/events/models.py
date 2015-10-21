@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
 from utils.validators import less_than_160_characters_validator
-
+from organisations.models import Organisation
 
 from tags.models import Tag
 from .exceptions import CouldNotRegisterException
@@ -51,6 +51,11 @@ class Event(models.Model):
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
 
+    organisations = models.ManyToManyField(Organisation,
+                                           blank=True,
+                                           default=None,
+                                           verbose_name='organisationer',
+                                           help_text="Organisation/organisationer som artikeln hör till" )
     @property
     def preregistrations(self):
         query = EntryAsPreRegistered.objects.filter(event__exact=self)
