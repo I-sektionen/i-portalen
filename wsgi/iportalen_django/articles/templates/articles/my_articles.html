@@ -6,17 +6,19 @@
         <h1>Artiklar</h1>
         <table>
             <thead>
-            <th>Rubrik</th>
-            <th>Publiceringsdatum</th>
+            <th colspan="2">Rubrik</th>
+            <th>Publicering</th>
             <th>Ändra</th>
+            <th colspan="2">Ägare</th>
             <th>Status</th>
             </thead>
             <tbody>
             {% for article in user_articles %}
                 <tr>
-                    <td><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></td>
+                    <td colspan="2"><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></td>
                     <td>{{ article.created|date:"Y-m-d" }}</td>
                     <td><a href="{{ article.get_absolute_url }}edit"><button>Ändra</button></a></td>
+                    <td colspan="2">{% if article.organisations.all %}{{ article.organisations.all|safeseq|join:", " }}{% else %}{{ article.author }}{% endif %}</td>
                     {% if article.draft %}
                         <td>Utkast</td>
                     {% elif article.draft = False and article.approved  = False %}
