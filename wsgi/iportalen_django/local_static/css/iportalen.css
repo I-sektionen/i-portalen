@@ -953,8 +953,8 @@ header #navigation-menu .submenu-wrapper .submenu > * {
 }
 @media screen and (min-width: 900px) {
   .hero {
-    height: 350px;
-    background-image: url(http://blog.liu.se/utbildningsbloggen/files/2012/07/liu_campusvalla.jpg);
+    height: 250px;
+    background-image: url("../iportalen/hero_picture.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top center;
@@ -1159,8 +1159,8 @@ article.news-single-view .btn-read-more {
   .hero {
     display: block;
     position: relative;
-    height: 350px;
-    background-image: url(http://blog.liu.se/utbildningsbloggen/files/2012/07/liu_campusvalla.jpg);
+    height: 250px;
+    background-image: url("../iportalen/hero_picture.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top center;
@@ -1790,6 +1790,7 @@ article.event-preview-organisation p {
   vertical-align: middle;
   margin: 10px;
   border: 1px solid #dfddde;
+  text-align: center;
 }
 #container #sponsors img {
   max-width: 100%;
