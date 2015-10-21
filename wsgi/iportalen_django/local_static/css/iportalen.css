@@ -2094,5 +2094,8 @@ article.event-preview-organisation p {
 #article-create-form #article-create-form-buttons:last-child {
   margin-right: 0;
 }
+#article-create-form .errorlist {
+  color: #e33c3c;
+}
 
 /*# sourceMappingURL=iportalen.css.map */
