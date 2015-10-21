@@ -9,6 +9,5 @@
 # Set envrionment variables in data folder, if any. 
 
 if [ -f $OPENSHIFT_DATA_DIR"custom_environment_variables.sh" ]; then
-	sh $OPENSHIFT_DATA_DIR"customer_environment_variables.sh"
+	sh $OPENSHIFT_DATA_DIR"custom_environment_variables.sh"
 fi
-
