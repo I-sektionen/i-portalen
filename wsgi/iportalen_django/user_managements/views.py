@@ -143,6 +143,7 @@ def reset_confirm(request, uidb64=None, token=None):
 def reset_done(request):
     # return password_reset_done(request, template_name='user_managements/reset/pw_res_done.html')
     messages.info(request, "Ett mail kommer inom kort skickas till mailadressen som angavs. I den finns en länk för att skapa ett nytt lösenord.")
+    messages.info(request, "Om det inte kommer något mail, vänligen försök igen, om det fortfarande inte kommer något mail, kontakta InfO.")
     return redirect("/")
 
 def reset_complete(request):
