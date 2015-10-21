@@ -7,6 +7,7 @@ from tags.models import Tag
 from .managers import ArticleManager
 from utils.validators import less_than_160_characters_validator
 from utils.time import now_plus_one_month
+from organisations.models import Organisation
 
 
 class Article(models.Model):
@@ -48,6 +49,11 @@ class Article(models.Model):
     modified = models.DateTimeField(editable=False)
 
     replacing = models.ForeignKey('self', null=True, blank=True, default=None)
+    organisations = models.ManyToManyField(Organisation,
+                                           blank=True,
+                                           default=None,
+                                           verbose_name='organisationer',
+                                           help_text="Organisation/organisationer som artikeln hör till" )
     objects = ArticleManager()
 
     def save(self, *args, **kwargs):

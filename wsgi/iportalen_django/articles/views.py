@@ -22,7 +22,7 @@ def create_or_modify_article(request, article_id=None):
         form = ArticleForm(request.POST, request.FILES, instance=a)
 
         # check whether it's valid:
-        if form.is_valid(user=request.user):
+        if form.is_valid():
             a = form.save(commit=False)
             if a.approved:
                 a.replacing_id = a.id
@@ -84,9 +84,11 @@ def approve_article(request, article_id):
         a.save()
         if a.replacing:
             old = Article.objects.get(pk=a.replacing_id)
+            print(old.pk)
             old.delete()
             a.pk = a.replacing_id
             a.save()
+            print(a.pk)
         return redirect(all_unapproved_articles)
     else:
         raise PermissionDenied
