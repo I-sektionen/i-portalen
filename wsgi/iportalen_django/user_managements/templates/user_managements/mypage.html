@@ -1,6 +1,4 @@
 {% extends "master.html" %}
-{# This file defines the front page and is a own kind of master page #}
-{% include "header.html" %}
 
 {% block content %}
 
@@ -9,7 +7,7 @@
     <h3>Namn: {{ u.first_name|default:"Du har inte angett någon information"|capfirst}}
     {{ u.last_name|default:"Du har inte angett någon information"|capfirst}}</h3>
     <h4>Liu-id: {{ u.username}}</h4>
-    <p>Adress: {{ u.address|default:"Du har inte angett någon information"}} {{ u.zip_code}} {{ u.city}}</p>
+    <p>Adress: {{ u.address|default:"Du har inte angett någon information"}} {{ u.zip_code|default:""}} {{ u.city|default:""}}</p>
     <p>Allergier: {{ u.allergies|default:"Du har inte angett någon information"}}</p>
 
     {% endwith %}
@@ -20,8 +18,3 @@
 
 
 {% endblock %}
-
-
-{% include "scripts.html" %}
-</body>
-</html>
