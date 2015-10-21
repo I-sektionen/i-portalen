@@ -29,16 +29,3 @@ class ArticleForm(forms.ModelForm):
         self.fields['visible_to'].widget.attrs['placeholder'] = self.fields['visible_to'].help_text
         self.fields['visible_from'].widget.attrs['placeholder'] = self.fields['visible_from'].help_text
         self.fields['draft'].widget.attrs['placeholder'] = self.fields['draft'].help_text
-
-    def is_valid(self, **kwargs):
-        valid = super(ArticleForm, self).is_valid()
-
-        if not valid:
-            return valid
-
-        tags = self.cleaned_data["tags"]
-
-        if not tags.exists():
-            self.add_error('tags', 'Välj minst en tag.')
-            return False
-        return True

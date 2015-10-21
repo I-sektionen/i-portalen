@@ -81,14 +81,24 @@ def approve_article(request, article_id):
             # cant publish article in draft state
             return HttpResponseForbidden()
         a.approved = True
+        tags = list(a.tags.all())  # must be above any save because of atomic.
+        orgs = list(a.organisations.all())
+        a.tags.clear()
+        a.organisations.clear()
         a.save()
         if a.replacing:
             old = Article.objects.get(pk=a.replacing_id)
-            print(old.pk)
             old.delete()
             a.pk = a.replacing_id
             a.save()
-            print(a.pk)
+            a.refresh_from_db()
+            for t in tags:
+                a.tags.add(t)
+            for t in orgs:
+                a.organisations.add(t)
+            a.replacing = None
+            a.save()
+
         return redirect(all_unapproved_articles)
     else:
         raise PermissionDenied
