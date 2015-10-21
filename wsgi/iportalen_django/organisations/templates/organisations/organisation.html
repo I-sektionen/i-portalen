@@ -24,7 +24,17 @@
                 </div>
             </section>
             <section id="organisation-presentation-section2">
-
+                {% get_child_organisations organisation.pk as children %}
+                {% if children %}
+                    <div id="sub-organisations">
+                        <h4>Arbetsgrupper</h4>
+                        <ul>
+                            {% for c in children %}
+                                <li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
                 <h4>Kontaktuppgifter</h4>
 
                 <div id="organisation-contact-info">
@@ -43,17 +53,7 @@
                     </ul>
                 </div>
 
-                {% get_child_organisations organisation.pk as children %}
-                {% if children %}
-                    <div id="sub-organisations">
-                        <h4>Grupper</h4>
-                        <ul>
-                            {% for c in children %}
-                                <li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                {% endif %}
+
             </section>
         </section>
         <section id="organisation-event-article">
