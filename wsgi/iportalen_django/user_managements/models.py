@@ -1,11 +1,10 @@
 import datetime
-from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.urlresolvers import reverse
 from .managers import IUserManager
 from django.utils import timezone
-
+from utils.validators import liu_id_validator
 
 YEAR_CHOICES = []
 for r in range(1969, (datetime.datetime.now().year+10)):
@@ -40,7 +39,6 @@ class MasterProfile(models.Model):
 
 # Liuid as username and <liuid>@student.liu.se as email
 class IUser(AbstractBaseUser, PermissionsMixin):
-    liu_id_validator = RegexValidator(r'^[a-zA-Z]{5}\d{3}$')
 
     # basic fields
     username = models.CharField(verbose_name='LiU-ID', unique=True, max_length=8, validators=[liu_id_validator])
@@ -73,7 +71,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
         menu_choices = []  # List of extra menu choices.
 
-        menu_choices.append(('Skapa Artikel', reverse('create article')))  # Everyone can create article.
+        menu_choices.append(('Lägg upp innehåll', reverse('create content')))  # Everyone can create article.
 
         menu_choices.append(('Min sida', reverse('mypage_view') ))
 
@@ -84,7 +82,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
              menu_choices.append(('Mina Artiklar', reverse('articles by user')))
 
         if self.has_perm("articles.can_approve_article"):
-            menu_choices.append(('Godkänn Artiklar', reverse('unapproved articles')))  # With perm to edit articles.
+            menu_choices.append(('Godkänn Innehåll', reverse('approve content')))  # With perm to edit articles.
 
         if self.is_staff:
             menu_choices.append(('Admin', '/admin'))  # Staff users who can access Admin page.
@@ -92,8 +90,10 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         return menu_choices
 
     def get_full_name(self):
-        #fullname = self.first_name+" "+self.last_name
-        return self.username
+        try:
+            return self.first_name+" "+self.last_name
+        except:
+            return self.username
 
     def get_short_name(self):
         return self.username

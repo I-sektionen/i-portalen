@@ -1,5 +1,6 @@
 {% extends "master.html" %}
 {% load article_tags %}
+{% load iportalen_tags %}
 
 {% block content %}
 {% for article in articles %}
@@ -13,7 +14,7 @@
         {% endif %}
     </div>
     <h5>{{ article.headline }}</h5>
-    <p>{{ article.lead|truncatewords_html:50 }}</p>
+    <p class="article-lead">{{ article.lead|truncatewords_html:50 }}</p>
     <a href="{{ article.get_absolute_url }}"><button class="btn-read-more">Läs mer</button></a>
 </article>
 {% endfor %}

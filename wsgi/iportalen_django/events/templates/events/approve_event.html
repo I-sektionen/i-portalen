@@ -1,0 +1,41 @@
+{% extends "master.html" %}
+{% load article_tags %}
+{% load iportalen_tags %}
+
+{% block content %}
+
+{% for event in events %}
+    <h4>{{ event.headline }}</h4>
+        <div class="meta">
+            <span class="date">
+                    <span class="meta-content">{{ event.start|date:"d N Y" }}</span>
+            </span>
+            <span class="time">
+                <span class="meta-content">{{ event.start|time:"H:i" }}</span>
+            </span>
+            <span class="place">
+                <span class="meta-content">{{ event.location }}</span>
+            </span>
+        </div>
+        <p>
+            {{ event.lead }}
+        </p>
+        <p>
+            {{ event.body|markdown }}
+        </p>
+
+        {% if event.enable_registration %}
+            <form method="post" action="{% url "register_to_event" event.pk %}">
+                {% csrf_token %}
+                <button type="submit" title="snälla">Anmäl mig</button>
+            </form>
+        {% endif %}
+        {% if can_administer %}
+            <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
+        {% endif %}
+
+    <a href="{% url "approve event" event.pk %}"><button class="btn-read-more">Godkänn</button></a>
+    <a href="{% url "unapprove event" event.pk %}"><button class="btn-read-more">Avslå</button></a>
+
+{% endfor %}
+{% endblock %}

@@ -2,17 +2,26 @@
 {# This file defines the front page and is a own kind of master page #}
 {% load article_tags %}
 {% include "header.html" %}
-
+{% block hero %}
+<section class="hero">
+    <h1 id="hero-logo">Kunde inte logga in, tyvärr!</h1>
+</section>
+{% endblock %}
 {% block content %}
-    {% if message %}
-        <p>{{ message }}</p>
-    {% endif %}
-<form action="{{ request.get_full_path }}" method="post">
-    {% csrf_token %}
-    <input type="text" name="username" placeholder="ABCDE123">
-    <input type="password" name="password" placeholder="********">
-    <input type="submit">
-</form>
+    <div class="outer-form-div">
+        <div class="form-div">
+            <h4>Logga in på I-Portalen</h4>
+            {% if message %}
+                <p>{{ message }}</p>
+            {% endif %}
+            <form class="login-form" action="{{ request.get_full_path }}" method="post">
+            {% csrf_token %}
+            <input class="username-holder" type="text" name="username" placeholder="Användarnamn">
+            <input class="password-holder" type="password" name="password" placeholder="Lösenord">
+            <input class="submit-holder primary" type="submit" value="Logga in">
+            </form>
+        </div>
+    </div>
 {% endblock %}
 
 {% include "scripts.html" %}

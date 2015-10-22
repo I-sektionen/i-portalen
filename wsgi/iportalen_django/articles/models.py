@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 from tags.models import Tag
+from .managers import ArticleManager
 
 
 class Article(models.Model):
@@ -33,6 +34,7 @@ class Article(models.Model):
     modified = models.DateTimeField(editable=False)
 
     replacing = models.ForeignKey('self', null=True, blank=True, default=None)
+    objects = ArticleManager()
 
     def save(self, *args, **kwargs):
         if not self.id:

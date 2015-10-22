@@ -2,9 +2,6 @@
 {% load article_tags %}
 {% load tag_tags %}
 {% load staticfiles %}
-{% block head %}
-    <link rel="stylesheet" type="text/css" href="{% static "articles/Markdown.css" %}" />
-{% endblock %}
 {% block content %}
     <div class="wrapper">
         <div class="editPart">
@@ -111,10 +108,4 @@
 
         </div>
     </div>
-{% endblock %}
-{% block after_scripts %}
-    <script type="text/javascript" src="{% static "articles/Markdown.Converter.js" %}"></script>
-    <script type="text/javascript" src="{% static "articles/Markdown.Sanitizer.js" %}"></script>
-    <script type="text/javascript" src="{% static "articles/Markdown.Editor.js" %}"></script>
-    <script type="text/javascript" src="{% static "articles/preview_article.js" %}"></script>
 {% endblock %}

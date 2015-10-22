@@ -1,20 +1,28 @@
 {# This file defines the front page and is a own kind of master page #}
 {% load staticfiles %}
-{% load article_tags %}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include "stylesheets.html" %}
-    <link rel="shortcut icon" type="image/png" href="{% static "favicon.ico" %}"/>
+    <link rel="shortcut icon" type="image/png" href="{% static "iportalen/favicon.ico" %}"/>
     <title>I-portalen{% block page_subtitle %} {% endblock %}</title>
     {% block head %} {% endblock %}
 </head>
 
 <body>
 {% include "header.html" %}
-
+{% if messages %}
+<div id="message-box">
+    {% for message in messages %}
+    <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        <span>{{ message }}</span>
+    <button type="button" onclick="closeMessage(this)">&times;</button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 {% block hero %}
 {% endblock %}
 
@@ -24,6 +32,11 @@
     {% block sponsors %}
         <section id="sponsors">
             <h4>Sponsorer</h4>
+            <img src="http://placehold.it/200x100">
+            <img src="http://placehold.it/200x100">
+            <img src="http://placehold.it/200x100">
+            <img src="http://placehold.it/200x100">
+            <img src="http://placehold.it/200x100">
         </section>
     {% endblock %}
 </div>

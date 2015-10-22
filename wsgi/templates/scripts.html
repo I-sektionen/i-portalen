@@ -6,6 +6,10 @@ It is modified during the deployment (to openshift).
 
 {% load staticfiles %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="{% static "iportalen/js/jquery.datetimepicker.full.min.js" %}"></script>
+{% load iportalen_tags %}
+{% if in_debug %}
 <script src=" {% static "js/iportalen.js" %}"></script>
-<script src="{% static "js/jquery.datetimepicker.full.min.js" %}"></script>
-<script src="{% static "js/src/datetimepickersettings.js" %}"></script>
+{% else %}
+<script src=" {% static "iportalen/js/iportalen.min.js" %}"></script>
+{% endif %}

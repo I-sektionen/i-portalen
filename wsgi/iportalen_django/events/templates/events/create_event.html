@@ -1,0 +1,113 @@
+{% extends "master.html" %}
+{% load event_tags %}
+{% load tag_tags %}
+{% load staticfiles %}
+{% block content %}
+
+<div>
+    <h4>Skapa ett event</h4>
+    <form method="post" action="{% url "create event" %}">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        {{ form.headline.errors }}
+        {{ form.headline.label_tag }}
+        {{ form.headline }}
+        {{ form.headline.help_text }}
+
+        {{ form.lead.errors }}
+        {{ form.lead.label_tag }}
+        {{ form.lead }}
+        {{ form.lead.help_text }}
+
+        {{ form.body.errors }}
+        {{ form.body.label_tag }}
+        <div class="wmd-panel">
+            <div id="wmd-button-bar-body"></div>
+            {{ form.body }}
+        </div>
+        {{ form.body.help_text }}
+
+        {{ form.location.errors }}
+        {{ form.location.label_tag }}
+        {{ form.location }}
+        {{ form.location.help_text }}
+
+        {{ form.start.errors }}
+        {{ form.start.label_tag }}
+        {{ form.start }}
+        {{ form.start.help_text }}
+
+        {{ form.end.errors }}
+        {{ form.end.label_tag }}
+        {{ form.end }}
+        {{ form.end.help_text }}
+
+        {{ form.enable_registration.errors }}
+        {{ form.enable_registration.label_tag }}
+        {{ form.enable_registration }}
+        {{ form.enable_registration.help_text }}
+
+        {{ form.registration_limit.errors }}
+        {{ form.registration_limit.label_tag }}
+        {{ form.registration_limit }}
+        {{ form.registration_limit.help_text }}
+
+        {{ form.deregister_delta.errors }}
+        {{ form.deregister_delta.label_tag }}
+        {{ form.deregister_delta }}
+        {{ form.deregister_delta.help_text }}
+
+        {{ form.visible_from.errors }}
+        {{ form.visible_from.label_tag }}
+        {{ form.visible_from }}
+        {{ form.visible_from.help_text }}
+
+        {{ form.admin_group.errors }}
+        {{ form.admin_group.label_tag }}
+        {{ form.admin_group }}
+        {{ form.admin_group.help_text }}
+
+        {{ form.tags.errors }}
+        {{ form.tags.label_tag }}
+        {{ form.tags }}
+        {{ form.tags.help_text }}
+
+        {{ form.modified.errors }}
+        {{ form.modified.label_tag }}
+        {{ form.modified }}
+        {{ form.modified.help_text }}
+
+        <button type="submit">Skicka in</button>
+    </form>
+</div>
+<div>
+<br>
+<h2>This should be a Event preview!!!!</h2>
+    <h2>You have to edit /grunt/js/src/preview_article to only listen to article page and then copy it and do something similar to event</h2>
+
+    <article class="news-preview">
+        <div class="meta">
+            <span class="date" id="date_collapsed"></span>
+            <span class="author" id="author_collapsed"></span>
+            <span class="tags" id="tags_collapsed"></span>
+        </div>
+        <h5 id="headline_collapsed"></h5>
+        <p id="lead_collapsed"></p>
+        <a href=""><button class="btn-read-more">Läs mer</button></a>
+    </article>
+
+    <article class="news-preview">
+        <div class="meta">
+            <span class="date" id="date_expanded"></span>
+            <span class="author" id="author_expanded"></span>
+                <span class="tags" id="tags_expanded"></span>
+        </div>
+        <h5 id="headline_expanded"></h5>
+        <p id="lead_expanded"></p>
+        <div id="wmd-preview-body" class="wmd-panel wmd-preview"></div>
+    </article>
+
+</div>
+
+{% endblock %}

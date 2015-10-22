@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Used to determined if being run on Openshift, Jenkins or local. Determines DB-connection settings.
@@ -21,8 +22,8 @@ ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 
 if ON_PASS:
     ALLOWED_HOSTS = ['*']
-    DEBUG = True
-    TEMPLATE_DEBUG = True
+    DEBUG = False
+    TEMPLATE_DEBUG = False
 elif ON_JENKINS:
     ALLOWED_HOSTS = ['*']  # TODO: Should only allow localhost, and what about production?
     DEBUG = False
@@ -53,7 +54,8 @@ INSTALLED_APPS = (
     'articles',
     'events',
     'organisations',
-
+    'iportalen',
+    'storages',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -83,6 +85,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -143,24 +146,41 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# Extra locations where staticfiles can be found:
+# Target folder of collectstatic.
+
+# Staticfiles settings for local dev environment:
 if not ON_PASS:
+    STATIC_ROOT = os.path.join(BASE_DIR, "../static/")
+    STATIC_URL = "/static/"
+
     STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, "static"),
-        os.path.join(os.path.dirname(BASE_DIR), 'static')
+        os.path.join(BASE_DIR, "local_static"),
     )
 
-# This is where all static files are put by 'collectstatic', it is
-# always done before the app is deployed on openshift.
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = os.path.join(BASE_DIR, "../media/")
+
+# This is the s3 settings for Openshift.
 if ON_PASS:
     STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, "../static/"))
+    MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
 
-"""
-# The url behind which static files are exposed. Not run by mod_wsgi but
-# Apache, i think, on Openshift.
-"""
-STATIC_URL = '/static/'
+    AWS_ACCESS_KEY_ID = 'AKIAJSDYCW44P4UNOZQQ'
+    AWS_SECRET_ACCESS_KEY = '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'
+    AWS_STORAGE_BUCKET_NAME = 'iportalen-us'
 
-#  This url is where you can log in. The login_required decorator uses this constant.
-LOGIN_URL = 'login_view' #  TODO: Use a named view instead.
+    S3_URL = 'https://{0}.s3.amazonaws.com/'.format(AWS_STORAGE_BUCKET_NAME)
+    STATIC_URL = os.environ.get('STATIC_URL', S3_URL + 'static/')
+
+    DEFAULT_FILE_STORAGE = 'iportalen.storage.MediaRootS3BotoStorage'
+
+    STATICFILES_STORAGE = 'iportalen.storage.StaticRootS3BotoStorage'
+
+    MEDIA_URL = os.environ.get('MEDIA_URL', S3_URL + 'client/')
+
+    AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
+        'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+        'Cache-Control': 'max-age=94608000',
+    }
+
+LOGIN_URL = 'login_view'
