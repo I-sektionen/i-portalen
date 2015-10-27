@@ -69,7 +69,6 @@ class Organisation(models.Model):
     class Meta:
         verbose_name = "organisation"
         verbose_name_plural = "organisationer"
-        #permissions = (('can_edit_all_orgs', 'Can edit all organizations'))
 
 
     def __str__(self):
@@ -81,6 +80,6 @@ class Organisation(models.Model):
     def can_edit(self, user):
         if user == self.leader:
             return True
-       # elif user.has_perm("organisations.can_edit_all_orgs"):
-       #     return True
+        elif user.has_perm("organisations.change_organisation"):
+            return True
         return False
