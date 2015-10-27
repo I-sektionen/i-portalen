@@ -24,5 +24,7 @@
     <a href="{% url "edit article" article.pk %}"><button class="btn-read-more">Gör ändringar</button></a>
 
 </article>
+{% empty %}
+    <p>Det finns inga artiklar kvar att godkänna! Bra jobb :)</p>
 {% endfor %}
 {% endblock %}

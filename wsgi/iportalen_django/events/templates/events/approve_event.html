@@ -36,6 +36,7 @@
 
     <a href="{% url "approve event" event.pk %}"><button class="btn-read-more">Godkänn</button></a>
     <a href="{% url "unapprove event" event.pk %}"><button class="btn-read-more">Avslå</button></a>
-
+{% empty %}
+    <p>Inga event väntar på att godkännas, bra jobb! :)</p>
 {% endfor %}
 {% endblock %}
