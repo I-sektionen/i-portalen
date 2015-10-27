@@ -1,10 +1,17 @@
-dic#article-create-preview
-    +span-columns(10 of 10)
+div#article-create-preview
+    +span-columns(5)
+    h3
+        margin-top: 2.5em
+        margin-bottom: 1.5em
 
+div#article-create-form
+    +span-columns(7)
+    label
+        margin-top: 1em
+    p
+        font-size: 12px
 
 article.news-preview
-    +display(flex)
-    +flex-direction(column)
     +span-columns(12)
     border-radius: 3px
     border-left: 3px solid $isektionen-yellow
@@ -46,8 +53,6 @@ article.news-preview
         font-style: italic
 
 article.news-single-view
-    +display(flex)
-    +flex-direction(column)
     +span-columns(10)
     padding: 0px 15px 15px 15px
     margin-bottom: 1em

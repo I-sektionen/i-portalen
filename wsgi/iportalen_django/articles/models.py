@@ -34,7 +34,7 @@ class Article(models.Model):
                               verbose_name='skribent',
                               null=True,
                               blank=True,
-                              help_text="Skribent av texten, fyll bara i detta om ingen organisation valts.")
+                              help_text="Skribent av texten visas bara om ingen organisation valts.")
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              verbose_name='användare',
@@ -55,7 +55,7 @@ class Article(models.Model):
                                            blank=True,
                                            default=None,
                                            verbose_name='organisationer',
-                                           help_text="Organisation/organisationer som artikeln hör till." )
+                                           help_text="Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln." )
     objects = ArticleManager()
 
     def save(self, *args, **kwargs):
