@@ -55,7 +55,7 @@ class Article(models.Model):
                                            blank=True,
                                            default=None,
                                            verbose_name='organisationer',
-                                           help_text="Organisation/organisationer som artikeln hör till" )
+                                           help_text="Organisation/organisationer som artikeln hör till." )
     objects = ArticleManager()
 
     def save(self, *args, **kwargs):
@@ -72,6 +72,7 @@ class Article(models.Model):
 
     def filename(self):
         return os.path.basename(self.attachment.name)
+
 
     class Meta:
         verbose_name = "Artikel"
