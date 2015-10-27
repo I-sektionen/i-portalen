@@ -1905,6 +1905,9 @@ article.event-preview-organisation p {
   padding-top: 0px;
   margin-top: 0.2em;
 }
+#organisation #organisation-members ul li span {
+  font-weight: bold;
+}
 #organisation #sub-organisations {
   border-radius: 3px;
   border-left: 3px solid #f9d026;
