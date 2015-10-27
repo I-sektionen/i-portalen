@@ -71,6 +71,7 @@ class Organisation(models.Model):
         verbose_name_plural = "organisationer"
         #permissions = (('can_edit_all_orgs', 'Can edit all organizations'))
 
+
     def __str__(self):
         return self.name
 
