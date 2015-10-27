@@ -4049,90 +4049,30 @@ $(document).ready(function () {
     'use strict';
     var menuToggle = $('#menu-toggle').unbind();
     var navigationMenu = $('#navigation-menu').removeClass('show');
-    var submenuWrapper = $('.submenu-wrapper').removeClass('show');
+    var submenuWrapper = $('#submenu-wrapper').removeClass('show');
+    var userPanelCheckbox = $('#user-panel-checkbox')
 
+    if ($(window).width() < 900) {
+        $('li.more').click(function (e) {
+            e.preventDefault()
+            $(this).children('.submenu-wrapper').slideToggle('fast')
+        })
+    }
     menuToggle.on('click', function (event) {
         event.preventDefault();
-        navigationMenu.toggleClass('show');
+        navigationMenu.slideToggle('fast');
     });
 
-
-    $('#navigation-menu > li ').on('click', function (event) {
-        // Does NOT prevents the doubleclick (hover and click on the first click) while on touchdevices
-        if (!$(event.target).closest('.submenu-wrapper').length && $('.submenu-wrapper').hasClass("show")) {
-            closeSubMenu();
-        } else {
-            // I can't use the openSubMenu since "this" dosen't follow with it -
-            // might work on a solution on this later
-            //openSubMenu();
-
-            $(".submenu-wrapper").removeClass("show");
-            $(this).children(".submenu-wrapper").addClass("show");
-        }
-    });
-
-    // Works the hover aspect while not on a mobile device
-    $('#navigation-menu > li').hover(openSubMenu);
-
-    function openSubMenu() {
-        if (!$(this).children(".submenu-wrapper").hasClass("show")){
-            closeSubMenu();
-            $(this).children(".submenu-wrapper").addClass('show');
-        }
-    };
-
-    function closeSubMenu() {
-        if ($(".submenu-wrapper").hasClass("show")){
-            $(".submenu-wrapper").removeClass("show");
-        };
-    };
-
-    // Closes the hover aspect of the menu when mouse gets on another part of the page
-    $(".nav-bar").on('mouseover', closeSubMenu);
-    $('.hero').on('mouseover', closeSubMenu);
-
-    /*
-    This was supposed to be a solution to the double-hover-click
-    But I can only either get the submenus on touch-devi to work
-    or the submenus on non-touch.. Need to look into this some more
-    but right now it is best to just have a need for doube-touch while
-    on a mobile device
-    */
-    /*
-    $('#navigation-menu > li.more').on('touchstart click', function (event) {
-        event.stopPropagation();
-        event.preventDefault();
-        // Prevents the doubleclick (hover and click on the first click) while on touchdevices
-        if(event.handled !== true) {
-            if (!$(event.target).closest('.submenu-wrapper').length && $('.submenu-wrapper').hasClass("show")) {
-                closeSubMenu();
-                console.log("Closing submenu click");
-            } else {
-                // I can't use the openSubMenu since "this" dosen't follow with it -
-                // might work on a solution on this later
-                //openSubMenu();
-
-                $(".submenu-wrapper").removeClass("show");
-                $(this).children(".submenu-wrapper").addClass("show");
-                console.log("Opening submenu click");
-            }
-            event.handled = true;
-        } else {
-            return false;
-        }
-    });
-*/
+    /**
+    $('#user-panel-toggle').click(function () {
+        console.log("hello")
+        userPanelCheckbox.prop("checked", !checkBoxes.prop("checked"));
+    })**/
 
 });
-;/**
- * Created by jonathan on 2015-09-08.
- */
-(function () {
-        //var converter1 = Markdown.getConverter();
-        var converter1 = Markdown.getSanitizingConverter();
-
-
-        converter1.hooks.chain("preConversion", function (text) {
+;function markdown_event_preview() {
+        var converter = Markdown.getSanitizingConverter();
+        converter.hooks.chain("preConversion", function (text) {
             return text.replace(/[&<"'\/]/g, function (s) {
                 var entityMap = {
                     "&": "&amp;",
@@ -4144,79 +4084,190 @@ $(document).ready(function () {
                 return entityMap[s];
             }).replace(/([#]{2,})/g, '#').replace(/([=]{3,})/g, '').replace(/([-]{3,})/g, '').replace(/([`])/g, '');
         });
-
-        converter1.hooks.chain("plainLinkText", function (url) {
+        converter.hooks.chain("plainLinkText", function (url) {
             return url.replace(/^https?:\/\//, "");
         });
-        var editor1 = new Markdown.Editor(converter1, "-body");
-        editor1.run();
+        var editor = new Markdown.Editor(converter, "-body");
+        editor.run();
+    }
+/**
+ * This function
+ * 1. Starts the markdown engine.
+ * 2. Add event listeners on the forms.
+ */
+var article_preview = function () {
+    //Start the engines. Listens to the body and outputs.
+    console.log("Call on meeeee");
+    markdown_event_preview();
+    console.log("Call on me");
 
-    })();
-
+    //These are the elements that is being listened to.
+    var listened_to = [];
     var headline = $("#id_headline");
-    var txt=headline.val();
-    $("#headline_collapsed").text(txt);
-    $("#headline_expanded").text(txt);
-
-    headline.keyup(function(event) {
-        var txt=$(this).val();
-        $("#headline_collapsed").text(txt);
-        $("#headline_expanded").text(txt);
-    });
-
     var lead = $("#id_lead");
-    var lead_collapsed = $("#lead_collapsed");
-    txt=headline.val();
-    lead_collapsed.text(txt);
-    $("#lead_expanded").text(txt);
-    var wordCounts = {};
-    lead.keyup(function(event) {
-        var number = 0;
-        var matches = $(this).val().match(/\b/g);
-        if (matches) {
-            number = matches.length / 2;
-        }
-        wordCounts[this] = number;
-        var finalCount = 0;
-        $.each(wordCounts, function(k, v) {
-            finalCount += v;
-        });
-        var txt=$(this).val();
-        if (finalCount<=50){
-            lead_collapsed.text(txt);
-        }
-        $("#lead_expanded").text(txt);
-    });
-
-    var fullDate = new Date();
-    var twoDigitMonth = fullDate.getMonth()+"";
-    if(twoDigitMonth.length==1){
-        twoDigitMonth="0" +twoDigitMonth;
-    }
-    var twoDigitDate = fullDate.getDate()+"";
-    if(twoDigitDate.length==1){
-        twoDigitDate="0" +twoDigitDate;
-    }
-    var currentDate = fullDate.getFullYear() + "-" + twoDigitMonth + "-" + twoDigitDate;
-    $("#date_collapsed").text(currentDate);
-    $("#date_expanded").text(currentDate);
-
     var author = $("#id_author");
-    txt=author.val();
-    $("#author_collapsed").text(txt);
-    $("#author_expanded").text(txt);
+    var from = $("#id_visible_from");
+    var tags = $("#id_tags");
 
-    author.keyup(function(event) {
-        var txt=$(this).val();
-        $("#author_collapsed").text(txt);
-        $("#author_expanded").text(txt);
+    //This is the elements where the results are printed to.
+    var headline_preview = $(".headline_preview");
+    var lead_preview = $(".lead_preview");
+    var author_preview = $(".author_preview");
+    var from_preview_date = $(".date_preview");
+    var tags_preview = $(".tags_preview");
+
+    listened_to.push(
+                    [headline, headline_preview],
+                    [lead, lead_preview],
+                    [author, author_preview],
+                    [from, from_preview_date],
+                    [tags, tags_preview]
+    );
+
+    var render = function (){
+        console.log("Bamm.");
+        jQuery.each(listened_to, function(index, element){
+            var txt;
+
+            //Special case of start-time:
+            if(element[0].is(from)) {
+                if (element[0].val() != "") {
+                    var d = element[0].val().split(" ");
+                    var date = d[0];
+                    element[1].text(date);
+                }
+            } else if(element[0].is(tags)){
+                var selected_tags = tags.children().filter(":selected");
+                var tag_string = "";
+                jQuery.each(selected_tags, function(index, ele){
+                    tag_string = tag_string + ele.innerHTML + ", ";
+                });
+                if(tag_string != ""){
+                    tag_string = tag_string.substring(0, tag_string.length-2)
+                }
+                element[1].text(tag_string);
+
+            } else {
+                txt = element[0].val();
+                element[1].text(txt);
+            }
+        });
+    };
+
+    jQuery.each(listened_to, function(index, element){
+        var ele = element[0];
+        ele.change(function(){render()});
+        ele.keypress(function(){render()});
     });
-function displayVals() {
-    var multipleValues = $("#id_tags option:selected").map(function() {
-        return $(this).text();
-    }).get();
-    $( "#tags_collapsed" ).html( multipleValues.join( ", " ) );
-    $( "#tags_expanded" ).html( multipleValues.join( ", " ) );
-}
-$( "select" ).change( displayVals );
-displayVals();
+};;//This function initiates the markdown engine. It is called on by event_preview below.
+function markdown_event_preview() {
+        var converter = Markdown.getSanitizingConverter();
+        converter.hooks.chain("preConversion", function (text) {
+            return text.replace(/[&<"'\/]/g, function (s) {
+                var entityMap = {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    '"': '&quot;',
+                    "'": '&#39;',
+                    "/": '&#x2F;'
+                };
+                return entityMap[s];
+            }).replace(/([#]{2,})/g, '#').replace(/([=]{3,})/g, '').replace(/([-]{3,})/g, '').replace(/([`])/g, '');
+        });
+        converter.hooks.chain("plainLinkText", function (url) {
+            return url.replace(/^https?:\/\//, "");
+        });
+        var editor = new Markdown.Editor(converter, "-body");
+        editor.run();
+    }
+
+/**
+ * This function
+ * 1. Starts the markdown engine.
+ * 2. Add event listeners on the forms.
+ */
+var event_preview = function () {
+    //Start the engines. Listens to the body and outputs.
+    console.log("Call on meeeee");
+    markdown_event_preview();
+    console.log("Call on me");
+
+    //These are the elements that is being listened to.
+    var listened_to = [];
+    var headline = $("#id_headline");
+    var lead = $("#id_lead");
+    var place = $("#id_location");
+    var start = $("#id_start");
+    var end = $("#id_end");
+    var enable_registration = $("#id_enable_registration");
+    var free_places = $("#id_registration_limit");
+
+    //This is the elements where the results are printed to.
+    var lead_preview = $("#lead_preview");
+    var headline_preview = $(".headline_preview");
+    var place_preview = $(".place_preview");
+    var start_preview_date = $(".start_preview_date");
+    var start_preview_time = $(".start_preview_time");
+    var end_preview = $("#id_end_preview");
+    var enable_registration_preview = $(".enable_registration_preview");
+    var free_places_preview = $("#id_registration_limit_preview");
+
+    listened_to.push([headline, headline_preview],
+                    [lead, lead_preview],
+                    [place, place_preview],
+                    [start, [start_preview_time, start_preview_date]],
+                    [end, end_preview],
+                    [enable_registration, enable_registration_preview],
+                    [free_places, free_places_preview]
+    );
+    enable_registration_preview.hide();
+    var render = function (){
+        console.log("Bamm.");
+        jQuery.each(listened_to, function(index, element){
+            var txt;
+
+            //Special case of start-time:
+            if(element[0].is(start)) {
+                if(element[0].val() != ""){
+                    var d = element[0].val().split(" ");
+                    var date = d[0];
+                    var time = "Kl. " + d[1];
+                    element[1][0].text(time);
+                    element[1][1].text(date);
+                }
+
+                //Special case of
+            } else if(element[0].is(enable_registration)){
+                if(element[0].is(":checked")){
+                  element[1].show();
+                  console.log("1");
+              } else {
+                  element[1].hide();
+                  console.log("0");
+              }
+            } else {
+                txt = element[0].val();
+                element[1].text(txt);
+            }
+        });
+    };
+
+    jQuery.each(listened_to, function(index, element){
+        var ele = element[0];
+        ele.change(function(){render()});
+        ele.keypress(function(){render()});
+    });
+};
+
+
+
+;/**
+ * Created by jonathan on 2015-10-20.
+ */
+    var shuffle_sponsors = function () {
+        var parent = $("#partners");
+        var divs = parent.children();
+        while (divs.length) {
+            parent.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
+        }
+    };

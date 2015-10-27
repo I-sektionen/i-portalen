@@ -6,6 +6,10 @@
             {% csrf_token %}
             <input type="text" name="input">
             <button type="submit">Skicka</button>
+            {% if reserve %}
+                <br>
+                <input type="checkbox" name="force-check-in" value="Butter" checked> Force check in<br>
+            {% endif %}
         </form>
     </div>
 {% endblock %}

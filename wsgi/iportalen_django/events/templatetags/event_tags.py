@@ -1,3 +1,5 @@
+from organisations.models import Organisation
+
 __author__ = 'jonathan'
 from django.template.loader_tags import register
 from django.utils import timezone
@@ -10,7 +12,7 @@ def get_all_events():
         approved=True,
         visible_from__lte=timezone.now(),
         end__gte=timezone.now()
-    ).order_by('-modified')
+    ).order_by('-start')
     return events
 
 @register.assignment_tag
@@ -19,10 +21,8 @@ def get_event(pk):
     return event
 
 @register.assignment_tag
-def get_group_events(group_pk):
-    tags = Tag.objects.filter(group=group_pk).distinct().values('pk')
-    event = Event.objects.filter(
-        tags__in=tags,
+def get_organisation_events(organisation_pk):
+    event = Organisation.objects.get(pk=organisation_pk).event_set.filter(
         approved=True,
         visible_from__lte=timezone.now(),
         end__gte=timezone.now()

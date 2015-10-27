@@ -3,6 +3,8 @@ from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
+from utils.validators import less_than_160_characters_validator
+from organisations.models import Organisation
 
 from tags.models import Tag
 from .exceptions import CouldNotRegisterException
@@ -20,9 +22,9 @@ class Event(models.Model):
 
     #  Description:
     headline = models.CharField(verbose_name='rubrik', max_length=255)
-    lead = models.TextField(verbose_name='ingress', )
+    lead = models.TextField(verbose_name='ingress', help_text="Max 160 characters", validators=[less_than_160_characters_validator])
     body = models.TextField(verbose_name='brödtext', )
-    location = models.CharField(max_length=30)
+    location = models.CharField(max_length=30, verbose_name="plats")
 
     start = models.DateTimeField(verbose_name='eventets start')  # When the event starts.
     end = models.DateTimeField(verbose_name='eventets slut')  # When the event ends.
@@ -31,20 +33,29 @@ class Event(models.Model):
     registration_limit = models.IntegerField(verbose_name='maximalt antal anmälningar', blank=True, null=True)
 
     # Dagar innan start för avanmälan. Räknas bakåt från 'start'
-    deregister_delta = models.PositiveIntegerField(verbose_name='dagar innan start för senaste avanmälan', default=1)
+    deregister_delta = models.PositiveIntegerField(verbose_name='Senaste avanmälan, dagar.',
+                                                   default=1,
+                                                   help_text="Är dagar innan eventet börjar. 1 betyder att en användare kan avanmäla sig senast en dag innan eventet börjar. ")
 
-    visible_from = models.DateTimeField()
+    visible_from = models.DateTimeField(verbose_name="evenemanget är synligt ifrån")
 
     #  Access rights
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')  # User with admin rights/creator.
     # The group which has admin rights. If left blank is it only the user who can admin.
-    admin_group = models.ForeignKey(Group, blank=True, null=True)
+    admin_group = models.ForeignKey(Group, blank=True, null=True,
+                                    verbose_name="grupp som kan administrera eventet.",
+                                    help_text="Utöver den användare som nu skapar eventet.")
     tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
 
     approved = models.BooleanField(verbose_name='godkänd', default=False)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
 
+    organisations = models.ManyToManyField(Organisation,
+                                           blank=True,
+                                           default=None,
+                                           verbose_name='organisationer',
+                                           help_text="Organisation/organisationer som artikeln hör till" )
     @property
     def preregistrations(self):
         query = EntryAsPreRegistered.objects.filter(event__exact=self)
@@ -60,6 +71,10 @@ class Event(models.Model):
         for el in q:
             list.append(el.user)
         return list
+
+    def reserves_object(self):
+        return EntryAsReserve.objects.filter(event__exact=self)
+
 
     @property
     def participants(self):
@@ -153,7 +168,16 @@ class Event(models.Model):
             return True
         return False
 
+    def check_in(self, user):
+        if user in self.participants:
+            raise CouldNotRegisterException(event=self, reason="Du är redan anmäld som deltagare")
+        EntryAsParticipant(user=user, event=self).save()
+
     def can_administer(self, user):
+        if user.is_anonymous:
+            return False
+        if user.groups is None:
+            return False
         if user != self.user:
             if self.admin_group is None:
                 return False

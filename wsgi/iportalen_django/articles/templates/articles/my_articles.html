@@ -3,69 +3,32 @@
 {% load iportalen_tags %}
 
 {% block content %}
-    {% if approved_articles %}
-    <div>
-    <h3>Godkända artiklar</h3>
-    {% for article in approved_articles %}
-    <article class="news-preview">
-        <div class="meta">
-            <span class="date">{{ article.created|date:"Y-m-d" }}</span>
-            <span class="author">{{ article.author }}</span>
-            {# Don't render tags for articles without tags #}
-            {% if article.tags.all  %}
-                <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
-            {% endif %}
-        </div>
-        <h5>{{ article.headline }}</h5>
-        <p>{{ article.lead|truncatewords_html:50 }}</p>
-        <a href="{{ article.get_absolute_url }}"><button class="btn-read-more">Läs mer</button></a>
-        <a href="{{ article.get_absolute_url }}edit"><button class="btn-read-more">Ändra</button></a>
-    </article>
-    {% endfor %}
-    </div>
-    {% endif %}
-    {% if unapproved_articles %}
-    <div>
-    <h3>Artiklar som väntar på godkännande</h3>
-    {% for article in unapproved_articles %}
-    <article class="news-preview">
-        <div class="meta">
-            <span class="date">{{ article.created|date:"Y-m-d" }}</span>
-            <span class="author">{{ article.author }}</span>
-            {# Don't render tags for articles without tags #}
-            {% if article.tags.all  %}
-                <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
-            {% endif %}
-        </div>
-        <h5>{{ article.headline }}</h5>
-        <p>{{ article.lead|truncatewords_html:50 }}</p>
-        <a href="{{ article.get_absolute_url }}"><button class="btn-read-more">Läs mer</button></a>
-        <a href="{{ article.get_absolute_url }}edit"><button class="btn-read-more">Ändra</button></a>
-    </article>
-    {% endfor %}
-    </div>
-    {% endif %}
-    {% if draft_articles %}
-    <div>
-    <h3>Utkast till artiklar</h3>
-    {% for article in draft_articles %}
-    <article class="news-preview">
-        <div class="meta">
-            <span class="date">{{ article.created|date:"Y-m-d" }}</span>
-            <span class="author">{{ article.author }}</span>
-            {# Don't render tags for articles without tags #}
-            {% if article.tags.all  %}
-                <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
-            {% endif %}
-        </div>
-        <h5>{{ article.headline }}</h5>
-        <p>{{ article.lead|truncatewords_html:50 }}</p>
-        <a href="{{ article.get_absolute_url }}"><button class="btn-read-more">Läs mer</button></a>
-        <a href="{{ article.get_absolute_url }}edit"><button class="btn-read-more">Ändra</button></a>
-        <a href="{{ article.get_absolute_url }}delete"><button class="btn-read-more">Ta bort</button></a>
+        <h1>Artiklar</h1>
+        <table>
+            <thead>
+            <th colspan="2">Rubrik</th>
+            <th>Publicering</th>
+            <th>Ändra</th>
+            <th colspan="2">Ägare</th>
+            <th>Status</th>
+            </thead>
+            <tbody>
+            {% for article in user_articles %}
+                <tr>
+                    <td colspan="2"><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></td>
+                    <td>{{ article.created|date:"Y-m-d" }}</td>
+                    <td><a href="{{ article.get_absolute_url }}edit"><button>Ändra</button></a></td>
+                    <td colspan="2">{% if article.organisations.all %}{{ article.organisations.all|safeseq|join:", " }}{% else %}{{ article.author }}{% endif %}</td>
+                    {% if article.draft %}
+                        <td>Utkast</td>
+                    {% elif article.draft = False and article.approved  = False %}
+                        <td>Väntar på godkännande</td>
+                    {% elif article.approved %}
+                        <td>Publicerad</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    </article>
-    {% endfor %}
-    </div>
-    {% endif %}
 {% endblock %}

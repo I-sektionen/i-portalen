@@ -23,15 +23,13 @@ ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 if ON_PASS:
     ALLOWED_HOSTS = ['*']
     DEBUG = False
-    TEMPLATE_DEBUG = False
 elif ON_JENKINS:
     ALLOWED_HOSTS = ['*']  # TODO: Should only allow localhost, and what about production?
     DEBUG = False
-    TEMPLATE_DEBUG = False
 else:
     ALLOWED_HOSTS = ['*']
     DEBUG = True
-    TEMPLATE_DEBUG = True
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -108,7 +106,7 @@ elif ON_JENKINS:
      DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'django_iportalen',
+            'NAME': os.environ['JENKINS_DB_NAME'],
             'USER': 'mysql_jenkins',
             'PASSWORD': '123123123HEJJE',  # Securely generated password.
             'HOST': 'localhost',
@@ -145,7 +143,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Target folder of collectstatic.
 
 # Staticfiles settings for local dev environment:
@@ -167,7 +164,16 @@ if ON_PASS:
 
     AWS_ACCESS_KEY_ID = 'AKIAJSDYCW44P4UNOZQQ'
     AWS_SECRET_ACCESS_KEY = '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'
-    AWS_STORAGE_BUCKET_NAME = 'iportalen-us'
+
+    # Check if we are on the development instance:
+    try:
+        os.environ.get('DEVELOPMENT_ENVIRONMENT')
+        AWS_STORAGE_BUCKET_NAME = 'iportalen-development'
+    except KeyError:
+        # This mean we are on the production server. The DEVELOPMENT_ENVIRONMENT variable is set in
+        # .openshift/action_hooks/build.sh
+        AWS_STORAGE_BUCKET_NAME = 'iportalen-us'
+        pass
 
     S3_URL = 'https://{0}.s3.amazonaws.com/'.format(AWS_STORAGE_BUCKET_NAME)
     STATIC_URL = os.environ.get('STATIC_URL', S3_URL + 'static/')
@@ -184,3 +190,10 @@ if ON_PASS:
     }
 
 LOGIN_URL = 'login_view'
+
+# Email settings:
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'noreply@i-portalen.se'
+EMAIL_HOST_PASSWORD = '***REMOVED***'

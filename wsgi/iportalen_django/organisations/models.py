@@ -66,9 +66,20 @@ class Organisation(models.Model):
                               blank=True,
                               related_name="group")
 
+    class Meta:
+        verbose_name = "organisation"
+        verbose_name_plural = "organisationer"
+        permissions = (('can_edit_all_orgs', 'Can edit all organizations'))
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return "/organisations/{:}/".format(urlquote(self.name))
+
+    def can_edit(self, user):
+        if user == self.leader:
+            return True
+        elif user.has_perm("organisations.can_edit_all_orgs"):
+            return True
+        return False

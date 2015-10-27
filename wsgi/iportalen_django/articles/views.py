@@ -1,7 +1,7 @@
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db import transaction
 from .models import Article, Tag
@@ -14,14 +14,23 @@ def create_or_modify_article(request, article_id=None):
     a = None
     if article_id:
         a = Article.objects.get(pk=article_id)
-        if (a.user != request.user or not request.user.has_perm("articles.change_article")) \
-                and not request.user.has_perm("articles.can_approve_article"):
-            # hasn't permission to change
+        a_org = a.organisations.all()
+        user_orgs = request.user.get_organisations()
+        intersection = set(a_org).intersection(user_orgs)
+        has_perm_to_edit = False
+        if intersection:
+            has_perm_to_edit = True
+        if a.user == request.user and not a_org:
+            has_perm_to_edit = True
+        if request.user.has_perm("articles.can_approve_article"):
+            has_perm_to_edit = True
+        if not has_perm_to_edit:
             raise PermissionDenied
     if request.method == 'POST':
-        form = ArticleForm(request.POST, instance=a)
+        form = ArticleForm(request.POST, request.FILES, instance=a)
+
         # check whether it's valid:
-        if form.is_valid(user=request.user):
+        if form.is_valid():
             a = form.save(commit=False)
             if a.approved:
                 a.replacing_id = a.id
@@ -80,11 +89,24 @@ def approve_article(request, article_id):
             # cant publish article in draft state
             return HttpResponseForbidden()
         a.approved = True
+        tags = list(a.tags.all())  # must be above any save because of atomic.
+        orgs = list(a.organisations.all())
+        a.tags.clear()
+        a.organisations.clear()
         a.save()
         if a.replacing:
             old = Article.objects.get(pk=a.replacing_id)
-            old.visible_to = timezone.now()
-            old.save()
+            old.delete()
+            a.pk = a.replacing_id
+            a.save()
+            a.refresh_from_db()
+            for t in tags:
+                a.tags.add(t)
+            for t in orgs:
+                a.organisations.add(t)
+            a.replacing = None
+            a.save()
+
         return redirect(all_unapproved_articles)
     else:
         raise PermissionDenied
@@ -114,8 +136,14 @@ def articles_by_tag(request, tag_name):
 
 @login_required()
 def articles_by_user(request):
-    article_dict = Article.objects.get_user_articles(request.user)
-    return render(request, 'articles/my_articles.html', article_dict)
+
+    user_articles = request.user.article_set.filter(visible_to__gte=timezone.now()).order_by('-visible_from').distinct()
+    user_org = request.user.get_organisations()
+
+    for o in user_org:
+        user_articles |= o.article_set.filter(visible_to__gte=timezone.now()).order_by('-visible_from').distinct()
+
+    return render(request, 'articles/my_articles.html', {'user_articles': user_articles.order_by('-visible_from').distinct()})
 
 @login_required()
 def delete_article(request, article_id):
@@ -125,3 +153,12 @@ def delete_article(request, article_id):
         article.delete()
         return redirect(articles_by_user)
     raise PermissionDenied
+
+@login_required()
+def article_file_download(request, article_id):
+    article = Article.objects.get(pk=article_id)
+    article_filename = article.attachment
+    response = HttpResponse(article_filename)
+    response['Content-Disposition'] = 'attachment; filename="article_file.pdf"'
+
+    return response

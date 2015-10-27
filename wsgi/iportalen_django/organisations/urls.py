@@ -1,9 +1,13 @@
 __author__ = 'jonathan'
 from django.conf.urls import include, url
-from . import views
+from .views import (
+    organisation,
+    edit_organisation,
+    all_organisations
+)
 
 urlpatterns = [
-    url(r'^$', views.all_organisations, name='all organisations'),
-    url(r'^(?P<organisation_name>[^/]+)/$', views.organisation, name='organisation'),
-    url(r'^(?P<organisation_name>[^/]+)/edit/$', views.edit_organisation, name='edit organisation'),
+    url(r'^$', all_organisations, name='all organisations'),
+    url(r'^(?P<organisation_name>[^/]+)/$', organisation, name='organisation'),
+    url(r'^(?P<organisation_name>[^/]+)/edit/$', edit_organisation, name='edit_organisation'),
 ]
