@@ -21,28 +21,26 @@
                     <div id="wmd-button-bar-body"></div>
                     {{ form.body }}
                 </div>
-            </section>
-            <div id="article-create-form-meta">
                 {{ form.author.errors }}
                 {{ form.author.label_tag }}
                 {{ form.author }}
-                {{ form.author.help_text }}
+                <p>{{ form.author.help_text }}</p>
 
                 {{ form.organisations.errors }}
                 {{ form.organisations.label_tag }}
                 {{ form.organisations }}
-                {{ form.organisations.help_text }}
+                <p>{{ form.organisations.help_text }}</p>
 
                 {{ form.tags.errors }}
                 {{ form.tags.label_tag }}
                 {{ form.tags }}
 
-                {{ form.tags.help_text }}
+                <p>{{ form.tags.help_text }}</p>
                 {{ form.draft.errors }}
 
                 {{ form.draft.label_tag }}
                 {{ form.draft }}
-                {{ form.draft.help_text }}
+                <p>{{ form.draft.help_text }}</p>
                 {{ form.visible_from.errors }}
                 {{ form.visible_from.label_tag }}
                 {{ form.visible_from }}
@@ -53,15 +51,15 @@
                 {{ form.attachment.errors }}
                 {{ form.attachment.label_tag }}
                 {{ form.attachment }}
-                {{ form.attachment.help_text }}
-            </div>
+                <p>{{ form.attachment.help_text }}</p>
+            </section>
             <div id="article-create-form-buttons">
                 <button type="submit">Publicera artikeln</button>
             </div>
         </form>
     </div>
-    <h2>Förhandsvisning av din artikel</h2>
     <div id="article-create-preview">
+        <h1>Förhandsvisning</h1>
                 <h3>Förhandsvisning kompakt format</h3>
                 <article class="news-preview">
                     <div class="meta">
@@ -85,11 +83,7 @@
                     <div id="wmd-preview-body" class="wmd-panel wmd-preview"></div>
                 </article>
             </div>
-    <section id="instructions">
-    <h2>Almänna tips:</h2>
-    <p><strong>Skribent</strong> av texten visas bara om ingen organisation valts.</p>
-    <p>Om du väljer en <strong>organisation</strong> i listan du inte tillhör kommer du att tappa åtkomsten till artikeln.</p>
-    </section>
+
 {% endblock %}
 {% block after_scripts %}
 <script>
