@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.urlresolvers import reverse
 from .managers import IUserManager
 from django.utils import timezone
+from organisations.models import Organisation
 from utils.validators import liu_id_validator
 
 YEAR_CHOICES = []
@@ -117,3 +118,11 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = "användare"
         verbose_name_plural = "användare"
+
+    def get_organisations(self):
+        organisations = []
+        groups = self.groups.all()
+        if groups:
+            for g in groups:
+                organisations = organisations + list(Organisation.objects.filter(group=g))
+        return organisations

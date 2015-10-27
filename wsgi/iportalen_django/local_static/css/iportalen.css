@@ -650,9 +650,6 @@ section#footer div#footer-left {
 section#footer div#footer-left:last-child {
   margin-right: 0;
 }
-section#footer div#footer-left img {
-  max-width: 25vw;
-}
 section#footer div#footer-center {
   float: left;
   display: block;

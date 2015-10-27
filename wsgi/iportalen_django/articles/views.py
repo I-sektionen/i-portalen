@@ -14,9 +14,17 @@ def create_or_modify_article(request, article_id=None):
     a = None
     if article_id:
         a = Article.objects.get(pk=article_id)
-        if (a.user != request.user or not request.user.has_perm("articles.change_article")) \
-                and not request.user.has_perm("articles.can_approve_article"):
-            # hasn't permission to change
+        a_org = a.organisations.all()
+        user_orgs = request.user.get_organisations()
+        intersection = set(a_org).intersection(user_orgs)
+        has_perm_to_edit = False
+        if intersection:
+            has_perm_to_edit = True
+        if a.user == request.user and not a_org:
+            has_perm_to_edit = True
+        if request.user.has_perm("articles.can_approve_article"):
+            has_perm_to_edit = True
+        if not has_perm_to_edit:
             raise PermissionDenied
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES, instance=a)
@@ -128,8 +136,14 @@ def articles_by_tag(request, tag_name):
 
 @login_required()
 def articles_by_user(request):
-    user_articles = request.user.article_set.filter(visible_to__gte=timezone.now()).order_by('-created')
-    return render(request, 'articles/my_articles.html', {'user_articles': user_articles})
+
+    user_articles = request.user.article_set.filter(visible_to__gte=timezone.now()).order_by('-visible_from').distinct()
+    user_org = request.user.get_organisations()
+
+    for o in user_org:
+        user_articles |= o.article_set.filter(visible_to__gte=timezone.now()).order_by('-visible_from').distinct()
+
+    return render(request, 'articles/my_articles.html', {'user_articles': user_articles.order_by('-visible_from').distinct()})
 
 @login_required()
 def delete_article(request, article_id):
