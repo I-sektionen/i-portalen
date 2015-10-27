@@ -1,6 +1,11 @@
+dic#article-create-preview
+    +span-columns(10 of 10)
+
+
 article.news-preview
     +display(flex)
     +flex-direction(column)
+    +span-columns(12)
     border-radius: 3px
     border-left: 3px solid $isektionen-yellow
     padding: 0px 15px 15px 15px
@@ -89,19 +94,56 @@ article.news-single-view
         //@media
         +align-self(center)
 
-+media($large-screen)
++media($large-screen-up)
     .hero
         +display(block)
         position: relative
-        height: 350px
+        height: 250px
         background:
-            image: url(http://blog.liu.se/utbildningsbloggen/files/2012/07/liu_campusvalla.jpg)
+            //image: url("../iportalen/hero_picture.jpg")
             size: cover
             repeat: no-repeat
             position: top center
             attachment: fixed
-    h1
-        color: white
-        +position(relative)
-        text-align: center
-        top: 40%
+        h1
+            color: white
+            +position(relative)
+            text-align: center
+            top: 40%
+
+
+article.news-preview-organisation
+    padding: 0px 15px 0px 15px
+    //border-bottom: 2px solid $light-gray
+    margin-bottom: 0em
+    .meta
+        +display(flex)
+        +flex-wrap(wrap)
+        border-top: 2px solid #dfddde
+        & > span::before
+            font-family: 'FontAwesome'
+        span
+            margin-right: 1em
+            padding: 10px 0
+            text-transform: uppercase
+            font-size: 12px
+        .date
+            &::before
+                padding-right: 0.5em
+                content: '\f073'
+        .tags
+            &::before
+                padding-right: 0.5em
+                content: '\f02b'
+        .author
+            &::before
+                padding-right: 0.5em
+                content: '\f040'
+    p
+        line-height: 1.5
+        font-size: 14px
+        margin: 1em 0
+
+    .article-lead
+        font-size: 14px
+        font-style: italic

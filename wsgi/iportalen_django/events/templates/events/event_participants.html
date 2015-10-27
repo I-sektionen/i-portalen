@@ -2,7 +2,7 @@
 
 {% block content %}
     <div id="content">
-    <p>Antal deltagare: {{ event.number_of_preregistrations }}</p>
+    <p>Antal deltagare: {{ event.number_of_participants }}</p>
         <table>
             <thead>
                 <tr>
@@ -10,17 +10,16 @@
                 </tr>
             </thead>
             <tbody>
-                {% for entry in event.preregistrations %}
-                    {% with participant=entry.user %}
+                {% for entry in event.participants %}
                     <tr>
-                        <td>{{ participant.username }}</td>
-                        <td>{{ participant.first_name }}</td>
-                        <td>{{ participant.last_name }}</td>
+                        <td>{{ entry.username }}</td>
+                        <td>{{ entry.first_name }}</td>
+                        <td>{{ entry.last_name }}</td>
                         <td>{{ entry.timestamp }}</td>
                     </tr>
-                    {% endwith %}
                 {% endfor %}
             </tbody>
         </table>
+    <a href="{% url "event_participants_download" event.pk %}"><button type="button">Ladda ner deltagare</button></a>
     </div>
 {% endblock %}

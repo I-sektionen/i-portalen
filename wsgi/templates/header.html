@@ -3,75 +3,54 @@
 {% get_menu_organisations as menu_orgs %}
 <header role="banner">
     <nav role="navigation">
-        <img src=" {% static "iportalen/logo.svg" %}" alt="logo">
+        <a href="/"><img src=" {% static "iportalen/isektionen_logo.png" %}" alt="logo"></a>
         <div id="menu-toggle">
-            <span>MENU</span>
+            <h4 id="menu-toggle-title">I-PORTALEN</h4>
+            <span id="menu-toggle-button">&#9776;</span>
         </div>
-        <ul id="navigation-menu" class="show">
+        <ul id="navigation-menu">
             <li><a href="/">Start</a>
             </li>
-            <li><a href="javascript:void(0);">Kalender</a>
+            <li><a href="{% url "event_calender" %}">Kalender</a>
             </li>
-            <li class="more"><a href="javascript:void(0);">Om sektionen</a>
+            <li class="more"><a href="">Om sektionen</a>
                 <!-- A WRAPPER TO CONTROL FLEX DIRECTION FOR SUBMENUS -->
                 <div class="submenu-wrapper">
-                    <ul class="submenu">
-                        <li>Sektionen</li>
-                        {% for o in menu_orgs.sektionen %}
-                            <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
-                        {% endfor %}
-
-                    </ul>
-                    <ul class="submenu">
-                        <li>Utskott</li>
-                        {% for o in menu_orgs.utskott %}
-                            <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
-                        {% endfor %}
-
-                    </ul>
-                    <ul class="submenu">
-                        <li>Föreningar</li>
-                        {% for o in menu_orgs.foreningar %}
-                            <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
-                        {% endfor %}
-                    </ul>
+                    <div class="submenu-container">
+                        <ul class="submenu">
+                            <li>Sektionen</li>
+                            {% for o in menu_orgs.sektionen %}
+                                <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <ul class="submenu">
+                            <li>Utskott</li>
+                            {% for o in menu_orgs.utskott %}
+                                <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <ul class="submenu">
+                            <li>Föreningar</li>
+                            {% for o in menu_orgs.foreningar %}
+                                <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </li>
-            <li><a href="javascript:void(0);">Studier</a>
+            <li><a href="{% url "placeholder" %}">Studier</a>
             </li>
-            <li><a href="javascript:void(0);">Tjänster</a>
+            <li><a href="{% url "placeholder" %}">Tjänster</a>
             </li>
+        </ul>
+        <ul id="user-menu-tool">
             {% if request.user.is_authenticated %}
-                <li class="more">
-                    <a href="javascript:void(0);">{{ request.user }}</a>
-                    <div class="submenu-wrapper">
-                        <ul class="submenu">
-                            <li>{{ request.user }}</li>
-                            {% for item in request.user.get_menu_choices %}
-                            <li><a href="{{ item.1 }}">{{ item.0 }}</a></li>
-                            {% endfor %}
-                            <li><a href="/user/logout">Logga ut</a></li>
-                        </ul>
-                    </div>
+                <li>
+                    <label id="user-panel-toggle" for="user-panel-checkbox" class="button-small">Mitt konto</span></label>
                 </li>
             {% else %}
-                <li class="more">
-                    <a href="javascript:void(0);"><button class="primary">Logga in</button></a>
-                    <div class="submenu-wrapper">
-                        <ul class="submenu">
-                        <li>Logga in</li>
-                            <form action="/user/login?next={{ request.get_full_path }}" method="post">
-                                {% csrf_token %}
-                                <li><input type="text" name="username" placeholder="ABCDE123">
-                                <li><input type="password" name="password" placeholder="********"></li>
-                                <li><input type="submit" name="Logga in" value="Logga in"></li>
-                            </form>
-                        </ul>
-                    </div>
-                </li>
+                <li><a href="/user/login"><label class="button-small">Logga in</label></a></li>
+                </ul>
             {% endif %}
-
-
-        </ul>
     </nav>
 </header>

@@ -12,8 +12,11 @@
   #organisation-image
     padding-top: 15px
     img
-      +span-columns(10)
-      width: 100%
+      display: block
+      margin-left: auto
+      margin-right: auto
+      max-width: 100%
+      max-height: 300px
       margin-bottom: 1em
 
   #organisation-presentation
@@ -44,25 +47,57 @@
       padding-top: 0px
       margin-top: 0.2em
 
+  #sub-organisations
+    border-radius: 3px
+    border-left: 3px solid $isektionen-yellow
+    padding: 0px 15px 15px 15px
+    margin-bottom: 1em
+    ul
+      padding-top: 0px
+      margin-top: 0.2em
+
 +media($large-screen)
+  a
+    button
+      margin-top: 1.0em
   #organisation
-    +display(flex)
-    +flex-direction(column)
-    +span-columns(10)
-    #organisation-image
-      +span-columns(3 of 10)
-      img
-        +span-columns(10)
-    #organisation-presentation
-      +span-columns(6 of 10)
-    #organisation-contact-info
-      +span-columns(3 of 10)
-    #organisation-members
-      +span-columns(3 of 10)
-    #events
-      +span-columns(3 of 10)
-    #news-feed
-      +span-columns(10)
+    #organisation-info
+      +display(flex)
+      +flex-direction(column)
+      +span-columns(12)
+      #organisation-image
+        +span-columns(12 of 12)
+        img
+          position: relative
+
+      #organisation-presentation-section1
+        +span-columns(6 of 10)
+      #organisation-presentation-section2
+        +span-columns(4 of 10)
+      //#organisation-presentation
+        +span-columns(6 of 10)
+      //#organisation-contact-info
+        +span-columns(4 of 10)
+      //#sub-organisations
+        +span-columns(4 of 10)
+      //#organisation-members
+        +span-columns(4 of 10)
+    #organisation-event-article
+      +span-columns(12)
+      padding-top: 15px
+      h5
+        margin-bottom: 0em
+      a
+        font-size: 0.75em
+      #events
+        +span-columns(5 of 12)
+        border-left: 3px solid $isektionen-green
+        padding: 15px
+      #news-feed
+        +span-columns(7 of 12)
+        border-left: 3px solid $isektionen-yellow
+        padding: 15px
+        margin-right: 2px
 
 
 

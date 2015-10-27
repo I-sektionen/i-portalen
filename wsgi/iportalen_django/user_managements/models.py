@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.urlresolvers import reverse
 from .managers import IUserManager
 from django.utils import timezone
+from organisations.models import Organisation
 from utils.validators import liu_id_validator
 
 YEAR_CHOICES = []
@@ -42,6 +43,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
     # basic fields
     username = models.CharField(verbose_name='LiU-ID', unique=True, max_length=8, validators=[liu_id_validator])
+    email = models.EmailField(verbose_name='Email')
     first_name = models.CharField(verbose_name='förnamn', max_length=50, null=True, blank=True)
     last_name = models.CharField(verbose_name='efternamn', max_length=50, null=True, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True, verbose_name='gick med datum')
@@ -87,6 +89,9 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         if self.is_staff:
             menu_choices.append(('Admin', '/admin'))  # Staff users who can access Admin page.
 
+        if self.has_perm("user_managements.add_iuser"):
+            menu_choices.append(("Lägg till Liu-idn i whitelist", reverse('add users to whitelist')))
+
         return menu_choices
 
     def get_full_name(self):
@@ -101,11 +106,23 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     def _get_email(self):
         return self.username + "@student.liu.se"
 
-    email = property(_get_email)
+    # email = property(_get_email)
 
     def __str__(self):
         return self.username
 
+    @property
+    def update_from_kobra_url(self):
+        return reverse("update user from kobra", kwargs={'liu_id': self.username})
+
     class Meta:
         verbose_name = "användare"
         verbose_name_plural = "användare"
+
+    def get_organisations(self):
+        organisations = []
+        groups = self.groups.all()
+        if groups:
+            for g in groups:
+                organisations = organisations + list(Organisation.objects.filter(group=g))
+        return organisations

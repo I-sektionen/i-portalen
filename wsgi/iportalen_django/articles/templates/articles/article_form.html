@@ -3,109 +3,96 @@
 {% load tag_tags %}
 {% load staticfiles %}
 {% block content %}
-    <div class="wrapper">
-        <div class="editPart">
-            <form action="" method="post">
-                <h4>Create Article</h4>
-                {% csrf_token %}
-                {{ form.non_field_errors }}
-
+    <div id="article-create-form">
+        <h1>Skapa artikel</h1>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <section id="article-create-form-text">
                 {{ form.headline.errors }}
-                <div class="bubble">{{ form.headline.help_text }}</div><div class="triangle"></div>
-                <h6>{{ form.headline.label_tag }}</h6>
+                {{ form.headline.label_tag }}
                 {{ form.headline }}
-
-                <br>
-                <br>
-
                 {{ form.lead.errors }}
-                <h6>{{ form.lead.label_tag }}</h6>
+                {{ form.lead.label_tag }}
                 {{ form.lead }}
-                <div class="helpText">{{ form.lead.help_text }}</div>
-                <br>
-                <br>
-
                 {{ form.body.errors }}
-                <h6>{{ form.body.label_tag }}</h6>
+                {{ form.body.label_tag }}
                 <div class="wmd-panel">
                     <div id="wmd-button-bar-body"></div>
                     {{ form.body }}
                 </div>
-
-
-                <div class="helpText">{{ form.body.help_text }}</div>
-                <br>
-                <br>
-
-                <div class = "publication">
-                    <div class ="publicOn">
-                        {{ form.visible_from.errors }}
-                        <h6>{{ form.visible_from.label_tag }}</h6>
-                        {{ form.visible_from }}
-                        <div class="helpText">{{ form.visible_from.help_text }}</div>
-                    </div>
-                    <div class ="publicOff">
-                        {{ form.visible_to.errors }}
-                        <h6>{{ form.visible_to.label_tag }}</h6>
-                        {{ form.visible_to }}
-                        <div class="helpText">{{ form.visible_to.help_text }}</div>
-                    </div>
-                </div>
-                <br>
-                <br>
+            </section>
+            <div id="article-create-form-meta">
                 {{ form.author.errors }}
-                <h6>{{ form.author.label_tag }}</h6>
+                {{ form.author.label_tag }}
                 {{ form.author }}
-                <div class="helpText">{{ form.author.help_text }}</div>
-                <br>
-                <br>
+                {{ form.author.help_text }}
+
+                {{ form.organisations.errors }}
+                {{ form.organisations.label_tag }}
+                {{ form.organisations }}
+                {{ form.organisations.help_text }}
 
                 {{ form.tags.errors }}
-                <h6>{{ form.tags.label_tag }}</h6>
-                {% get_tags request.user as tags %}
-                <select multiple="multiple" id="id_tags" name="tags">
-                    {% for tag in tags %}
-                    <option value="{{ tag.id }}">{{ tag.name }}</option>
-                    {% endfor %}
-                </select>
-                <div class="helpText">{{ form.tags.help_text }}</div>
-                <br>
-                <br>
+                {{ form.tags.label_tag }}
+                {{ form.tags }}
 
+                {{ form.tags.help_text }}
                 {{ form.draft.errors }}
-                <h6>{{ form.draft.label_tag }}</h6>
+
+                {{ form.draft.label_tag }}
                 {{ form.draft }}
-                <div class="helpText">{{ form.draft.help_text }}</div>
-                <br>
-                <br>
+                {{ form.draft.help_text }}
+                {{ form.visible_from.errors }}
+                {{ form.visible_from.label_tag }}
+                {{ form.visible_from }}
+                {{ form.visible_to.errors }}
+                {{ form.visible_to.label_tag }}
+                {{ form.visible_to }}
 
-                <input type="submit" value="Submit" />
-            </form>
-        </div>
-        <div class="review">
-            <h4>Article Review</h4>
-            <article class="news-preview">
-                <div class="meta">
-                    <span class="date" id="date_collapsed"></span>
-                    <span class="author" id="author_collapsed"></span>
-                    <span class="tags" id="tags_collapsed"></span>
-                </div>
-                <h5 id="headline_collapsed"></h5>
-                <p id="lead_collapsed"></p>
-                <a href=""><button class="btn-read-more">Läs mer</button></a>
-            </article>
-
-            <article class="news-preview">
-                <div class="meta">
-                    <span class="date" id="date_expanded"></span>
-                    <span class="author" id="author_expanded"></span>
-                        <span class="tags" id="tags_expanded"></span>
-                </div>
-                <h5 id="headline_expanded"></h5>
-                <p id="lead_expanded"></p>
-                <div id="wmd-preview-body" class="wmd-panel wmd-preview"></div>
-            </article>
-
-        </div>
+                {{ form.attachment.errors }}
+                {{ form.attachment.label_tag }}
+                {{ form.attachment }}
+                {{ form.attachment.help_text }}
+            </div>
+            <div id="article-create-form-buttons">
+                <button type="submit">Publicera artikeln</button>
+            </div>
+        </form>
     </div>
+    <h2>Förhandsvisning av din artikel</h2>
+    <div id="article-create-preview">
+                <h3>Förhandsvisning kompakt format</h3>
+                <article class="news-preview">
+                    <div class="meta">
+                        <span class="date date_preview" id="date_collapsed"></span>
+                        <span class="author author_preview"></span>
+                        <span class="tags tags_preview"></span>
+                    </div>
+                    <h5 class="headline_preview"></h5>
+                    <p class="lead_preview"></p>
+                    <a href=""><button class="btn-read-more">Läs mer</button></a>
+                </article>
+                <h3>Expanderat format</h3>
+                <article class="news-preview">
+                    <div class="meta">
+                        <span class="date date_preview" id="date_expanded"></span>
+                        <span class="author author_preview"></span>
+                        <span class="tags tags_preview"></span>
+                    </div>
+                    <h5 class="headline_preview"></h5>
+                    <p class="lead_preview"></p>
+                    <div id="wmd-preview-body" class="wmd-panel wmd-preview"></div>
+                </article>
+            </div>
+    <section id="instructions">
+    <h2>Almänna tips:</h2>
+    <p><strong>Skribent</strong> av texten visas bara om ingen organisation valts.</p>
+    <p>Om du väljer en <strong>organisation</strong> i listan du inte tillhör kommer du att tappa åtkomsten till artikeln.</p>
+    </section>
+{% endblock %}
+{% block after_scripts %}
+<script>
+    article_preview()
+</script>
 {% endblock %}

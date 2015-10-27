@@ -1,0 +1,30 @@
+$user-panel-border-radius: $base-border-radius
+
+#user-panel
+  background: transparentize($dark-gray, 0.05)
+  +position(fixed, 0 -280px null null)
+  width: 280px
+  padding: 80px 30px 0 30px
+  height: 100%
+  +transition(0.8s ease-in-out)
+  border-radius: $user-panel-border-radius
+  box-shadow: 1px 1px 4px $dark-gray
+  color: white
+  z-index: 2
+
+  h2
+    font-size: 28px
+    font-weight: 200
+  li
+    margin-bottom: 1em
+  a
+    color: white
+#user-panel-checkbox:checked
+  & + #user-panel
+    right: 0px
+    & + #master-container
+      +transform(translateX(-100px))
+#user-panel-checkbox
+  display: none
+#user-panel-toggle
+  cursor: pointer
