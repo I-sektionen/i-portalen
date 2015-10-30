@@ -965,34 +965,37 @@ header #navigation-menu .submenu-wrapper .submenu > * {
   }
 }
 
-dic#article-create-preview {
+div#article-create-preview {
   float: left;
   display: block;
-  margin-right: 2.84259%;
-  width: 100%;
+  margin-right: 2.35765%;
+  width: 40.29137%;
 }
-dic#article-create-preview:last-child {
+div#article-create-preview:last-child {
   margin-right: 0;
+}
+div#article-create-preview h3 {
+  margin-top: 2.5em;
+  margin-bottom: 1.5em;
+}
+
+div#article-create-form {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 57.35098%;
+}
+div#article-create-form:last-child {
+  margin-right: 0;
+}
+div#article-create-form label {
+  margin-top: 1em;
+}
+div#article-create-form p {
+  font-size: 12px;
 }
 
 article.news-preview {
-  display: -webkit-box;
-  display: -moz-box;
-  display: box;
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -moz-box-orient: vertical;
-  box-orient: vertical;
-  -webkit-box-direction: normal;
-  -moz-box-direction: normal;
-  box-direction: normal;
-  -webkit-flex-direction: column;
-  -moz-flex-direction: column;
-  flex-direction: column;
-  -ms-flex-direction: column;
   float: left;
   display: block;
   margin-right: 2.35765%;
@@ -1058,23 +1061,6 @@ article.news-preview .article-lead {
 }
 
 article.news-single-view {
-  display: -webkit-box;
-  display: -moz-box;
-  display: box;
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -moz-box-orient: vertical;
-  box-orient: vertical;
-  -webkit-box-direction: normal;
-  -moz-box-direction: normal;
-  box-direction: normal;
-  -webkit-flex-direction: column;
-  -moz-flex-direction: column;
-  flex-direction: column;
-  -ms-flex-direction: column;
   float: left;
   display: block;
   margin-right: 2.35765%;
@@ -1918,6 +1904,9 @@ article.event-preview-organisation p {
 #organisation #organisation-members ul {
   padding-top: 0px;
   margin-top: 0.2em;
+}
+#organisation #organisation-members ul li span {
+  font-weight: bold;
 }
 #organisation #sub-organisations {
   border-radius: 3px;

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 from .models import Organisation
 from .forms import OrganisationForm
@@ -15,6 +16,11 @@ def organisation(request, organisation_name):
 @login_required()
 def edit_organisation(request, organisation_name):
     my_organisation = Organisation.objects.get(name=organisation_name)
+
+    # Only the leader can change a organization.
+    if not my_organisation.can_edit(request.user):
+        return HttpResponseForbidden()
+
     if request.method == 'POST':
         form = OrganisationForm(request.POST, request.FILES, instance=my_organisation)
 

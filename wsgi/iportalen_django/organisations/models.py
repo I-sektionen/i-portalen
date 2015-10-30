@@ -66,9 +66,19 @@ class Organisation(models.Model):
                               blank=True,
                               related_name="group")
 
+    class Meta:
+        verbose_name = "organisation"
+        verbose_name_plural = "organisationer"
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return "/organisations/{:}/".format(urlquote(self.name))
+
+    def can_edit(self, user):
+        if user == self.leader:
+            return True
+        elif user.has_perm("organisations.change_organisation"):
+            return True
+        return False

@@ -43,11 +43,15 @@
                 <h4>Medlemmar</h4>
 
                 <div id="organisation-members">
-                    <strong>{{ organisation.leader.first_name }} {{ organisation.leader.last_name }}</strong>
+                    {% if organisation.leader.first_name and organisation.leader.last_name %}
+                        <strong>{{ organisation.leader.first_name }} {{ organisation.leader.last_name }}, {{ organisation.leader.username }}</strong>
+                    {% endif %}
                     <ul>
                         {% for u in organisation.group.user_set.all %}
                             {% ifnotequal organisation.leader.pk u.pk %}
-                                <li>{{ u.first_name }} {{ u.last_name }}</li>
+                                {% if u.first_name and u.last_name %}
+                                    <li>{{ u.first_name|capfirst }} {{ u.last_name|capfirst }}, <span>{{ u.username }}</span></li>
+                                {% endif %}
                             {% endifnotequal %}
                         {% endfor %}
                     </ul>
@@ -101,7 +105,7 @@
                 </section>
         </section>
     </section>
-    {% if request.user in organisation.group.user_set.all %}
+    {% if request.user == organisation.leader or perms.organisations.can_edit_all_orgs %}
         <a href="{% url "edit_organisation" organisation.name %}">
             <button>Ändra info</button>
         </a>
