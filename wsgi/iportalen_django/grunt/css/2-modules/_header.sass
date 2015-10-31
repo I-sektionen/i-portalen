@@ -3,8 +3,8 @@ $header-link-color: $dark-gray
 
 header
   +outer-container()
-  height: 4em
-  background-color: white
+  padding: 1em 0
+  //background-color: white
   a
     font-size: $header-link-font-size
     color: $header-link-color
@@ -15,6 +15,16 @@ header
     &:hover
       color: lighten($dark-gray, 30%)
       text-decoration: none
+
+  #logo
+    //center the logo on mobile
+    +span-columns(6)
+    padding-left: 1em
+    +media($large-screen-up)
+      +span-columns(2 of 8)
+      img
+        max-width: 200px
+
 
 
   // Menu bar for mobile view
@@ -34,59 +44,30 @@ header
     //Hide menu toggle panel on large screens
     +media($large-screen-up)
       display: none
+
+
+  //NAV IS THE MAIN CONTAINER FOR NAVIGATION LINKS (NAVIGATION MENU) & USER TOOLS
   nav
     +span-columns(12)
     +media($large-screen-up)
-    img
-      text-align: center
-      +span-columns(6)
-      +shift(3)
-      //max-width: 10em
-      padding-top: 1em
-      padding-bottom: 1em
-      +media($large-screen-up)
-        +span-columns(1)
-        +shift(0)
-        padding-top: 1em
-        padding-bottom: 0
-
-  #user-menu-tool
-    padding: 1em
-    +span-columns(12)
-    +media($large-screen-up)
-      +shift(0)
-      +span-columns(2)
-
-    .button-small
-      text-align: center
-      background-color: $isektionen-yellow
-      padding: 0.4em
-      border-radius: $base-border-radius
-      color: $white
-      text-transform: uppercase
-      font-weight: 400
-      +media($large-screen-up)
-        max-width: 120px
-        font-weight: 400
-        font-size: 14px
-    li
-      display: inline
-
-  // holds links for menu
+      +span-columns(5 of 8)
+      +omega()
   #navigation-menu
+    +fill-parent()
     padding: 1em
     +span-columns(12)
     +display(none)
     +media($large-screen-up)
-      margin-top: 0.5em
-      +span-columns(5)
-      +omega()
+      +display(block)
+      text-align: right
     li
       margin-bottom: 1em
       padding: 0 1em
       +media($large-screen-up)
         margin: 0
+        padding: 0
         display: inline
+        margin-right: 1em
     .more
       display: inline-block
       &:after
@@ -145,5 +126,33 @@ header
           +media($large-screen-up)
             padding: 0.5em 0
             display: block
+
+
+  #user-menu-tool
+    +span-columns(3)
+    +shift(2)
+    +media($large-screen-up)
+      +span-columns(1)
+      +shift(0)
+      margin-top: 0.7em
+    .button-small
+      width: 10em
+      font-size: 12px
+      text-align: center
+      background-color: $isektionen-yellow
+      padding: 0.4em
+      border-radius: $base-border-radius
+      color: $white
+      text-transform: uppercase
+      font-weight: 400
+      +media($large-screen-up)
+        max-width: 120px
+        font-weight: 400
+        font-size: 14px
+    li
+      display: inline
+
+  // holds links for menu
+
 
 
