@@ -939,6 +939,8 @@ header #user-menu-tool li {
   .hero h1 {
     position: relative;
     text-align: center;
+    margin: 0;
+    font-weight: 100;
     top: 40%;
     font-size: 48px;
     text-shadow: 0 0 2px black;
