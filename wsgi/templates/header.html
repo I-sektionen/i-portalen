@@ -14,7 +14,33 @@
                     <span>&#9776 {{ request.user.username }}</span>
                 </li>
             {% else %}
-                <li><a href="/user/login"><label class="button-small">Logga in</label></a></li>
+                <li>
+                    <div class="modal">
+                        <label for="modal-1" class="button-small">
+                            <div class="modal-trigger">Mitt Konto</div>
+                        </label>
+
+                        <input class="modal-state" id="modal-1" type="checkbox" />
+
+                        <div class="modal-fade-screen">
+                            <div class="modal-inner">
+                                <div class="modal-close" for="modal-1"></div>
+                                <div class="outer-form-div">
+                                    <div class="form-div">
+                                        <h4>Logga in på I-Portalen</h4>
+                                        <form class="login-form" action="{% url "login_view" %}" method="post">
+                                            {% csrf_token %}
+                                            <input class="username-holder" type="text" name="username" placeholder="Liu-id">
+                                            <input class="password-holder" type="password" name="password" placeholder="Lösenord">
+                                            <input class="submit-holder primary" type="submit" value="Logga in">
+                                        </form>
+                                        <a href="{% url "password_reset" %}">Återställ lösenordet/Ny användare</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
             {% endif %}
         </div>
     </div>
@@ -60,5 +86,12 @@
             </li>
         </ul>
     </nav>
+
+<script>
+    jQuery(document).ready(function () {
+        modal();
+    });
+
+</script>
 
 </header>
