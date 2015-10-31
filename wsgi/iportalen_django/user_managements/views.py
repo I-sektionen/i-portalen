@@ -14,18 +14,39 @@ from django.contrib.auth.views import (
 )
 from utils.kobra import get_user_by_liu_id, LiuGetterError, LiuNotFoundError
 
+import re
+
 
 def logout_view(request):
     logout(request)
     return redirect('/')  # TODO: Where should this redirect?
+
 
 def login(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username.lower(), password=password)
-        if user is not None:
-            # the password verified for the user
+
+        #  User failed to login, why?
+        if user is None:
+            #  The user tried an island-id. (format: i12firla)
+            if re.match(r"^i\w{2}[a-z]{4}", username):
+                messages.error(request, "Använd ditt LiU-id för att logga in, inte Islands-id.")
+                return render(request, "user_managements/login.html")
+
+            user_account = IUser.objects.filter(username__exact=username)
+            if user_account.exists() and user_account[0].last_login is None and user_account[0].is_active:
+                #  The user-account exists, but the user must login in a first time.
+                    messages.info(request, "Du måste aktivera ditt konto innan du kan logga in första gången.")
+                    return redirect("password_reset", liu_id=username)
+            else:
+                # the authentication system was unable to verify the username and password
+                messages.error(request, "Fel Liu-id eller lösenord.")
+            return render(request, "user_managements/login.html")
+
+        # The user has the right password.
+        else:
             if user.is_active:
                 not_member = False
                 if user.last_login is None:
@@ -50,20 +71,18 @@ def login(request):
                 except:
                     return redirect('/')
             else:
+                # The password is valid, but the account has been disabled! (Användaren Klickade ev: "vill INTE bli medlem")
                 messages.error(request, "Lösenordet är korrekt, men kontot är avstängt! Om detta inte bör vara fallet var god kontakta info@isektionen.se")
                 return render(request, "user_managements/login.html")
-                # The password is valid, but the account has been disabled!
-        else:
-            # the authentication system was unable to verify the username and password
-            messages.error(request, "Fel Liu-id eller lösenord.")
-            return render(request, "user_managements/login.html")
     else:
+        # Did not try to login.
         return render(request, "user_managements/login.html")
 
 
 @login_required()
 def my_page_view(request):
     return render(request, "user_managements/mypage.html")
+
 
 @login_required()
 def change_user_info_view(request):
@@ -77,6 +96,7 @@ def change_user_info_view(request):
     else:
         form = ChangeUserInfoForm(instance=user)
         return render(request, "user_managements/user_info_form.html", {'form':form})
+
 
 @login_required()
 @transaction.atomic
@@ -119,19 +139,21 @@ def add_users_to_white_list(request):
                 messages.success(request, "De nya användarna har skapats och kan nu återställa sitt lösenord")
     else:
         form = AddWhiteListForm()
-    return render(request, "user_managements/add_whitelist.html", {'form':form})
+    return render(request, "user_managements/add_whitelist.html", {'form': form})
 
 
+@login_required()
 def set_user_as_member(request):
     request.user.is_active = True
     request.user.save()
     return redirect("/")
 
 
-def reset(request):
+def reset(request, liu_id=None):
     return password_reset(request, template_name='user_managements/reset/pw_res.html',
                           email_template_name='user_managements/reset/pw_res_email.html',
-                          subject_template_name='user_managements/reset/pw_res_email_subject.txt',)
+                          subject_template_name='user_managements/reset/pw_res_email_subject.txt',
+                          extra_context={'liu_id': liu_id},)
 
 
 def reset_confirm(request, uidb64=None, token=None):
@@ -140,15 +162,17 @@ def reset_confirm(request, uidb64=None, token=None):
                                   token=token,
                                   post_reset_redirect=reverse('front page'))
 
+
 def reset_done(request):
     # return password_reset_done(request, template_name='user_managements/reset/pw_res_done.html')
-    messages.info(request, "Ett mail kommer inom kort skickas till mailadressen som angavs. I den finns en länk för att skapa ett nytt lösenord.")
-    messages.info(request, "Om det inte kommer något mail, vänligen försök igen, om det fortfarande inte kommer något mail, kontakta InfO.")
+    messages.info(request, "Ett mail kommer inom kort skickas till mailadressen som angavs. I den finns en länk för att skapa ett nytt lösenord. Om det inte kommer något mail, vänligen försök igen, om det fortfarande inte kommer något mail, kontakta InfO")
     return redirect("/")
+
 
 def reset_complete(request):
     messages.info(request, "Du har ett nytt lösenord, testa det.")
     return redirect(reverse("login_view"))
+
 
 @login_required()
 def update_user_from_kobra(request, liu_id):

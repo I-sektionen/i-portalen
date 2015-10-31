@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^add_users_to_whitelist$', view=add_users_to_white_list, name='add users to whitelist'),
     url(r'^become_member$', view=set_user_as_member, name="become member"),
 
+    url(r'^reset/(?P<liu_id>[a-z]{4,5}\d{3})/$', view=reset, name='password_reset'),  # 1:a starta genom att ange liu-mail
     url(r'^reset/$', view=reset, name='password_reset'),  # 1:a starta genom att ange liu-mail
     url(r'^reset/done/$', view=reset_done, name='password_reset_done'),  # 2:a Visar text om att ett mail skickats
     url(r'^reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', view=reset_confirm,
