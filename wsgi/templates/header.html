@@ -46,11 +46,12 @@
         <ul id="user-menu-tool">
             {% if request.user.is_authenticated %}
                 <li>
-                    <label id="user-panel-toggle" for="user-panel-checkbox" class="button-small">Mitt konto</span></label>
+                    <button type="button" class="js-menu-trigger sliding-panel-button">Mitt Konto</button>
                 </li>
             {% else %}
                 <li><a href="/user/login"><label class="button-small">Logga in</label></a></li>
                 </ul>
             {% endif %}
     </nav>
+
 </header>
