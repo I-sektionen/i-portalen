@@ -2,20 +2,46 @@ section#footer
     background-color: $light-gray
     +border-color($isektionen-green null null null)
     +border-style(solid null null null)
+    +outer-container()
+    padding: 1.0em
     div#footer-content
         +outer-container()
         +fill-parent()
+        +span-columns(12)
         margin-top: 2em
         margin-bottom: 2em
-    div#footer-left
-        +span-columns(4 of 12)
-        +omega()
+        div#footer-right
+            +span-columns(12 of 12)
+            text-align: center
+        div#footer-left
+            +span-columns(12 of 12)
+            +omega()
+            text-align: center
+        div#footer-center
+            +span-columns(12 of 12)
+            text-align: center
+        div#bottom
+            +span-columns(12 of 12)
+            text-align: center
 
-    div#footer-center
-        +span-columns(4 of 12)
-        text-align: center
-    div#footer-right
-        +span-columns(4 of 12)
-    div#bottom
-        +span-columns(12 of 12)
-        text-align: center
++media($large-screen-up)
+    section#footer
+        +outer-container()
+        div#footer-content
+            +outer-container()
+            +span-columns(12)
+            div#footer-left
+                +span-columns(4 of 12)
+                +omega()
+                text-align: center
+            div#footer-center
+                +span-columns(4 of 12)
+                text-align: center
+            div#footer-right
+                +span-columns(4 of 12)
+                text-align: center
+            div#bottom
+                +span-columns(12 of 12)
+                text-align: center
+                margin-top: 1.0em
+

@@ -10,9 +10,8 @@
     <title>I-portalen{% block page_subtitle %} {% endblock %}</title>
     {% block head %} {% endblock %}
 </head>
-
 <body>
-<input type="checkbox" id="user-panel-checkbox">
+<div class="js-menu-screen sliding-panel-fade-screen"></div>
 {% include "userpanel.html" %}
 <div id="master-container">
     {% include "header.html" %}
@@ -26,12 +25,12 @@
             {% endfor %}
         </div>
     {% endif %}
-    {% block hero %}
-        <section class="hero" style="background-image:url({% static 'iportalen/hero_picture.jpg' %})">
-            <h1 id="hero-logo">i&#8209;portalen</h1>
+{% block hero %}
+    {% load static from staticfiles %}
+        <section class="hero" style="background-image:url({% static 'iportalen/HERO.jpg' %})">
+            <h1 id="hero-logo">Testa nya I-portalen idag!! Du kommer inte att tro dina ögon!!</h1>
         </section>
-    {% endblock %}
-
+{% endblock %}
     <div id="container">
         <div id="content">
             {% block content %}
@@ -107,11 +106,7 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
-
-
     </div>
     {% include "footer.html" %}
 </div>
@@ -123,8 +118,11 @@
 <script>
     jQuery(document).ready(function () {
         shuffle_sponsors();
+        sliding_panel();
     });
 
 </script>
+
+
 </body>
 </html>
