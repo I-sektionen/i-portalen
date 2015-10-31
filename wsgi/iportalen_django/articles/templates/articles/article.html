@@ -2,11 +2,7 @@
 {% load article_tags %}
 {% load iportalen_tags %}
 {% load staticfiles %}
-{% block hero %}
-        <section class="hero" style="background-image:url({% static 'iportalen/hero_picture.jpg' %})">
-            <h1 id="hero-logo">i&#8209;portalen</h1>
-        </section>
-{% endblock %}
+
 {% block content %}
 <article class="news-single-view">
     <h5>{{ article.headline }}</h5>
