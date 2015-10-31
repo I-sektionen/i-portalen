@@ -14,10 +14,12 @@ from django.contrib.auth.views import (
 )
 from utils.kobra import get_user_by_liu_id, LiuGetterError, LiuNotFoundError
 
+import re
 
 def logout_view(request):
     logout(request)
     return redirect('/')  # TODO: Where should this redirect?
+
 
 def login(request):
     if request.method == 'POST':
@@ -53,10 +55,13 @@ def login(request):
                 messages.error(request, "Lösenordet är korrekt, men kontot är avstängt! Om detta inte bör vara fallet var god kontakta info@isektionen.se")
                 return render(request, "user_managements/login.html")
                 # The password is valid, but the account has been disabled!
+        elif re.match(r"^i\w{2}[a-z]{4}", username):
+            # The user tried a island-id. (format: i12firla)
+            messages.error(request, "Använd ditt LiU-id för att logga in, inte Islands-id.")
         else:
             # the authentication system was unable to verify the username and password
             messages.error(request, "Fel Liu-id eller lösenord.")
-            return render(request, "user_managements/login.html")
+        return render(request, "user_managements/login.html")
     else:
         return render(request, "user_managements/login.html")
 
