@@ -770,20 +770,7 @@ section#footer div#footer-content div#bottom:last-child {
   }
 }
 header {
-<<<<<<< HEAD
   padding: 1em 0;
-=======
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  height: 4em;
-  background-color: white;
-}
-header::after {
-  clear: both;
-  content: "";
-  display: table;
->>>>>>> sidfot
 }
 header a {
   font-size: 16px;
@@ -800,7 +787,7 @@ header a:hover {
   text-decoration: none;
 }
 header #top-menu-bar {
-  max-width: 68em;
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -853,7 +840,7 @@ header #menu-toggle #menu-toggle-button {
   }
 }
 header nav {
-  max-width: 68em;
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
 }
