@@ -708,14 +708,7 @@ header #top-menu-bar::after {
   display: table;
 }
 header #logo {
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 48.82117%;
-  padding-left: 1em;
-}
-header #logo:last-child {
-  margin-right: 0;
+  padding: 1em;
 }
 @media screen and (min-width: 900px) {
   header #logo {
@@ -895,16 +888,20 @@ header #navigation-menu .submenu-wrapper .submenu > * {
   }
 }
 header #user-menu-tool {
+  padding: 1em;
   float: left;
   display: block;
   margin-right: 2.35765%;
   width: 100%;
+  background: #f7f7f7;
 }
 header #user-menu-tool:last-child {
   margin-right: 0;
 }
 @media screen and (min-width: 900px) {
   header #user-menu-tool {
+    padding: 1em 0 0 0;
+    background: none;
     float: left;
     display: block;
     margin-right: 3.57866%;
@@ -914,20 +911,6 @@ header #user-menu-tool:last-child {
   }
   header #user-menu-tool:last-child {
     margin-right: 0;
-  }
-}
-header #user-menu-tool .button-small {
-  padding: 0.4em;
-  border-radius: 3px;
-  color: #333;
-  text-transform: uppercase;
-  font-weight: 400;
-}
-@media screen and (min-width: 900px) {
-  header #user-menu-tool .button-small {
-    max-width: 120px;
-    font-weight: 400;
-    font-size: 14px;
   }
 }
 header #user-menu-tool li {
@@ -1735,8 +1718,6 @@ article.event-preview-organisation p {
 }
 
 .sliding-panel-button {
-  padding: 10px 16px;
-  display: inline-block;
   cursor: pointer;
   position: relative;
   outline: none;

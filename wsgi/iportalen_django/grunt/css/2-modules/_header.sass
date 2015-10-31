@@ -18,8 +18,8 @@ header
     +outer-container()
   #logo
     //center the logo on mobile
-    +span-columns(6)
-    padding-left: 1em
+    //+span-columns(6)
+    padding: 1em
     +media($large-screen-up)
       +span-columns(2 of 8)
       img
@@ -125,25 +125,14 @@ header
             display: block
 
   #user-menu-tool
+    padding: 1em
     +span-columns(12)
+    background: $light-gray
     +media($large-screen-up)
+      padding: 1em 0 0 0
+      background: none
       +span-columns(1)
       +shift(5 of 8)
       +omega()
-    .button-small
-      padding: 0.4em
-      border-radius: $base-border-radius
-      color: $dark-gray
-      text-transform: uppercase
-      font-weight: 400
-      +media($large-screen-up)
-        max-width: 120px
-        font-weight: 400
-        font-size: 14px
     li
       display: inline
-
-  // holds links for menu
-
-
-
