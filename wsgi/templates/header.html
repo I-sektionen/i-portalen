@@ -5,12 +5,12 @@
 
 <header role="banner">
     <div id="top-menu-bar">
-    <div id="logo">
-        <a href="/">
-            <img src=" {% static "iportalen/logo_iportalen.png" %}" alt="logo">
-        </a>
-    </div>
-                <div id="user-menu-tool">
+        <div id="logo">
+            <a href="/">
+                <img src=" {% static "iportalen/logo_iportalen.png" %}" alt="logo">
+            </a>
+        </div>
+        <div id="user-menu-tool">
             {% if request.user.is_authenticated %}
                 <li>
                     <label id="user-panel-toggle" for="user-panel-checkbox" class="button-small">Mitt konto</span></label>
@@ -18,9 +18,8 @@
             {% else %}
                 <li><a href="/user/login"><label class="button-small">Logga in</label></a></li>
             {% endif %}
+        </div>
     </div>
-    </div>
-
 
     <nav role="navigation">
         <div id="menu-toggle">
@@ -63,21 +62,4 @@
             </li>
         </ul>
     </nav>
-    <div id="user-menu-tool">
-        {% if request.user.is_authenticated %}
-            <li>
-                <label id="user-panel-toggle" for="user-panel-checkbox" class="button-small">Mitt konto</span></label>
-            </li>
-        {% else %}
-            <li><a href="/user/login"><label class="button-small">Logga in</label></a></li>
-        {% endif %}
-    </div>
-    <!--
-        {% block hero %}
-        <div class="hero" style="background-image: url({% static "iportalen/HERO_NEW.jpg" %})">
-            <h1 id="hero-logo">i&#8209;portalen</h1>
-        </div>
-    {% endblock %}
-    -->
-
 </header>
