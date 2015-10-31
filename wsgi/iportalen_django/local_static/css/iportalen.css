@@ -681,16 +681,7 @@ section#footer div#bottom:last-child {
 }
 
 header {
-  max-width: 68em;
-  margin-left: auto;
-  margin-right: auto;
-  height: 4em;
-  background-color: white;
-}
-header::after {
-  clear: both;
-  content: "";
-  display: table;
+  padding: 1em 0;
 }
 header a {
   font-size: 16px;
@@ -699,13 +690,46 @@ header a {
 }
 @media screen and (min-width: 900px) {
   header a {
-    font-size: 14px;
     font-weight: 400;
   }
 }
 header a:hover {
   color: gray;
   text-decoration: none;
+}
+header #top-menu-bar {
+  max-width: 68em;
+  margin-left: auto;
+  margin-right: auto;
+}
+header #top-menu-bar::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+header #logo {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 48.82117%;
+  padding-left: 1em;
+}
+header #logo:last-child {
+  margin-right: 0;
+}
+@media screen and (min-width: 900px) {
+  header #logo {
+    float: left;
+    display: block;
+    margin-right: 3.57866%;
+    width: 22.316%;
+  }
+  header #logo:last-child {
+    margin-right: 0;
+  }
+  header #logo img {
+    max-width: 150px;
+  }
 }
 header #menu-toggle {
   float: left;
@@ -734,83 +758,17 @@ header #menu-toggle #menu-toggle-button {
   }
 }
 header nav {
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 100%;
+  max-width: 68em;
+  margin-left: auto;
+  margin-right: auto;
 }
-header nav:last-child {
-  margin-right: 0;
-}
-header nav img {
-  text-align: center;
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 48.82117%;
-  margin-left: 25.58941%;
-  padding-top: 1em;
-  padding-bottom: 1em;
-}
-header nav img:last-child {
-  margin-right: 0;
-}
-@media screen and (min-width: 900px) {
-  header nav img {
-    float: left;
-    display: block;
-    margin-right: 3.57866%;
-    width: 9.36867%;
-    margin-left: 0%;
-    padding-top: 1em;
-    padding-bottom: 0;
-  }
-  header nav img:last-child {
-    margin-right: 0;
-  }
-}
-header #user-menu-tool {
-  padding: 1em;
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 100%;
-}
-header #user-menu-tool:last-child {
-  margin-right: 0;
-}
-@media screen and (min-width: 900px) {
-  header #user-menu-tool {
-    margin-left: 0%;
-    float: left;
-    display: block;
-    margin-right: 3.57866%;
-    width: 22.316%;
-  }
-  header #user-menu-tool:last-child {
-    margin-right: 0;
-  }
-}
-header #user-menu-tool .button-small {
-  text-align: center;
-  background-color: #f9d026;
-  padding: 0.4em;
-  border-radius: 3px;
-  color: white;
-  text-transform: uppercase;
-  font-weight: 400;
-}
-@media screen and (min-width: 900px) {
-  header #user-menu-tool .button-small {
-    max-width: 120px;
-    font-weight: 400;
-    font-size: 14px;
-  }
-}
-header #user-menu-tool li {
-  display: inline;
+header nav::after {
+  clear: both;
+  content: "";
+  display: table;
 }
 header #navigation-menu {
+  border-top: 1px solid #ebebeb;
   padding: 1em;
   float: left;
   display: block;
@@ -823,12 +781,10 @@ header #navigation-menu:last-child {
 }
 @media screen and (min-width: 900px) {
   header #navigation-menu {
-    margin-top: 0.5em;
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 61.158%;
-    margin-right: 0;
+    width: 100%;
   }
   header #navigation-menu:last-child {
     margin-right: 0;
@@ -841,7 +797,9 @@ header #navigation-menu li {
 @media screen and (min-width: 900px) {
   header #navigation-menu li {
     margin: 0;
+    padding: 0;
     display: inline;
+    margin-right: 1em;
   }
 }
 header #navigation-menu .more {
@@ -936,6 +894,45 @@ header #navigation-menu .submenu-wrapper .submenu > * {
     display: block;
   }
 }
+header #user-menu-tool {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+}
+header #user-menu-tool:last-child {
+  margin-right: 0;
+}
+@media screen and (min-width: 900px) {
+  header #user-menu-tool {
+    float: left;
+    display: block;
+    margin-right: 3.57866%;
+    width: 9.36867%;
+    margin-left: 64.73666%;
+    margin-right: 0;
+  }
+  header #user-menu-tool:last-child {
+    margin-right: 0;
+  }
+}
+header #user-menu-tool .button-small {
+  padding: 0.4em;
+  border-radius: 3px;
+  color: #333;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+@media screen and (min-width: 900px) {
+  header #user-menu-tool .button-small {
+    max-width: 120px;
+    font-weight: 400;
+    font-size: 14px;
+  }
+}
+header #user-menu-tool li {
+  display: inline;
+}
 
 #sponsors .sponsor-placeholder {
   margin: 5px auto;
@@ -950,7 +947,7 @@ header #navigation-menu .submenu-wrapper .submenu > * {
 }
 @media screen and (min-width: 900px) {
   .hero {
-    height: 250px;
+    height: 500px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top center;
