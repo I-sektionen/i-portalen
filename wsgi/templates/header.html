@@ -2,10 +2,15 @@
 {% load organisation_tags %}
 {% get_menu_organisations as menu_orgs %}
 <header role="banner">
+    <div id="logo">
+        <a href="/">
+            <img src=" {% static "iportalen/logo_iportalen.png" %}" alt="logo">
+        </a>
+    </div>
+
     <nav role="navigation">
-        <a href="/"><img src=" {% static "iportalen/isektionen_logo.png" %}" alt="logo"></a>
         <div id="menu-toggle">
-            <h4 id="menu-toggle-title">I-PORTALEN</h4>
+            <h4 id="menu-toggle-title">MENY</h4>
             <span id="menu-toggle-button">&#9776;</span>
         </div>
         <ul id="navigation-menu">
@@ -43,14 +48,14 @@
             <li><a href="{% url "placeholder" %}">Tjänster</a>
             </li>
         </ul>
-        <ul id="user-menu-tool">
+    </nav>
+            <div id="user-menu-tool">
             {% if request.user.is_authenticated %}
                 <li>
                     <label id="user-panel-toggle" for="user-panel-checkbox" class="button-small">Mitt konto</span></label>
                 </li>
             {% else %}
                 <li><a href="/user/login"><label class="button-small">Logga in</label></a></li>
-                </ul>
             {% endif %}
-    </nav>
+    </div>
 </header>
