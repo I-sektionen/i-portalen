@@ -1,10 +1,13 @@
 {% extends "master.html" %}
 {% block content %}
 <h2>Skapa nytt lösenord</h2>
+    {% if liu_id %}
+    <p>Innan du kan logga in första gången måste du återställa ditt lösenord.</p>
+    {% endif %}
 <p>Ange din Liu-mail, därefter skapas en engångslänk som kommer skickas till din mail och som sedan kan användas för att skapa ett nytt ett lösenord.</p>
 <form action="{% url 'password_reset' %}" method="post">
     {% csrf_token %}
-    <input type="email" class="form-control" placeholder="LIU-mailadress" name="email" id="id_email" required autofocus>
-    <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+    <input {% if liu_id %}value="{{ liu_id }}@student.liu.se" {% endif %} type="email" class="form-control" placeholder="LIU-mailadress" name="email" id="id_email" required autofocus>
+    <button type="submit" class="btn btn-lg btn-primary">Bekräfta</button>
 </form>
 {% endblock %}
