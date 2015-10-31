@@ -1,18 +1,12 @@
+<nav class="js-menu sliding-panel-content" id="user-panel">
 
-<div id="user-panel">
     <h2>Hej {{ request.user.username }}</h2>
-    <!-- DETTA UTRYMME KAN ANÄVNDAS TILL INTRESSANT SNABBINFO
-    <p>Du är anmäld 2 event:</p>
-    <ul>
-        <li>Event 1</li>
-        <li>Event 2</li>
 
-    </ul>
-    -->
     <ul>
         {% for item in request.user.get_menu_choices %}
             <li><a href="{{ item.1 }}">{{ item.0 }}</a></li>
         {% endfor %}
         <li><a href="/user/logout">Logga ut</a></li>
     </ul>
-</div>
+
+</nav>

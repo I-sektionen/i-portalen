@@ -12,7 +12,8 @@
 </head>
 
 <body>
-<input type="checkbox" id="user-panel-checkbox">
+<div class="js-menu-screen sliding-panel-fade-screen"></div>
+
 {% include "userpanel.html" %}
 <div id="master-container">
     {% include "header.html" %}
@@ -123,8 +124,11 @@
 <script>
     jQuery(document).ready(function () {
         shuffle_sponsors();
+        sliding_panel();
     });
 
 </script>
+
+
 </body>
 </html>
