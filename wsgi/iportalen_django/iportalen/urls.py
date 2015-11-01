@@ -4,7 +4,7 @@ from django.views.generic import TemplateView, RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import create_content, approve_content, placeholder
+from .views import create_content, approve_content, placeholder, article_pagination
 
 from articles import urls as article_urls
 from user_managements import urls as user_urls
@@ -14,7 +14,7 @@ from organisations import urls as org_urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', TemplateView.as_view(template_name="front_page.html"), name="front page"),
+    url(r'^$', view=article_pagination, name="front page"),
     url(r'^articles/', include(article_urls)),
     url(r'^user/', include(user_urls)),
     url(r'^event/', include(event_urls)),

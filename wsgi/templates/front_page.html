@@ -7,7 +7,6 @@
 
 {% block content %}
     {# gets all articles via template tag #}
-    {% get_all_articles as articles %}
     <section id="news-feed">
         <h1>Nyheter</h1>
         {% for article in articles %}
@@ -27,6 +26,28 @@
 
             </article>
         {% endfor %}
+        <div class="pagination">
+            <span class="step-links">
+            <div class="meta">
+                {% if articles.has_previous %}
+                    <span class="prev"><a href="?page={{ articles.previous_page_number }}">Prev</a></span>
+                {% endif %}
+                {% if articles.paginator.page_range > 10 %}
+                    {% for number in articles.paginator.page_range|slice:":10" %}
+                        {% if number == articles.number %}
+                            <a class="pagenumber active" href="">{{ number }}</a>
+                        {%  else %}
+                            <a class="pagenumber" href="?page={{ number }}">{{ number }}</a>
+                        {% endif %}
+
+                    {% endfor %}
+                {% endif %}
+                {% if articles.has_next %}
+                    <span class="next"><a href="?page={{ articles.next_page_number }}">Next</a></span>
+                {% endif %}
+            </div>
+            </span>
+        </div>
     </section>
     <section id="upcoming">
         <h1>Kommande</h1>
