@@ -174,7 +174,7 @@ class Event(models.Model):
         EntryAsParticipant(user=user, event=self).save()
 
     def can_administer(self, user):
-        if user.is_anonymous:
+        if not user.is_authenticated():
             return False
         if user.groups is None:
             return False
