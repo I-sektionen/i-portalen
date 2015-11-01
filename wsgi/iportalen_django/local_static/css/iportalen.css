@@ -989,14 +989,15 @@ header #user-menu-tool:last-child {
 }
 @media screen and (min-width: 900px) {
   header #user-menu-tool {
-    padding: 1em 0 0 0;
+    padding: 0.7em 0 0 0;
     background: none;
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 9.36867%;
-    margin-left: 64.73666%;
-    margin-right: 0;
+    width: 22.316%;
+    margin-left: 51.78933%;
+    text-align: right;
+    font-size: 22px;
   }
   header #user-menu-tool:last-child {
     margin-right: 0;
