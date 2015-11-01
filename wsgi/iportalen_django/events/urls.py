@@ -16,6 +16,7 @@ from .views import (
     unregister,
     event_calender,
     reserves_list,
+    registered_on_events,
 )
 
 urlpatterns = [
@@ -35,4 +36,5 @@ urlpatterns = [
     url(r'^(?P<event_id>[0-9]+)/approve$', view=approve_event, name='approve event'),
     url(r'^(?P<event_id>[0-9]+)/unapprove$', view=unapprove_event, name='unapprove event'),
     url(r'^calender/$', view=event_calender, name='event_calender'),
+    url(r'^user_entries/$', view=registered_on_events, name='registered_on_events'),
 ]

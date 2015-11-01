@@ -29,7 +29,7 @@ p {
   margin: 0 0 $small-spacing;
 }
 
-a {
+a, .read-more-fake {
   color: $link-color;
   text-decoration: none;
   transition: color $base-duration $base-timing;
