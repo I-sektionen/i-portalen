@@ -8,4 +8,4 @@
  */
 
 
-var MOBILE_BREAKPOINT = 900; 
+var MOBILE_BREAKPOINT = 900;

@@ -1,15 +1,26 @@
-div#article-create-preview
-    +span-columns(5)
+#article-create-form-text, #article-create-small
+    p
+        margin-top: -0.3em
+        font-size: 12px
+
+div#article-create-small
+    +span-columns(4)
+    margin-top: 1em
     h3
         margin-top: 2.5em
         margin-bottom: 1.5em
 
-div#article-create-form
+div#article-create-large
     +span-columns(7)
+    margin-right: 5em
     label
         margin-top: 1em
     p
         font-size: 12px
+
+#article-create-form-buttons
+    margin-top: 5em
+
 
 article.news-preview
     +span-columns(12)
@@ -47,6 +58,9 @@ article.news-preview
         line-height: 1.5
         font-size: 14px
         margin: 1em 0
+
+    .read-more-fake
+        font-size: 1em
 
     .article-lead
         font-size: 14px
