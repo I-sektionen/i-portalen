@@ -1344,13 +1344,14 @@ article.news-preview-organisation .article-lead {
   content: "dagar innan";
 }
 
-#markdown-preview {
+#single-article-preview {
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 48.82117%;
+  width: 100%;
+  border-top: 1px solid #333;
 }
-#markdown-preview:last-child {
+#single-article-preview:last-child {
   margin-right: 0;
 }
 
