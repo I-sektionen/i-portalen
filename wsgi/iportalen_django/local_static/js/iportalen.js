@@ -4045,6 +4045,10 @@ $.datetimepicker.setLocale('sv');
 $('.datetimepicker').datetimepicker({
     format: 'Y-m-d H:i'
 });;/**
+ * Created by isac on 2015-11-01.
+ */
+
+var MOBILE_BREAKPOINT = 900;;/**
  * Created by MagnusForzelius on 2015-10-31.
  */
 
@@ -4072,7 +4076,7 @@ $(document).ready(function () {
     var submenuWrapper = $('#submenu-wrapper').removeClass('show');
     var userPanelCheckbox = $('#user-panel-checkbox');
 
-    if ($(window).width() < 900) {  //TODO: Breakout global vars.
+    if ($(window).width() < MOBILE_BREAKPOINT) {  //TODO: Breakout global vars.
         $('li.more>a').click(function (e) {
             e.preventDefault();
         });
