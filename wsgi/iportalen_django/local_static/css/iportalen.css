@@ -2160,6 +2160,17 @@ article.event-preview-organisation p {
   }
 }
 
+#organisation-admin-panel {
+  margin: 1em 0;
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+}
+#organisation-admin-panel:last-child {
+  margin-right: 0;
+}
+
 #organisation-content {
   max-width: 1200px;
   margin-left: auto;
