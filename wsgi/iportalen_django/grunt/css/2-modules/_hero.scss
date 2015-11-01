@@ -1,0 +1,69 @@
+.top-hero {
+  position: relative;
+  $base-border-radius: 3px !default;
+  $action-color: #477DCA !default;
+  $large-screen: em(860) !default;
+  $hero-background-top: lighten($dark-gray, 30%);
+  $hero-background-bottom: black;
+  $hero-color: white;
+  $gradient-angle: 10deg;
+
+  background-color: #324766;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-bottom: 3em;
+  background-attachment: fixed;
+
+  .hero-overlay {
+    position: absolute;
+    @include background(linear-gradient($gradient-angle, $hero-background-bottom, $hero-background-top), no-repeat $hero-background-top scroll);
+    z-index: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.6;
+  }
+
+
+  .hero-logo img {
+    height: 4em;
+    margin-bottom: 1em;
+  }
+
+  .hero-inner {
+    @include outer-container;
+    @include clearfix;
+    margin: auto;
+    padding: 3.5em;
+    text-align: center;
+    z-index: 2;
+    position: relative;
+
+    .hero-copy {
+      text-align: center;
+      
+      h1 {
+        color: $hero-color;
+        font-size: 1.6em;
+        margin-bottom: 0.5em;
+        font-weight: 700;
+
+        @include media($large-screen) {
+          font-size: 3.5em;
+        }
+      }
+
+      p {
+        color: $hero-color;
+        line-height: 1.5em;
+        margin: 0 auto 3em auto; 
+
+        @include media($large-screen) {
+          font-size: 1.2em;
+          max-width: 40%;
+        }
+      }
+    }
+  }
+}

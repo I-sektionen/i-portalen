@@ -3,63 +3,77 @@
 {% load tag_tags %}
 {% load staticfiles %}
 {% block content %}
-    <div id="article-create-form">
-        <h1>Skapa artikel</h1>
-        <form action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
-            <section id="article-create-form-text">
-                {{ form.headline.errors }}
-                {{ form.headline.label_tag }}
-                {{ form.headline }}
-                {{ form.lead.errors }}
-                {{ form.lead.label_tag }}
-                {{ form.lead }}
-                {{ form.body.errors }}
-                {{ form.body.label_tag }}
-                <div class="wmd-panel">
-                    <div id="wmd-button-bar-body"></div>
-                    {{ form.body }}
-                </div>
-                {{ form.author.errors }}
-                {{ form.author.label_tag }}
-                {{ form.author }}
-                <p>{{ form.author.help_text }}</p>
+    <ul class="accordion-tabs">
+        <li class ="tab-header-and-content">
+            <a href="javascript:void(0)" class="is-active tab-link">Skriv artikel</a>
+            <div class="tab-content">
 
-                {{ form.organisations.errors }}
-                {{ form.organisations.label_tag }}
-                {{ form.organisations }}
-                <p>{{ form.organisations.help_text }}</p>
+                <h1>Skapa artikel</h1>
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                     <div id = article-create-large>
+                         {{ form.non_field_errors }}
+                         <section id="article-create-form-text">
+                             {{ form.headline.errors }}
+                             {{ form.headline.label_tag }}
+                             {{ form.headline }}
+                             {{ form.lead.errors }}
+                             {{ form.lead.label_tag }}
+                             {{ form.lead }}
+                             {{ form.body.errors }}
+                             {{ form.body.label_tag }}
+                             <div class="wmd-panel">
+                                 <div id="wmd-button-bar-body"></div>
+                                 {{ form.body }}
+                             </div>
 
-                {{ form.tags.errors }}
-                {{ form.tags.label_tag }}
-                {{ form.tags }}
 
-                <p>{{ form.tags.help_text }}</p>
-                {{ form.draft.errors }}
+                             {{ form.attachment.errors }}
+                             {{ form.attachment.label_tag }}
+                             {{ form.attachment }}
+                             <p>{{ form.attachment.help_text }}</p>
+                    </div>
+                    <div id="article-create-small">
+                            {{ form.author.errors }}
+                            {{ form.author.label_tag }}
+                            {{ form.author }}
+                            <p>{{ form.author.help_text }}</p>
 
-                {{ form.draft.label_tag }}
-                {{ form.draft }}
-                <p>{{ form.draft.help_text }}</p>
-                {{ form.visible_from.errors }}
-                {{ form.visible_from.label_tag }}
-                {{ form.visible_from }}
-                {{ form.visible_to.errors }}
-                {{ form.visible_to.label_tag }}
-                {{ form.visible_to }}
+                            {{ form.organisations.errors }}
+                            {{ form.organisations.label_tag }}
+                            {{ form.organisations }}
+                            <p>{{ form.organisations.help_text }}</p>
 
-                {{ form.attachment.errors }}
-                {{ form.attachment.label_tag }}
-                {{ form.attachment }}
-                <p>{{ form.attachment.help_text }}</p>
-            </section>
-            <div id="article-create-form-buttons">
-                <button type="submit">Publicera artikeln</button>
+                            {{ form.tags.errors }}
+                            {{ form.tags.label_tag }}
+                            {{ form.tags }}
+
+                            <p>{{ form.tags.help_text }}</p>
+                            {{ form.draft.errors }}
+
+                            {{ form.draft.label_tag }}
+                            {{ form.draft }}
+                            <p>{{ form.draft.help_text }}</p>
+
+                             {{ form.visible_from.errors }}
+                             {{ form.visible_from.label_tag }}
+                             {{ form.visible_from }}
+                             {{ form.visible_to.errors }}
+                             {{ form.visible_to.label_tag }}
+                             {{ form.visible_to }}
+
+                        </section>
+                        <div id="article-create-form-buttons">
+                            <button type="submit">Publicera artikeln</button>
+                        </div>
+                    </div>
+
             </div>
-        </form>
-    </div>
-    <div id="article-create-preview">
-        <h1>Förhandsvisning</h1>
+            </li>
+        <li class ="tab-header-and-content">
+             <a href="javascript:void(0)" class="tab-link">Förhandsvisning</a>
+            <div class="tab-content">
+                <h1>Förhandsvisning</h1>
                 <h3>Förhandsvisning kompakt format</h3>
                 <article class="news-preview">
                     <div class="meta">
@@ -69,7 +83,7 @@
                     </div>
                     <h5 class="headline_preview"></h5>
                     <p class="lead_preview"></p>
-                    <a href=""><button class="btn-read-more">Läs mer</button></a>
+                    <p class="read-more-fake">Läs mer</p>
                 </article>
                 <h3>Expanderat format</h3>
                 <article class="news-preview">
@@ -82,8 +96,13 @@
                     <p class="lead_preview"></p>
                     <div id="wmd-preview-body" class="wmd-panel wmd-preview"></div>
                 </article>
+                 <div id="article-create-form-buttons">
+                     <button type="submit">Publicera artikeln</button>
+                 </div>
             </div>
-
+        </li>
+    </ul>
+  </form>
 {% endblock %}
 {% block after_scripts %}
 <script>

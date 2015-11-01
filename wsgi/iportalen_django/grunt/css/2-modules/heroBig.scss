@@ -1,0 +1,61 @@
+.hero {
+  $hero-border-radius: $base-border-radius;
+  $action-color: $isektionen-yellow;
+  $large-screen: em(860) !default;
+  $hero-background-top: #7F99BE;
+  $hero-background: $light-gray;
+  $hero-background-bottom: #20392B;
+  $hero-color: black;
+  $gradient-angle: 10deg;
+
+  border-radius: $hero-border-radius;
+
+  @include background(no-repeat scroll);
+  //linear-gradient($gradient-angle, $hero-background-bottom, $hero-background-top),
+  background-color: $hero-background;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-bottom: 3em;
+
+  .hero-logo img {
+    height: 4em;
+    margin-bottom: 1em;
+
+  }
+
+  .hero-inner {
+    @include outer-container;
+    @include clearfix;
+    margin: auto;
+    padding: 3.5em;
+    text-align: center;
+
+    .hero-copy {
+      text-align: center;
+
+      h1 {
+        color: $hero-color;
+        font-size: 1.6em;
+        margin-bottom: 0.5em;
+        text-transform: uppercase;
+        font-weight: 200;
+
+        @include media($large-screen-up) {
+          font-size: 3.5em;
+        }
+      }
+
+      p {
+        color: $hero-color;
+        line-height: 1.4em;
+        margin: 0 auto 3em auto;
+
+        @include media($large-screen-up) {
+          font-size: 1.1em;
+          max-width: 40%;
+        }
+      }
+    }
+  }
+}
