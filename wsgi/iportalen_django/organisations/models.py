@@ -70,6 +70,7 @@ class Organisation(models.Model):
         verbose_name = "organisation"
         verbose_name_plural = "organisationer"
 
+
     def __str__(self):
         return self.name
 
