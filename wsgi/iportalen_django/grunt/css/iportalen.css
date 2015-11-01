@@ -600,7 +600,120 @@ header #navigation-menu .submenu > * {
   }
 }
 
-article.news-preview {
+.wrapper {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+.wrapper h4 {
+  margin-bottom: 30px;
+}
+.wrapper div.editPart {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  margin-right: 100px;
+}
+.wrapper .bubble {
+  font-size: 11px;
+  display: inline-block;
+  background-color: #F2F2F2;
+  border-radius: 5px;
+  box-shadow: 0px 0px 2px #B2B2B2;
+  margin-bottom: 15px;
+  padding: 7px;
+  content: " ";
+  width: 0;
+  height: 0;
+  left: 30px;
+  right: auto;
+  top: auto;
+  bottom: -40px;
+  border: 20px solid;
+  border-color: #666 transparent transparent #666;
+}
+.wrapper .triangle:after {
+  content: " ";
+  width: 0;
+  height: 0;
+  left: 38px;
+  right: auto;
+  top: auto;
+  bottom: -20px;
+  border: 12px solid;
+  border-color: lightyellow transparent transparent lightyellow;
+}
+.wrapper .helpText {
+  visibility: hidden;
+}
+.wrapper .helpText .publication {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+.wrapper .helpText .publication .publicOn {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+.wrapper .helpText .publication .publicOff {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+.wrapper div.review {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+.wrapper div.review article.news-preview {
   display: -webkit-box;
   display: -moz-box;
   display: box;
@@ -623,12 +736,25 @@ article.news-preview {
   padding: 0px 15px 15px 15px;
   margin-bottom: 1em;
 }
-article.news-preview:hover {
+.wrapper div.review article.news-preview:hover {
+  box-shadow: 4px 4px 16px #cccccc;
   -webkit-transition-duration: 0.5s;
   -moz-transition-duration: 0.5s;
   transition-duration: 0.5s;
 }
-article.news-preview .meta {
+.wrapper div.review article.news-preview h5 {
+  font-weight: 700;
+  font-size: 14px;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #cccccc;
+}
+.wrapper div.review article.news-preview hr {
+  -webkit-align-self: flex-start;
+  -moz-align-self: flex-start;
+  align-self: flex-start;
+  -ms-flex-item-align: start;
+}
+.wrapper div.review article.news-preview .meta {
   display: -webkit-box;
   display: -moz-box;
   display: box;
@@ -644,35 +770,37 @@ article.news-preview .meta {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
-article.news-preview .meta > span::before {
+.wrapper div.review article.news-preview .meta > span::before {
   font-family: "FontAwesome";
 }
-article.news-preview .meta span {
+.wrapper div.review article.news-preview .meta span {
   margin-right: 1em;
   padding: 10px 0;
   text-transform: uppercase;
   font-size: 12px;
 }
-article.news-preview .meta .date::before {
+.wrapper div.review article.news-preview .meta .date::before {
   padding-right: 0.5em;
   content: "";
 }
-article.news-preview .meta .tags::before {
+.wrapper div.review article.news-preview .meta .tags::before {
   padding-right: 0.5em;
   content: "";
 }
-article.news-preview .meta .author::before {
+.wrapper div.review article.news-preview .meta .author::before {
   padding-right: 0.5em;
   content: "";
 }
-article.news-preview p {
+.wrapper div.review article.news-preview p {
   line-height: 1.5;
   font-size: 14px;
   margin: 1em 0;
 }
-article.news-preview .article-lead {
-  font-size: 14px;
-  font-style: italic;
+.wrapper div.review article.news-preview .btn-read-more {
+  -webkit-align-self: center;
+  -moz-align-self: center;
+  align-self: center;
+  -ms-flex-item-align: center;
 }
 
 article.news-single-view {
