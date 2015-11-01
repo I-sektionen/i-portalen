@@ -13,6 +13,22 @@ class EventForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
         self.fields['visible_from'].widget.attrs['class'] = 'datetimepicker'
+        self.fields['visible_from'].widget.attrs['placeholder'] = self.fields['visible_from'].help_text
+
+
+
+        self.fields['location'].widget.attrs['placeholder'] = self.fields['location'].help_text
+        self.fields['start'].widget.attrs['placeholder'] = self.fields['start'].help_text
+        self.fields['end'].widget.attrs['placeholder'] = self.fields['end'].help_text
+
+        self.fields['headline'].widget.attrs['placeholder'] = self.fields['headline'].help_text
+        self.fields['registration_limit'].widget.attrs['placeholder'] = self.fields['registration_limit'].help_text
+        self.fields['deregister_delta'].widget.attrs['placeholder'] = self.fields['deregister_delta'].help_text
+
+        self.fields['lead'].widget.attrs['placeholder'] = self.fields['lead'].help_text
+
+
+
         self.fields['start'].widget.attrs['class'] = 'datetimepicker'
         self.fields['end'].widget.attrs['class'] = 'datetimepicker'
         self.fields['lead'].widget.attrs['cols'] = 40
@@ -28,6 +44,8 @@ class EventForm(forms.ModelForm):
         registration_limit = self.cleaned_data.get("registration_limit")
         if enable_registration and not registration_limit:
             self.add_error('registration_limit', "Du måste välja ett maximalt antal anmälningar.")
+
+
 
 
 class CheckForm(forms.Form):
