@@ -48,5 +48,5 @@ def get_organisation_articles(organisation_pk):
         approved=True,
         visible_from__lte=timezone.now(),
         visible_to__gte=timezone.now()
-    )
+    ).order_by('-visible_from')
     return articles

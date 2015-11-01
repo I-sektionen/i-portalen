@@ -599,12 +599,12 @@ p {
   margin: 0 0 0.75em;
 }
 
-a {
+a, .read-more-fake {
   color: #2D701E;
   text-decoration: none;
   transition: color 150ms ease;
 }
-a:active, a:focus, a:hover {
+a:active, a:focus, a:hover, .read-more-fake:active, .read-more-fake:focus, .read-more-fake:hover {
   color: #225417;
 }
 
@@ -1119,6 +1119,9 @@ article.news-preview p {
   line-height: 1.5;
   font-size: 14px;
   margin: 1em 0;
+}
+article.news-preview .read-more-fake {
+  font-size: 1em;
 }
 article.news-preview .article-lead {
   font-size: 14px;

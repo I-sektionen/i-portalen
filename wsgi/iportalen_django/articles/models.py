@@ -33,7 +33,7 @@ class Article(models.Model):
     author = models.CharField(max_length=255,
                               verbose_name='skribent',
                               null=True,
-                              blank=True,
+                              blank=False,
                               help_text="Skribent av texten visas bara om ingen organisation valts.")
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
