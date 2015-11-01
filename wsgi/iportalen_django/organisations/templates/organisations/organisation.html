@@ -71,9 +71,10 @@
                 </tbody>
             </table>
         </section>
+        {% get_organisation_articles organisation.pk as articles %}
+        {% if articles %}
         <section id="organisation-articles">
             <h1>Artiklar</h1>
-            {% get_organisation_articles organisation.pk as articles %}
             <table>
                 <thead>
                 <th>Titel</th>
@@ -90,9 +91,11 @@
                 </tbody>
             </table>
         </section>
+        {% endif %}
+        {% get_organisation_events organisation.pk as events %}
+        {% if events %}
         <section id="organisation-events">
             <h1>Event</h1>
-            {% get_organisation_events organisation.pk as events %}
             <table>
                 <thead>
                 <th>Titel</th>
@@ -109,5 +112,6 @@
                 </tbody>
             </table>
         </section>
+        {% endif %}
     </div>
 {% endblock %}
