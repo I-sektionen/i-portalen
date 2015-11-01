@@ -6,7 +6,7 @@ $(document).ready(function () {
     var submenuWrapper = $('#submenu-wrapper').removeClass('show');
     var userPanelCheckbox = $('#user-panel-checkbox');
 
-    if ($(window).width() < 900) {  //TODO: Breakout global vars.
+    if ($(window).width() < MOBILE_BREAKPOINT) {  //TODO: Breakout global vars.
         $('li.more>a').click(function (e) {
             e.preventDefault();
         });
