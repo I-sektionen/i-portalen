@@ -18,6 +18,7 @@ def get_all_articles():
     return articles
 
 
+
 @register.assignment_tag
 def get_article(pk):
     try:
