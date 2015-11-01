@@ -20,7 +20,7 @@ def create_or_modify_article(request, article_id=None):
         has_perm_to_edit = False
         if intersection:
             has_perm_to_edit = True
-        if a.user == request.user and not a_org:
+        if a.user == request.user:  # Add "and not a_org" if you want to only be able to change as user if no organisation is choosen.
             has_perm_to_edit = True
         if request.user.has_perm("articles.can_approve_article"):
             has_perm_to_edit = True

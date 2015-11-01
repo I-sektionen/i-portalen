@@ -1,0 +1,24 @@
+{% extends "master.html" %}
+
+{% block content %}
+    {% if reserve_events or preregistrations_events %}
+        {% if reserve_events %}
+            <p>Du är reserv till följande arrangemang:</p>
+            <ul>
+                {% for e in reserve_events %}
+                    <li><a href="{{ e.event.get_absolute_url }}">{{ e.event }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if preregistrations_events %}
+            <p>Du är anmäld till följande arrangemang:</p>
+            <ul>
+                {% for e in preregistrations_events %}
+                    <li><a href="{{ e.event.get_absolute_url }}">{{ e.event }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% else %}
+        <p>Du är inte anmäld till några arrangemang.</p>
+    {% endif %}
+{% endblock %}
