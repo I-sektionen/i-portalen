@@ -176,12 +176,15 @@ class Event(models.Model):
     def can_administer(self, user):
         if not user.is_authenticated():
             return False
-        if user.groups is None:
-            return False
         if user != self.user:
-            if self.admin_group is None:
-                return False
-            elif self.admin_group not in user.groups:  # I LOVE PYTHON <3
+            try:
+                if user.groups is None:
+                    return False
+                if self.admin_group is None:
+                    return False
+                elif self.admin_group not in user.groups:  # I LOVE PYTHON <3
+                    return False
+            except:
                 return False
         return True
 
