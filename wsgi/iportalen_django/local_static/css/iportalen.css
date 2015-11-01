@@ -1255,17 +1255,93 @@ article.news-preview-organisation .article-lead {
   font-style: italic;
 }
 
-#event-form {
+#event-create-form-main {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+}
+#event-create-form-main:last-child {
+  margin-right: 0;
+}
+@media screen and (min-width: 900px) {
+  #event-create-form-main {
+    float: left;
+    display: block;
+    margin-right: 3.57866%;
+    width: 100%;
+  }
+  #event-create-form-main:last-child {
+    margin-right: 0;
+  }
+}
+
+#event-create-form-time-details {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+}
+#event-create-form-time-details:last-child {
+  margin-right: 0;
+}
+@media screen and (min-width: 900px) {
+  #event-create-form-time-details {
+    float: left;
+    display: block;
+    margin-right: 3.57866%;
+    width: 100%;
+    margin-right: 0;
+  }
+  #event-create-form-time-details:last-child {
+    margin-right: 0;
+  }
+}
+
+#event-create-form-member-details {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+}
+#event-create-form-member-details:last-child {
+  margin-right: 0;
+}
+
+#event-create-form-other-details {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+}
+#event-create-form-other-details:last-child {
+  margin-right: 0;
+}
+
+.form-half-width {
   float: left;
   display: block;
   margin-right: 2.35765%;
   width: 48.82117%;
-}
-#event-form:last-child {
   margin-right: 0;
 }
-#event-form .errorlist {
-  color: #e33c3c;
+.form-half-width:last-child {
+  margin-right: 0;
+}
+
+.form-third-width {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 31.76157%;
+  margin-right: 0;
+}
+.form-third-width:last-child {
+  margin-right: 0;
+}
+
+#id-deregister_delta:after {
+  content: "dagar innan";
 }
 
 #markdown-preview {
@@ -1281,15 +1357,9 @@ article.news-preview-organisation .article-lead {
 article.event-preview {
   border-radius: 3px;
   border-left: 3px solid #2D701E;
-  box-shadow: 1px 1px 4px #f7f7f7;
   margin-bottom: 1em;
   padding: 0.5em 1em;
   padding-top: 0em;
-}
-article.event-preview:hover {
-  -webkit-transition-duration: 0.5s;
-  -moz-transition-duration: 0.5s;
-  transition-duration: 0.5s;
 }
 article.event-preview .meta.meta {
   display: -webkit-box;
@@ -1310,21 +1380,21 @@ article.event-preview .meta.meta {
 article.event-preview .meta.meta > span::before {
   font-family: "FontAwesome";
 }
-article.event-preview .meta.meta span {
+article.event-preview .meta.meta > span::before span {
   margin-right: 1em;
   padding: 10px 0;
   text-transform: uppercase;
   font-size: 12px;
 }
-article.event-preview .meta.meta .date::before {
+article.event-preview .meta.meta > span::before .date::before {
   padding-right: 0.5em;
   content: "";
 }
-article.event-preview .meta.meta .time::before {
+article.event-preview .meta.meta > span::before .time::before {
   padding-right: 0.5em;
   content: "";
 }
-article.event-preview .meta.meta .location::before {
+article.event-preview .meta.meta > span::before .location::before {
   padding-right: 0.5em;
   content: "";
 }
@@ -2282,8 +2352,11 @@ article.single-article h3 {
 article.single-article p.date {
   color: rgba(51, 51, 51, 0.4);
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-  font-size: 0.8em;
+  font-size: 1em;
   margin-bottom: 0.5em;
+}
+article.single-article p.date span {
+  margin-right: 1em;
 }
 article.single-article p {
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
