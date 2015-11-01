@@ -83,6 +83,8 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         if self.article_set.filter(visible_to__gte=timezone.now()):
              menu_choices.append(('Mina Artiklar', reverse('articles by user')))
 
+        menu_choices.append(('Mina Anmälningar', reverse('registered_on_events')))
+
         if self.has_perm("articles.can_approve_article"):
             menu_choices.append(('Godkänn Innehåll', reverse('approve content')))  # With perm to edit articles.
 

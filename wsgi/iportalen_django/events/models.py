@@ -199,6 +199,9 @@ class Event(models.Model):
     def __str__(self):
         return self.headline
 
+    def get_absolute_url(self):
+        return "/event/%i/" % self.id
+
 
 ######################################################################
 #  Entry models are used for the logic behind users standing in line  #
