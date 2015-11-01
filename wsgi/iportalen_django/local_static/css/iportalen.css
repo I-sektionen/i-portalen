@@ -997,7 +997,6 @@ header #user-menu-tool:last-child {
     width: 22.316%;
     margin-left: 51.78933%;
     text-align: right;
-    font-size: 22px;
   }
   header #user-menu-tool:last-child {
     margin-right: 0;
@@ -1005,6 +1004,9 @@ header #user-menu-tool:last-child {
 }
 header #user-menu-tool li {
   display: inline;
+}
+header #user-menu-tool #user-button {
+  font-size: 22px;
 }
 
 #sponsors .sponsor-placeholder {
