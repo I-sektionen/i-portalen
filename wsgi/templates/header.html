@@ -11,7 +11,7 @@
         <div id="user-menu-tool">
             {% if request.user.is_authenticated %}
                 <li class="js-menu-trigger sliding-panel-button">
-                    <span>&#9776 {{ request.user.username }}</span>
+                    <span id="user-button">{{ request.user.username }} &#9776</span>
                 </li>
             {% else %}
                 <li>
@@ -34,7 +34,7 @@
                                             <input class="password-holder" type="password" name="password" placeholder="Lösenord">
                                             <input class="submit-holder primary" type="submit" value="Logga in">
                                         </form>
-                                        <a href="{% url "password_reset" %}">Återställ lösenordet/Ny användare</a>
+                                        <a href="{% url "password_reset" %}">Glömt lösenord</a>
                                     </div>
                                 </div>
                             </div>
