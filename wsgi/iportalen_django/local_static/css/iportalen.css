@@ -1952,6 +1952,17 @@ article.event-preview-organisation p {
   height: 1.3em;
 }
 
+#membership {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 65.88078%;
+  margin-left: 17.05961%;
+}
+#membership:last-child {
+  margin-right: 0;
+}
+
 #master-container {
   position: relative;
   -webkit-transition: 0.5s ease-out;
