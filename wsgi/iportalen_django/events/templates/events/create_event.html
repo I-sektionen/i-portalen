@@ -10,7 +10,6 @@
         <li class ="tab-header-and-content">
             <a href="javascript:void(0)" class="is-active tab-link">Ändra evenmang</a>
             <div class="tab-content">
-                <h1>Skapa evenemang</h1>
                 <form action="{% url "create event" %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div id="event-create-form-time-details">
@@ -21,41 +20,41 @@
                         {{ form.headline }}
                         <hr>
                         <div class="form-half-width">
-                        {{ form.start.label_tag }}
-                        {{ form.start.errors }}
-                        {{ form.start }}
+                            {{ form.start.label_tag }}
+                            {{ form.start.errors }}
+                            {{ form.start }}
                         </div>
                         <div class="form-half-width">
-                        {{ form.end.label_tag }}
-                        {{ form.end.errors }}
-                        {{ form.end }}
+                            {{ form.end.label_tag }}
+                            {{ form.end.errors }}
+                            {{ form.end }}
                         </div>
-                                                {{ form.location.label_tag }}
+                        {{ form.location.label_tag }}
                         {{ form.location.errors }}
                         {{ form.location }}
                         <hr>
                         <div class="form-third-width">
-                        {{ form.registration_limit.label_tag }}
-                        {{ form.registration_limit.errors }}
-                        {{ form.registration_limit }}
+                            {{ form.registration_limit.label_tag }}
+                            {{ form.registration_limit.errors }}
+                            {{ form.registration_limit }}
                         </div>
                         <div class="form-third-width">
-                        {{ form.deregister_delta.label_tag }}
-                        {{ form.deregister_delta.errors }}
-                        {{ form.deregister_delta }}
+                            {{ form.deregister_delta.label_tag }}
+                            {{ form.deregister_delta.errors }}
+                            {{ form.deregister_delta }}
                         </div>
 
                         <div class="form-third-width">
-                        {{ form.visible_from.label_tag }}
-                        {{ form.visible_from.errors }}
-                        {{ form.visible_from.help_text }}
-                        {{ form.visible_from }}
-                            </div>
+                            {{ form.visible_from.label_tag }}
+                            {{ form.visible_from.errors }}
+                            {{ form.visible_from.help_text }}
+                            {{ form.visible_from }}
+                        </div>
                         <div class="form-half-width">
-                        {{ form.enable_registration.label_tag }}
-                        {{ form.enable_registration.errors }}
-                        {{ form.enable_registration.help_text }}
-                        {{ form.enable_registration }}
+                            {{ form.enable_registration.label_tag }}
+                            {{ form.enable_registration.errors }}
+                            {{ form.enable_registration.help_text }}
+                            {{ form.enable_registration }}
                         </div>
 
                     </div>
@@ -110,6 +109,7 @@
         <li class ="tab-header-and-content">
             <a href="javascript:void(0)" class="tab-link">Förhandsvisning</a>
             <div class="tab-content">
+                <div id="news-feed-article-preview">
                 <article class="event-preview">
                     <h4 class="headline_preview"></h4>
                     <div class="meta">
@@ -119,29 +119,29 @@
                     <a href="#"><button>Läs mer</button></a>
                     <a href="#"><button class="enable_registration_preview">Anmäl</button></a>
                 </article>
-                <div id="markdown-preview">
-                    <h4 class="headline_preview"></h4>
-                    <div class="event-container">
-                        <div class="meta">
-                    <span class="date">
+                </div>
+                <div id="single-article-preview">
+                    <h1>Enskilt event</h1>
+                    <article class="single-article">
+                        <p class="type">Event</p>
+                        <h1 class="headline_preview"></h1>
+                        <h2 id="lead_preview"></h2>
+                        <p class="date">
                             <i class="fa fa-calendar"></i>
                             <span class="meta-content start_preview_date"></span>
-                    </span>
 
-                    <span class="time">
-                        <i class="fa fa-clock-o"></i>
-                        <span class="meta-content start_preview_time"></span>
-                    </span>
+                            <i class="fa fa-clock-o"></i>
+                            <span class="meta-content start_preview_time"></span>
 
-                    <span class="place">
-                        <i class="fa fa-map-o"></i>
-                        <span class="meta-content place_preview"></span>
-                    </span>
-                        </div>
-                        <p class="lead" id="lead_preview"></p>
+                            <i class="fa fa-map-o"></i>
+                            <span class="meta-content place_preview"></span>
+                        </p>
+                        <p></p>
+                        <p class="wmd-panel wmd-preview" id="wmd-preview-body"></p>
                         <a href="#"><button class="enable_registration_preview">Anmäl mig</button></a>
-                        <p id="wmd-preview-body" class="wmd-panel wmd-preview"></p>
-                    </div>
+                        <hr>
+                        <p class="author "></p>
+                    </article>
                 </div>
             </div>
         </li>
