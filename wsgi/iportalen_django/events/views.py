@@ -10,7 +10,7 @@ import csv
 
 
 from .forms import EventForm, CheckForm
-from .models import Event
+from .models import Event, EntryAsPreRegistered, EntryAsReserve
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
 # Create your views here.
@@ -244,3 +244,17 @@ def unregister(request, pk):
 def event_calender(request):
     return render(request, "events/calender.html")
 
+@login_required()
+def registered_on_events(request):
+    entry_as_preregistered = EntryAsPreRegistered.objects.filter(user=request.user)
+    entry_as_reserve = EntryAsReserve.objects.filter(user=request.user)
+    reserve_events = []
+    preregistrations_events = []
+    for e in entry_as_preregistered:
+        if e.event.end >= timezone.now():
+            preregistrations_events.append(e)
+    for e in entry_as_reserve:
+        if e.event.end >= timezone.now():
+            reserve_events.append(e)
+    return render(request, "events/registerd_on_events.html",
+                  {"reserve_events": reserve_events, "preregistrations_events": preregistrations_events})
