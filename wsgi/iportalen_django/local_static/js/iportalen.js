@@ -4048,7 +4048,7 @@ $('.datetimepicker').datetimepicker({
  * Created by MagnusForzelius on 2015-10-31.
  */
 
- var modal = $(function() {
+ var modal = function() {
   $("#modal-1").on("change", function() {
     if ($(this).is(":checked")) {
       $("body").addClass("modal-open");
@@ -4064,7 +4064,7 @@ $('.datetimepicker').datetimepicker({
   $(".modal-inner").on("click", function(e) {
     e.stopPropagation();
   });
-});;/*global $*/
+};;/*global $*/
 $(document).ready(function () {
     'use strict';
     var menuToggle = $('#menu-toggle').unbind();
