@@ -1,14 +1,18 @@
 .hero {
-  $base-border-radius: $base-border-radius;
+  $hero-border-radius: $base-border-radius;
   $action-color: $isektionen-yellow;
   $large-screen: em(860) !default;
   $hero-background-top: #7F99BE;
+  $hero-background: $light-gray;
   $hero-background-bottom: #20392B;
-  $hero-color: white;
+  $hero-color: black;
   $gradient-angle: 10deg;
 
-  @include background(linear-gradient($gradient-angle, $hero-background-bottom, $hero-background-top), no-repeat $hero-background-top scroll);
-  background-color: #324766;
+  border-radius: $hero-border-radius;
+
+  @include background(no-repeat scroll);
+  //linear-gradient($gradient-angle, $hero-background-bottom, $hero-background-top),
+  background-color: $hero-background;
   background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
