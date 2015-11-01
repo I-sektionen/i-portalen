@@ -61,7 +61,7 @@ class CustomUserChangeForm(UserChangeForm):
 class ChangeUserInfoForm(forms.ModelForm):
     class Meta:
         model = IUser
-        fields = ('first_name', 'last_name', 'address', 'zip_code', 'city', 'gender', 'allergies', 'start_year', 'expected_exam_year')
+        fields = ('address', 'zip_code', 'city', 'gender', 'allergies', 'start_year', 'expected_exam_year')
 
 class AddWhiteListForm(forms.Form):
     users = forms.CharField(

@@ -1,8 +1,5 @@
 {% extends "master.html" %}
-{% load staticfiles %}
-{% block head %}
-    <link rel="stylesheet" type="text/css" href="{% static "articles/Markdown.css" %}" />
-{% endblock %}
+
 {% block content %}
 
     <div>
@@ -10,27 +7,6 @@
             {% csrf_token %}
             {{ form.non_field_errors }}
 
-
-            {{ form.username.errors }}
-            {{ form.username.label_tag }}
-            {{ form.username }}
-            {{ form.username.help_text }}
-            <br>
-            <br>
-
-            {{ form.first_name.errors }}
-            {{ form.first_name.label_tag }}
-            {{ form.first_name }}
-            {{ form.first_name.help_text }}
-            <br>
-            <br>
-
-            {{ form.last_name.errors }}
-            {{ form.last_name.label_tag }}
-            {{ form.last_name }}
-            {{ form.last_name.help_text }}
-            <br>
-            <br>
 
             {{ form.address.errors }}
             {{ form.address.label_tag }}
@@ -87,10 +63,4 @@
         </form>
     </div>
 
-{% endblock %}
-{% block after_scripts %}
-    <script type="text/javascript" src="{% static "articles/Markdown.Converter.js" %}"></script>
-    <script type="text/javascript" src="{% static "articles/Markdown.Sanitizer.js" %}"></script>
-    <script type="text/javascript" src="{% static "articles/Markdown.Editor.js" %}"></script>
-    <script type="text/javascript" src="{% static "articles/preview_article.js" %}"></script>
 {% endblock %}
