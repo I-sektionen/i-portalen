@@ -72,3 +72,7 @@ class AddWhiteListForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(AddWhiteListForm, self).__init__(*args, **kwargs)
         self.fields['users'].label = "Lista med Liu-id:n att lägga till:"
+
+
+class MembershipForm(forms.Form):
+    membership = forms.BooleanField(required=False)

@@ -15,7 +15,9 @@
 <div class="js-menu-screen sliding-panel-fade-screen"></div>
 {% include "userpanel.html" %}
 <div id="master-container">
+    {% block navbar %}
     {% include "header.html" %}
+    {% endblock %}
     {% if messages %}
         <div id="message-box">
             {% for message in messages %}
@@ -37,6 +39,7 @@
             {% block content %}
             {% endblock %}
         </div>
+        {% block sponsors %}
         <div id="sponsors">
             <h1>Huvudsponsor</h1>
 
@@ -108,11 +111,12 @@
                 </div>
             </div>
         </div>
+    {% endblock %}
     </div>
+    {% block footer %}
     {% include "footer.html" %}
+    {% endblock %}
 </div>
-
-{% include "modal.html" %}
 
 {% include "scripts.html" %}
 {% block after_scripts %}{% endblock %}
