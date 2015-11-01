@@ -3,20 +3,30 @@
 {% load organisation_tags %}
 {% load article_tags %}
 {% load event_tags %}
-
+{% block hero %}
+{% endblock %}
 {% block content %}
+
+    {% if organisation.image %}
+        <div class="hero" style="background-image: url({{ MEDIA_URL }} {{ organisation.image }})">
+    {% else %}
+        <div class="hero">
+    {% endif %}
+
+
+	<div class="hero-inner">
+		<div class="hero-copy">
+			<h1>{{ organisation.name|capfirst }}</h1>
+		</div>
+	</div>
+</div>
+
     <section id="organisation">
         <section id="organisation-info">
-            {% if organisation.image %}
-                <div id="organisation-image">
-                    <img src="{{ MEDIA_URL }}{{ organisation.image }}">
-                </div>
-            {% else %}
-                <div id="organisation-image">
-                    <img src="https://s3.amazonaws.com/iportalen-us/static/organisations/placeholder.png">
-                </div>
-            {% endif %}
-            <h1>{{ organisation.name|capfirst }}</h1>
+        <!--
+
+            -->
+            <h1></h1>
 
             <section id="organisation-presentation-section1">
                 <div id="organisation-presentation">
