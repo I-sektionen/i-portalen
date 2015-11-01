@@ -23,7 +23,7 @@ def article_pagination(request):
         visible_to__gte=timezone.now()
     ).order_by('-visible_from')
 
-    paginator = Paginator(article_list, 10)
+    paginator = Paginator(article_list, 14)
 
     page = request.GET.get('page')
 
