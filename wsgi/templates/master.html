@@ -8,13 +8,16 @@
     {% include "stylesheets.html" %}
     <link rel="shortcut icon" type="image/png" href="{% static "iportalen/favicon.ico" %}"/>
     <title>I-portalen{% block page_subtitle %} {% endblock %}</title>
+</head>
     {% block head %} {% endblock %}
 </head>
 <body>
 <div class="js-menu-screen sliding-panel-fade-screen"></div>
 {% include "userpanel.html" %}
 <div id="master-container">
+    {% block navbar %}
     {% include "header.html" %}
+    {% endblock %}
     {% if messages %}
         <div id="message-box">
             {% for message in messages %}
@@ -27,7 +30,7 @@
     {% endif %}
 {% block hero %}
     {% load static from staticfiles %}
-        <section class="hero" style="background-image:url({% static 'iportalen/HERO.jpg' %})">
+        <section class="top-hero" style="background-image:url({% static 'iportalen/HERO.jpg' %})">
             <h1 id="hero-logo">Testa nya I-portalen idag!! Du kommer inte att tro dina ögon!!</h1>
         </section>
 {% endblock %}
@@ -36,6 +39,7 @@
             {% block content %}
             {% endblock %}
         </div>
+        {% block sponsors %}
         <div id="sponsors">
             <h1>Huvudsponsor</h1>
 
@@ -107,8 +111,11 @@
                 </div>
             </div>
         </div>
+    {% endblock %}
     </div>
+    {% block footer %}
     {% include "footer.html" %}
+    {% endblock %}
 </div>
 
 {% include "scripts.html" %}
