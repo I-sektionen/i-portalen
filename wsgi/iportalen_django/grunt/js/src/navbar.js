@@ -4,12 +4,15 @@ $(document).ready(function () {
     var menuToggle = $('#menu-toggle').unbind();
     var navigationMenu = $('#navigation-menu').removeClass('show');
     var submenuWrapper = $('#submenu-wrapper').removeClass('show');
-    var userPanelCheckbox = $('#user-panel-checkbox')
+    var userPanelCheckbox = $('#user-panel-checkbox');
 
-    if ($(window).width() < 900) {
+    if ($(window).width() < MOBILE_BREAKPOINT) {  //TODO: Breakout global vars.
+        $('li.more>a').click(function (e) {
+            e.preventDefault();
+        });
         $('li.more').click(function (e) {
-            e.preventDefault()
-            $(this).children('.submenu-wrapper').slideToggle('fast')
+            console.log("li.more");
+            $(this).children('.submenu-wrapper').slideToggle('fast');
         })
     }
     menuToggle.on('click', function (event) {

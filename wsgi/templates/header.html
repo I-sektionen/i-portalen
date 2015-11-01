@@ -11,7 +11,7 @@
         <div id="user-menu-tool">
             {% if request.user.is_authenticated %}
                 <li class="js-menu-trigger sliding-panel-button">
-                    <span>&#9776 {{ request.user.username }}</span>
+                    <span>{{ request.user.username }} &#9776</span>
                 </li>
             {% else %}
                 <li>
