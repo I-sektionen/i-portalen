@@ -6,13 +6,7 @@
 {% block hero %}
 {% endblock %}
 {% block content %}
-    <section>
-        {% if request.user == organisation.leader or perms.organisations.can_edit_all_orgs %}
-        <a href="{% url "edit_organisation" organisation.name %}">
-            <button>Ändra info</button>
-        </a>
-    {% endif %}
-    </section>
+
     {% if organisation.image %}
         <div class="hero" style="background-image: url({{ MEDIA_URL }}{{ organisation.image }})">
         <div class="hero-inner">
@@ -29,6 +23,13 @@
         </div>
     {% endif %}
 </div>
+        <div id="organisation-admin-panel">
+        {% if request.user == organisation.leader or perms.organisations.can_edit_all_orgs %}
+        <a href="{% url "edit_organisation" organisation.name %}">
+            <button>Ändra info</button>
+        </a>
+    {% endif %}
+    </div>
     <div id="organisation-content">
         <article class="single-article" id="organisation-description">
             <h1>Om {{ organisation.name }}</h1>
