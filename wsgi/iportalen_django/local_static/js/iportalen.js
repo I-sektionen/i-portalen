@@ -4045,6 +4045,16 @@ $.datetimepicker.setLocale('sv');
 $('.datetimepicker').datetimepicker({
     format: 'Y-m-d H:i'
 });;/**
+ * Created by isac on 2015-11-01.
+ */
+
+
+/*
+ * This is where global variables are declared. Breakpoints is one example. The convention is to use all CAPS.
+ */
+
+
+var MOBILE_BREAKPOINT = 900; ;/**
  * Created by MagnusForzelius on 2015-10-31.
  */
 
@@ -4070,12 +4080,15 @@ $(document).ready(function () {
     var menuToggle = $('#menu-toggle').unbind();
     var navigationMenu = $('#navigation-menu').removeClass('show');
     var submenuWrapper = $('#submenu-wrapper').removeClass('show');
-    var userPanelCheckbox = $('#user-panel-checkbox')
+    var userPanelCheckbox = $('#user-panel-checkbox');
 
-    if ($(window).width() < 900) {
+    if ($(window).width() < MOBILE_BREAKPOINT) {  //TODO: Breakout global vars.
+        $('li.more>a').click(function (e) {
+            e.preventDefault();
+        });
         $('li.more').click(function (e) {
-            e.preventDefault()
-            $(this).children('.submenu-wrapper').slideToggle('fast')
+            console.log("li.more");
+            $(this).children('.submenu-wrapper').slideToggle('fast');
         })
     }
     menuToggle.on('click', function (event) {
