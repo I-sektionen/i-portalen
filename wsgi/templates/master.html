@@ -30,9 +30,17 @@
     {% endif %}
 {% block hero %}
     {% load static from staticfiles %}
-        <section class="top-hero" style="background-image:url({% static 'iportalen/HERO.jpg' %})">
-            <h1 id="hero-logo">Testa nya I-portalen idag!! Du kommer inte att tro dina ögon!!</h1>
-        </section>
+    <div class="top-hero" style="background-image:url({% static 'iportalen/HERO.jpg' %})">
+
+	<div class="hero-inner">
+		<div class="hero-copy">
+			<h1>Snart är nya I-portalen här</h1>
+			<p>Kod, svett och tårar</p>
+		</div>
+	</div>
+    <div class="hero-overlay">
+    </div>
+</div>
 {% endblock %}
     <div id="container">
         <div id="content">
