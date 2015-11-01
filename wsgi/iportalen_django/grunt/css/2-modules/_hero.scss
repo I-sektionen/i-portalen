@@ -1,4 +1,4 @@
-.top-hero {
+.hero {
   position: relative;
   $base-border-radius: 3px !default;
   $action-color: #477DCA !default;
@@ -8,12 +8,13 @@
   $hero-color: white;
   $gradient-angle: 10deg;
 
-  background-color: #324766;
+  background-color: $dark-gray;
   background-position: top;
   background-repeat: no-repeat;
   background-size: cover;
   padding-bottom: 3em;
   background-attachment: fixed;
+  border-radius: $base-border-radius;
 
   .hero-overlay {
     position: absolute;
