@@ -1,0 +1,36 @@
+{% extends "master.html" %}
+{% load article_tags %}
+{% load iportalen_tags %}
+
+{% block content %}
+        <h1>Artiklar</h1>
+        <table>
+            <thead>
+            <th colspan="2">Rubrik</th>
+            <th>Publicering</th>
+            <th>Ändra</th>
+            <th colspan="2">Ägare</th>
+            <th>Status</th>
+            </thead>
+            <tbody>
+            {% for event in user_events %}
+                <tr>
+                    <td colspan="2"><a href="{{ event.get_absolute_url }}">{{ event.headline }}</a></td>
+                    <td>{{ event.visible_from|date:"Y-m-d" }}</td>
+                    <td><a href="{{ event.get_absolute_url }}edit"><button>Ändra</button></a></td>
+                    <td colspan="2">{{ event.user }}</td>
+                    <td>
+                        {% if event.status == "r" %}
+                            Avslaget
+                        {% elif event.status == "a" %}
+                            Godkännt
+                        {% elif event.status == "b" %}
+                            Väntar på godkännande
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+{% endblock %}
