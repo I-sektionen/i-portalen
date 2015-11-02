@@ -145,11 +145,11 @@ class Event(models.Model):
 
     @property
     def can_deregister(self):
-        return self.start-timezone.timedelta(days=self.deregister_delta) < timezone.now()
+        return self.start-timezone.timedelta(days=self.deregister_delta) > timezone.now()
 
     def deregister_user(self, user):
         # Deregistration time has passed.
-        if self.can_deregister:
+        if not self.can_deregister:
             return CouldNotRegisterException(event=self, reason="avanmälningstiden har passerats")
         found = False
         try:
