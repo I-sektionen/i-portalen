@@ -36,7 +36,7 @@ def create_event(request):
             event.user = request.user
             event.save()
             event.send_to_approval(request.user)
-            messages.success(request, "Ditt evenemang än nu skapat, det väntar nu på att godkännas av infU.")
+            messages.success(request, "Ditt evenemang är nu skapat, det väntar nu på att godkännas av infU.")
             return redirect("front page")
         else:
             messages.warning(request, "Ett fel uppstod, se felmeddelanden i formuläret.")
@@ -182,12 +182,13 @@ def approve_event(request, event_id):
 def unapprove_event(request, event_id):
     event = Event.objects.get(pk=event_id)
     if event.reject(request.user):
-        message = ("Eventet har gått tillbaka till utkast läget, maila gärna <a href='mailto:" +
+        # TODO: Ganska horribel lösning...
+        message = ("Eventet har gått avslagits, maila gärna <a href='mailto:" +
                    event.user.email +
                    "?Subject=Avslag%20publicering%20av%20event' target='_top'>" +
                    event.user.email +
                    "</a> med en förklaring till avslaget.<br>" +
-                   "<a href='/event/unapproved'>Tillbaka till listan över artiklar att godkänna.</a>")
+                   "<a href='/event/unapproved'>Tillbaka till listan över event att godkänna.</a>")
         return render(request, 'articles/confirmation.html', {'message': message})
     else:
         raise PermissionDenied
