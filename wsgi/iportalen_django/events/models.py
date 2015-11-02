@@ -19,6 +19,17 @@ from .exceptions import CouldNotRegisterException
 
 # Event model which holds basic data about an event.
 class Event(models.Model):
+    # Internal:
+    DRAFT = 'd'
+    BEING_REVIEWED = 'b'
+    REJECTED = 'r'
+    APPROVED = 'a'
+    STATUSES = (
+        (DRAFT, 'utkast'),
+        (BEING_REVIEWED, 'väntar på godkännande'),
+        (REJECTED, 'Avslaget'),
+        (APPROVED, 'Godkännt')
+    )
 
     #  Description:
     headline = models.CharField(verbose_name='arrangemangets namn',help_text="Ge ditt evenemang en titel, till exempel 'Excelutbildning med Knowit'", max_length=255)
@@ -47,7 +58,9 @@ class Event(models.Model):
                                     help_text="Utöver den användare som nu skapar eventet.")
     tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
 
-    approved = models.BooleanField(verbose_name='godkänd', default=False)
+    status = models.CharField(max_length=1, choices=STATUSES, default=DRAFT, blank=False, null=False)
+    rejection_message = models.TextField(blank=True, null=True)
+    #approved = models.BooleanField(verbose_name='godkänd', default=False)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
 
@@ -187,6 +200,36 @@ class Event(models.Model):
             except:
                 return False
         return True
+
+    #  This method changes the event status to approval mode.
+    def send_to_approval(self, user):
+        if user != self.user:
+            return False
+        if self.status == Event.DRAFT or self.status == Event.REJECTED:
+            self.status = Event.BEING_REVIEWED
+            self.save()
+            return True
+        else:
+            return False
+
+    # Rejects an event from being published, attaches message if present.
+    def reject(self, user, msg=None):
+        if not user.has_perm('events.can_approve_event'):
+            return False
+        if self.status == Event.BEING_REVIEWED:
+            self.rejection_message = msg
+            self.status = Event.REJECTED
+            self.save()
+            return True
+        return False
+
+    # Approves the event.
+    def approve(self, user):
+        if self.status == Event.BEING_REVIEWED and user.has_perm('events.can_approve_event'):
+            self.status = Event.APPROVED
+            self.save()
+            return True
+        return False
 
     class Meta:
         verbose_name = "Arrangemang"

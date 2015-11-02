@@ -7,7 +7,7 @@ class EventForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = '__all__'
-        exclude = ['approved', 'user', 'created']
+        exclude = ['status', 'user', 'created']
 
     # This method add the right class to time/date fields.
     def __init__(self, *args, **kwargs):
