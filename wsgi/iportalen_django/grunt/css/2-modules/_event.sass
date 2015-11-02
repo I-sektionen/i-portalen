@@ -29,29 +29,29 @@ article.event-preview
   padding: 0.5em 1em
   padding-top: 0em
 
-  .meta.meta
+  .meta
     +display(flex)
     +flex-wrap(wrap)
     & > span::before
       font-family: 'FontAwesome'
-      span
-        margin-right: 1em
-        padding: 10px 0
-        text-transform: uppercase
-        font-size: 12px
-      .date
-        &::before
-          padding-right: 0.5em
-          content: '\f073'
-      .time
-        &::before
-          padding-right: 0.5em
-          content: '\f017'
+    span
+      margin-right: 1em
+      padding: 10px 0
+      text-transform: uppercase
+      font-size: 12px
+    .date
+      &::before
+        padding-right: 0.5em
+        content: '\f073'
+    .time
+      &::before
+        padding-right: 0.5em
+        content: '\f017'
 
-      .location
-        &::before
-          padding-right: 0.5em
-          content: '\f041'
+    .location
+      &::before
+        padding-right: 0.5em
+        content: '\f041'
   p
     line-height: 1.5
     font-size: 14px
