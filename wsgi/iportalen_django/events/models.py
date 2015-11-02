@@ -143,9 +143,13 @@ class Event(models.Model):
         except ObjectDoesNotExist:
             pass
 
+    @property
+    def can_deregister(self):
+        return self.start-timezone.timedelta(days=self.deregister_delta) < timezone.now()
+
     def deregister_user(self, user):
         # Deregistration time has passed.
-        if self.start-timezone.timedelta(days=self.deregister_delta) < timezone.now():
+        if self.can_deregister:
             return CouldNotRegisterException(event=self, reason="avanmälningstiden har passerats")
         found = False
         try:
