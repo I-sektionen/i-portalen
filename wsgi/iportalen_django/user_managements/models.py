@@ -62,12 +62,13 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil')
     master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil', )
     rfid_number = models.CharField(verbose_name='rfid', max_length=255, null=True, blank=True)
+    is_member = models.NullBooleanField(verbose_name="Är medlem?", blank=True, null=True, default=None)
 
     objects = IUserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
-    #This is where the menu options for a specific user is determined.
+    # This is where the menu options for a specific user is determined.
     @property
     def get_menu_choices(self):
 
@@ -76,6 +77,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         menu_choices.append(('Lägg upp innehåll', reverse('create content')))  # Everyone can create article.
 
         menu_choices.append(('Min sida', reverse('mypage_view') ))
+
 
         if self.article_set.filter(visible_to__gte=timezone.now()):
              menu_choices.append(('Mina Artiklar', reverse('articles by user')))

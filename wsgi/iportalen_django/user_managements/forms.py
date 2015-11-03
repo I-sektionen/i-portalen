@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm, ReadOnlyPasswordHashField
 from django import forms
 from .models import IUser
+from utils.validators import liu_id_validator
 
 __author__ = 'jonathan'
 
@@ -75,4 +76,5 @@ class AddWhiteListForm(forms.Form):
 
 
 class MembershipForm(forms.Form):
-    membership = forms.BooleanField(required=False)
+    user = forms.CharField(label="Liu-id", validators=[liu_id_validator,])
+    password = forms.CharField(label='Lösenord', widget=forms.PasswordInput)

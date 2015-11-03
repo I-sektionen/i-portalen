@@ -29,3 +29,11 @@ class ArticleForm(forms.ModelForm):
         self.fields['visible_to'].widget.attrs['placeholder'] = self.fields['visible_to'].help_text
         self.fields['visible_from'].widget.attrs['placeholder'] = self.fields['visible_from'].help_text
         self.fields['draft'].widget.attrs['placeholder'] = self.fields['draft'].help_text
+
+    def clean(self):
+        super(ArticleForm, self).clean()
+        author = self.cleaned_data.get("author")
+        organisations = self.cleaned_data.get("organisations")
+        if (author is None or author == "") and not organisations:
+            self.add_error('author', "Du måste ange en skribent eller en organisation.")
+            self.add_error('organisations', "Du måste ange en skribent eller en organisation.")
