@@ -10,7 +10,7 @@
         <li class ="tab-header-and-content">
             <a href="javascript:void(0)" class="is-active tab-link">Ändra evenmang</a>
             <div class="tab-content">
-                <form action="{% url "create event" %}" method="post" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div id="event-create-form-time-details">
                         {{ form.non_field_errors }}

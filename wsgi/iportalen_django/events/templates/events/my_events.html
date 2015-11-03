@@ -17,7 +17,7 @@
                 <tr>
                     <td colspan="2"><a href="{{ event.get_absolute_url }}">{{ event.headline }}</a></td>
                     <td>{{ event.visible_from|date:"Y-m-d" }}</td>
-                    <td><a href="{{ event.get_absolute_url }}edit"><button>Ändra</button></a></td>
+                    <td><a href="{% url "edit event" event.pk %}"><button>Ändra</button></a></td>
                     <td colspan="2">{{ event.user }}</td>
                     <td>
                         {% if event.status == "r" %}
