@@ -1371,28 +1371,6 @@ article.news-preview-organisation .article-lead {
   margin-right: 0;
 }
 
-.form-half-width {
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 48.82117%;
-  margin-right: 0;
-}
-.form-half-width:last-child {
-  margin-right: 0;
-}
-
-.form-third-width {
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 31.76157%;
-  margin-right: 0;
-}
-.form-third-width:last-child {
-  margin-right: 0;
-}
-
 article.event-preview {
   border-radius: 3px;
   border-left: 3px solid #2D701E;
