@@ -78,11 +78,11 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
         menu_choices.append(('Min sida', reverse('mypage_view') ))
 
-        # Need some python magic here, so the other three rows are not necessary,
-        # can't figure it out, also a bit tired right now
 
         if self.article_set.filter(visible_to__gte=timezone.now()):
              menu_choices.append(('Mina Artiklar', reverse('articles by user')))
+
+        menu_choices.append(('Mina Event', reverse('events by user')))
 
         menu_choices.append(('Mina Anmälningar', reverse('registered_on_events')))
 
