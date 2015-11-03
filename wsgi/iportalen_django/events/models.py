@@ -53,22 +53,19 @@ class Event(models.Model):
     #  Access rights
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')  # User with admin rights/creator.
     # The group which has admin rights. If left blank is it only the user who can admin.
-    admin_group = models.ForeignKey(Group, blank=True, null=True,
-                                    verbose_name="grupp som kan administrera eventet.",
-                                    help_text="Utöver den användare som nu skapar eventet.")
     tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
 
     status = models.CharField(max_length=1, choices=STATUSES, default=DRAFT, blank=False, null=False)
     rejection_message = models.TextField(blank=True, null=True)
-    #approved = models.BooleanField(verbose_name='godkänd', default=False)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
 
     organisations = models.ManyToManyField(Organisation,
                                            blank=True,
                                            default=None,
-                                           verbose_name='organisationer',
-                                           help_text="Organisation/organisationer som artikeln hör till" )
+                                           verbose_name='arrangör',
+                                           help_text="Organisation(er) som arrangerar evenemanget. Medlemmar i dessa kan senare ändra eventet." )
+
     @property
     def preregistrations(self):
         query = EntryAsPreRegistered.objects.filter(event__exact=self)
@@ -87,7 +84,6 @@ class Event(models.Model):
 
     def reserves_object(self):
         return EntryAsReserve.objects.filter(event__exact=self)
-
 
     @property
     def participants(self):
