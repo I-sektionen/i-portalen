@@ -34,15 +34,15 @@ def create_event(request):
         if form.is_valid():
             event = form.save(commit=False)
             event.user = request.user
-            event.approved = False
             event.save()
-            messages.success(request, "Ditt evenemang än nu skapat, det väntar nu på att godkännas av infU.")
+            event.send_to_approval(request.user)
+            messages.success(request, "Ditt evenemang är nu skapat, det väntar nu på att godkännas av infU.")
             return redirect("front page")
         else:
+            messages.warning(request, "Ett fel uppstod, se felmeddelanden i formuläret.")
             return render(request, 'events/create_event.html', {
                 'form': form,
             })
-
     form = EventForm
     return render(request, 'events/create_event.html', {
         'form': form,
@@ -162,7 +162,7 @@ def check_in(request, pk):
 @login_required()
 def all_unapproved_events(request):
     if request.user.has_perm("event.can_approve_event"):
-        events = Event.objects.filter(approved=False, end__gte=timezone.now())
+        events = Event.objects.filter(status=Event.BEING_REVIEWED, end__gte=timezone.now())
         return render(request, 'events/approve_event.html', {'events': events})
     else:
         raise PermissionDenied
@@ -171,10 +171,8 @@ def all_unapproved_events(request):
 @login_required()
 @transaction.atomic
 def approve_event(request, event_id):
-    if request.user.has_perm("event.can_approve_event"):
-        a = Event.objects.get(pk=event_id)
-        a.approved = True
-        a.save()
+    event = Event.objects.get(pk=event_id)
+    if event.approve(request.user):
         return redirect(all_unapproved_events)
     else:
         raise PermissionDenied
@@ -182,16 +180,15 @@ def approve_event(request, event_id):
 
 @login_required()
 def unapprove_event(request, event_id):
-    if request.user.has_perm("event.can_approve_event"):
-        a = Event.objects.get(pk=event_id)
-        # a.draft = True
-        a.save()
-        message = ("Eventet har gått tillbaka till utkast läget, maila gärna <a href='mailto:" +
-                   a.user.email +
+    event = Event.objects.get(pk=event_id)
+    if event.reject(request.user):
+        # TODO: Ganska horribel lösning...
+        message = ("Eventet har gått avslagits, maila gärna <a href='mailto:" +
+                   event.user.email +
                    "?Subject=Avslag%20publicering%20av%20event' target='_top'>" +
-                   a.user.email +
+                   event.user.email +
                    "</a> med en förklaring till avslaget.<br>" +
-                   "<a href='/event/unapproved'>Tillbaka till listan över artiklar att godkänna.</a>")
+                   "<a href='/event/unapproved'>Tillbaka till listan över event att godkänna.</a>")
         return render(request, 'articles/confirmation.html', {'message': message})
     else:
         raise PermissionDenied
@@ -229,6 +226,7 @@ def CSV_view_preregistrations(request, pk):
 
     return response
 
+
 @login_required()
 def unregister(request, pk):
     if request.method == "POST":
@@ -244,6 +242,7 @@ def unregister(request, pk):
 def event_calender(request):
     return render(request, "events/calender.html")
 
+
 @login_required()
 def registered_on_events(request):
     entry_as_preregistered = EntryAsPreRegistered.objects.filter(user=request.user)
@@ -258,3 +257,33 @@ def registered_on_events(request):
             reserve_events.append(e)
     return render(request, "events/registerd_on_events.html",
                   {"reserve_events": reserve_events, "preregistrations_events": preregistrations_events})
+
+
+@login_required()
+def events_by_user(request):
+    user_events = Event.objects.filter(user=request.user, end__gte=timezone.now()).order_by('-visible_from')
+    return render(request, 'events/my_events.html', {
+        'user_events': user_events
+    })
+
+
+@login_required()
+def edit_event(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    if not event.can_administer(request.user):
+        return HttpResponseForbidden
+    form = EventForm(request.POST or None, instance=event)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Dina ändringar har sparats.")
+            return redirect('edit event', pk=pk)
+        else:
+            messages.error(request, "Det uppstod ett fel, se detaljer nedan.")
+            return render(request, 'events/create_event.html', {
+                'form': form,
+            })
+    # Change existing event.
+    return render(request, 'events/create_event.html', {
+        'form': form,
+    })

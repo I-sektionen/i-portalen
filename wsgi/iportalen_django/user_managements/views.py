@@ -3,7 +3,7 @@ from django.db import transaction
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import ChangeUserInfoForm, AddWhiteListForm
+from .forms import ChangeUserInfoForm, AddWhiteListForm, MembershipForm
 from .models import IUser
 from django.core.urlresolvers import reverse
 from django.contrib import messages
@@ -48,12 +48,7 @@ def login(request):
         # The user has the right password.
         else:
             if user.is_active:
-                not_member = False
-                if user.last_login is None:
-                    not_member = True
-                auth_login(request, user)
-                if not_member:
-                    user.is_active = False
+                if user.is_member is None:
                     try:
                         kobra_dict = get_user_by_liu_id(user.username)
                         user.email = kobra_dict['email'].lower()
@@ -65,19 +60,56 @@ def login(request):
                     except:
                         pass
                     user.save()
-                    return render(request, "user_managements/membership.html")
-                try:
-                    return redirect(request.GET['next'])
-                except:
-                    return redirect('/')
-            else:
-                # The password is valid, but the account has been disabled! (Användaren Klickade ev: "vill INTE bli medlem")
-                messages.error(request, "Lösenordet är korrekt, men kontot är avstängt! Om detta inte bör vara fallet var god kontakta info@isektionen.se")
-                return render(request, "user_managements/login.html")
+                    form = MembershipForm(initial={"user":user.username})
+                    return render(request, "user_managements/membership.html", {"form": form})
+                elif user.is_member is True:
+                    auth_login(request, user)
+                    try:
+                        return redirect(request.GET['next'])
+                    except:
+                        return redirect('/')
+
+        # The password is valid, but the account has been disabled! (Användaren Klickade ev: "vill INTE bli medlem")
+        messages.error(request, "Lösenordet är korrekt, men kontot är avstängt! Om detta inte bör vara fallet var god kontakta info@isektionen.se")
+        return render(request, "user_managements/login.html")
     else:
         # Did not try to login.
         return render(request, "user_managements/login.html")
 
+
+def become_member(request):
+    if request.method == 'POST' and 'member' in request.POST:
+        form = MembershipForm(request.POST)
+        if form.is_valid():
+            user = authenticate(username=form.cleaned_data['user'].lower(), password=form.cleaned_data['password'])
+            if user is None:
+                messages.error(request, "Fel Liu-id eller lösenord.")
+                return render(request, "user_managements/membership.html", {"form": form})
+            user.is_member = True
+            user.save()
+            auth_login(request, user)
+            messages.info(request,"Tack för att du vill vara medlem i sektionen. Du kan nu utnyttja sektionens tjänster.")
+            return redirect("/")
+        else:
+            messages.error(request, "Fel Liu-id eller lösenord.")
+            return render(request, "user_managements/membership.html", {"form": form})
+
+    elif request.method == 'POST' and 'not_member' in request.POST:
+        form = MembershipForm(request.POST)
+        if form.is_valid():
+            user = authenticate(username=form.cleaned_data['user'].lower(), password=form.cleaned_data['password'])
+            if user is None:
+                messages.error(request, "Fel Liu-id eller lösenord.")
+                return render(request, "user_managements/membership.html", {"form": form})
+            user.is_member = False
+            user.save()
+            messages.info(request,"Vad tråkigt att du inte vill vara medlem i sektionen. Om du ångrar dig kan du kontakta Info@isektionen.se")
+            return redirect("/")
+        else:
+            messages.error(request, "Fel Liu-id eller lösenord.")
+            return render(request, "user_managements/membership.html", {"form": form})
+    else:
+        return redirect(reverse("login_view"))
 
 @login_required()
 def my_page_view(request):
@@ -140,13 +172,6 @@ def add_users_to_white_list(request):
     else:
         form = AddWhiteListForm()
     return render(request, "user_managements/add_whitelist.html", {'form': form})
-
-
-@login_required()
-def set_user_as_member(request):
-    request.user.is_active = True
-    request.user.save()
-    return redirect("/")
 
 
 def reset(request, liu_id=None):
