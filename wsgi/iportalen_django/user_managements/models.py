@@ -59,8 +59,8 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
     start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     expected_exam_year = models.IntegerField(verbose_name='förväntat examensår', choices=YEAR_CHOICES, default=datetime.datetime.now().year+5)
-    bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil')
-    master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil', )
+    bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil', on_delete=models.SET_NULL)
+    master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil', on_delete=models.SET_NULL)
     rfid_number = models.CharField(verbose_name='rfid', max_length=255, null=True, blank=True)
     is_member = models.NullBooleanField(verbose_name="Är medlem?", blank=True, null=True, default=None)
 
