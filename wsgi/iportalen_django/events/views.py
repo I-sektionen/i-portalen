@@ -265,3 +265,25 @@ def events_by_user(request):
     return render(request, 'events/my_events.html', {
         'user_events': user_events
     })
+
+
+@login_required()
+def edit_event(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    if not event.can_administer(request.user):
+        return HttpResponseForbidden
+    form = EventForm(request.POST or None, instance=event)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Dina ändringar har sparats.")
+            return redirect('edit event', pk=pk)
+        else:
+            messages.error(request, "Det uppstod ett fel, se detaljer nedan.")
+            return render(request, 'events/create_event.html', {
+                'form': form,
+            })
+    # Change existing event.
+    return render(request, 'events/create_event.html', {
+        'form': form,
+    })
