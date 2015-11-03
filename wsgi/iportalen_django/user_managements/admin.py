@@ -34,7 +34,7 @@ class IUserAdmin(UserAdmin):
             'master_profile',
             'groups',
         )}),
-        ('Permissions', {'fields': ('is_active', 'is_superuser', 'is_staff')}),
+        ('Permissions', {'fields': ('is_active', 'is_superuser', 'is_staff', 'is_member')}),
     )
 
     add_fieldsets = (

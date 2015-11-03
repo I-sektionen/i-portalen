@@ -42,10 +42,14 @@
                 {% endif %}
             {% else %}
                 <p><i class="fa fa-check-circle-o"></i> Du är anmäld.</p>
+                {% if event.can_deregister %}
                 <form method="post" action="{% url "unregister" event.pk %}">
                     {% csrf_token %}
                     <button type="submit" title="snälla">Avanmäl mig</button>
                 </form>
+                {% else %}
+                    <p>Det är för sent att avanmäla sig nu.</p>
+                {% endif %}
             {% endif %}
         {% endif %}
     </div>
