@@ -55,3 +55,5 @@ class EventTests(TestCase):
         event2 = Event.objects.get(headline__exact='Eventheader')
         self.assertEqual(event2.status, Event.APPROVED)
         self.assertEqual(event2.rejection_message, event.rejection_message)
+
+#TODO: Test registration periods. Reserve lists, deregistration, edit form access rights.
