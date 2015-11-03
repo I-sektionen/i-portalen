@@ -30,12 +30,6 @@ class Article(models.Model):
                                 help_text="Sparar utan att publicera")
     approved = models.BooleanField(verbose_name='godkänd', default=False)
 
-    author = models.CharField(max_length=255,
-                              verbose_name='skribent',
-                              null=True,
-                              blank=True,
-                              help_text="Skribent av texten visas bara om ingen organisation valts.")
-
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              verbose_name='användare',
                              help_text="Användaren som skrivit texten")
@@ -52,8 +46,7 @@ class Article(models.Model):
 
     replacing = models.ForeignKey('self', null=True, blank=True, default=None)
     organisations = models.ManyToManyField(Organisation,
-                                           blank=True,
-                                           default=None,
+                                           blank=False,
                                            verbose_name='organisationer',
                                            help_text="Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln." )
     objects = ArticleManager()
