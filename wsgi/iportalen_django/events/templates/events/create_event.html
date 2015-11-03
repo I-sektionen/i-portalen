@@ -10,7 +10,7 @@
         <li class ="tab-header-and-content">
             <a href="javascript:void(0)" class="is-active tab-link">Ändra evenmang</a>
             <div class="tab-content">
-                <form action="{% url "create event" %}" method="post" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div id="event-create-form-time-details">
                         {{ form.non_field_errors }}
@@ -79,29 +79,19 @@
                     </div>
 
                     <div id="event-create-form-other-details">
-                        {{ form.admin_group.label_tag }}
-                        {{ form.admin_group.errors }}
-                        {{ form.admin_group.help_text }}
-                        {{ form.admin_group }}
-
                         {{ form.organisations.errors }}
                         {{ form.organisations.label_tag }}
-                        {{ form.organisations }}
                         {{ form.organisations.help_text }}
+                        {{ form.organisations }}
 
                         {{ form.tags.label_tag }}
                         {{ form.tags.errors }}
                         {{ form.tags.help_text }}
                         {{ form.tags }}
-
-                        {{ form.modified.label_tag }}
-                        {{ form.modified.errors }}
-                        {{ form.modified.help_text }}
-                        {{ form.modified }}
                     </div>
 
                     <div id="article-create-form-buttons">
-                        <button type="submit">Publicera artikeln</button>
+                        <button type="submit">Publicera eventet</button>
                     </div>
                 </form>
             </div>

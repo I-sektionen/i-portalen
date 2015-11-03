@@ -1395,7 +1395,7 @@ article.event-preview {
   padding: 0.5em 1em;
   padding-top: 0em;
 }
-article.event-preview .meta.meta {
+article.event-preview .meta {
   display: -webkit-box;
   display: -moz-box;
   display: box;
@@ -1411,24 +1411,24 @@ article.event-preview .meta.meta {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
-article.event-preview .meta.meta > span::before {
+article.event-preview .meta > span::before {
   font-family: "FontAwesome";
 }
-article.event-preview .meta.meta > span::before span {
+article.event-preview .meta span {
   margin-right: 1em;
   padding: 10px 0;
   text-transform: uppercase;
   font-size: 12px;
 }
-article.event-preview .meta.meta > span::before .date::before {
+article.event-preview .meta .date::before {
   padding-right: 0.5em;
   content: "";
 }
-article.event-preview .meta.meta > span::before .time::before {
+article.event-preview .meta .time::before {
   padding-right: 0.5em;
   content: "";
 }
-article.event-preview .meta.meta > span::before .location::before {
+article.event-preview .meta .location::before {
   padding-right: 0.5em;
   content: "";
 }
