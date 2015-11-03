@@ -46,7 +46,8 @@ class Organisation(models.Model):
                                help_text="Ledare för organisationen",
                                null=True,
                                blank=True,
-                               related_name="leader")
+                               related_name="leader",
+                               on_delete=models.SET_NULL)
     organisation_type = models.CharField(verbose_name='Meny',
                                          help_text="Under vilken menyrubrik ska organisationen ligga, "
                                                    "(Gäller inte om en föräldrar organisation är vald)",
@@ -58,13 +59,15 @@ class Organisation(models.Model):
                                             help_text="Organisation under vilken denna organisation ligger",
                                             null=True,
                                             blank=True,
-                                            related_name="parent")
+                                            related_name="parent",
+                                            on_delete=models.SET_NULL)
     group = models.ForeignKey(Group,
                               verbose_name='Grupp',
                               help_text="Grupp knuten till organisationen",
                               null=True,
                               blank=True,
-                              related_name="group")
+                              related_name="group",
+                              on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = "organisation"

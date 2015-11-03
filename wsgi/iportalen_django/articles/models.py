@@ -32,7 +32,9 @@ class Article(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              verbose_name='användare',
-                             help_text="Användaren som skrivit texten")
+                             help_text="Användaren som skrivit texten",
+                             null=True,
+                             on_delete=models.SET_NULL)
     tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
 
     attachment = models.FileField(verbose_name='Bifogad fil',
@@ -44,11 +46,11 @@ class Article(models.Model):
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
 
-    replacing = models.ForeignKey('self', null=True, blank=True, default=None)
+    replacing = models.ForeignKey('self', null=True, blank=True, default=None, on_delete=models.SET_NULL)
     organisations = models.ManyToManyField(Organisation,
                                            blank=False,
                                            verbose_name='organisationer',
-                                           help_text="Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln." )
+                                           help_text="Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln.")
     objects = ArticleManager()
 
     def save(self, *args, **kwargs):
