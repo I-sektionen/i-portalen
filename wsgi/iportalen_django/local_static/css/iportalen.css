@@ -910,9 +910,14 @@ header #navigation-menu .submenu-wrapper .submenu > * {
 }
 @media screen and (min-width: 900px) {
   header #navigation-menu .submenu-wrapper .submenu > * {
-    padding: 0.5em 0;
+    text-transform: none;
+    padding: 0;
     display: block;
   }
+}
+header #navigation-menu .submenu-wrapper .submenu > * a {
+  line-height: 0;
+  text-transform: none;
 }
 header #user-menu-tool {
   padding: 1em;

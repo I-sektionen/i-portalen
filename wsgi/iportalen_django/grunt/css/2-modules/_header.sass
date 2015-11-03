@@ -102,7 +102,6 @@ header
 
         // The first item in a list is treated as the heading for
         // each submeu, i.e Föreningar
-
         & > li:first-child
           font-size: 22px
           font-weight: 200
@@ -119,11 +118,16 @@ header
             border-radius: 0
             margin: 0
             padding: 0
+        //Selects all li
         & > *
           padding: 0.8em
           +media($large-screen-up)
-            padding: 0.5em 0
+            text-transform: none
+            padding: 0
             display: block
+          a
+            line-height: 0
+            text-transform: none
 
   #user-menu-tool
     padding: 1em
