@@ -1029,6 +1029,10 @@ header #user-menu-tool #user-button {
   }
 }
 
+.not-fixed {
+  background-attachment: scroll;
+}
+
 #article-create-form-text p, #article-create-small p {
   margin-top: -0.3em;
   font-size: 12px;

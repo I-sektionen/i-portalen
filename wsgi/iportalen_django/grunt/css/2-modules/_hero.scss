@@ -16,6 +16,7 @@
   background-attachment: fixed;
   border-radius: $base-border-radius;
 
+
   .hero-overlay {
     position: absolute;
     @include background(linear-gradient($gradient-angle, $hero-background-bottom, $hero-background-top), no-repeat $hero-background-top scroll);
@@ -67,3 +68,9 @@
     }
   }
 }
+
+  .not-fixed {
+
+    background-attachment: scroll;
+  }
+
