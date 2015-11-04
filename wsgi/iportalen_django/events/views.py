@@ -18,13 +18,16 @@ from user_managements.models import IUser
 
 def view_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    can_administer = event.can_administer(request.user)
 
-    return render(request, "events/event.html", {
-        "event": event,
-        "can_administer": can_administer,
-        "registered": event.registered(request.user),
-    })
+    can_administer = event.can_administer(request.user)
+    if event.status == Event.APPROVED or can_administer:
+        return render(request, "events/event.html", {
+            "event": event,
+            "can_administer": can_administer,
+            "registered": event.registered(request.user),
+        })
+    else:
+        return HttpResponseForbidden()
 
 
 @login_required()
@@ -56,7 +59,7 @@ def administer_event(request, pk):
             'event': event,
         })
     else:
-        return HttpResponseForbidden  # Nope.
+        return HttpResponseForbidden()  # Nope.
 
 
 @login_required()
@@ -67,7 +70,7 @@ def preregistrations_list(request, pk):
             'event': event,
         })
     else:
-        return HttpResponseForbidden  # Nope.
+        return HttpResponseForbidden()  # Nope.
 
 @login_required()
 def participants_list(request, pk):
@@ -77,7 +80,7 @@ def participants_list(request, pk):
             'event': event,
         })
     else:
-        return HttpResponseForbidden  # Nope.
+        return HttpResponseForbidden()  # Nope.
 
 @login_required()
 def reserves_list(request, pk):
@@ -89,7 +92,7 @@ def reserves_list(request, pk):
             'event_reserves': event_reserves,
         })
     else:
-        return HttpResponseForbidden  # Nope.
+        return HttpResponseForbidden()  # Nope.
 
 
 @login_required()
@@ -250,7 +253,7 @@ def create_or_modify_event(request, pk=None):
     if pk:  # if pk is set we modify an existing event.
         event = get_object_or_404(Event, pk=pk)
         if not event.can_administer(request.user):
-            return HttpResponseForbidden
+            return HttpResponseForbidden()
         form = EventForm(request.POST or None, instance=event)
     else:  # new event.
         form = EventForm(request.POST or None)
