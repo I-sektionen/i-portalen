@@ -59,7 +59,7 @@ class Event(models.Model):
     rejection_message = models.TextField(blank=True, null=True)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
-
+    replacing = models.ForeignKey('self', null=True, blank=True, default=None, on_delete=models.SET_NULL)
     organisations = models.ManyToManyField(Organisation,
                                            blank=True,
                                            default=None,
@@ -211,6 +211,37 @@ class Event(models.Model):
             return True
         else:
             return False
+
+    def get_new_status(self, draft):
+        try:
+            s_db = Event.objects.get(pk=self.pk)
+            if s_db.status == Event.DRAFT:
+                if draft:
+                    return {"new": False, "status": Event.DRAFT}
+                else:
+                    return {"new": False, "status": Event.BEING_REVIEWED}
+            elif s_db.status == Event.BEING_REVIEWED:
+                if draft:
+                    return {"new": False, "status": Event.DRAFT}
+                else:
+                    return {"new": False, "status": Event.BEING_REVIEWED}
+            elif s_db.status == Event.APPROVED:
+                if draft:
+                    return {"new": True, "status": Event.DRAFT}
+                else:
+                    return {"new": True, "status": Event.BEING_REVIEWED}
+            elif s_db.status == Event.REJECTED:
+                if draft:
+                    return {"new": False, "status": Event.DRAFT}
+                else:
+                    return {"new": False, "status": Event.BEING_REVIEWED}
+        except:
+            if draft:
+                return {"new": False, "status": Event.DRAFT}
+            else:
+                return {"new": False, "status": Event.BEING_REVIEWED}
+
+
 
     # Rejects an event from being published, attaches message if present.
     def reject(self, user, msg=None):
