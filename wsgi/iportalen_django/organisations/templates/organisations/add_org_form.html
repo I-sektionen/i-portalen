@@ -1,0 +1,13 @@
+{% extends "master.html" %}
+{% block content %}
+    <div>
+    <h1>Skapa en ny organisation</h1>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form }}
+            <br>
+            <input type="submit" value="Skicka" />
+        </form>
+    </div>
+
+{% endblock %}

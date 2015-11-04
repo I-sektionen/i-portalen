@@ -51,7 +51,7 @@ class Event(models.Model):
     visible_from = models.DateTimeField(verbose_name="Datum för publicering")
 
     #  Access rights
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')  # User with admin rights/creator.
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)  # User with admin rights/creator.
     # The group which has admin rights. If left blank is it only the user who can admin.
     tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
 
@@ -64,7 +64,7 @@ class Event(models.Model):
                                            blank=True,
                                            default=None,
                                            verbose_name='arrangör',
-                                           help_text="Organisation(er) som arrangerar evenemanget. Medlemmar i dessa kan senare ändra eventet." )
+                                           help_text="Organisation(er) som arrangerar evenemanget. Medlemmar i dessa kan senare ändra eventet.")
 
     @property
     def preregistrations(self):
@@ -255,8 +255,8 @@ class Event(models.Model):
 
 # Used to track the order of reserves for an event.
 class EntryAsReserve(models.Model):
-    event = models.ForeignKey(Event)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    event = models.ForeignKey(Event, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def position(self):
@@ -277,8 +277,8 @@ class EntryAsReserve(models.Model):
 
 # Used to track the pre-registered users for an event.
 class EntryAsPreRegistered(models.Model):
-    event = models.ForeignKey(Event, verbose_name='arrangemang')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')
+    event = models.ForeignKey(Event, verbose_name='arrangemang', null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(auto_now_add=True)
     no_show = models.BooleanField(default=False)
 
@@ -292,8 +292,8 @@ class EntryAsPreRegistered(models.Model):
 
 # Used to track the people check in on an event. (Actually participating)
 class EntryAsParticipant(models.Model):
-    event = models.ForeignKey(Event, verbose_name="arrangemang")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare')
+    event = models.ForeignKey(Event, verbose_name="arrangemang", null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
