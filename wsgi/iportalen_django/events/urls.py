@@ -2,7 +2,7 @@ from django.conf.urls import url
 from .views import (
     view_event,
     register_to_event,
-    create_event,
+    create_or_modify_event,
     administer_event,
     preregistrations_list,
     participants_list,
@@ -18,13 +18,12 @@ from .views import (
     reserves_list,
     registered_on_events,
     events_by_user,
-    edit_event,
 )
 
 urlpatterns = [
     url(r'(?P<pk>[0-9]+)/$', view=view_event, name="event"),
-    url(r'create_event/$', view=create_event, name="create event"),
-    url(r'(?P<pk>[0-9]+)/edit/$', view=edit_event, name="edit event"),
+    url(r'create_event/$', view=create_or_modify_event, name="create event"),
+    url(r'(?P<pk>[0-9]+)/edit/$', view=create_or_modify_event, name="edit event"),
     url(r'(?P<pk>[0-9]+)/register/$', view=register_to_event, name="register_to_event"),
     url(r'(?P<pk>[0-9]+)/register_reserve/$', view=register_as_reserve, name="register_as_reserve"),
     url(r'(?P<pk>[0-9]+)/unregister/$', view=unregister, name="unregister"),
