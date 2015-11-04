@@ -276,10 +276,11 @@ def create_or_modify_event(request, pk=None):
 
             event.save()
             form.save_m2m()
-            event.refresh_from_db()
-            pk = event.id
-            messages.success(request, "Dina ändringar har sparats.")
-            return redirect('event', pk=pk)
+            if event.status == Event.DRAFT:
+                messages.success(request, "Dina ändringar har sparats i ett utkast.")
+            elif event.status == Event.BEING_REVIEWED:
+                messages.success(request, "Dina ändringar har skickats för granskning.")
+            return redirect('events by user')
         else:
             messages.error(request, "Det uppstod ett fel, se detaljer nedan.")
             return render(request, 'events/create_event.html', {
