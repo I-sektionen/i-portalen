@@ -18,8 +18,6 @@ class Organisation(models.Model):
         (FORENINGAR, "Föreningar"),
         (UTSKOTT, "Utskott"),
     )
-    IMAGE_HEIGHT = 320
-    IMAGE_WIDTH = 480
 
 
     name = models.CharField(verbose_name='Namn',
@@ -50,7 +48,7 @@ class Organisation(models.Model):
                                on_delete=models.SET_NULL)
     organisation_type = models.CharField(verbose_name='Meny',
                                          help_text="Under vilken menyrubrik ska organisationen ligga, "
-                                                   "(Gäller inte om en föräldrar organisation är vald)",
+                                                   "(Välj samma som hos föräldrar organisationen om en sådan är vald)",
                                          max_length=1,
                                          choices=ORGANISATION_TYPE_CHOICES,
                                          default=NOT_IN_MENU)

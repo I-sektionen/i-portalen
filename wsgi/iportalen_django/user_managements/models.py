@@ -95,6 +95,9 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         if self.has_perm("user_managements.add_iuser"):
             menu_choices.append(("Lägg till Liu-idn i whitelist", reverse('add users to whitelist')))
 
+        if self.has_perm("organisations.add_organisation"):
+            menu_choices.append(("Lägg till en organisation", reverse('add organisation')))
+
         return menu_choices
 
     def get_full_name(self):
