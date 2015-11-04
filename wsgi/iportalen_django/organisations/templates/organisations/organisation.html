@@ -8,15 +8,15 @@
 {% block content %}
 
     {% if organisation.image %}
-        <div class="hero" style="background-image: url({{ MEDIA_URL }}{{ organisation.image }})">
-            <div class="hero-inner">
+        <div class="hero not-fixed" style="background-image: url({{ MEDIA_URL }}{{ organisation.image }})">
+            <div class="hero-inner no-scroll">
                 <div class="hero-copy">
                     <h1></h1>
                 </div>
             </div>
         </div>
     {% else %}
-        <div class="hero">
+        <div class="hero not-fixed">
             <div class="hero-inner">
                 <div class="hero-copy">
                     <h1>{{ organisation.name|capfirst }}</h1>
