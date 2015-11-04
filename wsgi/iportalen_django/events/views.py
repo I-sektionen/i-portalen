@@ -251,6 +251,13 @@ def events_by_user(request):
 @login_required()
 def create_or_modify_event(request, pk=None):
     if pk:  # if pk is set we modify an existing event.
+        duplicates = Event.objects.filter(replacing_id=pk)
+        if duplicates:
+            links = ""
+            for d in duplicates:
+                links += "<a href='{0}'>{1}</a><br>".format(d.get_absolute_url(), d.headline)
+            messages.error(request, "Det finns redan en ändrad version av det här arrangemanget! "
+                                    "Är du säker på att du vill ändra den här?<br>Följande ändringar är redan föreslagna: <br> {:}".format(links), extra_tags='safe')
         event = get_object_or_404(Event, pk=pk)
         if not event.can_administer(request.user):
             return HttpResponseForbidden()
