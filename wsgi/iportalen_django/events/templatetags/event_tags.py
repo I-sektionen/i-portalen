@@ -9,7 +9,7 @@ from tags.models import Tag
 @register.assignment_tag
 def get_all_events():
     events = Event.objects.filter(
-        approved=True,
+        status=Event.APPROVED,
         visible_from__lte=timezone.now(),
         end__gte=timezone.now()
     ).order_by('-start')
@@ -23,7 +23,7 @@ def get_event(pk):
 @register.assignment_tag
 def get_organisation_events(organisation_pk):
     event = Organisation.objects.get(pk=organisation_pk).event_set.filter(
-        approved=True,
+        status=Event.APPROVED,
         visible_from__lte=timezone.now(),
         end__gte=timezone.now()
     )
