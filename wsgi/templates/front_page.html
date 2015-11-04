@@ -7,14 +7,13 @@
 
 {% block content %}
     {# gets all articles via template tag #}
-    {% get_all_articles as articles %}
     <section id="news-feed">
         <h1>Nyheter</h1>
         {% for article in articles %}
             <article class="news-preview">
                 <div class="meta">
                     <span class="date">{{ article.visible_from|date:"d N Y" }}</span>
-                    <span class="author">{% if article.organisations.all %}{{ article.organisations.all|safeseq|join:", " }}{% else %}{{ article.author }}{% endif %}</span>
+                    <span class="author">{{ article.organisations.all|safeseq|join:", " }}</span>
                     {# Don't render tags for articles without tags #}
                     {% if article.tags.all %}
                         <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
@@ -27,6 +26,25 @@
 
             </article>
         {% endfor %}
+        <div class="pagination">
+            <span class="step-links">
+            <div class="meta">
+                {% if articles.has_previous %}
+                    <span class="prev"><a href="?page={{ articles.previous_page_number }}">Prev</a></span>
+                {% endif %}
+                    {% for number in articles.paginator.page_range|slice:":10" %}
+                        {% if number == articles.number %}
+                            <a class="pagenumber active" href="">{{ number }}</a>
+                        {%  else %}
+                            <a class="pagenumber" href="?page={{ number }}">{{ number }}</a>
+                        {% endif %}
+                    {% endfor %}
+                {% if articles.has_next %}
+                    <span class="next"><a href="?page={{ articles.next_page_number }}">Next</a></span>
+                {% endif %}
+            </div>
+            </span>
+        </div>
     </section>
     <section id="upcoming">
         <h1>Kommande</h1>

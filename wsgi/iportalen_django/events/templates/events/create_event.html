@@ -1,134 +1,141 @@
-    {% extends "master.html" %}
+{% extends "master.html" %}
 {% load event_tags %}
 {% load tag_tags %}
 {% load staticfiles %}
+{% block hero %}
+{% endblock %}
 {% block content %}
-    <h2>Skapa ett event</h2>
-    <p>Fyll i detaljer om eventet på formulärets vänstra sida.
-        På den högra sidan finns en förhandsgranskning av hur eventet kommer att se ut, dels på framsidan i förhandsvisningläge samt i stort format.</p>
-    <div id="event-form">
-        <h3>Fyll i här:</h3>
-        <form method="post" action="{% url "create event" %}">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
 
-            {{ form.headline.label_tag }}
-            {{ form.headline.errors }}
-            {{ form.headline.help_text }}
-            {{ form.headline }}
+    <ul class="accordion-tabs">
+        <li class ="tab-header-and-content">
+            <a href="javascript:void(0)" class="is-active tab-link">Ändra evenmang</a>
+            <div class="tab-content">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div id="event-create-form-time-details">
+                        {{ form.non_field_errors }}
+                        {{ form.non_field_errors }}
+                        {{ form.headline.label_tag }}
+                        {{ form.headline.errors }}
+                        {{ form.headline }}
+                        <hr>
+                        <div class="form-half-width">
+                            {{ form.start.label_tag }}
+                            {{ form.start.errors }}
+                            {{ form.start }}
+                        </div>
+                        <div class="form-half-width">
+                            {{ form.end.label_tag }}
+                            {{ form.end.errors }}
+                            {{ form.end }}
+                        </div>
+                        {{ form.location.label_tag }}
+                        {{ form.location.errors }}
+                        {{ form.location }}
+                        <hr>
+                        <div class="form-third-width">
+                            {{ form.registration_limit.label_tag }}
+                            {{ form.registration_limit.errors }}
+                            {{ form.registration_limit }}
+                        </div>
+                        <div class="form-third-width">
+                            {{ form.deregister_delta.label_tag }}
+                            {{ form.deregister_delta.errors }}
+                            {{ form.deregister_delta }}
+                        </div>
 
-            {{ form.lead.label_tag }}
-            {{ form.lead.errors }}
-            {{ form.lead.help_text }}
-            {{ form.lead }}
+                        <div class="form-third-width">
+                            {{ form.visible_from.label_tag }}
+                            {{ form.visible_from.errors }}
+                            {{ form.visible_from.help_text }}
+                            {{ form.visible_from }}
+                        </div>
+                        <div class="form-half-width">
+                            {{ form.enable_registration.label_tag }}
+                            {{ form.enable_registration.errors }}
+                            {{ form.enable_registration.help_text }}
+                            {{ form.enable_registration }}
+                        </div>
 
-            {{ form.body.label_tag }}
-            {{ form.body.errors }}
-            {{ form.body.help_text }}
-            <div class="wmd-panel">
-                <div id="wmd-button-bar-body"></div>
-                {{ form.body }}
+                    </div>
+                    <div id="event-create-form-main">
+                        {{ form.lead.label_tag }}
+                        {{ form.lead.errors }}
+                        {{ form.lead }}
+                        {{ form.body.label_tag }}
+                        {{ form.body.errors }}
+                        {{ form.body.help_text }}
+                        <div class="wmd-panel">
+                            <div id="wmd-button-bar-body"></div>
+                            {{ form.body }}
+                        </div>
+
+                    </div>
+
+
+                    <div id="event-create-form-member-details">
+
+
+                    </div>
+
+                    <div id="event-create-form-other-details">
+                        {{ form.organisations.errors }}
+                        {{ form.organisations.label_tag }}
+                        {{ form.organisations.help_text }}
+                        {{ form.organisations }}
+
+                        {{ form.tags.label_tag }}
+                        {{ form.tags.errors }}
+                        {{ form.tags.help_text }}
+                        {{ form.tags }}
+                    </div>
+
+                    <div id="article-create-form-buttons">
+                        <button type="submit">Publicera eventet</button>
+                    </div>
+                </form>
             </div>
-
-            {{ form.location.label_tag }}
-            {{ form.location.errors }}
-            {{ form.location.help_text }}
-            {{ form.location }}
-            <h4>Tidsinställningar:</h4>
-            <div class="half">
-            {{ form.start.label_tag }}
-            {{ form.start.errors }}
-            {{ form.start.help_text }}
-            {{ form.start }}
-            </div>
-            <div class="half">
-            {{ form.end.label_tag }}
-            {{ form.end.errors }}
-            {{ form.end.help_text }}
-            {{ form.end }}
-            </div>
-            {{ form.visible_from.label_tag }}
-            {{ form.visible_from.errors }}
-            {{ form.visible_from.help_text }}
-            {{ form.visible_from }}
-
-            <h4>Deltagarinställningar:</h4>
-            <div>
-            {{ form.enable_registration.label_tag }}
-            {{ form.enable_registration.errors }}
-            {{ form.enable_registration.help_text }}
-            {{ form.enable_registration }}
-            </div>
-
-            {{ form.registration_limit.label_tag }}
-            {{ form.registration_limit.errors }}
-            {{ form.registration_limit.help_text }}
-            {{ form.registration_limit }}
-
-            {{ form.deregister_delta.label_tag }}
-            {{ form.deregister_delta.errors }}
-            {{ form.deregister_delta.help_text }}
-            {{ form.deregister_delta }}
-
-            <h4>Övrigainställningar:</h4>
-            {{ form.admin_group.label_tag }}
-            {{ form.admin_group.errors }}
-            {{ form.admin_group.help_text }}
-            {{ form.admin_group }}
-
-            {{ form.organisations.errors }}
-            {{ form.organisations.label_tag }}
-            {{ form.organisations }}
-            {{ form.organisations.help_text }}
-
-            {{ form.tags.label_tag }}
-            {{ form.tags.errors }}
-            {{ form.tags.help_text }}
-            {{ form.tags }}
-
-            {{ form.modified.label_tag }}
-            {{ form.modified.errors }}
-            {{ form.modified.help_text }}
-            {{ form.modified }}
-
-            <button type="submit">Skicka in</button>
-        </form>
-    </div>
-    <div id="markdown-preview">
-            <h3>Förhandsgranskningar:</h3>
-            <article class="event-preview">
-            <h4 class="headline_preview"></h4>
-                <div class="meta">
-                    <p class="meta-content start_preview_date"></p>
-                    <p class="meta-content id_start_preview_time"></p>
+        </li>
+        <li class ="tab-header-and-content">
+            <a href="javascript:void(0)" class="tab-link">Förhandsvisning</a>
+            <div class="tab-content">
+                <div id="news-feed-article-preview">
+                <article class="event-preview">
+                    <h4 class="headline_preview"></h4>
+                    <div class="meta">
+                        <p class="meta-content start_preview_date"></p>
+                        <p class="meta-content id_start_preview_time"></p>
+                    </div>
+                    <a href="#"><button>Läs mer</button></a>
+                    <a href="#"><button class="enable_registration_preview">Anmäl</button></a>
+                </article>
                 </div>
-                <a href="#"><button>Läs mer</button></a>
-                <a href="#"><button class="enable_registration_preview">Anmäl</button></a>
-            </article>
-
-            <h4 class="headline_preview"></h4>
-            <div class="event-container">
-                <div class="meta">
-                    <span class="date">
+                <div id="single-article-preview">
+                    <h1>Enskilt event</h1>
+                    <article class="single-article">
+                        <p class="type">Event</p>
+                        <h1 class="headline_preview"></h1>
+                        <h2 id="lead_preview"></h2>
+                        <p class="date">
                             <i class="fa fa-calendar"></i>
                             <span class="meta-content start_preview_date"></span>
-                    </span>
 
-                    <span class="time">
-                        <i class="fa fa-clock-o"></i>
-                        <span class="meta-content start_preview_time"></span>
-                    </span>
+                            <i class="fa fa-clock-o"></i>
+                            <span class="meta-content start_preview_time"></span>
 
-                    <span class="place">
-                        <i class="fa fa-map-o"></i>
-                        <span class="meta-content place_preview"></span>
-                    </span>
+                            <i class="fa fa-map-o"></i>
+                            <span class="meta-content place_preview"></span>
+                        </p>
+                        <p></p>
+                        <p class="wmd-panel wmd-preview" id="wmd-preview-body"></p>
+                        <a href="#"><button class="enable_registration_preview">Anmäl mig</button></a>
+                        <hr>
+                        <p class="author "></p>
+                    </article>
                 </div>
-                <p class="lead" id="lead_preview"></p>
-                <a href="#"><button class="enable_registration_preview">Anmäl mig</button></a>
-                <p id="wmd-preview-body" class="wmd-panel wmd-preview"></p>
             </div>
-        </div>
+        </li>
+    </ul>
 {% endblock %}
 
 {% block after_scripts %}

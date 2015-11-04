@@ -16,11 +16,15 @@ from .views import (
     unregister,
     event_calender,
     reserves_list,
+    registered_on_events,
+    events_by_user,
+    edit_event,
 )
 
 urlpatterns = [
     url(r'(?P<pk>[0-9]+)/$', view=view_event, name="event"),
     url(r'create_event/$', view=create_event, name="create event"),
+    url(r'(?P<pk>[0-9]+)/edit/$', view=edit_event, name="edit event"),
     url(r'(?P<pk>[0-9]+)/register/$', view=register_to_event, name="register_to_event"),
     url(r'(?P<pk>[0-9]+)/register_reserve/$', view=register_as_reserve, name="register_as_reserve"),
     url(r'(?P<pk>[0-9]+)/unregister/$', view=unregister, name="unregister"),
@@ -35,4 +39,6 @@ urlpatterns = [
     url(r'^(?P<event_id>[0-9]+)/approve$', view=approve_event, name='approve event'),
     url(r'^(?P<event_id>[0-9]+)/unapprove$', view=unapprove_event, name='unapprove event'),
     url(r'^calender/$', view=event_calender, name='event_calender'),
+    url(r'^user_entries/$', view=registered_on_events, name='registered_on_events'),
+    url(r'^my_events/$', view=events_by_user, name='events by user'),
 ]

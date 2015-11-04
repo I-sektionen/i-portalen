@@ -5,7 +5,7 @@
 {% block content %}
     <ul class="accordion-tabs">
         <li class ="tab-header-and-content">
-            <a href="javascript:void(0)" class="is-active tab-link">Edit article</a>
+            <a href="javascript:void(0)" class="is-active tab-link">Skriv artikel</a>
             <div class="tab-content">
 
                 <h1>Skapa artikel</h1>
@@ -34,11 +34,6 @@
                              <p>{{ form.attachment.help_text }}</p>
                     </div>
                     <div id="article-create-small">
-                            {{ form.author.errors }}
-                            {{ form.author.label_tag }}
-                            {{ form.author }}
-                            <p>{{ form.author.help_text }}</p>
-
                             {{ form.organisations.errors }}
                             {{ form.organisations.label_tag }}
                             {{ form.organisations }}
@@ -67,11 +62,11 @@
                             <button type="submit">Publicera artikeln</button>
                         </div>
                     </div>
-                </form>
+
             </div>
             </li>
         <li class ="tab-header-and-content">
-             <a href="javascript:void(0)" class="tab-link">Preview article</a>
+             <a href="javascript:void(0)" class="tab-link">Förhandsvisning</a>
             <div class="tab-content">
                 <h1>Förhandsvisning</h1>
                 <h3>Förhandsvisning kompakt format</h3>
@@ -83,7 +78,7 @@
                     </div>
                     <h5 class="headline_preview"></h5>
                     <p class="lead_preview"></p>
-                    <a href=""><button class="btn-read-more">Läs mer</button></a>
+                    <p class="read-more-fake">Läs mer</p>
                 </article>
                 <h3>Expanderat format</h3>
                 <article class="news-preview">
@@ -102,6 +97,7 @@
             </div>
         </li>
     </ul>
+  </form>
 {% endblock %}
 {% block after_scripts %}
 <script>
