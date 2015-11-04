@@ -6,12 +6,12 @@ from .views import (
     my_page_view,
     change_user_info_view,
     add_users_to_white_list,
-    set_user_as_member,
     reset_confirm,
     reset_done,
     reset,
     reset_complete,
     update_user_from_kobra,
+    become_member,
 )
 
 
@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^my_page$', my_page_view, name='mypage_view'),
     url(r'^change_user_info$', change_user_info_view, name='change_user_info_view'),
     url(r'^add_users_to_whitelist$', view=add_users_to_white_list, name='add users to whitelist'),
-    url(r'^become_member$', view=set_user_as_member, name="become member"),
+    url(r'^become_member$', view=become_member, name="become member"),
 
     url(r'^reset/(?P<liu_id>[a-z]{4,5}\d{3})/$', view=reset, name='password_reset'),  # 1:a starta genom att ange liu-mail
     url(r'^reset/$', view=reset, name='password_reset'),  # 1:a starta genom att ange liu-mail

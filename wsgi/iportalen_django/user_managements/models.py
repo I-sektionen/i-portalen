@@ -59,15 +59,16 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
     start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     expected_exam_year = models.IntegerField(verbose_name='förväntat examensår', choices=YEAR_CHOICES, default=datetime.datetime.now().year+5)
-    bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil')
-    master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil', )
+    bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil', on_delete=models.SET_NULL)
+    master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil', on_delete=models.SET_NULL)
     rfid_number = models.CharField(verbose_name='rfid', max_length=255, null=True, blank=True)
+    is_member = models.NullBooleanField(verbose_name="Är medlem?", blank=True, null=True, default=None)
 
     objects = IUserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
-    #This is where the menu options for a specific user is determined.
+    # This is where the menu options for a specific user is determined.
     @property
     def get_menu_choices(self):
 
@@ -77,11 +78,13 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
         menu_choices.append(('Min sida', reverse('mypage_view') ))
 
-        #Need some python magic here, so the other three rows are not necessary,
-        #can't figure it out, also a bit tired right now
 
         if self.article_set.filter(visible_to__gte=timezone.now()):
              menu_choices.append(('Mina Artiklar', reverse('articles by user')))
+
+        menu_choices.append(('Mina Event', reverse('events by user')))
+
+        menu_choices.append(('Mina Anmälningar', reverse('registered_on_events')))
 
         if self.has_perm("articles.can_approve_article"):
             menu_choices.append(('Godkänn Innehåll', reverse('approve content')))  # With perm to edit articles.
@@ -91,6 +94,9 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
         if self.has_perm("user_managements.add_iuser"):
             menu_choices.append(("Lägg till Liu-idn i whitelist", reverse('add users to whitelist')))
+
+        if self.has_perm("organisations.add_organisation"):
+            menu_choices.append(("Lägg till en organisation", reverse('add organisation')))
 
         return menu_choices
 

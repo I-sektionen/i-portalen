@@ -3,11 +3,11 @@ from django.conf.urls import include, url
 from .views import (
     organisation,
     edit_organisation,
-    all_organisations
+    add_organisation
 )
 
 urlpatterns = [
-    url(r'^$', all_organisations, name='all organisations'),
+    url(r'^add/$', add_organisation, name='add organisation'),
     url(r'^(?P<organisation_name>[^/]+)/$', organisation, name='organisation'),
     url(r'^(?P<organisation_name>[^/]+)/edit/$', edit_organisation, name='edit_organisation'),
 ]
