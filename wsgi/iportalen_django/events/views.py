@@ -28,28 +28,6 @@ def view_event(request, pk):
 
 
 @login_required()
-def create_event(request):
-    if request.method == "POST":
-        form = EventForm(request.POST)
-        if form.is_valid():
-            event = form.save(commit=False)
-            event.user = request.user
-            event.save()
-            event.send_to_approval(request.user)
-            messages.success(request, "Ditt evenemang är nu skapat, det väntar nu på att godkännas av infU.")
-            return redirect("front page")
-        else:
-            messages.warning(request, "Ett fel uppstod, se felmeddelanden i formuläret.")
-            return render(request, 'events/create_event.html', {
-                'form': form,
-            })
-    form = EventForm
-    return render(request, 'events/create_event.html', {
-        'form': form,
-    })
-
-
-@login_required()
 def register_to_event(request, pk):
     if request.method == "POST":
         event = get_object_or_404(Event, pk=pk)
@@ -268,22 +246,42 @@ def events_by_user(request):
 
 
 @login_required()
-def edit_event(request, pk):
-    event = get_object_or_404(Event, pk=pk)
-    if not event.can_administer(request.user):
-        return HttpResponseForbidden
-    form = EventForm(request.POST or None, instance=event)
+def create_or_modify_event(request, pk=None):
+    if pk:  # if pk is set we modify an existing event.
+        event = get_object_or_404(Event, pk=pk)
+        if not event.can_administer(request.user):
+            return HttpResponseForbidden
+        form = EventForm(request.POST or None, instance=event)
+    else:  # new event.
+        form = EventForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
-            form.save()
+            event = form.save(commit=False)
+
+            if form.cleaned_data['draft'] == True:
+                draft = True
+            else:
+                draft = False
+
+            status = event.get_new_status(draft)
+            event.status = status["status"]
+            event.user = request.user
+
+            if status["new"]:
+                event.replacing_id = event.id
+                event.id = None
+
+            event.save()
+            form.save_m2m()
+            event.refresh_from_db()
+            pk = event.id
             messages.success(request, "Dina ändringar har sparats.")
-            return redirect('edit event', pk=pk)
+            return redirect('event', pk=pk)
         else:
             messages.error(request, "Det uppstod ett fel, se detaljer nedan.")
             return render(request, 'events/create_event.html', {
                 'form': form,
             })
-    # Change existing event.
     return render(request, 'events/create_event.html', {
         'form': form,
     })
