@@ -18,7 +18,7 @@
                     <td colspan="2"><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></td>
                     <td>{{ article.created|date:"Y-m-d" }}</td>
                     <td><a href="{{ article.get_absolute_url }}edit"><button>Ändra</button></a></td>
-                    <td colspan="2">{% if article.organisations.all %}{{ article.organisations.all|safeseq|join:", " }}{% else %}{{ article.author }}{% endif %}</td>
+                    <td colspan="2">{{ article.organisations.all|safeseq|join:", " }}</td>
                     {% if article.draft %}
                         <td>Utkast</td>
                     {% elif article.draft = False and article.approved  = False %}

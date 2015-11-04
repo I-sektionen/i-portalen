@@ -18,8 +18,6 @@ class Organisation(models.Model):
         (FORENINGAR, "Föreningar"),
         (UTSKOTT, "Utskott"),
     )
-    IMAGE_HEIGHT = 320
-    IMAGE_WIDTH = 480
 
 
     name = models.CharField(verbose_name='Namn',
@@ -46,10 +44,11 @@ class Organisation(models.Model):
                                help_text="Ledare för organisationen",
                                null=True,
                                blank=True,
-                               related_name="leader")
+                               related_name="leader",
+                               on_delete=models.SET_NULL)
     organisation_type = models.CharField(verbose_name='Meny',
                                          help_text="Under vilken menyrubrik ska organisationen ligga, "
-                                                   "(Gäller inte om en föräldrar organisation är vald)",
+                                                   "(Välj samma som hos föräldrar organisationen om en sådan är vald)",
                                          max_length=1,
                                          choices=ORGANISATION_TYPE_CHOICES,
                                          default=NOT_IN_MENU)
@@ -58,13 +57,15 @@ class Organisation(models.Model):
                                             help_text="Organisation under vilken denna organisation ligger",
                                             null=True,
                                             blank=True,
-                                            related_name="parent")
+                                            related_name="parent",
+                                            on_delete=models.SET_NULL)
     group = models.ForeignKey(Group,
                               verbose_name='Grupp',
                               help_text="Grupp knuten till organisationen",
                               null=True,
                               blank=True,
-                              related_name="group")
+                              related_name="group",
+                              on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = "organisation"

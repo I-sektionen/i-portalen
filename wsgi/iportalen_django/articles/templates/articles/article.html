@@ -20,7 +20,7 @@
         <p>{{ article.body|markdown }}</p>
         <p><span>Consequatur ullam, voluptatum</span> incidunt neque porro numquam doloremque vel inventore distinctio laudantium harum illo quam nulla dolor alias iure impedit. Accusamus. Consequatur, a, ullam, voluptatum incidunt neque porro numquam doloremque vel inventore distinctio laudantium harum illo quam nulla dolor alias iure impedit! Accusamus.</p>
         <hr>
-        <p class="author">{% if article.organisations.all %}{{ article.organisations.all|safeseq|join:", " }}{% else %}{{ article.author }}{% endif %}</p>
+        <p class="author">{{ article.organisations.all|safeseq|join:", " }}</p>
         {% if article.attachment %}
             <p>Bifogad fil: {{ article.filename }}
                 <a href="{% url "article_download" article.pk %}"><button type="button">Ladda ner</button></a>
