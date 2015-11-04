@@ -2238,6 +2238,27 @@ article.event-preview-organisation p {
     margin-right: 0;
   }
 }
+#organisation-content #organisation-suborg {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+}
+#organisation-content #organisation-suborg:last-child {
+  margin-right: 0;
+}
+@media screen and (min-width: 900px) {
+  #organisation-content #organisation-suborg {
+    float: left;
+    display: block;
+    margin-right: 3.57866%;
+    width: 48.21067%;
+    margin-right: 0;
+  }
+  #organisation-content #organisation-suborg:last-child {
+    margin-right: 0;
+  }
+}
 
 #article-create-form {
   float: left;

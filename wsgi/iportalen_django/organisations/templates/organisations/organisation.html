@@ -40,6 +40,19 @@
                 {{ organisation.description|markdown }}
             </p>
         </article>
+
+            {% get_child_organisations organisation.pk as children %}
+                {% if children %}
+                    <section id="organisation-suborg">
+                        <h1>Arbetsgrupper</h1>
+                        <table>
+                            {% for c in children %}
+                                <tr><td><a href="{{ c.get_absolute_url }}">{{ c.name|capfirst }}</a></td></tr>
+                            {% endfor %}
+                        </table>
+                    </section>
+                {% endif %}
+
         <section id="organisation-members">
             <h1>Medlemmar</h1>
             <table>
@@ -52,11 +65,11 @@
                     <tr>
                         <td>
                             {% if organisation.leader.first_name and organisation.leader.last_name %}
-                                {{ organisation.leader.first_name }} {{ organisation.leader.last_name }}, {{ organisation.leader.username }}
+                                {{ organisation.leader.first_name|capfirst }} {{ organisation.leader.last_name|capfirst }}
                             {% endif %}
                         </td>
                         <td>Ordförande</td>
-                        <td>{{ organisation.leader.username }}</td>
+                        <td>{{ organisation.leader.email }}</td>
                     </tr>
                     {% for u in organisation.group.user_set.all %}
                         <tr>
@@ -66,7 +79,7 @@
                                         {{ u.first_name|capfirst }} {{ u.last_name|capfirst }}
                                     </td>
                                     <td>Övrig</td>
-                                    <td>{{ u.username }}</td>
+                                    <td>{{ u.email }}</td>
                                 {% endif %}
                             {% endifnotequal %}
                         </tr>
