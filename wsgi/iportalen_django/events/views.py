@@ -18,35 +18,16 @@ from user_managements.models import IUser
 
 def view_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
+
     can_administer = event.can_administer(request.user)
-
-    return render(request, "events/event.html", {
-        "event": event,
-        "can_administer": can_administer,
-        "registered": event.registered(request.user),
-    })
-
-
-@login_required()
-def create_event(request):
-    if request.method == "POST":
-        form = EventForm(request.POST)
-        if form.is_valid():
-            event = form.save(commit=False)
-            event.user = request.user
-            event.save()
-            event.send_to_approval(request.user)
-            messages.success(request, "Ditt evenemang är nu skapat, det väntar nu på att godkännas av infU.")
-            return redirect("front page")
-        else:
-            messages.warning(request, "Ett fel uppstod, se felmeddelanden i formuläret.")
-            return render(request, 'events/create_event.html', {
-                'form': form,
-            })
-    form = EventForm
-    return render(request, 'events/create_event.html', {
-        'form': form,
-    })
+    if event.status == Event.APPROVED or can_administer:
+        return render(request, "events/event.html", {
+            "event": event,
+            "can_administer": can_administer,
+            "registered": event.registered(request.user),
+        })
+    else:
+        return HttpResponseForbidden()
 
 
 @login_required()
@@ -78,7 +59,7 @@ def administer_event(request, pk):
             'event': event,
         })
     else:
-        return HttpResponseForbidden  # Nope.
+        return HttpResponseForbidden()  # Nope.
 
 
 @login_required()
@@ -89,7 +70,7 @@ def preregistrations_list(request, pk):
             'event': event,
         })
     else:
-        return HttpResponseForbidden  # Nope.
+        return HttpResponseForbidden()  # Nope.
 
 @login_required()
 def participants_list(request, pk):
@@ -99,7 +80,7 @@ def participants_list(request, pk):
             'event': event,
         })
     else:
-        return HttpResponseForbidden  # Nope.
+        return HttpResponseForbidden()  # Nope.
 
 @login_required()
 def reserves_list(request, pk):
@@ -111,7 +92,7 @@ def reserves_list(request, pk):
             'event_reserves': event_reserves,
         })
     else:
-        return HttpResponseForbidden  # Nope.
+        return HttpResponseForbidden()  # Nope.
 
 
 @login_required()
@@ -268,22 +249,50 @@ def events_by_user(request):
 
 
 @login_required()
-def edit_event(request, pk):
-    event = get_object_or_404(Event, pk=pk)
-    if not event.can_administer(request.user):
-        return HttpResponseForbidden
-    form = EventForm(request.POST or None, instance=event)
+def create_or_modify_event(request, pk=None):
+    if pk:  # if pk is set we modify an existing event.
+        duplicates = Event.objects.filter(replacing_id=pk)
+        if duplicates:
+            links = ""
+            for d in duplicates:
+                links += "<a href='{0}'>{1}</a><br>".format(d.get_absolute_url(), d.headline)
+            messages.error(request, "Det finns redan en ändrad version av det här arrangemanget! "
+                                    "Är du säker på att du vill ändra den här?<br>Följande ändringar är redan föreslagna: <br> {:}".format(links), extra_tags='safe')
+        event = get_object_or_404(Event, pk=pk)
+        if not event.can_administer(request.user):
+            return HttpResponseForbidden()
+        form = EventForm(request.POST or None, instance=event)
+    else:  # new event.
+        form = EventForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
-            form.save()
-            messages.success(request, "Dina ändringar har sparats.")
-            return redirect('edit event', pk=pk)
+            event = form.save(commit=False)
+
+            if form.cleaned_data['draft'] == True:
+                draft = True
+            else:
+                draft = False
+
+            status = event.get_new_status(draft)
+            event.status = status["status"]
+            event.user = request.user
+
+            if status["new"]:
+                event.replacing_id = event.id
+                event.id = None
+
+            event.save()
+            form.save_m2m()
+            if event.status == Event.DRAFT:
+                messages.success(request, "Dina ändringar har sparats i ett utkast.")
+            elif event.status == Event.BEING_REVIEWED:
+                messages.success(request, "Dina ändringar har skickats för granskning.")
+            return redirect('events by user')
         else:
             messages.error(request, "Det uppstod ett fel, se detaljer nedan.")
             return render(request, 'events/create_event.html', {
                 'form': form,
             })
-    # Change existing event.
     return render(request, 'events/create_event.html', {
         'form': form,
     })

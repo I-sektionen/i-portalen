@@ -4,10 +4,11 @@ from .models import Event
 
 
 class EventForm(forms.ModelForm):
+    draft = forms.BooleanField(label="Utkast", required=False)
     class Meta:
         model = Event
         fields = '__all__'
-        exclude = ['status', 'user', 'created', 'modified']
+        exclude = ['status', 'user', 'created', 'modified', 'replacing']
 
     # This method add the right class to time/date fields.
     def __init__(self, *args, **kwargs):
@@ -39,7 +40,7 @@ class EventForm(forms.ModelForm):
         self.fields['body'].widget.attrs['id'] = 'wmd-input-body'
 
     def clean(self):
-        cleaned_data = super(EventForm, self).clean()
+        super(EventForm, self).clean()
         enable_registration = self.cleaned_data.get("enable_registration")
         registration_limit = self.cleaned_data.get("registration_limit")
         if enable_registration and not registration_limit:
