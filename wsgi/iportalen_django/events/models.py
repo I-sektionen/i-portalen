@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.models import Group
@@ -255,10 +255,25 @@ class Event(models.Model):
         return False
 
     # Approves the event.
+    @transaction.atomic
     def approve(self, user):
         if self.status == Event.BEING_REVIEWED and user.has_perm('events.can_approve_event'):
             self.status = Event.APPROVED
             self.save()
+            if self.replacing:
+
+                exclude = ["event", "entryasreserve", "entryaspreregistered", "entryasparticipant", "id", "created", "modified", "replacing"]
+                multi = ["tags", "organisations"]
+                for field in self.replacing._meta.get_fields():
+                    if field.name not in exclude:
+                        print(field.name)
+                        if field.name not in multi:
+                            setattr(self.replacing, field.name, getattr(self, field.name))
+                        else:
+                            getattr(self.replacing, field.name).clear()
+                            setattr(self.replacing, field.name, getattr(self, field.name).all())
+                self.delete()
+                self.replacing.save()
             return True
         return False
 

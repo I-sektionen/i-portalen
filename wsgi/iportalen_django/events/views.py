@@ -8,6 +8,8 @@ from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
 import csv
 
+from utils.validators import liu_id_validator
+
 
 from .forms import EventForm, CheckForm
 from .models import Event, EntryAsPreRegistered, EntryAsReserve
@@ -18,7 +20,6 @@ from user_managements.models import IUser
 
 def view_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
-
     can_administer = event.can_administer(request.user)
     if event.status == Event.APPROVED or can_administer:
         return render(request, "events/event.html", {
@@ -103,10 +104,20 @@ def check_in(request, pk):
     if request.method == 'POST':
         form = CheckForm(request.POST)
         if form.is_valid():
-            liu_id = form.cleaned_data["liu"]
+            form_user = form.cleaned_data["user"]
+            is_liu_id = False
+            try:
+                liu_id_validator(form_user)
+                is_liu_id = True
+            except:
+                is_liu_id = False
+
             event_user = None
             try:
-                event_user = IUser.objects.get(username=liu_id)
+                if is_liu_id:
+                    event_user = IUser.objects.get(username=form_user)
+                else:
+                    event_user = IUser.objects.get(rfid_number=form_user)
             except ObjectDoesNotExist:
                 messages.error(request, "Användaren finns inte i databasen")
                 form = CheckForm()
@@ -115,18 +126,18 @@ def check_in(request, pk):
             })
             if event_user in event.preregistrations or form.cleaned_data["force_check_in"] == True:
                 try:
-                    event.check_in(IUser.objects.get(username=liu_id))
-                    messages.success(request, "Det lyckades")
+                    event.check_in(event_user)
+                    messages.success(request, "{0} {1} Checkades in korrekt".format(event_user.first_name.capitalize(), event_user.last_name.capitalize()))
                     return render(request, 'events/event_check_in.html', {
                         'form': form, 'event': event, "can_administer": can_administer,
                      })
                 except:
-                    messages.error(request, "Redan anmäld som deltagere")
+                    messages.error(request, "{0} {1} är redan incheckad".format(event_user.first_name.capitalize(), event_user.last_name.capitalize()))
             else:
                 if event_user in event.reserves:
-                    messages.error(request, "Användare är anmäld som reserv")
+                    messages.error(request, "Användaren {0} {1} är anmäld som reserv".format(event_user.first_name.capitalize(), event_user.last_name.capitalize()))
                 else:
-                    messages.error(request, "Användare inte anmäld på eventet")
+                    messages.error(request, "Användare {0} {1} är inte anmäld på eventet".format(event_user.first_name.capitalize(), event_user.last_name.capitalize()))
                 reserve = True
                 return render(request, 'events/event_check_in.html', {'form': form, 'event': event, 'reserve': reserve, "can_administer": can_administer,})
 
