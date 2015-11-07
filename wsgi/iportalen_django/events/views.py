@@ -127,6 +127,7 @@ def check_in(request, pk):
             if event_user in event.preregistrations or form.cleaned_data["force_check_in"] == True:
                 try:
                     event.check_in(event_user)
+
                     messages.success(request, "{0} {1} Checkades in korrekt".format(event_user.first_name.capitalize(), event_user.last_name.capitalize()))
                     return render(request, 'events/event_check_in.html', {
                         'form': form, 'event': event, "can_administer": can_administer,

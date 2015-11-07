@@ -184,7 +184,9 @@ class Event(models.Model):
     def check_in(self, user):
         if user in self.participants:
             raise CouldNotRegisterException(event=self, reason="Du är redan anmäld som deltagare")
-        EntryAsParticipant(user=user, event=self).save()
+        participant = EntryAsParticipant(user=user, event=self)
+        participant.save()
+        participant.add_speech_nr()
 
     def can_administer(self, user):
         if not user.is_authenticated():
@@ -341,6 +343,7 @@ class EntryAsParticipant(models.Model):
     event = models.ForeignKey(Event, verbose_name="arrangemang", null=True, on_delete=models.SET_NULL)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(auto_now_add=True)
+    speech_nr = models.PositiveIntegerField(verbose_name="talar nummer", null=True, blank=True)
 
     class Meta:
         verbose_name = "Deltagare"
@@ -348,3 +351,10 @@ class EntryAsParticipant(models.Model):
 
     def __str__(self):
         return str(self.event) + " | " + str(self.user)
+
+    def add_speech_nr(self):
+        try:
+            self.speech_nr = EntryAsParticipant.objects.filter(event_id=self.event_id).order_by('-speech_nr')[0].speech_nr + 1
+        except:
+            self.speech_nr = 1
+        self.save()
