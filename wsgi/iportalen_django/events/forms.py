@@ -50,5 +50,9 @@ class EventForm(forms.ModelForm):
 
 
 class CheckForm(forms.Form):
-    liu = forms.CharField(max_length=10)
+    user = forms.CharField()
     force_check_in = forms.BooleanField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(CheckForm, self).__init__(*args, **kwargs)
+        self.fields['user'].widget.attrs['autofocus'] = "true"
