@@ -49,8 +49,8 @@ class Event(models.Model):
         blank=True,
         null=True)
     extra_deadline_text = models.CharField(max_length=255,
-                                           verbose_name="Beskrivning till det extra anmälningsstoppet",
-                                           help_text="Lämna tomt om extra anmälningsstopp ej angivits.",
+                                           verbose_name="beskrivning till det extra anmälningsstoppet",
+                                           help_text="Ex. få mat, garanteras fika osv. Lämna tomt om extra anmälningsstopp ej angivits.",
                                            blank=True,
                                            null=True)
     # Dagar innan start för avanmälan. Räknas bakåt från 'start'
@@ -149,6 +149,10 @@ class Event(models.Model):
             entry.delete()
         except ObjectDoesNotExist:
             pass
+
+    @property
+    def entry_deadline(self):
+        return self.start-timezone.timedelta(days=self.deregister_delta)
 
     @property
     def can_deregister(self):
