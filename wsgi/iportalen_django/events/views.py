@@ -330,7 +330,6 @@ def speaker_list(request, pk):
     if request.method == 'POST':
         try:
             event = Event.objects.get(pk=pk)
-            print(event.get_speaker_list())
             if not event.can_administer(request.user):
                 return HttpResponseForbidden()
         except:
