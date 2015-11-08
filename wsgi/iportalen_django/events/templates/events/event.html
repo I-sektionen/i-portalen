@@ -29,6 +29,9 @@
     <div class="register-button">
         {% if event.enable_registration %}
             {% if not registered %}
+                {% if event.extra_deadline %}<p>Anmälningsstopp: {{ event.entry_deadline|date:"Y-m-d H:i:s" }}</p>{% endif %}
+                {% if event.extra_deadline %}<p>Anmälningsstopp för att {{ event.extra_deadline_text }}: {{ event.extra_deadline|date:"Y-m-d H:i:s" }}</p>{% endif %}
+
                 {% if not event.full %}
                     <form method="post" action="{% url "register_to_event" event.pk %}">
                         {% csrf_token %}
