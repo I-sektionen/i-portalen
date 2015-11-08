@@ -143,9 +143,9 @@ def check_in(request, pk):
                         except:
                             extra = False
                         if extra:
-                            extra_str = "<br>Anmälde sig i tid för att " + event.extra_deadline_text
+                            extra_str = "<br>Anmälde sig i tid för att " + event.extra_deadline_text + "."
                         else:
-                            extra_str = "<br><span class='errorlist'>Anmälde sig ej i tid för att " + event.extra_deadline_text + "</span>"
+                            extra_str = "<br><span class='errorlist'>Anmälde sig ej i tid för att " + event.extra_deadline_text + ".</span>"
                     else:
                         extra_str = ""
                     messages.success(request, "{0} {1} checkades in med talarnummer: {2}{3}".format(
