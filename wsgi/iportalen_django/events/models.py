@@ -91,6 +91,7 @@ class Event(models.Model):
         list = []
         for el in q:
             list.append(el.user)
+            print(el.timestamp)
         return list
 
     @property

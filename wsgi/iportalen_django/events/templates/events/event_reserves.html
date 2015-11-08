@@ -1,7 +1,6 @@
 {% extends "master.html" %}
-
+{% load event_tags %}
 {% block content %}
-    <div id="content">
     <p>Antal deltagare: {{ event.number_of_participants }}</p>
         <table>
             <thead>
@@ -20,5 +19,8 @@
                 {% endfor %}
             </tbody>
         </table>
-    </div>
+        {% event_can_administer event request.user as can_administer %}
+        {% if can_administer %}
+            <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
+        {% endif %}
 {% endblock %}
