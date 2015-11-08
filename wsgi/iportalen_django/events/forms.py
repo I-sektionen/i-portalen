@@ -21,6 +21,8 @@ class EventForm(forms.ModelForm):
         self.fields['location'].widget.attrs['placeholder'] = self.fields['location'].help_text
         self.fields['start'].widget.attrs['placeholder'] = self.fields['start'].help_text
         self.fields['end'].widget.attrs['placeholder'] = self.fields['end'].help_text
+        self.fields['extra_deadline'].widget.attrs['placeholder'] = self.fields['extra_deadline'].help_text
+        self.fields['extra_deadline_text'].widget.attrs['placeholder'] = self.fields['extra_deadline_text'].help_text
 
         self.fields['headline'].widget.attrs['placeholder'] = self.fields['headline'].help_text
         self.fields['registration_limit'].widget.attrs['placeholder'] = self.fields['registration_limit'].help_text
@@ -32,6 +34,7 @@ class EventForm(forms.ModelForm):
 
         self.fields['start'].widget.attrs['class'] = 'datetimepicker'
         self.fields['end'].widget.attrs['class'] = 'datetimepicker'
+        self.fields['extra_deadline'].widget.attrs['class'] = 'datetimepicker'
         self.fields['lead'].widget.attrs['cols'] = 40
         self.fields['lead'].widget.attrs['rows'] = 3
         self.fields['body'].widget.attrs['cols'] = 40
