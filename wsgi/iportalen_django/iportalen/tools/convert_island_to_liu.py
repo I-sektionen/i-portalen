@@ -10,19 +10,20 @@ def main(argv):
                         help="File with list of islands-id to translate", metavar="ISLAND")
 
     parser.add_argument("-o", "--output", dest="output",
-                        help="File with list of Liu-id after translation", metavar="LIU")
+                        help="File with list of Liu-id after translation", metavar="LIU", default="output.txt")
 
     parser.add_argument("-is", "--input_separator", dest="input_separator",
-                        help="Separator of file with list of islands-id", metavar="SEPARATOR")
+                        help="Separator of file with list of islands-id", metavar="SEPARATOR", default=";")
 
     parser.add_argument("-ic", "--input_column", dest="input_column",
-                        help="Column for islands-id in input file", metavar="COLUMN", type=int)
+                        help="Column for islands-id in input file", metavar="COLUMN", type=int, default=2)
+
     parser.add_argument("-ie", "--input_encoding", dest="input_encoding",
                         help="Encoding for input file", metavar="ENCODING", default="utf-8")
 
     parser.add_argument("-t", "--translator", dest="translator",
                         help="File with list of translation between islands-id and Liu-id after translation",
-                        metavar="TRANSLATOR")
+                        metavar="TRANSLATOR", default="aliases.txt")
 
     parser.add_argument("-q", "--quiet",
                         action="store_false", dest="verbose",
