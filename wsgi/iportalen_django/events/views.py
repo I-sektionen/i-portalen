@@ -11,7 +11,7 @@ import csv
 from utils.validators import liu_id_validator
 
 
-from .forms import EventForm, CheckForm, SpeakerForm
+from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm
 from .models import Event, EntryAsPreRegistered, EntryAsReserve
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
@@ -41,6 +41,34 @@ def register_to_event(request, pk):
         except CouldNotRegisterException as err:
             messages.error(request, "Fel, kunde inte registrera dig på " + err.event.headline + " för att " + err.reason + ".")
     return redirect("event", pk=pk)
+
+
+@login_required()
+@transaction.atomic
+def import_registrations(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    if not event.can_administer(request.user):
+        raise PermissionDenied
+    if request.method == 'POST':
+        form = ImportEntriesForm(request.POST)
+        if form.is_valid():
+            list_of_liu_id = form.cleaned_data['users'].splitlines()
+            for liu_id in list_of_liu_id:
+                try:
+                    event.register_user(IUser.objects.get(username=liu_id))
+                except CouldNotRegisterException as err:
+                    messages.error(
+                        request,
+                        "Fel, kunde inte registrera {0} på ".format(liu_id) +
+                        err.event.headline +
+                        " för att " +
+                        err.reason +
+                        ".")
+                except ObjectDoesNotExist:
+                    messages.error(request, "{0} finns inte i databasen".format(liu_id))
+    else:
+        form = ImportEntriesForm()
+    return render(request, "events/import_users.html", {'form': form})
 
 
 @login_required()
