@@ -43,6 +43,16 @@ class Event(models.Model):
     enable_registration = models.BooleanField(verbose_name='användare kan anmäla sig')
     registration_limit = models.PositiveIntegerField(verbose_name='antal platser', help_text="Hur många kan anmäla sig?" ,blank=True, null=True)
 
+    extra_deadline = models.DateTimeField(
+        verbose_name='extra anmälningsstopp',
+        help_text="Exempelvis: Datum att anmäla sig innan för att få mat. Kan lämnas tomt.",
+        blank=True,
+        null=True)
+    extra_deadline_text = models.CharField(max_length=255,
+                                           verbose_name="beskrivning till det extra anmälningsstoppet",
+                                           help_text="Ex. få mat, garanteras fika osv. Lämna tomt om extra anmälningsstopp ej angivits.",
+                                           blank=True,
+                                           null=True)
     # Dagar innan start för avanmälan. Räknas bakåt från 'start'
     deregister_delta = models.PositiveIntegerField(verbose_name='Sista dag för använmälan',
                                                    default=1,
@@ -139,6 +149,10 @@ class Event(models.Model):
             entry.delete()
         except ObjectDoesNotExist:
             pass
+
+    @property
+    def entry_deadline(self):
+        return self.start-timezone.timedelta(days=self.deregister_delta)
 
     @property
     def can_deregister(self):
@@ -265,7 +279,15 @@ class Event(models.Model):
             self.save()
             if self.replacing:
 
-                exclude = ["event", "entryasreserve", "entryaspreregistered", "entryasparticipant", "id", "created", "modified", "replacing"]
+                exclude = ["event",
+                           "entryasreserve",
+                           "entryaspreregistered",
+                           "entryasparticipant",
+                           "speakerlist",
+                           "id",
+                           "created",
+                           "modified",
+                           "replacing"]
                 multi = ["tags", "organisations"]
                 for field in self.replacing._meta.get_fields():
                     if field.name not in exclude:
