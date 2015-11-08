@@ -56,3 +56,8 @@ class CheckForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(CheckForm, self).__init__(*args, **kwargs)
         self.fields['user'].widget.attrs['autofocus'] = "true"
+
+
+class SpeakerForm(forms.Form):
+    speech_nr = forms.CharField(required=False)
+    method = forms.CharField()
