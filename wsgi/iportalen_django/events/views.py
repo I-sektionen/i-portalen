@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden, HttpResponse
+from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.utils import timezone
@@ -8,8 +8,10 @@ from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
 import csv
 
+from utils.validators import liu_id_validator
 
-from .forms import EventForm, CheckForm
+
+from .forms import EventForm, CheckForm, SpeakerForm
 from .models import Event, EntryAsPreRegistered, EntryAsReserve
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
@@ -18,7 +20,6 @@ from user_managements.models import IUser
 
 def view_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
-
     can_administer = event.can_administer(request.user)
     if event.status == Event.APPROVED or can_administer:
         return render(request, "events/event.html", {
@@ -83,6 +84,16 @@ def participants_list(request, pk):
         return HttpResponseForbidden()  # Nope.
 
 @login_required()
+def speech_nr_list(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    if event.can_administer(request.user):
+        return render(request, 'events/event_speech_nr_list.html', {
+            'event': event,
+        })
+    else:
+        return HttpResponseForbidden()  # Nope.
+
+@login_required()
 def reserves_list(request, pk):
     event = get_object_or_404(Event, pk=pk)
     event_reserves = event.reserves_object()
@@ -103,10 +114,20 @@ def check_in(request, pk):
     if request.method == 'POST':
         form = CheckForm(request.POST)
         if form.is_valid():
-            liu_id = form.cleaned_data["liu"]
+            form_user = form.cleaned_data["user"]
+            is_liu_id = False
+            try:
+                liu_id_validator(form_user)
+                is_liu_id = True
+            except:
+                is_liu_id = False
+
             event_user = None
             try:
-                event_user = IUser.objects.get(username=liu_id)
+                if is_liu_id:
+                    event_user = IUser.objects.get(username=form_user)
+                else:
+                    event_user = IUser.objects.get(rfid_number=form_user)
             except ObjectDoesNotExist:
                 messages.error(request, "Användaren finns inte i databasen")
                 form = CheckForm()
@@ -115,18 +136,25 @@ def check_in(request, pk):
             })
             if event_user in event.preregistrations or form.cleaned_data["force_check_in"] == True:
                 try:
-                    event.check_in(IUser.objects.get(username=liu_id))
-                    messages.success(request, "Det lyckades")
+                    event.check_in(event_user)
+
+                    messages.success(request, "{0} {1} checkades in med talarnummer: {2}".format(
+                        event_user.first_name.capitalize(),
+                        event_user.last_name.capitalize(),
+                        event.entryasparticipant_set.get(user=event_user).speech_nr
+                    ))
+                    form = CheckForm()
                     return render(request, 'events/event_check_in.html', {
                         'form': form, 'event': event, "can_administer": can_administer,
                      })
                 except:
-                    messages.error(request, "Redan anmäld som deltagere")
+                    messages.error(request, "{0} {1} är redan incheckad".format(event_user.first_name.capitalize(), event_user.last_name.capitalize()))
+
             else:
                 if event_user in event.reserves:
-                    messages.error(request, "Användare är anmäld som reserv")
+                    messages.error(request, "Användaren {0} {1} är anmäld som reserv".format(event_user.first_name.capitalize(), event_user.last_name.capitalize()))
                 else:
-                    messages.error(request, "Användare inte anmäld på eventet")
+                    messages.error(request, "Användare {0} {1} är inte anmäld på eventet".format(event_user.first_name.capitalize(), event_user.last_name.capitalize()))
                 reserve = True
                 return render(request, 'events/event_check_in.html', {'form': form, 'event': event, 'reserve': reserve, "can_administer": can_administer,})
 
@@ -135,7 +163,7 @@ def check_in(request, pk):
                 'form': form, 'event': event, "can_administer": can_administer,
             })
 
-    form = CheckForm
+    form = CheckForm()
     return render(request, 'events/event_check_in.html', {
         'form': form, 'event': event, "can_administer": can_administer,
     })
@@ -296,3 +324,36 @@ def create_or_modify_event(request, pk=None):
     return render(request, 'events/create_event.html', {
         'form': form,
     })
+
+@login_required()
+def speaker_list(request, pk):
+    if request.method == 'POST':
+        try:
+            event = Event.objects.get(pk=pk)
+            print(event.get_speaker_list())
+            if not event.can_administer(request.user):
+                return HttpResponseForbidden()
+        except:
+            return JsonResponse({"status": "Inget event med detta idnummer."})
+        form = SpeakerForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data['method'] == "add":
+                speech_nr = form.cleaned_data['speech_nr']
+                try:
+                    user = event.get_speaker(speech_nr)
+                    event.add_speaker(speech_nr)
+                    return JsonResponse({'status': 'ok',
+                                         'first_name': user.user.first_name.capitalize(),
+                                         'last_name': user.user.last_name.capitalize()})
+                except:
+                    return JsonResponse({"status": "Ingen användare med det talarnummret."})
+            elif form.cleaned_data['method'] == "pop":
+                event.pop_speaker()
+                return JsonResponse({'status': 'ok'})
+            elif form.cleaned_data['method'] == "clear":
+                event.clear_speakers()
+                return JsonResponse({'status': 'ok'})
+            else:
+                return JsonResponse({"status": "Ange ett korrekt kommando."})
+    else:
+        return render(request, 'events/speaker_list.html', {'event': Event.objects.get(pk=pk), 'pk': pk})
