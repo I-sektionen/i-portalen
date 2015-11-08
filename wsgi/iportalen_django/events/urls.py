@@ -18,6 +18,7 @@ from .views import (
     reserves_list,
     registered_on_events,
     events_by_user,
+    speech_nr_list,
 )
 
 urlpatterns = [
@@ -30,6 +31,7 @@ urlpatterns = [
     url(r'(?P<pk>[0-9]+)/administer/$', view=administer_event, name="administer_event"),
     url(r'(?P<pk>[0-9]+)/administer/preregistrations/$', view=preregistrations_list, name="event_preregistrations"),
     url(r'(?P<pk>[0-9]+)/administer/participants/$', view=participants_list, name="event_participants"),
+    url(r'(?P<pk>[0-9]+)/administer/speech_nr_list/$', view=speech_nr_list, name="event_speech_nr_list"),
     url(r'(?P<pk>[0-9]+)/administer/reserves/$', view=reserves_list, name="event_reserves"),
     url(r'(?P<pk>[0-9]+)/administer/participants/download/$', view=CSV_view_participants, name="event_participants_download"),
     url(r'(?P<pk>[0-9]+)/administer/preregistrations/download/$', view=CSV_view_preregistrations, name="event_preregistrations_download"),

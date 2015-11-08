@@ -84,6 +84,16 @@ def participants_list(request, pk):
         return HttpResponseForbidden()  # Nope.
 
 @login_required()
+def speech_nr_list(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    if event.can_administer(request.user):
+        return render(request, 'events/event_speech_nr_list.html', {
+            'event': event,
+        })
+    else:
+        return HttpResponseForbidden()  # Nope.
+
+@login_required()
 def reserves_list(request, pk):
     event = get_object_or_404(Event, pk=pk)
     event_reserves = event.reserves_object()
@@ -128,12 +138,18 @@ def check_in(request, pk):
                 try:
                     event.check_in(event_user)
 
-                    messages.success(request, "{0} {1} Checkades in korrekt".format(event_user.first_name.capitalize(), event_user.last_name.capitalize()))
+                    messages.success(request, "{0} {1} checkades in med talarnummer: {2}".format(
+                        event_user.first_name.capitalize(),
+                        event_user.last_name.capitalize(),
+                        event.entryasparticipant_set.get(user=event_user).speech_nr
+                    ))
+                    form = CheckForm()
                     return render(request, 'events/event_check_in.html', {
                         'form': form, 'event': event, "can_administer": can_administer,
                      })
                 except:
                     messages.error(request, "{0} {1} är redan incheckad".format(event_user.first_name.capitalize(), event_user.last_name.capitalize()))
+
             else:
                 if event_user in event.reserves:
                     messages.error(request, "Användaren {0} {1} är anmäld som reserv".format(event_user.first_name.capitalize(), event_user.last_name.capitalize()))
@@ -147,7 +163,7 @@ def check_in(request, pk):
                 'form': form, 'event': event, "can_administer": can_administer,
             })
 
-    form = CheckForm
+    form = CheckForm()
     return render(request, 'events/event_check_in.html', {
         'form': form, 'event': event, "can_administer": can_administer,
     })

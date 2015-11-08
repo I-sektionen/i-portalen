@@ -1,7 +1,6 @@
 {% extends "master.html" %}
 
 {% block content %}
-    <div id="content">
         <form  method="post" class="check-in-form" action="">
             <p>Starta incheckning genom att skriva in LiU-id och tryck "Checka in"</p>
             {% csrf_token %}
@@ -23,5 +22,4 @@
                 <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
             {% endif %}
         </form>
-    </div>
 {% endblock %}
