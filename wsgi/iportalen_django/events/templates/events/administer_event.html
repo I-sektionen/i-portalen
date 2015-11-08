@@ -4,7 +4,8 @@
     <ul>
         <a href="{% url "event_preregistrations" event.pk %}"><li>Se anmälningar</li></a>
         <a href="{% url "event_participants" event.pk %}"><li>Se deltagare</li></a>
-        <a href="{% url "event_speech_nr_list" event.pk %}"><li>Se lista över talar nummer</li></a>
+        <a href="{% url "event_speech_nr_list" event.pk %}"><li>Se lista över talarnummer</li></a>
+        <a href="{% url "event_speaker_list" event.pk %}"><li>Talarlistan</li></a>
         <a href="{% url "event_reserves" event.pk %}"><li>Se reserver</li></a>
         <a href="{% url "event_check_in" event.pk %}"><li>Starta incheckning</li></a>
         <a href="{% url "edit event" event.pk %}"><li>Ändra event</li></a>

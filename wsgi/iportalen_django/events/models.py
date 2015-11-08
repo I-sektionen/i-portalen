@@ -280,6 +280,32 @@ class Event(models.Model):
             return True
         return False
 
+    def get_speaker(self, speech_nr):
+        return self.entryasparticipant_set.get(speech_nr=speech_nr)
+
+    def add_speaker(self, speech_nr):
+        user = self.get_speaker(speech_nr).user
+        SpeakerList.objects.create(event=self, user=user)
+        return True
+
+    def pop_speaker(self):
+        try:
+            speaker = SpeakerList.objects.filter(event=self).order_by("timestamp")[0]
+            speaker.delete()
+            return True
+        except:
+            return False
+
+    def clear_speakers(self):
+        try:
+            speaker = SpeakerList.objects.filter(event=self).delete()
+            return True
+        except:
+            return False
+
+    def get_speaker_list(self):
+        return SpeakerList.objects.filter(event=self).order_by("timestamp")
+
     class Meta:
         verbose_name = "Arrangemang"
         verbose_name_plural = "Arrangemang"
@@ -359,3 +385,12 @@ class EntryAsParticipant(models.Model):
         except:
             self.speech_nr = 1
         self.save()
+
+
+class SpeakerList(models.Model):
+    event = models.ForeignKey(Event, verbose_name="arrangemang", null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.event) + " | " + str(self.user)

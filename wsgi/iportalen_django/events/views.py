@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden, HttpResponse
+from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.utils import timezone
@@ -11,7 +11,7 @@ import csv
 from utils.validators import liu_id_validator
 
 
-from .forms import EventForm, CheckForm
+from .forms import EventForm, CheckForm, SpeakerForm
 from .models import Event, EntryAsPreRegistered, EntryAsReserve
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
@@ -324,3 +324,36 @@ def create_or_modify_event(request, pk=None):
     return render(request, 'events/create_event.html', {
         'form': form,
     })
+
+@login_required()
+def speaker_list(request, pk):
+    if request.method == 'POST':
+        try:
+            event = Event.objects.get(pk=pk)
+            print(event.get_speaker_list())
+            if not event.can_administer(request.user):
+                return HttpResponseForbidden()
+        except:
+            return JsonResponse({"status": "Inget event med detta idnummer."})
+        form = SpeakerForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data['method'] == "add":
+                speech_nr = form.cleaned_data['speech_nr']
+                try:
+                    user = event.get_speaker(speech_nr)
+                    event.add_speaker(speech_nr)
+                    return JsonResponse({'status': 'ok',
+                                         'first_name': user.user.first_name.capitalize(),
+                                         'last_name': user.user.last_name.capitalize()})
+                except:
+                    return JsonResponse({"status": "Ingen användare med det talarnummret."})
+            elif form.cleaned_data['method'] == "pop":
+                event.pop_speaker()
+                return JsonResponse({'status': 'ok'})
+            elif form.cleaned_data['method'] == "clear":
+                event.clear_speakers()
+                return JsonResponse({'status': 'ok'})
+            else:
+                return JsonResponse({"status": "Ange ett korrekt kommando."})
+    else:
+        return render(request, 'events/speaker_list.html', {'event': Event.objects.get(pk=pk), 'pk': pk})
