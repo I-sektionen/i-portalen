@@ -306,6 +306,10 @@ class Event(models.Model):
     def get_speaker_list(self):
         return SpeakerList.objects.filter(event=self).order_by("timestamp")
 
+    def _type(self):
+        return "event"
+    type = property(_type)
+
     class Meta:
         verbose_name = "Arrangemang"
         verbose_name_plural = "Arrangemang"
@@ -394,3 +398,10 @@ class SpeakerList(models.Model):
 
     def __str__(self):
         return str(self.event) + " | " + str(self.user)
+
+#
+#class EntryDeadline(models.Model):
+#    # Model for "Soft deadlines" like deadline for Food
+#    event = models.ForeignKey(Event, verbose_name="arrangemang", null=True, on_delete=models.SET_NULL)
+#    deadline_end = models.DateTimeField(verbose_name='sluttid', help_text="När slutar arrangemanget?")  # When the event ends.
+#    comment = models.CharField(verbose_name="kommentar", null=True, blank=True)

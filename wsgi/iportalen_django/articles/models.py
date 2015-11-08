@@ -69,6 +69,11 @@ class Article(models.Model):
         return os.path.basename(self.attachment.name)
 
 
+    def _type(self):
+        return "article"
+
+    type = property(_type)
+
     class Meta:
         verbose_name = "Artikel"
         verbose_name_plural = "Artiklar"
