@@ -137,12 +137,23 @@ def check_in(request, pk):
             if event_user in event.preregistrations or form.cleaned_data["force_check_in"] == True:
                 try:
                     event.check_in(event_user)
-                    
-                    messages.success(request, "{0} {1} checkades in med talarnummer: {2}".format(
+                    if event.extra_deadline:
+                        try:
+                            extra = event.entryaspreregistered_set.get(user=event_user).timestamp < event.extra_deadline
+                        except:
+                            extra = False
+                        if extra:
+                            extra_str = "<br>Anmälde sig i tid för att " + event.extra_deadline_text
+                        else:
+                            extra_str = "<br><span class='errorlist'>Anmälde sig ej i tid för att " + event.extra_deadline_text + "</span>"
+                    else:
+                        extra_str = ""
+                    messages.success(request, "{0} {1} checkades in med talarnummer: {2}{3}".format(
                         event_user.first_name.capitalize(),
                         event_user.last_name.capitalize(),
-                        event.entryasparticipant_set.get(user=event_user).speech_nr
-                    ))
+                        event.entryasparticipant_set.get(user=event_user).speech_nr,
+                        extra_str
+                    ), extra_tags='safe')
                     form = CheckForm()
                     return render(request, 'events/event_check_in.html', {
                         'form': form, 'event': event, "can_administer": can_administer,
