@@ -215,6 +215,10 @@ def update_user_from_kobra(request, liu_id):
         user.email = kobra_dict['email'].lower()
         user.last_name = kobra_dict['last_name'].lower()
         user.first_name = kobra_dict['first_name'].lower()
+
+        while len(kobra_dict['rfid_number']) < 10:
+            kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
+
         user.rfid_number = kobra_dict['rfid_number']
         user.p_nr = kobra_dict['personal_number']
         user.save()
@@ -246,6 +250,10 @@ def update_all_users_from_kobra(request):
             user.email = kobra_dict['email'].lower()
             user.last_name = kobra_dict['last_name'].lower()
             user.first_name = kobra_dict['first_name'].lower()
+
+            while len(kobra_dict['rfid_number']) < 10:
+                kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
+
             user.rfid_number = kobra_dict['rfid_number']
             user.p_nr = kobra_dict['personal_number']
             user.save()
