@@ -40,5 +40,6 @@ def _make_call_to_kobra(payload):
     import urllib3
     http = urllib3.PoolManager()
     r = http.request("GET", "http://tornet.isektionen.se:8443/{:}/{:}/".format(key, value))
-    result_dict = json.loads(decode(25, r.data.decode('utf-8')), encoding="iso-8859-1")
+    print(r.data)
+    result_dict = json.loads(r.data.decode('iso-8859-1'), encoding="iso-8859-1")
     return result_dict
