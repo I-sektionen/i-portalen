@@ -4,7 +4,7 @@ from .models import Event
 
 
 class EventForm(forms.ModelForm):
-    draft = forms.BooleanField(label="Utkast", required=False)
+    draft = forms.BooleanField(label="Utkast", required=False, help_text="Sparar utan att publicera")
     class Meta:
         model = Event
         fields = '__all__'
