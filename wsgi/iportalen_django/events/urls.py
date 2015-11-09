@@ -49,5 +49,5 @@ urlpatterns = [
     url(r'^my_events/$', view=events_by_user, name='events by user'),
     url(r'(?P<pk>[0-9]+)/administer/speaker/$', view=administer_speaker_list, name="event administer speaker list"),
     url(r'(?P<pk>[0-9]+)/administer/speaker/display/$', view=speaker_list_display, name="event speaker display"),
-    url(r'(?P<pk>[0-9]+)/administer/speaker/list/$', view=speaker_list, name="event speaker list"),
+    url(r'(?P<pk>[0-9]+)/administer/speaker/api/$', view=speaker_list, name="event speaker api"),
 ]

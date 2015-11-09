@@ -393,6 +393,12 @@ def speaker_list(request, pk):
             elif form.cleaned_data['method'] == "clear":
                 event.clear_speakers()
                 return JsonResponse({'status': 'ok'})
+            elif form.clean_data['method'] == "all":
+                response_list = []
+                for speaker in event.get_speaker_list():
+                    response_list.append({'first_name': speaker.user.first_name,
+                                          'last_name': speaker.user.last_name})
+                return JsonResponse(response_list)
             else:
                 return JsonResponse({"status": "Ange ett korrekt kommando."})
     else:
@@ -401,18 +407,20 @@ def speaker_list(request, pk):
 
 @login_required()
 def speaker_list_display(request, pk):
-    event = get_object_or_404(request, pk=pk)
+    event = get_object_or_404(Event, pk=pk)
     response_list = []
     for speaker in event.get_speaker_list():
         response_list.append({'first_name': speaker.user.first_name,
                               'last_name': speaker.user.last_name,
                               })
-    return JsonResponse(response_list)
+    return render(request, 'events/display_speaker_list.html', {
+        'speaker_list': speaker_list, 'event':event
+    })
 
 
 @login_required()
 def administer_speaker_list(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    return render(request, 'events/display_speaker_list.html', {
+    return render(request, 'events/administer_speaker_list.html', {
         'event': event
     })

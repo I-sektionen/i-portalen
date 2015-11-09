@@ -4,12 +4,21 @@
 {% block navbar %}{% endblock %}
 {% block footer %}{% endblock %}
 {% block content %}
-
-    <p>dsfasdfdfsafsd</p>
+{% csrf_token %}
+<div id="list">
+    <ol>
+        {% for p in event.get_speaker_list %}
+            <li>{{ p.user.first_name|capfirst }} {{ p.user.last_name|capfirst }}</li>
+        {% endfor %}
+    </ol>
+</div>
 
 {% endblock %}
 
 {% block after_scripts %}
     <script>
+        jQuery(document).ready(function(){
+            speaker_list_view("{% url "event speaker api" event.pk %}");
+        });
     </script>
 {% endblock %}

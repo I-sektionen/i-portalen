@@ -5,11 +5,20 @@
 {% block footer %}{% endblock %}
 {% block content %}
 
-    <p>dsfasdfdfsafsd</p>
+<div id="list">
+    <ol>
+        {% for p in event.get_speaker_list %}
+            <li>{{ p.user.first_name|capfirst }} {{ p.user.last_name|capfirst }}</li>
+        {% endfor %}
+    </ol>
+</div>
 
 {% endblock %}
 
 {% block after_scripts %}
     <script>
+        jQuery(document).ready(function(){
+            speaker_list_admin("{% url "event speaker api" event.pk %}");
+        });
     </script>
 {% endblock %}
