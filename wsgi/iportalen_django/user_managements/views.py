@@ -15,7 +15,7 @@ from django.contrib.auth.views import (
 from utils.kobra import get_user_by_liu_id, LiuGetterError, LiuNotFoundError
 
 import re
-
+import time
 
 def logout_view(request):
     logout(request)
@@ -70,7 +70,8 @@ def login(request):
                         return redirect('/')
 
         # The password is valid, but the account has been disabled! (Användaren Klickade ev: "vill INTE bli medlem")
-        messages.error(request, "Lösenordet är korrekt, men kontot är avstängt! Om detta inte bör vara fallet var god kontakta info@isektionen.se")
+        messages.error(request, "Lösenordet är korrekt, men kontot är avstängt! "
+                                "Om detta inte bör vara fallet var god kontakta info@isektionen.se")
         return render(request, "user_managements/login.html")
     else:
         # Did not try to login.
@@ -103,7 +104,8 @@ def become_member(request):
                 return render(request, "user_managements/membership.html", {"form": form})
             user.is_member = False
             user.save()
-            messages.info(request,"Vad tråkigt att du inte vill vara medlem i sektionen. Om du ångrar dig kan du kontakta Info@isektionen.se")
+            messages.info(request,"Vad tråkigt att du inte vill vara medlem i sektionen. "
+                                  "Om du ångrar dig kan du kontakta Info@isektionen.se")
             return redirect("/")
         else:
             messages.error(request, "Fel Liu-id eller lösenord.")
@@ -190,7 +192,10 @@ def reset_confirm(request, uidb64=None, token=None):
 
 def reset_done(request):
     # return password_reset_done(request, template_name='user_managements/reset/pw_res_done.html')
-    messages.info(request, "Ett mail kommer inom kort skickas till mailadressen som angavs. I den finns en länk för att skapa ett nytt lösenord. Om det inte kommer något mail, vänligen försök igen, om det fortfarande inte kommer något mail, kontakta InfO")
+    messages.info(request, "Ett mail kommer inom kort skickas till mailadressen som angavs. "
+                           "I den finns en länk för att skapa ett nytt lösenord. "
+                           "Om det inte kommer något mail, vänligen försök igen, "
+                           "om det fortfarande inte kommer något mail, kontakta InfO")
     return redirect("/")
 
 
@@ -210,6 +215,10 @@ def update_user_from_kobra(request, liu_id):
         user.email = kobra_dict['email'].lower()
         user.last_name = kobra_dict['last_name'].lower()
         user.first_name = kobra_dict['first_name'].lower()
+
+        while len(kobra_dict['rfid_number']) < 10:
+            kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
+
         user.rfid_number = kobra_dict['rfid_number']
         user.p_nr = kobra_dict['personal_number']
         user.save()
@@ -220,4 +229,41 @@ def update_user_from_kobra(request, liu_id):
         messages.error(request, "Kan inte ansluta till kobra.")
     except LiuGetterError:
         messages.error(request, "Fel i anslutingen till kobra.")
+    return render(request, "user_managements/kobra.html")
+
+@login_required()
+def update_all_users_from_kobra(request):
+    if not request.user.has_perm("user_managements.add_iuser"):
+        messages.error(request, "Du har inte rätt behörighet att updatera från kobra.")
+        return render(request, "user_managements/kobra.html")
+    errors = ""
+    users = IUser.objects.all()
+    timeout = 0
+    for user in users:
+        timeout += 1
+        if timeout == 10:
+            time.sleep(1)
+            timeout = 0
+        try:
+
+            kobra_dict = get_user_by_liu_id(user.username)
+            user.email = kobra_dict['email'].lower()
+            user.last_name = kobra_dict['last_name'].lower()
+            user.first_name = kobra_dict['first_name'].lower()
+
+            while len(kobra_dict['rfid_number']) < 10:
+                kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
+
+            user.rfid_number = kobra_dict['rfid_number']
+            user.p_nr = kobra_dict['personal_number']
+            user.save()
+        except ValueError:
+            errors += (user.username + " gick inte att hämta hos kobra.\n")
+        except IUser.DoesNotExist:
+            errors += (user.username + " finns inte i systemet.\n")
+        except LiuNotFoundError:
+            errors += (user.username + " kan inte ansluta till kobra.\n")
+        except LiuGetterError:
+            errors += (user.username + " fel i anslutingen till kobra.\n")
+    print(errors)
     return render(request, "user_managements/kobra.html")

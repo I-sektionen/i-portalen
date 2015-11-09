@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.models import Group
@@ -43,6 +43,16 @@ class Event(models.Model):
     enable_registration = models.BooleanField(verbose_name='användare kan anmäla sig')
     registration_limit = models.PositiveIntegerField(verbose_name='antal platser', help_text="Hur många kan anmäla sig?" ,blank=True, null=True)
 
+    extra_deadline = models.DateTimeField(
+        verbose_name='extra anmälningsstopp',
+        help_text="Exempelvis: Datum att anmäla sig innan för att få mat. Kan lämnas tomt.",
+        blank=True,
+        null=True)
+    extra_deadline_text = models.CharField(max_length=255,
+                                           verbose_name="beskrivning till det extra anmälningsstoppet",
+                                           help_text="Ex. få mat, garanteras fika osv. Lämna tomt om extra anmälningsstopp ej angivits.",
+                                           blank=True,
+                                           null=True)
     # Dagar innan start för avanmälan. Räknas bakåt från 'start'
     deregister_delta = models.PositiveIntegerField(verbose_name='Sista dag för använmälan',
                                                    default=1,
@@ -59,7 +69,7 @@ class Event(models.Model):
     rejection_message = models.TextField(blank=True, null=True)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
-
+    replacing = models.ForeignKey('self', null=True, blank=True, default=None, on_delete=models.SET_NULL)
     organisations = models.ManyToManyField(Organisation,
                                            blank=True,
                                            default=None,
@@ -91,6 +101,7 @@ class Event(models.Model):
         list = []
         for el in q:
             list.append(el.user)
+            print(el.timestamp)
         return list
 
     @property
@@ -140,6 +151,10 @@ class Event(models.Model):
             pass
 
     @property
+    def entry_deadline(self):
+        return self.start-timezone.timedelta(days=self.deregister_delta)
+
+    @property
     def can_deregister(self):
         return self.start-timezone.timedelta(days=self.deregister_delta) > timezone.now()
 
@@ -184,7 +199,9 @@ class Event(models.Model):
     def check_in(self, user):
         if user in self.participants:
             raise CouldNotRegisterException(event=self, reason="Du är redan anmäld som deltagare")
-        EntryAsParticipant(user=user, event=self).save()
+        participant = EntryAsParticipant(user=user, event=self)
+        participant.save()
+        participant.add_speech_nr()
 
     def can_administer(self, user):
         if not user.is_authenticated():
@@ -212,6 +229,37 @@ class Event(models.Model):
         else:
             return False
 
+    def get_new_status(self, draft):
+        try:
+            s_db = Event.objects.get(pk=self.pk)
+            if s_db.status == Event.DRAFT:
+                if draft:
+                    return {"new": False, "status": Event.DRAFT}
+                else:
+                    return {"new": False, "status": Event.BEING_REVIEWED}
+            elif s_db.status == Event.BEING_REVIEWED:
+                if draft:
+                    return {"new": False, "status": Event.DRAFT}
+                else:
+                    return {"new": False, "status": Event.BEING_REVIEWED}
+            elif s_db.status == Event.APPROVED:
+                if draft:
+                    return {"new": True, "status": Event.DRAFT}
+                else:
+                    return {"new": True, "status": Event.BEING_REVIEWED}
+            elif s_db.status == Event.REJECTED:
+                if draft:
+                    return {"new": False, "status": Event.DRAFT}
+                else:
+                    return {"new": False, "status": Event.BEING_REVIEWED}
+        except:
+            if draft:
+                return {"new": False, "status": Event.DRAFT}
+            else:
+                return {"new": False, "status": Event.BEING_REVIEWED}
+
+
+
     # Rejects an event from being published, attaches message if present.
     def reject(self, user, msg=None):
         if not user.has_perm('events.can_approve_event'):
@@ -224,12 +272,61 @@ class Event(models.Model):
         return False
 
     # Approves the event.
+    @transaction.atomic
     def approve(self, user):
         if self.status == Event.BEING_REVIEWED and user.has_perm('events.can_approve_event'):
             self.status = Event.APPROVED
             self.save()
+            if self.replacing:
+
+                exclude = ["event",
+                           "entryasreserve",
+                           "entryaspreregistered",
+                           "entryasparticipant",
+                           "speakerlist",
+                           "id",
+                           "created",
+                           "modified",
+                           "replacing"]
+                multi = ["tags", "organisations"]
+                for field in self.replacing._meta.get_fields():
+                    if field.name not in exclude:
+                        print(field.name)
+                        if field.name not in multi:
+                            setattr(self.replacing, field.name, getattr(self, field.name))
+                        else:
+                            getattr(self.replacing, field.name).clear()
+                            setattr(self.replacing, field.name, getattr(self, field.name).all())
+                self.delete()
+                self.replacing.save()
             return True
         return False
+
+    def get_speaker(self, speech_nr):
+        return self.entryasparticipant_set.get(speech_nr=speech_nr)
+
+    def add_speaker(self, speech_nr):
+        user = self.get_speaker(speech_nr).user
+        SpeakerList.objects.create(event=self, user=user)
+        return True
+
+    def pop_speaker(self):
+        try:
+            speaker = SpeakerList.objects.filter(event=self).order_by("timestamp")[0]
+            speaker.delete()
+            return True
+        except:
+            return False
+
+    def clear_speakers(self):
+        try:
+            speaker = SpeakerList.objects.filter(event=self).delete()
+            return True
+        except:
+            return False
+
+    def get_speaker_list(self):
+        return SpeakerList.objects.filter(event=self).order_by("timestamp")
 
     class Meta:
         verbose_name = "Arrangemang"
@@ -295,10 +392,27 @@ class EntryAsParticipant(models.Model):
     event = models.ForeignKey(Event, verbose_name="arrangemang", null=True, on_delete=models.SET_NULL)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(auto_now_add=True)
+    speech_nr = models.PositiveIntegerField(verbose_name="talar nummer", null=True, blank=True)
 
     class Meta:
         verbose_name = "Deltagare"
         verbose_name_plural = "Deltagare"
+
+    def __str__(self):
+        return str(self.event) + " | " + str(self.user)
+
+    def add_speech_nr(self):
+        try:
+            self.speech_nr = EntryAsParticipant.objects.filter(event_id=self.event_id).order_by('-speech_nr')[0].speech_nr + 1
+        except:
+            self.speech_nr = 1
+        self.save()
+
+
+class SpeakerList(models.Model):
+    event = models.ForeignKey(Event, verbose_name="arrangemang", null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.event) + " | " + str(self.user)
