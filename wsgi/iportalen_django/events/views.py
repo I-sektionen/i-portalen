@@ -364,6 +364,7 @@ def create_or_modify_event(request, pk=None):
         'form': form,
     })
 
+
 @login_required()
 def speaker_list(request, pk):
     if request.method == 'POST':
@@ -396,3 +397,22 @@ def speaker_list(request, pk):
                 return JsonResponse({"status": "Ange ett korrekt kommando."})
     else:
         return render(request, 'events/speaker_list.html', {'event': Event.objects.get(pk=pk), 'pk': pk})
+
+
+@login_required()
+def speaker_list_display(request, pk):
+    event = get_object_or_404(request, pk=pk)
+    response_list = []
+    for speaker in event.get_speaker_list():
+        response_list.append({'first_name': speaker.user.first_name,
+                              'last_name': speaker.user.last_name,
+                              })
+    return JsonResponse(response_list)
+
+
+@login_required()
+def administer_speaker_list(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    return render(request, 'events/display_speaker_list.html', {
+        'event': event
+    })

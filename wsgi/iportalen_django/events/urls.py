@@ -20,6 +20,8 @@ from .views import (
     events_by_user,
     speech_nr_list,
     speaker_list,
+    speaker_list_display,
+    administer_speaker_list,
     import_registrations,
 )
 
@@ -45,5 +47,7 @@ urlpatterns = [
     url(r'^calender/$', view=event_calender, name='event_calender'),
     url(r'^user_entries/$', view=registered_on_events, name='registered_on_events'),
     url(r'^my_events/$', view=events_by_user, name='events by user'),
-    url(r'(?P<pk>[0-9]+)/administer/speaker/$', view=speaker_list, name="event_speaker_list"),
+    url(r'(?P<pk>[0-9]+)/administer/speaker/$', view=administer_speaker_list, name="event administer speaker list"),
+    url(r'(?P<pk>[0-9]+)/administer/speaker/display/$', view=speaker_list_display, name="event speaker display"),
+    url(r'(?P<pk>[0-9]+)/administer/speaker/list/$', view=speaker_list, name="event speaker list"),
 ]
