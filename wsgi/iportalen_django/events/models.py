@@ -8,6 +8,7 @@ from organisations.models import Organisation
 
 from tags.models import Tag
 from .exceptions import CouldNotRegisterException
+from .managers import SpeakerListManager
 # A user can register and deregister
 # The admin can:
 # - Change properties of an event
@@ -413,6 +414,54 @@ class SpeakerList(models.Model):
     event = models.ForeignKey(Event, verbose_name="arrangemang", null=True, on_delete=models.SET_NULL)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(auto_now_add=True)
+    first = models.BooleanField(default=True)
+    next_speaker = models.ForeignKey('self')
+
+    object = SpeakerListManager()
+
+    def move_up(self):
+        if self.first:
+            return
+        # Find event above and switch order
+        above = SpeakerList.object.get(next_speaker=self)
+        above.next_speaker = self.next_speaker
+        self.next_speaker = above
+        if above.first:
+            self.first = True
+            above.first = False
+        self.save()
+        above.save()
+
+    def move_down(self):
+        if self.next_speaker is None:
+            return
+        below = self.next_speaker
+        if self.first:
+            if below is None:
+                return
+            self.next_speaker = below.next_speaker
+            below.next_speaker = self
+            below.first = True
+        else:
+            above = SpeakerList.object.get(next_speaker=self)
+            above.next_speaker = below
+            self.next_speaker = below.next_speaker
+            below.next_speaker = self
+            above.save()
+        self.save()
+        below.save()
+
+    def delete(self, *args, **kwargs):
+        if self.first:
+            self.next_speaker.first = True
+            self.next_speaker.save()
+
+        super(SpeakerList, self).delete(*args, **kwargs)
+
+    def save(self, *args, **kwargs):
+        if SpeakerList.object.get_all(self.event).exsist():
+            self.first = False
+        super(SpeakerList, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.event) + " | " + str(self.user)
