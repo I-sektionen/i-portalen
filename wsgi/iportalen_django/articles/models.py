@@ -73,3 +73,17 @@ class Article(models.Model):
         verbose_name = "Artikel"
         verbose_name_plural = "Artiklar"
         permissions = (('can_approve_article', 'Can approve article'),)
+
+    def has_permission_to_change(self, user):
+        a_org = self.organisations.all()
+        user_orgs = user.get_organisations()
+        intersection = set(a_org).intersection(user_orgs)
+        has_perm_to_edit = False
+        if intersection:
+            has_perm_to_edit = True
+        if self.user == user:  # Add "and not a_org" if you want to only be able to change as user if no organisation is choosen.
+            has_perm_to_edit = True
+        if user.has_perm("articles.can_approve_article"):
+            has_perm_to_edit = True
+        return has_perm_to_edit
+

@@ -14,17 +14,7 @@ def create_or_modify_article(request, article_id=None):
     a = None
     if article_id:
         a = Article.objects.get(pk=article_id)
-        a_org = a.organisations.all()
-        user_orgs = request.user.get_organisations()
-        intersection = set(a_org).intersection(user_orgs)
-        has_perm_to_edit = False
-        if intersection:
-            has_perm_to_edit = True
-        if a.user == request.user:  # Add "and not a_org" if you want to only be able to change as user if no organisation is choosen.
-            has_perm_to_edit = True
-        if request.user.has_perm("articles.can_approve_article"):
-            has_perm_to_edit = True
-        if not has_perm_to_edit:
+        if not a.has_permission_to_change(request.user):
             raise PermissionDenied
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES, instance=a)
@@ -37,11 +27,8 @@ def create_or_modify_article(request, article_id=None):
                 a.approved = False
                 a.id = None
 
-            if hasattr(a, "user"):
-                a.save()
-            else:
-                a.user = request.user
-                a.save()
+            a.user = request.user
+            a.save()
             form.save_m2m()
             if a.draft:
                 return redirect(articles_by_user)
@@ -89,10 +76,11 @@ def approve_article(request, article_id):
             # cant publish article in draft state
             return HttpResponseForbidden()
         a.approved = True
-        tags = list(a.tags.all())  # must be above any save because of atomic.
-        orgs = list(a.organisations.all())
-        a.tags.clear()
-        a.organisations.clear()
+        if a.replacing:
+            tags = list(a.tags.all())  # must be above any save because of atomic.
+            orgs = list(a.organisations.all())
+            a.tags.clear()
+            a.organisations.clear()
         a.save()
         if a.replacing:
             old = Article.objects.get(pk=a.replacing_id)
@@ -137,11 +125,11 @@ def articles_by_tag(request, tag_name):
 @login_required()
 def articles_by_user(request):
 
-    user_articles = request.user.article_set.filter(visible_to__gte=timezone.now()).order_by('-visible_from').distinct()
+    user_articles = request.user.article_set.filter(visible_to__gte=timezone.now()).order_by('-visible_from')
     user_org = request.user.get_organisations()
 
     for o in user_org:
-        user_articles |= o.article_set.filter(visible_to__gte=timezone.now()).order_by('-visible_from').distinct()
+        user_articles |= o.article_set.filter(visible_to__gte=timezone.now()).order_by('-visible_from')
 
     return render(request, 'articles/my_articles.html', {'user_articles': user_articles.order_by('-visible_from').distinct()})
 

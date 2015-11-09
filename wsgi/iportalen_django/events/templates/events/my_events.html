@@ -3,7 +3,7 @@
 {% load iportalen_tags %}
 
 {% block content %}
-        <h1>Artiklar</h1>
+        <h1>Arrangemang</h1>
         <table>
             <thead>
             <th colspan="2">Rubrik</th>
@@ -15,7 +15,9 @@
             <tbody>
             {% for event in user_events %}
                 <tr>
-                    <td colspan="2"><a href="{{ event.get_absolute_url }}">{{ event.headline }}</a></td>
+                    <td colspan="2"><a href="{{ event.get_absolute_url }}">{{ event.headline }}</a><br>
+                    {% if event.replacing %}Ersätter: <a href="{{ event.replacing.get_absolute_url }}">{{ event.replacing.headline }}</a>{% endif %}
+                    </td>
                     <td>{{ event.visible_from|date:"Y-m-d" }}</td>
                     <td><a href="{% url "edit event" event.pk %}"><button>Ändra</button></a></td>
                     <td colspan="2">{{ event.user }}</td>
@@ -26,6 +28,8 @@
                             Godkännt
                         {% elif event.status == "b" %}
                             Väntar på godkännande
+                        {% elif event.status == "d" %}
+                            Utkast
                         {% endif %}
                     </td>
                 </tr>

@@ -5,7 +5,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>Liu-id</th><th>Förnamn</th><th>Efternamn</th><th>Incheckad</th>
+                    <th>Liu-id</th><th>Förnamn</th><th>Efternamn</th><th>Talarnummer</th>
                 </tr>
             </thead>
             <tbody>
@@ -14,7 +14,7 @@
                         <td>{{ entry.user.username }}</td>
                         <td>{{ entry.user.first_name|capfirst }}</td>
                         <td>{{ entry.user.last_name|capfirst }}</td>
-                        <td>{{ entry.timestamp|date:"Y-m-d H:i:s" }}</td>
+                        <td>{{ entry.speech_nr }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

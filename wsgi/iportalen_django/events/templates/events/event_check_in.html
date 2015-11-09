@@ -1,15 +1,14 @@
 {% extends "master.html" %}
 
 {% block content %}
-    <div id="content">
         <form  method="post" class="check-in-form" action="">
             <p>Starta incheckning genom att skriva in LiU-id och tryck "Checka in"</p>
             {% csrf_token %}
             {{ form.non_field_errors }}
-            {{ form.liu.errors }}
-            <label>Liu-id:</label>
-            {{ form.liu }}
-            {{ form.liu.help_text }}
+            {{ form.user.errors }}
+            <label>Liu-id eller RFID:</label>
+            {{ form.user }}
+            {{ form.user.help_text }}
             {% if reserve %}
                 <br>
                 {{ form.force_check_in.non_field_errors }}
@@ -23,5 +22,4 @@
                 <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
             {% endif %}
         </form>
-    </div>
 {% endblock %}

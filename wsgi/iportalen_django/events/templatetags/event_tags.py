@@ -28,3 +28,7 @@ def get_organisation_events(organisation_pk):
         end__gte=timezone.now()
     )
     return event
+
+@register.assignment_tag
+def event_can_administer(event, user):
+    return event.can_administer(user)
