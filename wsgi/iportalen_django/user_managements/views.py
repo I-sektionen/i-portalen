@@ -267,3 +267,44 @@ def update_all_users_from_kobra(request):
             errors += (user.username + " fel i anslutingen till kobra.\n")
     print(errors)
     return render(request, "user_managements/kobra.html")
+
+
+@login_required()
+def update_list_of_users_from_kobra(request):
+    if not request.user.has_perm("user_managements.add_iuser"):
+        messages.error(request, "Du har inte rätt behörighet att updatera från kobra.")
+        return render(request, "user_managements/kobra.html")
+    if request.method == 'POST':
+        form = AddWhiteListForm(request.POST)
+        if form.is_valid():
+            list_of_liu_id = form.cleaned_data['users'].splitlines()
+            timeout = 0
+            for liu_id in list_of_liu_id:
+                timeout += 1
+                if timeout == 10:
+                    time.sleep(1)
+                    timeout = 0
+                try:
+                    user = IUser.objects.get(username=liu_id)
+                    kobra_dict = get_user_by_liu_id(user.username)
+                    user.email = kobra_dict['email'].lower()
+                    user.last_name = kobra_dict['last_name'].lower()
+                    user.first_name = kobra_dict['first_name'].lower()
+
+                    while len(kobra_dict['rfid_number']) < 10:
+                        kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
+
+                    user.rfid_number = kobra_dict['rfid_number']
+                    user.p_nr = kobra_dict['personal_number']
+                    user.save()
+                except ValueError:
+                    messages.error(request, liu_id + " gick inte att hämta hos kobra.\n")
+                except IUser.DoesNotExist:
+                    messages.error(request, liu_id + " finns inte i systemet.\n")
+                except LiuNotFoundError:
+                    messages.error(request, liu_id + " kan inte ansluta till kobra.\n")
+                except LiuGetterError:
+                    messages.error(request, liu_id + " fel i anslutingen till kobra.\n")
+    else:
+        form = AddWhiteListForm()
+    return render(request, "user_managements/add_whitelist.html", {'form': form})
