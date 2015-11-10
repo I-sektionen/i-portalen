@@ -33,6 +33,7 @@ class IUserAdmin(UserAdmin):
             'bachelor_profile',
             'master_profile',
             'groups',
+            'rfid_number',
         )}),
         ('Permissions', {'fields': ('is_active', 'is_superuser', 'is_staff', 'is_member')}),
     )

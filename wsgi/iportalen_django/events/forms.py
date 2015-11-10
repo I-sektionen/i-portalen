@@ -4,7 +4,7 @@ from .models import Event
 
 
 class EventForm(forms.ModelForm):
-    draft = forms.BooleanField(label="Utkast", required=False)
+    draft = forms.BooleanField(label="Utkast", required=False, help_text="Sparar utan att publicera")
     class Meta:
         model = Event
         fields = '__all__'
@@ -21,6 +21,8 @@ class EventForm(forms.ModelForm):
         self.fields['location'].widget.attrs['placeholder'] = self.fields['location'].help_text
         self.fields['start'].widget.attrs['placeholder'] = self.fields['start'].help_text
         self.fields['end'].widget.attrs['placeholder'] = self.fields['end'].help_text
+        self.fields['extra_deadline'].widget.attrs['placeholder'] = self.fields['extra_deadline'].help_text
+        self.fields['extra_deadline_text'].widget.attrs['placeholder'] = self.fields['extra_deadline_text'].help_text
 
         self.fields['headline'].widget.attrs['placeholder'] = self.fields['headline'].help_text
         self.fields['registration_limit'].widget.attrs['placeholder'] = self.fields['registration_limit'].help_text
@@ -32,6 +34,7 @@ class EventForm(forms.ModelForm):
 
         self.fields['start'].widget.attrs['class'] = 'datetimepicker'
         self.fields['end'].widget.attrs['class'] = 'datetimepicker'
+        self.fields['extra_deadline'].widget.attrs['class'] = 'datetimepicker'
         self.fields['lead'].widget.attrs['cols'] = 40
         self.fields['lead'].widget.attrs['rows'] = 3
         self.fields['body'].widget.attrs['cols'] = 40
@@ -61,3 +64,14 @@ class CheckForm(forms.Form):
 class SpeakerForm(forms.Form):
     speech_nr = forms.CharField(required=False)
     method = forms.CharField()
+
+
+class ImportEntriesForm(forms.Form):
+    users = forms.CharField(
+        widget=forms.Textarea(attrs={"rows": 15, "placeholder":"abcde123\nfghij456\nklmno789\n..."}),
+        help_text="Ange ett liu-id per rad inga andra tecken är tillåtna."
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(ImportEntriesForm, self).__init__(*args, **kwargs)
+        self.fields['users'].label = "Lista med Liu-id:n att lägga till:"
