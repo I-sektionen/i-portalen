@@ -5,11 +5,11 @@ function speaker_list_view(url) {
     init_csrf();
 
     var s_list = $("#speaker_list ol");
-    var t=setInterval(reload_list, 2000);
+    var t=setInterval(reload_list, 1000);
     function reload_list() {
 
         var data = {
-            'method': 'all',
+            'method': 'all'
         };
         $.ajax({
             "type": "POST",
@@ -29,6 +29,5 @@ function speaker_list_view(url) {
                 }
             }
         });
-        $("#id_speech_nr").val('');
     }
 }

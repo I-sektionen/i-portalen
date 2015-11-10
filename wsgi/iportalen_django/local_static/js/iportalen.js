@@ -4373,13 +4373,13 @@ var sliding_panel = function (){
  */
 function speaker_list_admin(url){
     init_csrf();
-
+    var input_field = $("#id_speech_nr")
     var s_list = $("#list ol");
     $("#post").click(function(e) {
         e.preventDefault();
         var data = {
             'method':'add',
-            'speech_nr': $("#id_speech_nr").val()
+            'speech_nr': input_field.val()
         };
         $.ajax({
             "type": "POST",
@@ -4389,15 +4389,12 @@ function speaker_list_admin(url){
             "success": function(result) {
                 if (result.status === "ok"){
 
-                    console.log(result.first_name);
-                    console.log(result.last_name);
-                    s_list.append('<li>' + result.first_name + ' ' + result.last_name + '</li>');
                 } else {
                     console.log(result.status);
                 }
             }
         });
-        $("#id_speech_nr").val('');
+        input_field.val('');
     });
     $("#next").click(function(e) {
         e.preventDefault();
@@ -4439,6 +4436,27 @@ function speaker_list_admin(url){
             }
         });
     });
+    $("#remove").click(function(e) {
+        e.preventDefault();
+        var data = {
+            'method':'remove',
+            'speech_nr': input_field.val()
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function(result) {
+                if (result.status === "ok"){
+
+                } else {
+                    console.log(result.status);
+                }
+            }
+        });
+        input_field.val('');
+    });
 };/**
  * Created by jonathan on 2015-11-09.
  */
@@ -4446,11 +4464,11 @@ function speaker_list_view(url) {
     init_csrf();
 
     var s_list = $("#speaker_list ol");
-    var t=setInterval(reload_list, 2000);
+    var t=setInterval(reload_list, 1000);
     function reload_list() {
 
         var data = {
-            'method': 'all',
+            'method': 'all'
         };
         $.ajax({
             "type": "POST",
@@ -4470,6 +4488,5 @@ function speaker_list_view(url) {
                 }
             }
         });
-        $("#id_speech_nr").val('');
     }
 }
