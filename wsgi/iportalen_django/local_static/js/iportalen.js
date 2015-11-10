@@ -4039,6 +4039,41 @@ else
 function closeMessage(element){
     $(element).parent().hide();
 };/**
+ * Created by jonathan on 2015-11-09.
+ */
+function init_csrf() {
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    var csrftoken = getCookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+};/**
  * Created by isac on 2015-10-05.
  */
 $.datetimepicker.setLocale('sv');
@@ -4333,4 +4368,125 @@ var sliding_panel = function (){
         $('.sliding-panel-content,.sliding-panel-fade-screen').toggleClass('is-visible');
         e.preventDefault();
     });
-};
+};;/**
+ * Created by jonathan on 2015-11-09.
+ */
+function speaker_list_admin(url){
+    init_csrf();
+    var input_field = $("#id_speech_nr")
+    var s_list = $("#list ol");
+    $("#post").click(function(e) {
+        e.preventDefault();
+        var data = {
+            'method':'add',
+            'speech_nr': input_field.val()
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function(result) {
+                if (result.status === "ok"){
+
+                } else {
+                    console.log(result.status);
+                }
+            }
+        });
+        input_field.val('');
+    });
+    $("#next").click(function(e) {
+        e.preventDefault();
+        s_list.find('li:first').remove();
+        var data = {
+            'method':'pop'
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function(result) {
+                if (result.status === "ok"){
+
+                } else {
+                    console.log(result.status);
+                }
+            }
+        });
+    });
+    $("#clear").click(function(e) {
+        e.preventDefault();
+        s_list.empty();
+        var data = {
+            'method':'clear'
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function(result) {
+                if (result.status === "ok"){
+
+                } else {
+                    console.log(result.status);
+                }
+            }
+        });
+    });
+    $("#remove").click(function(e) {
+        e.preventDefault();
+        var data = {
+            'method':'remove',
+            'speech_nr': input_field.val()
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function(result) {
+                if (result.status === "ok"){
+
+                } else {
+                    console.log(result.status);
+                }
+            }
+        });
+        input_field.val('');
+    });
+};/**
+ * Created by jonathan on 2015-11-09.
+ */
+function speaker_list_view(url) {
+    init_csrf();
+
+    var s_list = $("#speaker_list ol");
+    var t=setInterval(reload_list, 1000);
+    function reload_list() {
+
+        var data = {
+            'method': 'all'
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function (result) {
+                if (result.status === "ok") {
+                    var speakerlist = result.speaker_list;
+                    var arrayLength = speakerlist.length;
+                    s_list.empty();
+                    for (var i = 0; i < arrayLength; i++) {
+                        s_list.append('<li>' + speakerlist[i].first_name + ' ' + speakerlist[i].last_name + '</li>');
+                    }
+                } else {
+                    console.log(result.status);
+                }
+            }
+        });
+    }
+}
