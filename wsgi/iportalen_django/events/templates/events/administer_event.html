@@ -9,5 +9,7 @@
         <a href="{% url "event_reserves" event.pk %}"><li>Se reserver</li></a>
         <a href="{% url "event_check_in" event.pk %}"><li>Starta incheckning</li></a>
         <a href="{% url "edit event" event.pk %}"><li>Ändra event</li></a>
+        <a href="{% url "import_registrations" event.pk %}"><li>Importera anmälningar</li></a>
+
     </ul>
 {% endblock %}

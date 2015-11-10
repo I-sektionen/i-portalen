@@ -11,7 +11,7 @@ import csv
 from utils.validators import liu_id_validator
 
 
-from .forms import EventForm, CheckForm, SpeakerForm
+from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm
 from .models import Event, EntryAsPreRegistered, EntryAsReserve
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
@@ -41,6 +41,34 @@ def register_to_event(request, pk):
         except CouldNotRegisterException as err:
             messages.error(request, "Fel, kunde inte registrera dig på " + err.event.headline + " för att " + err.reason + ".")
     return redirect("event", pk=pk)
+
+
+@login_required()
+@transaction.atomic
+def import_registrations(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    if not event.can_administer(request.user):
+        raise PermissionDenied
+    if request.method == 'POST':
+        form = ImportEntriesForm(request.POST)
+        if form.is_valid():
+            list_of_liu_id = form.cleaned_data['users'].splitlines()
+            for liu_id in list_of_liu_id:
+                try:
+                    event.register_user(IUser.objects.get(username=liu_id))
+                except CouldNotRegisterException as err:
+                    messages.error(
+                        request,
+                        "Fel, kunde inte registrera {0} på ".format(liu_id) +
+                        err.event.headline +
+                        " för att " +
+                        err.reason +
+                        ".")
+                except ObjectDoesNotExist:
+                    messages.error(request, "{0} finns inte i databasen".format(liu_id))
+    else:
+        form = ImportEntriesForm()
+    return render(request, "events/import_users.html", {'form': form})
 
 
 @login_required()
@@ -137,12 +165,23 @@ def check_in(request, pk):
             if event_user in event.preregistrations or form.cleaned_data["force_check_in"] == True:
                 try:
                     event.check_in(event_user)
-
-                    messages.success(request, "{0} {1} checkades in med talarnummer: {2}".format(
+                    if event.extra_deadline:
+                        try:
+                            extra = event.entryaspreregistered_set.get(user=event_user).timestamp < event.extra_deadline
+                        except:
+                            extra = False
+                        if extra:
+                            extra_str = "<br>Anmälde sig i tid för att " + event.extra_deadline_text + "."
+                        else:
+                            extra_str = "<br><span class='errorlist'>Anmälde sig ej i tid för att " + event.extra_deadline_text + ".</span>"
+                    else:
+                        extra_str = ""
+                    messages.success(request, "{0} {1} checkades in med talarnummer: {2}{3}".format(
                         event_user.first_name.capitalize(),
                         event_user.last_name.capitalize(),
-                        event.entryasparticipant_set.get(user=event_user).speech_nr
-                    ))
+                        event.entryasparticipant_set.get(user=event_user).speech_nr,
+                        extra_str
+                    ), extra_tags='safe')
                     form = CheckForm()
                     return render(request, 'events/event_check_in.html', {
                         'form': form, 'event': event, "can_administer": can_administer,

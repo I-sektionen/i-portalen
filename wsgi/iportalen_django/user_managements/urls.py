@@ -12,6 +12,8 @@ from .views import (
     reset_complete,
     update_user_from_kobra,
     become_member,
+    update_all_users_from_kobra,
+    update_list_of_users_from_kobra,
 )
 
 
@@ -36,5 +38,8 @@ urlpatterns = [
         name="password_change"),
     url(r'^password_change/done$', password_change_done, {"template_name":'user_managements/change_pw_done.html'},
         name="password_change_done"),
-    url(r'^kobra/(?P<liu_id>[a-z]{4,5}\d{3})/$', view=update_user_from_kobra, name="update user from kobra")
+    url(r'^kobra/(?P<liu_id>[a-z]{4,5}\d{3})/$', view=update_user_from_kobra, name="update user from kobra"),
+    url(r'^update_all_users_from_kobra/$', view=update_all_users_from_kobra, name="update_all_users_from_kobra"),
+    url(r'^update_list_of_users_from_kobra/$', view=update_list_of_users_from_kobra, name="update_list_of_users_from_kobra")
+
 ]

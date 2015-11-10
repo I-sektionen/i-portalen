@@ -43,7 +43,14 @@
                             {{ form.deregister_delta.errors }}
                             {{ form.deregister_delta }}
                         </div>
-
+                        <div>
+                            {{ form.extra_deadline.label_tag }}
+                            {{ form.extra_deadline.errors }}
+                            {{ form.extra_deadline }}
+                            {{ form.extra_deadline_text.label_tag }}
+                            {{ form.extra_deadline_text.errors }}
+                            {{ form.extra_deadline_text }}
+                        </div>
                         <div>
                             {{ form.visible_from.label_tag }}
                             {{ form.visible_from.errors }}
