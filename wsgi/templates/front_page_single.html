@@ -8,22 +8,23 @@
     <section id="news-feed">
         <h1>Nyheter</h1>
         {% for news in news_list %}
+
             {% if news.type == "article" %}
-            <article class="news-preview">
-                <div class="meta">
-                    <span class="date">{{ news.visible_from|date:"d N Y" }}</span>
-                    <span class="author">{{ news.organisations.all|safeseq|join:", " }}</span>
-                    {# Don't render tags for articles without tags #}
-                    {% if news.tags.all %}
-                        <span class="tags">{{ news.tags.all|safeseq|join:", " }}</span>
-                    {% endif %}
-                </div>
-                <h5>{{ news.headline }}</h5>
+                <article class="news-preview">
+                    <div class="meta">
+                        <span class="date">{{ news.visible_from|date:"d N Y" }}</span>
+                        <span class="author">{{ news.organisations.all|safeseq|join:", " }}</span>
+                        {# Don't render tags for articles without tags #}
+                        {% if news.tags.all %}
+                            <span class="tags">{{ news.tags.all|safeseq|join:", " }}</span>
+                        {% endif %}
+                    </div>
+                    <h5>{{ news.headline }}</h5>
 
-                <p>{{ news.lead|truncatewords_html:50 }}</p>
-                <a href="{{ news.get_absolute_url }}">Läs mer</a>
+                    <p>{{ news.lead|truncatewords_html:50 }}</p>
+                    <a href="{{ news.get_absolute_url }}">Läs mer</a>
 
-            </article>
+                </article>
             {% endif %}
             {% if news.type == "event" %}
                 <article class="event-preview">
@@ -40,6 +41,7 @@
                     {% endif %}-->
                 </article>
             {% endif %}
+
         {% endfor %}
         <div class="pagination">
             <span class="step-links">
@@ -47,13 +49,13 @@
                 {% if news_list.has_previous %}
                     <span class="prev"><a href="?page={{ news_list.previous_page_number }}">Prev</a></span>
                 {% endif %}
-                    {% for number in news_list.paginator.page_range|slice:":10" %}
-                        {% if number == news_list.number %}
-                            <a class="pagenumber active" href="">{{ number }}</a>
-                        {%  else %}
-                            <a class="pagenumber" href="?page={{ number }}">{{ number }}</a>
-                        {% endif %}
-                    {% endfor %}
+                {% for number in news_list.paginator.page_range|slice:":10" %}
+                    {% if number == news_list.number %}
+                        <a class="pagenumber active" href="">{{ number }}</a>
+                    {%  else %}
+                        <a class="pagenumber" href="?page={{ number }}">{{ number }}</a>
+                    {% endif %}
+                {% endfor %}
                 {% if news_list.has_next %}
                     <span class="next"><a href="?page={{ news_list.next_page_number }}">Next</a></span>
                 {% endif %}

@@ -52,6 +52,7 @@ def single_news_feed(request):
 
     news_list = sorted(news_list, key=lambda news: news.visible_from, reverse=True)
     paginator = Paginator(news_list, 14)
+    print(news_list)
 
     page = request.GET.get('page')
 
