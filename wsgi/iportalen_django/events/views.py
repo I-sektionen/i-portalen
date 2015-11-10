@@ -384,14 +384,15 @@ def speaker_list(request, pk):
                 except:
                     return JsonResponse({"status": "Ingen användare med det talarnummret."})
             elif form.cleaned_data['method'] == "pop":
-                sp = SpeakerList.objects.get_first(event)
-                n = event.get_speech_num_from_user(sp.user)
-                event.remove_speaker_from_queue(n)
+                event.remove_first_speaker_from_queue()
                 return JsonResponse({'status': 'ok'})
             elif form.cleaned_data['method'] == "remove":
                 speech_nr = form.cleaned_data['speech_nr']
-                event.remove_speaker_from_queue(speech_nr)
-                return JsonResponse({'status': 'ok'})
+                try:
+                    event.remove_speaker_from_queue(speech_nr)
+                    return JsonResponse({'status': 'ok'})
+                except:
+                    return JsonResponse({"status": "Ingen användare med det talarnummret."})
             elif form.cleaned_data['method'] == "clear":
                 event.clear_speaker_queue()
                 return JsonResponse({'status': 'ok'})
