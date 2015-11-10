@@ -415,9 +415,9 @@ class SpeakerList(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(auto_now_add=True)
     first = models.BooleanField(default=True)
-    next_speaker = models.ForeignKey('self')
+    next_speaker = models.ForeignKey('self', null=True, blank=True)
 
-    object = SpeakerListManager()
+    objects = SpeakerListManager()
 
     def move_up(self):
         if self.first:
