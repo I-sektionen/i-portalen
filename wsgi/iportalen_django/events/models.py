@@ -303,30 +303,68 @@ class Event(models.Model):
             return True
         return False
 
-    def get_speaker(self, speech_nr):
+    #Add speaker
+    #remove speaker
+    #Move up speaker
+    #Move down
+    #Clear list
+    #Get all
+
+    def get_user_from_speech_nr(self, speech_nr):
         return self.entryasparticipant_set.get(speech_nr=speech_nr)
 
-    def add_speaker(self, speech_nr):
-        user = self.get_speaker(speech_nr).user
-        SpeakerList.objects.create(event=self, user=user)
+    def get_speech_num_from_user(self, user):
+        return self.entryasparticipant_set.get(user=user).speech_nr
+
+    def add_speaker_to_queue(self, speech_nr):
+        u = self.get_user_from_speech_nr(speech_nr=speech_nr).user
+        q = SpeakerList.objects.filter(event=self)
+        first_object = not SpeakerList.objects.filter(event=self).exists()
+        if not first_object:
+            last = SpeakerList.objects.get(event=self, next_speaker=None)
+            s = SpeakerList.objects.create(user=u, event=self)
+            s.first = False
+            last.next_speaker = s
+            last.save()
+        else:
+            s = SpeakerList.objects.create(user=u, event=self)
+            s.first = True
+            print("Forst")
+        s.save()
         return True
 
-    def pop_speaker(self):
-        try:
-            speaker = SpeakerList.objects.filter(event=self).order_by("timestamp")[0]
-            speaker.delete()
-            return True
-        except:
-            return False
+    def clear_speaker_queue(self):
+        pass
 
-    def clear_speakers(self):
+    def remove_speaker_from_queue(self, speech_nr):
+        u = self.get_user_from_speech_nr(speech_nr=speech_nr).user
+        to_remove = SpeakerList.objects.get(event=self, user=u)
+        before = None
+        after = None
         try:
-            speaker = SpeakerList.objects.filter(event=self).delete()
-            return True
-        except:
-            return False
+            before = SpeakerList.objects.get(next_speaker=to_remove)
+        except ObjectDoesNotExist:
+            pass
+        try:
+            after = to_remove.next_speaker
+        except ObjectDoesNotExist:
+            pass
+        if (before is None) and (after is not None):
+            # First element of several
+            after.first = True
+            after.save()
+        elif (before is not None) and (after is not None):
+            # Middle element
+            before.next_speaker = after
+            before.save()
+        # Case: Single element, last element.
+        to_remove.delete()
+        print("hej")
 
-    def get_speaker_list(self):
+
+
+
+    def get_speaker_queue(self):
         return SpeakerList.objects.filter(event=self).order_by("timestamp")
 
     class Meta:
@@ -413,9 +451,8 @@ class EntryAsParticipant(models.Model):
 class SpeakerList(models.Model):
     event = models.ForeignKey(Event, verbose_name="arrangemang", null=True, on_delete=models.SET_NULL)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    first = models.BooleanField(default=True)
-    next_speaker = models.ForeignKey('self', null=True, blank=True)
+    first = models.NullBooleanField(default=None)
+    next_speaker = models.ForeignKey('self', null=True, blank=True, default=None, on_delete=models.SET_NULL)
 
     objects = SpeakerListManager()
 
@@ -423,7 +460,7 @@ class SpeakerList(models.Model):
         if self.first:
             return
         # Find event above and switch order
-        above = SpeakerList.object.get(next_speaker=self)
+        above = SpeakerList.objects.get(next_speaker=self)
         above.next_speaker = self.next_speaker
         self.next_speaker = above
         if above.first:
@@ -450,18 +487,6 @@ class SpeakerList(models.Model):
             above.save()
         self.save()
         below.save()
-
-    def delete(self, *args, **kwargs):
-        if self.first:
-            self.next_speaker.first = True
-            self.next_speaker.save()
-
-        super(SpeakerList, self).delete(*args, **kwargs)
-
-    def save(self, *args, **kwargs):
-        if SpeakerList.object.get_all(self.event).exsist():
-            self.first = False
-        super(SpeakerList, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.event) + " | " + str(self.user)
