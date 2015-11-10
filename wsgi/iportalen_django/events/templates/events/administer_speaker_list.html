@@ -12,11 +12,13 @@
     {% block head %} {% endblock %}
 </head>
 <body>
-{% csrf_token %}
+
 <div id="speaker_list_admin">
 <form action="" method="post">
+    {% csrf_token %}
     <input id="id_speech_nr" type="number" name="speech_nr" autofocus>
     <input id="post" type="submit" name="add" value="Lägg till i talarlistan">
+    <input id="remove" type="submit" name="remove" value="Tabort från talarlistan">
     <input id="next" type="button" name="next" value="Nästa talare">
     <input id="clear" type="button" name="clear" value="Rensa talarlistan">
 </form>

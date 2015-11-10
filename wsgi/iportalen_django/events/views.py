@@ -12,7 +12,7 @@ from utils.validators import liu_id_validator
 
 
 from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm
-from .models import Event, EntryAsPreRegistered, EntryAsReserve
+from .models import Event, EntryAsPreRegistered, EntryAsReserve, SpeakerList
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
 # Create your views here.
@@ -379,30 +379,24 @@ def speaker_list(request, pk):
             if form.cleaned_data['method'] == "add":
                 speech_nr = form.cleaned_data['speech_nr']
                 try:
-                    user = event.get_speaker(speech_nr)
-                    event.add_speaker(speech_nr)
-                    return JsonResponse({'status': 'ok',
-                                         'first_name': user.user.first_name.capitalize(),
-                                         'last_name': user.user.last_name.capitalize()})
+                    event.add_speaker_to_queue(speech_nr)
+                    return JsonResponse({'status': 'ok'})
                 except:
                     return JsonResponse({"status": "Ingen användare med det talarnummret."})
             elif form.cleaned_data['method'] == "pop":
-                event.pop_speaker()
+                sp = SpeakerList.objects.get_first(event)
+                n = event.get_speech_num_from_user(sp.user)
+                event.remove_speaker_from_queue(n)
+                return JsonResponse({'status': 'ok'})
+            elif form.cleaned_data['method'] == "remove":
+                speech_nr = form.cleaned_data['speech_nr']
+                event.remove_speaker_from_queue(speech_nr)
                 return JsonResponse({'status': 'ok'})
             elif form.cleaned_data['method'] == "clear":
-                event.clear_speakers()
+                event.clear_speaker_queue()
                 return JsonResponse({'status': 'ok'})
             elif form.cleaned_data['method'] == "all":
-                response_list = []
-                for speaker in event.get_speaker_list():
-                    response_list.append({'first_name': speaker.user.first_name.capitalize(),
-                                          'last_name': speaker.user.last_name.capitalize()})
-                # return JsonResponse({"status": "ok", "speaker_list": response_list})
-                return JsonResponse({"status": "ok", "speaker_list": [
-                    {'first_name': "jonathan",
-                     'last_name': "Anderson"},
-                    {'first_name': "Isac",
-                     'last_name': "Ekbert"}]})
+                return JsonResponse({"status": "ok", "speaker_list": event.get_speaker_queue()})
             else:
                 return JsonResponse({"status": "Ange ett korrekt kommando."})
     else:
@@ -412,13 +406,8 @@ def speaker_list(request, pk):
 @login_required()
 def speaker_list_display(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    response_list = []
-    for speaker in event.get_speaker_list():
-        response_list.append({'first_name': speaker.user.first_name,
-                              'last_name': speaker.user.last_name,
-                              })
     return render(request, 'events/display_speaker_list.html', {
-        'speaker_list': speaker_list, 'event':event
+        'speaker_list': event.get_speaker_queue(), 'event':event
     })
 
 
