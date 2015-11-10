@@ -12,6 +12,7 @@
                 {% with article=content %}
                     <article class="single-article-preview">
                         <p class="type">Nyhet</p>
+                        <p class="author">{{ article.organisations.all|safeseq|join:", " }}</p>
                         <h1>{{ article.headline }}</h1>
                         <h2>{{ article.lead|truncatewords_html:50 }}</h2>
                         <p class="date">
@@ -20,8 +21,9 @@
                                 <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
                             {% endif %}
                         </p>
+                        <a href="{{ article.get_absolute_url }}">Läs mer</a>
                         <hr>
-                        <p class="author">{{ article.organisations.all|safeseq|join:", " }}</p>
+
                     </article>
                 {% endwith %}
             {% endif %}
@@ -29,22 +31,26 @@
             {% if content.type == "event" %}
                 {% with event=content %}
                     <article class="single-article-preview">
-                    <p class="type">Event</p>
-                    <h1>{{ event.headline }}</h1>
-                    <h2>{{ event.lead|truncatewords_html:50 }}</h2>
-                    <p class="date">
-                        <i class="fa fa-calendar"></i>
-                        <span class="meta-content">{{ event.start|date:"d N Y" }}</span>
+                        <p class="type">Event</p>
+                        <p class="author">{{ event.organisations.all|safeseq|join:", " }}</p>
+                        <h1>{{ event.headline }}</h1>
+                        <p class="date">
+                            <i class="fa fa-calendar"></i>
+                            <span class="meta-content">{{ event.start|date:"d N Y" }}</span>
 
-                        <i class="fa fa-clock-o"></i>
-                        <span class="meta-content">{{ event.start|time:"H:i" }}</span>
+                            <i class="fa fa-clock-o"></i>
+                            <span class="meta-content">{{ event.start|time:"H:i" }}</span>
 
-                        <i class="fa fa-map-o"></i>
-                        <span class="meta-content">{{ event.location }}</span>
-                    </p>
-                    <p></p>
-                    <hr>
-                    <p class="author">Skapad av {{ event.user }}</p>
+                            <i class="fa fa-map-o"></i>
+                            <span class="meta-content">{{ event.location }}</span>
+
+
+
+
+                        </p>
+                        <h2>{{ event.lead|truncatewords_html:50 }}</h2>
+                        <a href="{{ event.get_absolute_url }}">Läs mer</a>
+                        <hr>
                     </article>
                 {% endwith %}
             {% endif %}
