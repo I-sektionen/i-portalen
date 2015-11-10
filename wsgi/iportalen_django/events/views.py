@@ -12,7 +12,7 @@ from utils.validators import liu_id_validator
 
 
 from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm
-from .models import Event, EntryAsPreRegistered, EntryAsReserve
+from .models import Event, EntryAsPreRegistered, EntryAsReserve, SpeakerList
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
 # Create your views here.
@@ -364,12 +364,12 @@ def create_or_modify_event(request, pk=None):
         'form': form,
     })
 
+
 @login_required()
 def speaker_list(request, pk):
     if request.method == 'POST':
         try:
             event = Event.objects.get(pk=pk)
-            print(event.get_speaker_list())
             if not event.can_administer(request.user):
                 return HttpResponseForbidden()
         except:
@@ -379,20 +379,42 @@ def speaker_list(request, pk):
             if form.cleaned_data['method'] == "add":
                 speech_nr = form.cleaned_data['speech_nr']
                 try:
-                    user = event.get_speaker(speech_nr)
-                    event.add_speaker(speech_nr)
-                    return JsonResponse({'status': 'ok',
-                                         'first_name': user.user.first_name.capitalize(),
-                                         'last_name': user.user.last_name.capitalize()})
+                    event.add_speaker_to_queue(speech_nr)
+                    return JsonResponse({'status': 'ok'})
                 except:
                     return JsonResponse({"status": "Ingen användare med det talarnummret."})
             elif form.cleaned_data['method'] == "pop":
-                event.pop_speaker()
+                event.remove_first_speaker_from_queue()
                 return JsonResponse({'status': 'ok'})
+            elif form.cleaned_data['method'] == "remove":
+                speech_nr = form.cleaned_data['speech_nr']
+                try:
+                    event.remove_speaker_from_queue(speech_nr)
+                    return JsonResponse({'status': 'ok'})
+                except:
+                    return JsonResponse({"status": "Ingen användare med det talarnummret."})
             elif form.cleaned_data['method'] == "clear":
-                event.clear_speakers()
+                event.clear_speaker_queue()
                 return JsonResponse({'status': 'ok'})
+            elif form.cleaned_data['method'] == "all":
+                return JsonResponse({"status": "ok", "speaker_list": event.get_speaker_queue()})
             else:
                 return JsonResponse({"status": "Ange ett korrekt kommando."})
     else:
         return render(request, 'events/speaker_list.html', {'event': Event.objects.get(pk=pk), 'pk': pk})
+
+
+@login_required()
+def speaker_list_display(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    return render(request, 'events/display_speaker_list.html', {
+        'speaker_list': event.get_speaker_queue(), 'event':event
+    })
+
+
+@login_required()
+def administer_speaker_list(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    return render(request, 'events/administer_speaker_list.html', {
+        'event': event
+    })
