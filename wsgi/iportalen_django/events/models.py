@@ -338,6 +338,13 @@ class Event(models.Model):
         for element in q:
             element.delete()
 
+    def remove_first_speaker_from_queue(self):
+        sp = SpeakerList.objects.get_first(event=self)
+        if sp.next_speaker is not None:
+            sp.next_speaker.first = True
+            sp.next_speaker.save()
+        sp.delete()
+    
     def remove_speaker_from_queue(self, speech_nr):
         u = self.get_user_from_speech_nr(speech_nr=speech_nr).user
         to_remove = SpeakerList.objects.filter(event=self, user=u)
