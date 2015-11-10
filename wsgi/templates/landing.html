@@ -8,27 +8,20 @@
     <section id="news-feed">
         <h1>Nyheter</h1>
         {% for content in content_feed_list %}
-
             {% if content.type == "article" %}
                 {% with article=content %}
                     <article class="single-article-preview">
                         <p class="type">Nyhet</p>
                         <h1>{{ article.headline }}</h1>
-                        <h2>{{ article.lead }}</h2>
+                        <h2>{{ article.lead|truncatewords_html:50 }}</h2>
                         <p class="date">
                             {{ article.created|date:"Y-m-d" }}
                             {% if article.tags.all  %}
                                 <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
                             {% endif %}
                         </p>
-                        <p>{{ article.body|markdown }}</p>
                         <hr>
                         <p class="author">{{ article.organisations.all|safeseq|join:", " }}</p>
-                        {% if article.attachment %}
-                            <p>Bifogad fil: {{ article.filename }}
-                                <a href="{% url "article_download" article.pk %}"><button type="button">Ladda ner</button></a>
-                            </p>
-                        {% endif %}
                     </article>
                 {% endwith %}
             {% endif %}
@@ -38,7 +31,7 @@
                     <article class="single-article-preview">
                     <p class="type">Event</p>
                     <h1>{{ event.headline }}</h1>
-                    <h2>{{ event.lead }}</h2>
+                    <h2>{{ event.lead|truncatewords_html:50 }}</h2>
                     <p class="date">
                         <i class="fa fa-calendar"></i>
                         <span class="meta-content">{{ event.start|date:"d N Y" }}</span>
@@ -50,7 +43,6 @@
                         <span class="meta-content">{{ event.location }}</span>
                     </p>
                     <p></p>
-                    <p>{{ event.body|markdown }}</p>
                     <hr>
                     <p class="author">Skapad av {{ event.user }}</p>
                     </article>
