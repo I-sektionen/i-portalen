@@ -4445,8 +4445,8 @@ function speaker_list_admin(url){
 function speaker_list_view(url) {
     init_csrf();
 
-    var s_list = $("#list ol");
-    var t=setInterval(reload_list, 3000);
+    var s_list = $("#speaker_list ol");
+    var t=setInterval(reload_list, 2000);
     function reload_list() {
 
         var data = {
@@ -4459,7 +4459,12 @@ function speaker_list_view(url) {
             "data": data,
             "success": function (result) {
                 if (result.status === "ok") {
-                    console.log(result.status);
+                    var speakerlist = result.speaker_list;
+                    var arrayLength = speakerlist.length;
+                    s_list.empty();
+                    for (var i = 0; i < arrayLength; i++) {
+                        s_list.append('<li>' + speakerlist[i].first_name + ' ' + speakerlist[i].last_name + '</li>');
+                    }
                 } else {
                     console.log(result.status);
                 }

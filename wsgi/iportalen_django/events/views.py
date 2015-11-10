@@ -370,7 +370,6 @@ def speaker_list(request, pk):
     if request.method == 'POST':
         try:
             event = Event.objects.get(pk=pk)
-            print(event.get_speaker_list())
             if not event.can_administer(request.user):
                 return HttpResponseForbidden()
         except:
@@ -393,12 +392,17 @@ def speaker_list(request, pk):
             elif form.cleaned_data['method'] == "clear":
                 event.clear_speakers()
                 return JsonResponse({'status': 'ok'})
-            elif form.clean_data['method'] == "all":
+            elif form.cleaned_data['method'] == "all":
                 response_list = []
                 for speaker in event.get_speaker_list():
-                    response_list.append({'first_name': speaker.user.first_name,
-                                          'last_name': speaker.user.last_name})
-                return JsonResponse(response_list)
+                    response_list.append({'first_name': speaker.user.first_name.capitalize(),
+                                          'last_name': speaker.user.last_name.capitalize()})
+                # return JsonResponse({"status": "ok", "speaker_list": response_list})
+                return JsonResponse({"status": "ok", "speaker_list": [
+                    {'first_name': "jonathan",
+                     'last_name': "Anderson"},
+                    {'first_name': "Isac",
+                     'last_name': "Ekbert"}]})
             else:
                 return JsonResponse({"status": "Ange ett korrekt kommando."})
     else:

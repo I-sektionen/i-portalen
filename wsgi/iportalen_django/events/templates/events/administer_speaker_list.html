@@ -1,24 +1,33 @@
-{% extends 'master.html' %}
-{% block hero %}{% endblock %}
-{% block sponsors %}{% endblock %}
-{% block navbar %}{% endblock %}
-{% block footer %}{% endblock %}
-{% block content %}
-
-<div id="list">
-    <ol>
-        {% for p in event.get_speaker_list %}
-            <li>{{ p.user.first_name|capfirst }} {{ p.user.last_name|capfirst }}</li>
-        {% endfor %}
-    </ol>
+{# This file defines the front page and is a own kind of master page #}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "stylesheets.html" %}
+    <link rel="shortcut icon" type="image/png" href="{% static "iportalen/favicon.ico" %}"/>
+    <title>I-portalen{% block page_subtitle %} {% endblock %}</title>
+</head>
+    {% block head %} {% endblock %}
+</head>
+<body>
+{% csrf_token %}
+<div id="speaker_list_admin">
+<form action="" method="post">
+    <input id="id_speech_nr" type="number" name="speech_nr" autofocus>
+    <input id="post" type="submit" name="add" value="Lägg till i talarlistan">
+    <input id="next" type="button" name="next" value="Nästa talare">
+    <input id="clear" type="button" name="clear" value="Rensa talarlistan">
+</form>
 </div>
+{% include "scripts.html" %}
+<script>
+    jQuery(document).ready(function(){
+        speaker_list_admin("{% url "event speaker api" event.pk %}");
+    });
+</script>
 
-{% endblock %}
 
-{% block after_scripts %}
-    <script>
-        jQuery(document).ready(function(){
-            speaker_list_admin("{% url "event speaker api" event.pk %}");
-        });
-    </script>
-{% endblock %}
+</body>
+</html>
