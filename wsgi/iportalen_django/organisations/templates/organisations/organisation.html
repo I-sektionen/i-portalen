@@ -99,7 +99,7 @@
                 <tbody>
                 {% for article in articles %}
                     <tr>
-                        <td><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></td>
+                        <td><a href="{{ article.get_absolute_url }}">{{ article.headline|truncatechars:18 }}</a></td>
                         <td>{{ article.created|date:"Y-m-d" }}</td>
                         <td></td>
                     </tr>
