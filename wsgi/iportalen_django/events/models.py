@@ -340,7 +340,11 @@ class Event(models.Model):
 
     def remove_speaker_from_queue(self, speech_nr):
         u = self.get_user_from_speech_nr(speech_nr=speech_nr).user
-        to_remove = SpeakerList.objects.get(event=self, user=u)
+        to_remove = SpeakerList.objects.filter(event=self, user=u)
+        for ele in to_remove:
+            self._remove_speaker_from_queue(ele)
+
+    def _remove_speaker_from_queue(self, to_remove):
         before = None
         after = None
         try:
@@ -361,7 +365,6 @@ class Event(models.Model):
             before.save()
         # Case: Single element, last element.
         to_remove.delete()
-        print("hej")
 
     def get_speaker_queue(self):
         try:
