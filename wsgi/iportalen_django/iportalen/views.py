@@ -38,29 +38,28 @@ def article_pagination(request):
     return render(request, 'front_page.html', {'articles': articles})
 
 
-def single_news_feed(request):
-    news_list = list(Article.objects.filter(
+def display_news_feed(request):
+    content_feed_list = list(Article.objects.filter(
         approved=True,
         visible_from__lte=timezone.now(),
         visible_to__gte=timezone.now()
     ).order_by('-visible_from'))
-    news_list += list(Event.objects.filter(
+    content_feed_list += list(Event.objects.filter(
         status=Event.APPROVED,
         visible_from__lte=timezone.now(),
         end__gte=timezone.now()
     ).order_by('-visible_from'))
 
-    news_list = sorted(news_list, key=lambda news: news.visible_from, reverse=True)
-    paginator = Paginator(news_list, 14)
-    print(news_list)
+    content_feed_list = sorted(content_feed_list, key=lambda content: content.visible_from, reverse=True)
+    paginator = Paginator(content_feed_list, 14)
 
     page = request.GET.get('page')
 
     try:
-        news = paginator.page(page)
+        content = paginator.page(page)
     except PageNotAnInteger:
-        news = paginator.page(1)
+        content = paginator.page(1)
     except EmptyPage:
-        news = paginator.page(paginator.num_pages)
+        content = paginator.page(paginator.num_pages)
 
-    return render(request, 'front_page_single.html', {'news_list': news})
+    return render(request, 'landing.html', {'content_feed_list': content})
