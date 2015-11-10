@@ -334,7 +334,9 @@ class Event(models.Model):
         return True
 
     def clear_speaker_queue(self):
-        pass
+        q = SpeakerList.objects.filter(event=self)
+        for element in q:
+            element.delete()
 
     def remove_speaker_from_queue(self, speech_nr):
         u = self.get_user_from_speech_nr(speech_nr=speech_nr).user
@@ -361,11 +363,21 @@ class Event(models.Model):
         to_remove.delete()
         print("hej")
 
-
-
-
     def get_speaker_queue(self):
-        return SpeakerList.objects.filter(event=self).order_by("timestamp")
+        try:
+            first = SpeakerList.objects.get(event=self, first=True)
+        except ObjectDoesNotExist:
+            return []
+
+        result = []
+        result.append({'first_name': first.user.first_name,
+                       'last_name': first.user.last_name})
+        next = first.next_speaker
+        while next is not None:
+            result.append({'first_name': next.user.first_name,
+                           'last_name': next.user.last_name})
+            next = next.next_speaker
+        return result
 
     class Meta:
         verbose_name = "Arrangemang"
