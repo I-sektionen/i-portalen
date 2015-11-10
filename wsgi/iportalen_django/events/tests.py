@@ -145,18 +145,13 @@ class SpeakerListTests(TestCase):
         self.assertEqual(fa.user, a)
         self.assertFalse(fb.first)
 
-        print("Removed1")
         event.remove_speaker_from_queue(sa)
-        print("Removed")
         first = SpeakerList.objects.get(event=event, first=True)
         self.assertEqual(first.user, b)
-        first1 = list(SpeakerList.objects.filter(event=event))
 
         event.remove_speaker_from_queue(sc)
-        first2 = list(SpeakerList.objects.filter(event=event))
 
         event.remove_speaker_from_queue(sd)
-        first3 = list(SpeakerList.objects.filter(event=event))
 
         self.assertEqual(first.user, b)
         event.add_speaker_to_queue(sa)
@@ -167,5 +162,58 @@ class SpeakerListTests(TestCase):
         q = SpeakerList.objects.filter(event=event)
         self.assertEqual(len(q), 0)
 
+    def test_get_speaker_list(self):
+        event = Event.objects.get(headline__exact='Eventheader')
+        a = IUser.objects.get(username="aaaaa111")
+        b = IUser.objects.get(username="bbbbb111")
+        c = IUser.objects.get(username="ccccc111")
+        d = IUser.objects.get(username="ddddd111")
+
+        event.check_in(a)
+        event.check_in(b)
+        event.check_in(c)
+        event.check_in(d)
+
+        sa = event.get_speech_num_from_user(a)
+        sb = event.get_speech_num_from_user(b)
+        sc = event.get_speech_num_from_user(c)
+        sd = event.get_speech_num_from_user(d)
+
+        event.add_speaker_to_queue(sa)
+        event.add_speaker_to_queue(sb)
+        event.add_speaker_to_queue(sc)
+        event.add_speaker_to_queue(sd)
+
+        q = event.get_speaker_queue()
+        self.assertEqual(len(q), 4)
+
+    def test_speaker_list_double_delete(self):
+        event = Event.objects.get(headline__exact='Eventheader')
+        a = IUser.objects.get(username="aaaaa111")
+        b = IUser.objects.get(username="bbbbb111")
+        c = IUser.objects.get(username="ccccc111")
+        d = IUser.objects.get(username="ddddd111")
+
+        event.check_in(a)
+        event.check_in(b)
+        event.check_in(c)
+        event.check_in(d)
+
+        sa = event.get_speech_num_from_user(a)
+        sb = event.get_speech_num_from_user(b)
+        sc = event.get_speech_num_from_user(c)
+        sd = event.get_speech_num_from_user(d)
+
+        event.add_speaker_to_queue(sb)
+        event.add_speaker_to_queue(sa)
+        event.add_speaker_to_queue(sb)
+        event.add_speaker_to_queue(sc)
+        event.add_speaker_to_queue(sb)
+        event.add_speaker_to_queue(sd)
+        event.add_speaker_to_queue(sb)
+
+        event.remove_speaker_from_queue(sb)
+        q = SpeakerList.objects.filter(event=event)
+        self.assertEqual(len(q), 3)
 
 #TODO: Test registration periods. Reserve lists, deregistration, edit form access rights.
