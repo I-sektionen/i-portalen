@@ -32,20 +32,20 @@ class Event(models.Model):
     )
 
     #  Description:
-    headline = models.CharField(verbose_name='arrangemangets namn',help_text="Ge ditt evenemang en titel, till exempel 'Excelutbildning med Knowit'", max_length=255)
-    lead = models.TextField(verbose_name='kort beskrivning', help_text="Ge en kort beskrivning av ditt event. Max 160 tecken. Tex. 'Få cellsynt kompetens med Knowit!'", validators=[less_than_160_characters_validator])
-    body = models.TextField(verbose_name='beskrivning', help_text="Beskrivning av eventet")
-    location = models.CharField(max_length=30, verbose_name="plats", help_text="Plats för eventet tex. C1 eller Märkesbacken")
+    headline = models.CharField(verbose_name='Rubrik',help_text="Rubriken till eventet", max_length=255)
+    lead = models.TextField(verbose_name='Ingress', help_text="Ingressen är den text som syns i nyhetsflödet. Max 160 tecken.", validators=[less_than_160_characters_validator])
+    body = models.TextField(verbose_name='Brödtext', help_text="Brödtext syns när ett event visas enskilt")
+    location = models.CharField(max_length=30, verbose_name="plats", help_text="Plats, tex. C1 eller Märkesbacken")
 
-    start = models.DateTimeField(verbose_name='starttid', help_text="När startar arrangemanget?")  # When the event starts.
-    end = models.DateTimeField(verbose_name='sluttid', help_text="När slutar arrangemanget?")  # When the event ends.
+    start = models.DateTimeField(verbose_name='Starttid', help_text="När startar eventet?")  # When the event starts.
+    end = models.DateTimeField(verbose_name='Sluttid', help_text="När slutar eventet?")  # When the event ends.
 
     enable_registration = models.BooleanField(verbose_name='användare kan anmäla sig')
-    registration_limit = models.PositiveIntegerField(verbose_name='antal platser', help_text="Hur många kan anmäla sig?" ,blank=True, null=True)
+    registration_limit = models.PositiveIntegerField(verbose_name='Antal platser', help_text="Hur många kan anmäla sig?" ,blank=True, null=True)
 
     extra_deadline = models.DateTimeField(
         verbose_name='extra anmälningsstopp',
-        help_text="Exempelvis: Datum att anmäla sig innan för att få mat. Kan lämnas tomt.",
+        help_text="Exempelvis: sista anmälningsdatum för mat. Kan lämnas tomt.",
         blank=True,
         null=True)
     extra_deadline_text = models.CharField(max_length=255,
@@ -54,7 +54,7 @@ class Event(models.Model):
                                            blank=True,
                                            null=True)
     # Dagar innan start för avanmälan. Räknas bakåt från 'start'
-    deregister_delta = models.PositiveIntegerField(verbose_name='Sista dag för använmälan',
+    deregister_delta = models.PositiveIntegerField(verbose_name='Sista dag för anvanmälan',
                                                    default=1,
                                                    help_text="Sista dag för avanmälan i antal dagar innan eventet")
 
@@ -74,7 +74,7 @@ class Event(models.Model):
                                            blank=True,
                                            default=None,
                                            verbose_name='arrangör',
-                                           help_text="Organisation(er) som arrangerar evenemanget. Medlemmar i dessa kan senare ändra eventet.")
+                                           help_text="Organisation(er) som arrangerar eventet. Medlemmar i dessa kan senare ändra eventet.")
 
     @property
     def preregistrations(self):
