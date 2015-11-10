@@ -159,6 +159,13 @@ class SpeakerListTests(TestCase):
         first3 = list(SpeakerList.objects.filter(event=event))
 
         self.assertEqual(first.user, b)
+        event.add_speaker_to_queue(sa)
+        event.add_speaker_to_queue(sb)
+        event.add_speaker_to_queue(sc)
+        event.add_speaker_to_queue(sd)
+        event.clear_speaker_queue()
+        q = SpeakerList.objects.filter(event=event)
+        self.assertEqual(len(q), 0)
 
 
 #TODO: Test registration periods. Reserve lists, deregistration, edit form access rights.
