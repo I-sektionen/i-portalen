@@ -1,0 +1,25 @@
+{% extends "master.html" %}
+
+{% block navbar %}
+{% endblock %}
+{% block hero %}
+{% endblock %}
+{% block sponsors %}
+{% endblock %}
+{% block footer %}
+{% endblock %}
+
+{% block content %}
+    <div id="membership">
+        <h1>Medlemsskap</h1>
+        <p>Du måste bli medlem i I-sektionen innan du kan utnyttja sektionens tjänster.</p>
+        <p>Om du väljer att navigera ifrån den här sidan utan att bli medlem eller väljer att inte bli medlem kommer du inte kunna logga in på iportalen igen.</p>
+        <form action="{% url "become member" %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" name="member" value="Jag vill bli medlem." />
+            <input type="submit" name="not_member" value="Jag vill INTE bli medlem." />
+        </form>
+    </div>
+{% endblock %}
+

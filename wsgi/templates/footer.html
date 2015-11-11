@@ -1,4 +1,22 @@
-<section id="footer">
-    <h4>footer</h4>
-    <div id="footer-content">Hello world</div>
-</section>
+{% load staticfiles %}
+<footer class="footer" role="contentinfo">
+  <div class="footer-logo">
+    <img src="{% static "iportalen/isektionen_logo.png" %}" alt="Logo image">
+  </div>
+  <div class="footer-links">
+    <ul>
+      <li><h3>Kontakt</h3></li>
+      <li><a href="mailto:info@isektionen.se">Utgivare: InfO</a></li>
+      <li><a href="mailto:mafo@isektionen.se">Marknadsföring/Företag: MafU</a></li>
+      <li><a href="mailto:webgroup@isektionen.se">Tekniskt: Webgroup</a></li>
+    </ul>
+    <ul>
+      <li><h3>Sociala medier</h3></li>
+      <li><a href="javascript:void(0)">Facebook</a></li>
+      <li><a href="javascript:void(0)">Twitter</a></li>
+      <li><a href="javascript:void(0)">Instagram</a></li>
+    </ul>
+  </div>
+  <hr>
+  <p>I-portalen är utvecklad med kärlek av Webgroup®.</p>
+</footer>

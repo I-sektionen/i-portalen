@@ -1,0 +1,146 @@
+$header-link-font-size: 16px
+$header-link-color: $dark-gray
+
+header
+  //+outer-container()
+  padding: 1em 0
+  //background-color: white
+  a
+    font-size: $header-link-font-size
+    color: $header-link-color
+    text-transform: uppercase
+    +media($large-screen-up)
+      font-weight: 400
+    &:hover
+      color: lighten($dark-gray, 30%)
+      text-decoration: none
+  #top-menu-bar
+    +outer-container()
+  #logo
+    //center the logo on mobile
+    //+span-columns(6)
+    padding: 1em
+    +media($large-screen-up)
+      +span-columns(2 of 8)
+      img
+        max-width: 150px
+
+  // Menu bar for mobile view
+  #menu-toggle
+    +span-columns(12)
+    background: $dark-gray
+    color: white
+    padding: 1em
+    #menu-toggle-title
+      float: left
+      margin-top: 0.5em
+    #menu-toggle-button
+      float: right
+      font-size: 22px
+      cursor: pointer
+
+    //Hide menu toggle panel on large screens
+    +media($large-screen-up)
+      display: none
+
+
+  //NAV IS THE MAIN CONTAINER FOR NAVIGATION LINKS (NAVIGATION MENU) & USER TOOLS
+  nav
+    +outer-container()
+    //+span-columns(12)
+  #navigation-menu
+
+    //border-bottom: 1px solid $dark-gray
+    border-top: 1px solid darken($light-gray, 5%)
+    padding: 1em
+    +span-columns(12)
+    +display(none)
+    +media($large-screen-up)
+      +span-columns(8 of 8)
+    li
+      margin-bottom: 1em
+      padding: 0 1em
+      +media($large-screen-up)
+        margin: 0
+        padding: 0
+        display: inline
+        margin-right: 1em
+    .more
+      display: inline-block
+      &:after
+        content: '\25BE'
+      +media($large-screen-up)
+        &:hover > .submenu-wrapper
+          +display(block)
+          min-height: 250px
+    //wrapper for all submenus under a particular menu item
+    .submenu-wrapper
+      z-index: 9999999
+      +display(none)
+      background: transparentize($white, 0.05)
+      padding:  1em
+      box-shadow: 2px 2px 4px $light-gray
+      +media($large-screen-up)
+        display: none
+        padding: 0
+        box-shadow: none
+        +position(absolute)
+        left: 0
+        right: 0
+        //top: 3.18em
+      .submenu-container
+        +outer-container()
+      //this is used to shift the submenu columns towards the middle
+      +media($large-screen-up)
+        .submenu:first-child
+          +shift(1)
+      .submenu
+        +span-columns(12)
+        +media($large-screen-up)
+          +span-columns(2)
+          margin-top: 2em
+
+        // The first item in a list is treated as the heading for
+        // each submeu, i.e Föreningar
+        & > li:first-child
+          font-size: 22px
+          font-weight: 200
+          color: darken(white, 30%)
+          background: darken(white, 8%)
+          border-radius: 3px
+          margin: 1em 0
+
+          +media($large-screen-up)
+            font-size: 26px
+            font-weight: 200
+            color: $dark-gray
+            background: none
+            border-radius: 0
+            margin: 0
+            padding: 0
+        //Selects all li
+        & > *
+          padding: 0.8em
+          +media($large-screen-up)
+            text-transform: none
+            padding: 0
+            display: block
+          a
+            line-height: 0
+            text-transform: none
+
+  #user-menu-tool
+    padding: 1em
+    +span-columns(12)
+    background: $light-gray
+    +media($large-screen-up)
+      padding: 0.7em 0 0 0
+      background: none
+      +span-columns(2)
+      +shift(4 of 8)
+      text-align: right
+    li
+      display: inline
+    #user-button
+      font-size: 22px
+

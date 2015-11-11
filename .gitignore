@@ -171,10 +171,15 @@ pip-selfcheck.json
 ### Sqlite3 ###
 *.sqlite3
 
-# Lets not push our mysql credentials all over the place:
+# Lets not push our mysql credentials all over the place #
 mysql_credentials
+/wsgi/iportalen_django/iportalen/mysql_credentials
 
 
 ### SASS ###
 .sass-cache
 *.css.map
+
+wsgi/static/*
+wsgi/iportalen_django/iportalen/mysql_credentials
+wsgi/media

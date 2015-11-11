@@ -6,10 +6,14 @@ from .models import IUser, MasterProfile, BachelorProfile
 
 
 class IUserAdmin(UserAdmin):
+    def show_kobra_url(self, obj):
+        return '<a href="%s" target="_blank">Uppdatera från kobra</a>' % (obj.update_from_kobra_url)
+    show_kobra_url.allow_tags = True
+
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
 
-    list_display = ('username', 'email', 'is_staff', 'is_superuser')
+    list_display = ('username', 'email', 'is_staff', 'is_superuser', "show_kobra_url")
     list_filter = ('is_superuser',)
 
     fieldsets = (
@@ -29,8 +33,9 @@ class IUserAdmin(UserAdmin):
             'bachelor_profile',
             'master_profile',
             'groups',
+            'rfid_number',
         )}),
-        ('Permissions', {'fields': ('is_active', 'is_superuser', 'is_staff')}),
+        ('Permissions', {'fields': ('is_active', 'is_superuser', 'is_staff', 'is_member')}),
     )
 
     add_fieldsets = (

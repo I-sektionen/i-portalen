@@ -1,58 +1,89 @@
 {% load staticfiles %}
+{% load organisation_tags %}
+{% get_menu_organisations as menu_orgs %}
 <header role="banner">
-    <nav role="navigation">
-        <img src=" {% static "logo.svg" %}" alt="logo">
-        <div id="menu-toggle">
-            <span>MENU</span>
+    <div id="top-menu-bar">
+        <div id="logo">
+            <a href="/">
+                <img src=" {% static "iportalen/logo_iportalen.png" %}" alt="logo">
+            </a>
         </div>
-        <ul id="navigation-menu" class="show">
+        <div id="user-menu-tool">
+            {% if request.user.is_authenticated %}
+                <li class="js-menu-trigger sliding-panel-button">
+                    <span id="user-button">{{ request.user.username }} &#9776</span>
+                </li>
+            {% else %}
+                <li>
+                    <div class="modal">
+                        <label for="modal-1" class="button-small">
+                            <div class="modal-trigger">Mitt Konto</div>
+                        </label>
+
+                        <input class="modal-state" id="modal-1" type="checkbox" />
+
+                        <div class="modal-fade-screen">
+                            <div class="modal-inner">
+                                <div class="modal-close" for="modal-1"></div>
+                                <div class="outer-form-div">
+                                    <div class="form-div">
+                                        <h4>Logga in på I-Portalen</h4>
+                                        <form class="login-form" action="{% url "login_view" %}" method="post">
+                                            {% csrf_token %}
+                                            <input class="username-holder" type="text" name="username" placeholder="Liu-id">
+                                            <input class="password-holder" type="password" name="password" placeholder="Lösenord">
+                                            <input class="submit-holder primary" type="submit" value="Logga in">
+                                        </form>
+                                        <a href="{% url "password_reset" %}">Glömt lösenord</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endif %}
+        </div>
+    </div>
+
+    <nav role="navigation">
+        <div id="menu-toggle">
+            <h4 id="menu-toggle-title">MENY</h4>
+            <span id="menu-toggle-button">&#9776;</span>
+        </div>
+        <ul id="navigation-menu">
             <li><a href="/">Start</a>
             </li>
-            <li><a href="#">Kalender</a>
+            <li><a href="{% url "event_calender" %}">Kalender</a>
             </li>
-            <li class="more"><a href="#">Om sektionen</a>
+            <li class="more"><a href="">Om sektionen</a>
                 <!-- A WRAPPER TO CONTROL FLEX DIRECTION FOR SUBMENUS -->
-                <div class="submenu-wrapper show">
-                    <ul class="submenu">
-                        <li>Sektionen</li>
-                        <li><a href="#">Styret</a></li>
-                        <li><a href="#">Historia</a></li>
-                        <li><a href="#">Valberedningen</a></li>
-                    </ul>
-                    <ul class="submenu">
-                        <li>Utskott</li>
-                        <li><a href="#">Informationsutskottet</a></li>
-                        <li><a href="#">Marknadsföringsutskottet</a></li>
-                        <li><a href="#">Näringslivsutskottet</a></li>
-                        <li><a href="#">Studienämnden</a></li>
-                        <li><a href="#">Intendentutskottet</a></li>
-                        <li><a href="#">Informationsutskottet</a></li>
-                        <li><a href="#">Alumniutskottet</a></li>
-                        <li><a href="#">Börsgruppen</a></li>
-                    </ul>
-                    <ul class="submenu">
-                        <li>Föreningar</li>
-                        <li><a href="#">IQ</a></li>
-                        <li><a href="#">Clubmästeriet</a></li>
-                        <li><a href="#">ESTEIM</a></li>
-                        <li><a href="#">Case-gruppen</a></li>
-                        <li><a href="#">PUBis</a></li>
-                        <li><a href="#">Integrera</a></li>
-                        <li><a href="#">Börsgruppen</a></li>
-                    </ul>
+                <div class="submenu-wrapper">
+                    <div class="submenu-container">
+                        <ul class="submenu">
+                            <li>Sektionen</li>
+                            {% for o in menu_orgs.sektionen %}
+                                <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <ul class="submenu">
+                            <li>Utskott</li>
+                            {% for o in menu_orgs.utskott %}
+                                <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <ul class="submenu">
+                            <li>Föreningar</li>
+                            {% for o in menu_orgs.foreningar %}
+                                <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </li>
-            <li><a href="#">Studier</a>
+            <li><a href="{% url "placeholder" %}">Studier</a>
             </li>
-            <li class="more"><a href="#">Tjänster</a>
-                <div class="submenu-wrapper show">
-                    <ul class="submenu">
-                        <li>Här måste nått stå</li>
-                        <a href="{% url 'index' %}"><li>Bokningar</li></a>
-                    </ul>
-                </div>
+            <li><a href="{% url "placeholder" %}">Tjänster</a>
             </li>
-
         </ul>
     </nav>
 </header>
