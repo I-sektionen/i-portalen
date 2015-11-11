@@ -1,36 +1,73 @@
 {# This file defines the front page and is a own kind of master page #}
 {% load staticfiles %}
-{% load article_tags %}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% include "stylesheets.html" %}
-
-    <title>I-portalen - {% block page_subtitle %} {% endblock %}</title>
+    <link rel="shortcut icon" type="image/png" href="{% static "iportalen/favicon.ico" %}"/>
+    <title>I-portalen{% block page_subtitle %} {% endblock %}</title>
 </head>
-
+    {% block head %} {% endblock %}
+</head>
 <body>
-
-{% include "header.html" %}
-
-{% block content %}
-
-    {% block sponsors %}
-        <section id="sponsors">
-            <h4>Sponsorer</h4>
-        </section>
+<div class="js-menu-screen sliding-panel-fade-screen"></div>
+{% include "userpanel.html" %}
+<div id="master-container">
+    {% block navbar %}
+    {% include "header.html" %}
     {% endblock %}
+    {% if messages %}
+        <div id="message-box">
+            {% for message in messages %}
+                <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                    <span>{% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</span>
+                    <button type="button" onclick="closeMessage(this)">&times;</button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% block hero %}
+    {% load static from staticfiles %}
+    <div class="hero" style="background-image:url({% static 'iportalen/HERO.jpg' %})">
 
+	<div class="hero-inner">
+		<div class="hero-copy">
+			<h1>Testa nya i-portalen idag</h1>
+			<p>Klicka på 'Mitt konto' för att återställa ditt lösenord och logga in! Har du åsikter?
+            Skicka dessa till webgroup@isektionen.se</p>
+		</div>
+	</div>
+    <div class="hero-overlay">
+    </div>
+</div>
 {% endblock %}
-
-{% include "footer.html" %}
-
-{% include "modal.html" %}
+    <div id="container">
+        <div id="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    {% block sponsors %}
+    {% include 'sponsors.html' %}
+    {% endblock %}
+    </div>
+    {% block footer %}
+    {% include "footer.html" %}
+    {% endblock %}
+</div>
 
 {% include "scripts.html" %}
-{% block extra_scripts %}{% endblock %}
+{% block after_scripts %}{% endblock %}
+<script>
+    jQuery(document).ready(function () {
+        shuffle_sponsors();
+        sliding_panel();
+        modal();
+    });
+
+</script>
+
 
 </body>
 </html>

@@ -1,0 +1,26 @@
+{% extends "master.html" %}
+{% load event_tags %}
+{% block content %}
+    <p>Antal deltagare: {{ event.number_of_participants }}</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Liu-id</th><th>Förnamn</th><th>Efternamn</th><th>Tid</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in event_reserves %}
+                    <tr>
+                        <td>{{ entry.user.username|upper }}</td>
+                        <td>{{ entry.user.first_name|capfirst }}</td>
+                        <td>{{ entry.user.last_name|capfirst }}</td>
+                        <td>{{ entry.timestamp|date:"d/m H:m:s" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% event_can_administer event request.user as can_administer %}
+        {% if can_administer %}
+            <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
+        {% endif %}
+{% endblock %}

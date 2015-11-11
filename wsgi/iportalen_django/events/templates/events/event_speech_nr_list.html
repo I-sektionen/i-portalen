@@ -1,0 +1,28 @@
+{% extends "master.html" %}
+{% block hero %}{% endblock %}
+{% load event_tags %}
+{% block content %}
+    <p>Antal deltagare: {{ event.number_of_participants }}</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Liu-id</th><th>Förnamn</th><th>Efternamn</th><th>Talarnummer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in event.entryasparticipant_set.all %}
+                    <tr>
+                        <td>{{ entry.user.username }}</td>
+                        <td>{{ entry.user.first_name|capfirst }}</td>
+                        <td>{{ entry.user.last_name|capfirst }}</td>
+                        <td>{{ entry.speech_nr }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    <a href="{% url "event_participants_download" event.pk %}"><button type="button">Ladda ner deltagare</button></a>
+    {% event_can_administer event request.user as can_administer %}
+    {% if can_administer %}
+        <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
+    {% endif %}
+{% endblock %}

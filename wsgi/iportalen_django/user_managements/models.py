@@ -1,12 +1,14 @@
 import datetime
-from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.core.urlresolvers import reverse
 from .managers import IUserManager
-
+from django.utils import timezone
+from organisations.models import Organisation
+from utils.validators import liu_id_validator
 
 YEAR_CHOICES = []
-for r in range((datetime.datetime.now().year-10), (datetime.datetime.now().year+10)):
+for r in range(1969, (datetime.datetime.now().year+10)):
     YEAR_CHOICES.append((r,r))
 
 
@@ -38,10 +40,10 @@ class MasterProfile(models.Model):
 
 # Liuid as username and <liuid>@student.liu.se as email
 class IUser(AbstractBaseUser, PermissionsMixin):
-    liu_id_validator = RegexValidator(r'^[a-zA-Z]{5}\d{3}$')
 
     # basic fields
     username = models.CharField(verbose_name='LiU-ID', unique=True, max_length=8, validators=[liu_id_validator])
+    email = models.EmailField(verbose_name='Email')
     first_name = models.CharField(verbose_name='förnamn', max_length=50, null=True, blank=True)
     last_name = models.CharField(verbose_name='efternamn', max_length=50, null=True, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True, verbose_name='gick med datum')
@@ -55,18 +57,54 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     city = models.CharField(verbose_name='ort', max_length=255, null=True, blank=True)
     gender = models.CharField(verbose_name='kön', max_length=255, null=True, blank=True)
     allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
-    start_year = models.IntegerField(verbose_name='start år', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
-    expected_exam_year = models.IntegerField(verbose_name='förväntat examens år', choices=YEAR_CHOICES, default=datetime.datetime.now().year+5)
-    bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil')
-    master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil', )
+    start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
+    expected_exam_year = models.IntegerField(verbose_name='förväntat examensår', choices=YEAR_CHOICES, default=datetime.datetime.now().year+5)
+    bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil', on_delete=models.SET_NULL)
+    master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil', on_delete=models.SET_NULL)
+    rfid_number = models.CharField(verbose_name='rfid', max_length=255, null=True, blank=True)
+    is_member = models.NullBooleanField(verbose_name="Är medlem?", blank=True, null=True, default=None)
 
     objects = IUserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
+    # This is where the menu options for a specific user is determined.
+    @property
+    def get_menu_choices(self):
+
+        menu_choices = []  # List of extra menu choices.
+
+        menu_choices.append(('Lägg upp innehåll', reverse('create content')))  # Everyone can create article.
+
+        menu_choices.append(('Min sida', reverse('mypage_view') ))
+
+
+        if self.article_set.filter(visible_to__gte=timezone.now()):
+             menu_choices.append(('Mina Artiklar', reverse('articles by user')))
+
+        menu_choices.append(('Mina Event', reverse('events by user')))
+
+        menu_choices.append(('Mina Anmälningar', reverse('registered_on_events')))
+
+        if self.has_perm("articles.can_approve_article"):
+            menu_choices.append(('Godkänn Innehåll', reverse('approve content')))  # With perm to edit articles.
+
+        if self.is_staff:
+            menu_choices.append(('Admin', '/admin'))  # Staff users who can access Admin page.
+
+        if self.has_perm("user_managements.add_iuser"):
+            menu_choices.append(("Lägg till Liu-idn i whitelist", reverse('add users to whitelist')))
+
+        if self.has_perm("organisations.add_organisation"):
+            menu_choices.append(("Lägg till en organisation", reverse('add organisation')))
+
+        return menu_choices
+
     def get_full_name(self):
-        #fullname = self.first_name+" "+self.last_name
-        return self.username
+        try:
+            return self.first_name+" "+self.last_name
+        except:
+            return self.username
 
     def get_short_name(self):
         return self.username
@@ -74,11 +112,23 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     def _get_email(self):
         return self.username + "@student.liu.se"
 
-    email = property(_get_email)
+    # email = property(_get_email)
 
     def __str__(self):
         return self.username
 
+    @property
+    def update_from_kobra_url(self):
+        return reverse("update user from kobra", kwargs={'liu_id': self.username})
+
     class Meta:
         verbose_name = "användare"
         verbose_name_plural = "användare"
+
+    def get_organisations(self):
+        organisations = []
+        groups = self.groups.all()
+        if groups:
+            for g in groups:
+                organisations = organisations + list(Organisation.objects.filter(group=g))
+        return organisations

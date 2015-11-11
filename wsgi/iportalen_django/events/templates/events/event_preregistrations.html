@@ -1,0 +1,27 @@
+{% extends "master.html" %}
+{% load event_tags %}
+{% block content %}
+    <p>Antal deltagare: {{ event.number_of_preregistrations }}</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Liu-id</th><th>Förnamn</th><th>Efternamn</th><th>Tid</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in event.preregistrations %}
+                    <tr>
+                        <td>{{ entry.username }}</td>
+                        <td>{{ entry.first_name }}</td>
+                        <td>{{ entry.last_name }}</td>
+                        <td>{{ entry.timestamp }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url "event_preregistrations_download" event.pk %}"><button type="button">Ladda ner föranmälda</button></a>
+        {% event_can_administer event request.user as can_administer %}
+        {% if can_administer %}
+            <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
+        {% endif %}
+{% endblock %}

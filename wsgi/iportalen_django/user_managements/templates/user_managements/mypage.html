@@ -1,0 +1,20 @@
+{% extends "master.html" %}
+
+{% block content %}
+
+    {% with u=request.user %}
+
+    <h3>Namn: {{ u.first_name|default:"Du har inte angett någon information"|capfirst}}
+    {{ u.last_name|default:"Du har inte angett någon information"|capfirst}}</h3>
+    <h4>Liu-id: {{ u.username}}</h4>
+    <p>Adress: {{ u.address|default:"Du har inte angett någon information"}} {{ u.zip_code|default:""}} {{ u.city|default:""}}</p>
+    <p>Allergier: {{ u.allergies|default:"Du har inte angett någon information"}}</p>
+
+    {% endwith %}
+
+
+    <a href="{% url "change_user_info_view" %}"><button>Ändra uppgifter</button></a>
+    <a href="{% url "password_change" %}"><button>Byt lösenord</button></a>
+
+
+{% endblock %}
