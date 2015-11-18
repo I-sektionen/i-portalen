@@ -1790,6 +1790,7 @@ article.single-article-preview .article-type-and-date {
   display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
+  margin-bottom: 0.5em;
 }
 article.single-article-preview .fa.large {
   font-family: 'FontAwesome';
