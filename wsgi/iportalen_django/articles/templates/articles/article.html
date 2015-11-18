@@ -1,3 +1,8 @@
+<!--
+--
+- This files contains the view rendered for *single articles*
+-
+-->
 {% extends "master.html" %}
 {% load article_tags %}
 {% load iportalen_tags %}
@@ -26,6 +31,5 @@
         </p>
         <a href="{{ article.get_absolute_url }}">Läs mer</a>
         <hr>
-
     </article>
 {% endblock %}
