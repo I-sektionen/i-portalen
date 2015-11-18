@@ -5,7 +5,6 @@
 {% block hero %}
 {% endblock %}
 {% block content %}
-
     <ul class="accordion-tabs">
         <li class ="tab-header-and-content">
             <a href="javascript:void(0)" class="is-active tab-link">Ändra evenemang</a>
@@ -13,14 +12,13 @@
                 <h1>Skapa event</h1>
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <div id = article-create-large>
+                    <div id="event-column-left">
                         {{ form.non_field_errors }}
                         {{ form.non_field_errors }}
                         {{ form.headline.label_tag }}
                         {{ form.headline.errors }}
                         {{ form.headline }}
-                        <hr>
-                        <div id="event-create-form-main">
+                        <section id="event-create-form-main">
                         {{ form.lead.label_tag }}
                         {{ form.lead.errors }}
                         {{ form.lead }}
@@ -28,10 +26,8 @@
                         {{ form.body.errors }}
                             <div class="wmd-panel">
                                 <div id="wmd-button-bar-body"></div>
-                            {{ form.body }}
-                        </div>
-
-                        </div>
+                                {{ form.body }}
+                            </div>
                         <div>
                             {{ form.start.label_tag }}
                             {{ form.start.errors }}
@@ -46,61 +42,62 @@
                         {{ form.location.label_tag }}
                         {{ form.location.errors }}
                         {{ form.location }}
-                        <hr>
                     </div>
-                    <div id="article-create-small">
-                        <div id="event-create-form-other-details">
-                            <div>
-                                {{ form.registration_limit.label_tag }}
-                                {{ form.registration_limit.errors }}
-                                {{ form.registration_limit }}
-                            </div>
-                            <div>
-                                {{ form.deregister_delta.label_tag }}
-                                {{ form.deregister_delta.errors }}
-                                {{ form.deregister_delta }}
-                            </div>
-                            <div>
-                                {{ form.extra_deadline.label_tag }}
-                                {{ form.extra_deadline.errors }}
-                                {{ form.extra_deadline }}
+                    <div id="event-column-right">
+                        <div>
+                            {{ form.registration_limit.label_tag }}
+                            {{ form.registration_limit.errors }}
+                            {{ form.registration_limit }}
+                        </div>
+                        <div>
+                            {{ form.deregister_delta.label_tag }}
+                            {{ form.deregister_delta.errors }}
+                            {{ form.deregister_delta }}
+                            <p>{{ form.deregister_delta.help_text }}</p>
+                        </div>
+                        <div>
+                            {{ form.extra_deadline.label_tag }}
+                            {{ form.extra_deadline.errors }}
+                            {{ form.extra_deadline }}
+                            <div id="extra_descr">
                                 {{ form.extra_deadline_text.label_tag }}
                                 {{ form.extra_deadline_text.errors }}
                                 {{ form.extra_deadline_text }}
                             </div>
-                            <div>
-                                {{ form.organisations.errors }}
-                                {{ form.organisations.label_tag }}
-                                <p>{{ form.organisations.help_text }}</p>
-                                {{ form.organisations }}
-                            </div>
-                            <div>
-                                {{ form.tags.label_tag }}
-                                {{ form.tags.errors }}
-                                <p>{{ form.tags.help_text }}</p>
-                                {{ form.tags }}
-                            </div>
-                            <div>
-                                {{ form.visible_from.label_tag }}
-                                {{ form.visible_from.errors }}
-                                <p>{{ form.visible_from.help_text }}</p>
-                                {{ form.visible_from }}
-                            </div>
-                            <div>
-                                {{ form.enable_registration.label_tag }}
-                                {{ form.enable_registration.errors }}
-                                <p>{{ form.enable_registration.help_text }}</p>
-                                {{ form.enable_registration }}
-                            </div>
-                            <div>
-                                {{ form.draft.label_tag }}
-                                {{ form.draft.errors }}
-                                {{ form.draft }}
-                                <p>{{ form.draft.help_text }}</p>
-                            </div>
                         </div>
+                        <div>
+                            {{ form.organisations.errors }}
+                            {{ form.organisations.label_tag }}
+                            {{ form.organisations }}
+                            <p>{{ form.organisations.help_text }}</p>
 
-                        <div id="article-create-form-buttons">
+                        </div>
+                        <div>
+                            {{ form.tags.label_tag }}
+                            {{ form.tags.errors }}
+                            {{ form.tags }}
+                            <p>{{ form.tags.help_text }}</p>
+                        </div>
+                        <div>
+                            {{ form.visible_from.label_tag }}
+                            {{ form.visible_from.errors }}
+                            {{ form.visible_from }}
+                            <p>{{ form.visible_from.help_text }}</p>
+                        </div>
+                        <div>
+                            {{ form.enable_registration.label_tag }}
+                            {{ form.enable_registration.errors }}
+                            {{ form.enable_registration }}
+                            <p>{{ form.enable_registration.help_text }}</p>
+                        </div>
+                        <div>
+                            {{ form.draft.label_tag }}
+                            {{ form.draft.errors }}
+                            {{ form.draft }}
+                            <p>{{ form.draft.help_text }}</p>
+                        </div>
+                        </section>
+                        <div id="event-create-form-buttons">
                             <button type="submit">Publicera eventet</button>
                         </div>
                     </div>

@@ -44,26 +44,26 @@ class Event(models.Model):
     registration_limit = models.PositiveIntegerField(verbose_name='Antal platser', help_text="Hur många kan anmäla sig?" ,blank=True, null=True)
 
     extra_deadline = models.DateTimeField(
-        verbose_name='extra anmälningsstopp',
-        help_text="Exempelvis: sista anmälningsdatum för mat. Kan lämnas tomt.",
+        verbose_name='Datum för extra anmälningsstopp',
+        help_text="Ex. för mat. Kan lämnas tomt.",
         blank=True,
         null=True)
     extra_deadline_text = models.CharField(max_length=255,
-                                           verbose_name="beskrivning till det extra anmälningsstoppet",
-                                           help_text="Ex. få mat, garanteras fika osv. Lämna tomt om extra anmälningsstopp ej angivits.",
+                                           verbose_name="Beskrivning",
+                                           help_text="Ex. få mat, garanteras fika osv.",
                                            blank=True,
                                            null=True)
     # Dagar innan start för avanmälan. Räknas bakåt från 'start'
-    deregister_delta = models.PositiveIntegerField(verbose_name='Sista dag för anvanmälan',
+    deregister_delta = models.PositiveIntegerField(verbose_name='Sista dag för avanmälan',
                                                    default=1,
-                                                   help_text="Sista dag för avanmälan i antal dagar innan eventet")
+                                                   help_text="OBS! Heltalen motsvarar antalet 24h innan eventets början och ej 23.59.")
 
     visible_from = models.DateTimeField(verbose_name="Datum för publicering")
 
     #  Access rights
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)  # User with admin rights/creator.
     # The group which has admin rights. If left blank is it only the user who can admin.
-    tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
+    tags = models.ManyToManyField(Tag, verbose_name='tag', help_text="Använd Ctrl- alt. Cmd-knapp för att markera flera taggar.", blank=True)
 
     status = models.CharField(max_length=1, choices=STATUSES, default=DRAFT, blank=False, null=False)
     rejection_message = models.TextField(blank=True, null=True)

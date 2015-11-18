@@ -10,7 +10,7 @@
                 <h1>Skapa artikel</h1>
                 <form action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <div id = article-create-large>
+                    <div id = article-column-left>
                         {{ form.non_field_errors }}
                         <section id="article-create-form-text">
                             {{ form.headline.errors }}
@@ -32,22 +32,17 @@
                             {{ form.attachment }}
                             <p>{{ form.attachment.help_text }}</p>
                     </div>
-                    <div id="article-create-small">
-                            {{ form.organisations.errors }}
-                            {{ form.organisations.label_tag }}
-                            {{ form.organisations }}
-                            <p>{{ form.organisations.help_text }}</p>
+                    <div id="article-column-right">
+                        {{ form.organisations.errors }}
+                        {{ form.organisations.label_tag }}
+                        {{ form.organisations }}
+                        <p>{{ form.organisations.help_text }}</p>
 
                         {{ form.tags.errors }}
                         {{ form.tags.label_tag }}
                         {{ form.tags }}
 
                         <p>{{ form.tags.help_text }}</p>
-                        {{ form.draft.errors }}
-
-                        {{ form.draft.label_tag }}
-                        {{ form.draft }}
-                        <p>{{ form.draft.help_text }}</p>
 
                         {{ form.visible_from.errors }}
                         {{ form.visible_from.label_tag }}
@@ -55,6 +50,11 @@
                         {{ form.visible_to.errors }}
                         {{ form.visible_to.label_tag }}
                         {{ form.visible_to }}
+
+                        {{ form.draft.errors }}
+                        {{ form.draft.label_tag }}
+                        {{ form.draft }}
+                        <p>{{ form.draft.help_text }}</p>
 
                         </section>
                         <div id="article-create-form-buttons">

@@ -35,7 +35,7 @@ class Article(models.Model):
                              help_text="Användaren som skrivit texten",
                              null=True,
                              on_delete=models.SET_NULL)
-    tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
+    tags = models.ManyToManyField(Tag, verbose_name='tag', help_text="Använd Ctrl- alt. Cmd-knapp för att markera flera taggar.", blank=True)
 
     attachment = models.FileField(verbose_name='Bifogad fil',
                              help_text="Bifogad fil för artikel",
