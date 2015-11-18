@@ -1,8 +1,10 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from .models import PartialBooking, BookingSlot, Booking
+"""
+from .models import PartialBooking, BookingSlot
 
-from django.utils import timezone
+from datetime import timedelta
+
 
 class BookingManager(models.Manager):
 
@@ -13,39 +15,40 @@ class BookingManager(models.Manager):
         partial_bookings = []
 
         slots = BookingSlot.filter(bookable=bookable).order_by("-start_time")
-        booking = Booking(user=user, bookable=bookable)  # Temporary booking, not saved yet!
+        booking = self.model(user=user, bookable=bookable)  # Temporary booking, not saved yet!
         if len(slots) == 0:
             return False
 
         while has_next:
             try:
                 p = PartialBooking(booking=booking,
-                               slot=slot,
-                               date=date)
+                                   slot=slot,
+                                   date=date)
                 p.full_clean(validate_unique=True)
                 partial_bookings.append(p)
             except ValidationError:
                 return False
 
-            #Try to book next slot.
+            # Try to book next slot.
 
-            if (date == end_date) and (slot == end_slot):
-                # Last slot to book => break!
-                break
+            if (date >= end_date) and (slot == end_slot):
+                has_next = False
             else:
                 # if last slot of the day, add day and jump to first slot.
                 if slots == slots.reverse[0]:
                     slot = slots[0]
-                    print()
-
-
-            # Last day
-
-
-            # Not last slot
-
-
-
-
-
-        return
+                    date = date + timedelta(days=1)
+                else:
+                    # Go to the next slot.
+                    cnt = 0
+                    for s in slots:
+                        if s == slot:
+                            break
+                        cnt = + 1
+                    if cnt + 1 >= len(slots):
+                        slot = slots[0]
+                    else:
+                        slot = slots[cnt+1]
+        booking.save()
+        return booking
+"""
