@@ -3,7 +3,8 @@ from django.db import models
 from django.conf import settings
 from datetime import datetime, timedelta
 
-#from .managers import BookingManager
+
+
 
 class Bookable(models.Model):
     name = models.CharField(max_length=512)
@@ -28,21 +29,6 @@ class BookingSlot(models.Model):
     class Meta:
         verbose_name = 'bokningsblock'
         verbose_name_plural = 'bokningsblock'
-
-
-class Booking(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="bokad av")
-    bookable = models.ForeignKey(Bookable, verbose_name='boknings objekt')
-
-    #objects = BookingManager
-
-    class Meta:
-        permissions = (("unlimited_num_of_bookings", "Unlimited number of bookings"),)
-        verbose_name = 'bokning'
-        verbose_name_plural = 'bokningar'
-
-    def __str__(self):
-        return self.bookable.name + ", av " + self.user.username
 
 
 class PartialBooking(models.Model):
@@ -73,7 +59,7 @@ class Invoice(models.Model):
                               default=CREATED)
 
     due = models.DateField(default=datetime.now()+timedelta(days=30), verbose_name='förfallo dag')
-    booking = models.ForeignKey(Booking, verbose_name='bokning')
+    booking = models.ForeignKey("Booking", verbose_name='bokning')
 
     def get_absolute_url(self):
         return reverse('bookings.views.invoice_pdf', args=[str(self.pk)])
@@ -159,3 +145,22 @@ class VariableCostAmount(models.Model):
 
     def __str__(self):
         return self.template.title
+
+# This has to be here. Sorry! (PartialBooking is not loaded when this import occurs otherwise.)
+# TODO: Refactor this model file inte several parts.
+from .managers import BookingManager
+
+
+class Booking(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="bokad av")
+    bookable = models.ForeignKey(Bookable, verbose_name='boknings objekt')
+
+    objects = BookingManager()
+
+    class Meta:
+        permissions = (("unlimited_num_of_bookings", "Unlimited number of bookings"),)
+        verbose_name = 'bokning'
+        verbose_name_plural = 'bokningar'
+
+    def __str__(self):
+        return self.bookable.name + ", av " + self.user.username
