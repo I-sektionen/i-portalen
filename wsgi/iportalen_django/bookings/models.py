@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 class Bookable(models.Model):
     name = models.CharField(max_length=512)
-    max_number_of_bookings = models.IntegerField()
+    max_number_of_bookings = models.IntegerField()  # Maximum number of simultaneous bookings.
 
     def __str__(self):
         return self.name
@@ -46,6 +46,8 @@ class PartialBooking(models.Model):
     booking = models.ForeignKey(Booking, related_name='bookings')
     slot = models.ForeignKey(BookingSlot)
     date = models.DateField()
+
+    next_slot = models.ForeignKey('self')
 
     class Meta:
         unique_together = (('slot', 'date'),)  # Make sure only one booking on one data and timeslot.
