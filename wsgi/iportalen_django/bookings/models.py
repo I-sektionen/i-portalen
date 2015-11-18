@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 from datetime import datetime, timedelta
 
+#from .managers import BookingManager
 
 class Bookable(models.Model):
     name = models.CharField(max_length=512)
@@ -19,7 +20,7 @@ class Bookable(models.Model):
 class BookingSlot(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
-    bookable = models.ForeignKey(Bookable)
+    bookable = models.ForeignKey("Bookable")
 
     def __str__(self):
         return str(self.start_time) + " - " + str(self.end_time) + " (" + self.bookable.name + ")"
@@ -33,6 +34,8 @@ class Booking(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="bokad av")
     bookable = models.ForeignKey(Bookable, verbose_name='boknings objekt')
 
+    #objects = BookingManager
+
     class Meta:
         permissions = (("unlimited_num_of_bookings", "Unlimited number of bookings"),)
         verbose_name = 'bokning'
@@ -43,8 +46,8 @@ class Booking(models.Model):
 
 
 class PartialBooking(models.Model):
-    booking = models.ForeignKey(Booking, related_name='bookings')
-    slot = models.ForeignKey(BookingSlot)
+    booking = models.ForeignKey("Booking", related_name='bookings')
+    slot = models.ForeignKey("BookingSlot")
     date = models.DateField()
 
     next_slot = models.ForeignKey('self')
