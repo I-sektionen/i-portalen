@@ -50,8 +50,6 @@ class PartialBooking(models.Model):
     slot = models.ForeignKey("BookingSlot")
     date = models.DateField()
 
-    next_slot = models.ForeignKey('self')
-
     class Meta:
         unique_together = (('slot', 'date'),)  # Make sure only one booking on one data and timeslot.
         verbose_name = 'delbokning'
