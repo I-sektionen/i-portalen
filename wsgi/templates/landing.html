@@ -12,12 +12,12 @@
                 {% with article=content %}
                     <article class="single-article-preview">
                         <div class="article-type-and-date">
-                           <!-- <p class="type">Nyhet</p>-->
-                                <i class="fa fa-newspaper-o large"></i>
-                                <div class="article-preview-time-organisation">
+                            <!-- <p class="type">Nyhet</p>-->
+                            <i class="fa fa-newspaper-o large"></i>
+                            <div class="article-preview-time-organisation">
                                 <p class="article-preview-type">{{ article.organisations.all|safeseq|join:", " }}</p>
                                 <p class="article-preview-type time-since">{{ article.visible_from|timesince}}</p>
-                                </div>
+                            </div>
                         </div>
 
                         <h1>{{ article.headline }}</h1>
@@ -38,11 +38,14 @@
                 {% with event=content %}
                     <article class="single-article-preview">
                         <div class="article-type-and-date">
-
-                            <p class="type">Event</p>
+                            <div class="article-type-and-date">
+                                <!-- <p class="type">Nyhet</p>-->
                                 <i class="fa fa-calendar large"></i>
-                                <span>{{ event.organisations.all|safeseq|join:", " }}</span>
-                                <span>{{ event.visible_from|timesince}}</span>
+                                <div class="article-preview-time-organisation">
+                                    <p class="article-preview-type">{{ event.organisations.all|safeseq|join:", " }}</p>
+                                    <p class="article-preview-type time-since">{{ event.visible_from|timesince}}</p>
+                                </div>
+                            </div>
                         </div>
                         <h1>{{ event.headline }}</h1>
                         <p class="date">

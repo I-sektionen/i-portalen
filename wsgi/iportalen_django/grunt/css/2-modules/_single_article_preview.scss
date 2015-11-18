@@ -27,6 +27,7 @@ article.single-article-preview {
   .article-type-and-date
   {
     @include display(flex);
+    margin-bottom: 0.5em;
 
   }
 
