@@ -533,7 +533,6 @@ select {
 
 ul,
 ol {
-  list-style-type: none;
   margin: 0;
   padding: 0;
 }
@@ -2386,6 +2385,36 @@ article.news-feed-content p.author {
     border: 1px solid #DDD;
     float: left;
   }
+}
+
+#speaker_list {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#speaker_list::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+#speaker_list ol {
+  list-style-position: inside;
+}
+#speaker_list ol li:nth-child(1) {
+  font-size: 70pt;
+  color: #333;
+}
+#speaker_list ol li:nth-child(2) {
+  font-size: 50pt;
+}
+#speaker_list ol li:nth-child(3) {
+  font-size: 35pt;
+}
+#speaker_list ol li {
+  color: gray;
+  font-size: 25pt;
+  text-transform: uppercase;
+  font-weight: 800;
 }
 
 /*# sourceMappingURL=iportalen.css.map */

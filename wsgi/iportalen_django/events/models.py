@@ -8,6 +8,7 @@ from organisations.models import Organisation
 
 from tags.models import Tag
 from .exceptions import CouldNotRegisterException
+from .managers import SpeakerListManager
 # A user can register and deregister
 # The admin can:
 # - Change properties of an event
@@ -308,31 +309,91 @@ class Event(models.Model):
             return True
         return False
 
-    def get_speaker(self, speech_nr):
+    #Add speaker
+    #remove speaker
+    #Move up speaker
+    #Move down
+    #Clear list
+    #Get all
+
+    def get_user_from_speech_nr(self, speech_nr):
         return self.entryasparticipant_set.get(speech_nr=speech_nr)
 
-    def add_speaker(self, speech_nr):
-        user = self.get_speaker(speech_nr).user
-        SpeakerList.objects.create(event=self, user=user)
+    def get_speech_num_from_user(self, user):
+        return self.entryasparticipant_set.get(user=user).speech_nr
+
+    def add_speaker_to_queue(self, speech_nr):
+        u = self.get_user_from_speech_nr(speech_nr=speech_nr).user
+        q = SpeakerList.objects.filter(event=self)
+        first_object = not SpeakerList.objects.filter(event=self).exists()
+        if not first_object:
+            last = SpeakerList.objects.get(event=self, next_speaker=None)
+            s = SpeakerList.objects.create(user=u, event=self)
+            s.first = False
+            last.next_speaker = s
+            last.save()
+        else:
+            s = SpeakerList.objects.create(user=u, event=self)
+            s.first = True
+            print("Forst")
+        s.save()
         return True
 
-    def pop_speaker(self):
-        try:
-            speaker = SpeakerList.objects.filter(event=self).order_by("timestamp")[0]
-            speaker.delete()
-            return True
-        except:
-            return False
+    def clear_speaker_queue(self):
+        q = SpeakerList.objects.filter(event=self)
+        for element in q:
+            element.delete()
 
-    def clear_speakers(self):
-        try:
-            speaker = SpeakerList.objects.filter(event=self).delete()
-            return True
-        except:
-            return False
+    def remove_first_speaker_from_queue(self):
+        sp = SpeakerList.objects.get_first(event=self)
+        if sp.next_speaker is not None:
+            sp.next_speaker.first = True
+            sp.next_speaker.save()
+        sp.delete()
+    
+    def remove_speaker_from_queue(self, speech_nr):
+        u = self.get_user_from_speech_nr(speech_nr=speech_nr).user
+        to_remove = SpeakerList.objects.filter(event=self, user=u)
+        for ele in to_remove:
+            self._remove_speaker_from_queue(ele)
 
-    def get_speaker_list(self):
-        return SpeakerList.objects.filter(event=self).order_by("timestamp")
+    def _remove_speaker_from_queue(self, to_remove):
+        before = None
+        after = None
+        try:
+            before = SpeakerList.objects.get(next_speaker=to_remove)
+        except ObjectDoesNotExist:
+            pass
+        try:
+            after = to_remove.next_speaker
+        except ObjectDoesNotExist:
+            pass
+        if (before is None) and (after is not None):
+            # First element of several
+            after.first = True
+            after.save()
+        elif (before is not None) and (after is not None):
+            # Middle element
+            before.next_speaker = after
+            before.save()
+        # Case: Single element, last element.
+        to_remove.delete()
+
+    def get_speaker_queue(self):
+        try:
+            first = SpeakerList.objects.get(event=self, first=True)
+        except ObjectDoesNotExist:
+            return []
+
+        result = []
+        result.append({'first_name': first.user.first_name,
+                       'last_name': first.user.last_name})
+        next = first.next_speaker
+        while next is not None:
+            result.append({'first_name': next.user.first_name,
+                           'last_name': next.user.last_name})
+            next = next.next_speaker
+        return result
 
     class Meta:
         verbose_name = "Arrangemang"
@@ -418,7 +479,42 @@ class EntryAsParticipant(models.Model):
 class SpeakerList(models.Model):
     event = models.ForeignKey(Event, verbose_name="arrangemang", null=True, on_delete=models.SET_NULL)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    first = models.NullBooleanField(default=None)
+    next_speaker = models.ForeignKey('self', null=True, blank=True, default=None, on_delete=models.SET_NULL)
+
+    objects = SpeakerListManager()
+
+    def move_up(self):
+        if self.first:
+            return
+        # Find event above and switch order
+        above = SpeakerList.objects.get(next_speaker=self)
+        above.next_speaker = self.next_speaker
+        self.next_speaker = above
+        if above.first:
+            self.first = True
+            above.first = False
+        self.save()
+        above.save()
+
+    def move_down(self):
+        if self.next_speaker is None:
+            return
+        below = self.next_speaker
+        if self.first:
+            if below is None:
+                return
+            self.next_speaker = below.next_speaker
+            below.next_speaker = self
+            below.first = True
+        else:
+            above = SpeakerList.object.get(next_speaker=self)
+            above.next_speaker = below
+            self.next_speaker = below.next_speaker
+            below.next_speaker = self
+            above.save()
+        self.save()
+        below.save()
 
     def __str__(self):
         return str(self.event) + " | " + str(self.user)
