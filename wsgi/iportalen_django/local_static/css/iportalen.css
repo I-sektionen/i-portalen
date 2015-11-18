@@ -1774,11 +1774,33 @@ article.single-article-preview::after {
   content: "";
   display: table;
 }
+article.single-article-preview p.article-preview-type {
+  margin: 0 8px;
+  color: #ababab;
+  font-size: 14px;
+}
+article.single-article-preview p.time-since:after {
+  content: ' sedan';
+}
+article.single-article-preview .article-type-and-date {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+article.single-article-preview .fa.large {
+  font-family: 'FontAwesome';
+  font-size: 2em;
+  margin-top: 8px;
+}
 article.single-article-preview h1, article.single-article-preview h2, article.single-article-preview h3, article.single-article-preview p {
   margin: 0;
 }
 article.single-article-preview hr {
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #c4c4c4;
   border-left: none;
   border-right: none;
   border-top: none;
@@ -1824,7 +1846,7 @@ article.single-article-preview h2 {
 }
 @media screen and (min-width: 600px) {
   article.single-article-preview h2 {
-    font-size: 1.2em;
+    font-size: 1em;
   }
 }
 article.single-article-preview code {
