@@ -11,12 +11,19 @@
             {% if content.type == "article" %}
                 {% with article=content %}
                     <article class="single-article-preview">
-                        <p class="type">Nyhet</p>
-                        <p class="author">{{ article.organisations.all|safeseq|join:", " }}</p>
+                        <div class="article-type-and-date">
+                           <!-- <p class="type">Nyhet</p>-->
+                                <i class="fa fa-newspaper-o large"></i>
+                                <div class="article-preview-time-organisation">
+                                <p class="article-preview-type">{{ article.organisations.all|safeseq|join:", " }}</p>
+                                <p class="article-preview-type time-since">{{ article.visible_from|timesince}}</p>
+                                </div>
+                        </div>
+
                         <h1>{{ article.headline }}</h1>
                         <h2>{{ article.lead|truncatewords_html:50 }}</h2>
                         <p class="date">
-                            {{ article.created|date:"Y-m-d" }}
+
                             {% if article.tags.all  %}
                                 <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
                             {% endif %}
@@ -27,12 +34,16 @@
                     </article>
                 {% endwith %}
             {% endif %}
-
             {% if content.type == "event" %}
                 {% with event=content %}
                     <article class="single-article-preview">
-                        <p class="type">Event</p>
-                        <p class="author">{{ event.organisations.all|safeseq|join:", " }}</p>
+                        <div class="article-type-and-date">
+
+                            <p class="type">Event</p>
+                                <i class="fa fa-calendar large"></i>
+                                <span>{{ event.organisations.all|safeseq|join:", " }}</span>
+                                <span>{{ event.visible_from|timesince}}</span>
+                        </div>
                         <h1>{{ event.headline }}</h1>
                         <p class="date">
                             <i class="fa fa-calendar"></i>
@@ -43,9 +54,6 @@
 
                             <i class="fa fa-map-o"></i>
                             <span class="meta-content">{{ event.location }}</span>
-
-
-
 
                         </p>
                         <h2>{{ event.lead|truncatewords_html:50 }}</h2>

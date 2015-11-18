@@ -14,12 +14,33 @@ article.single-article-preview {
   font-family: $sans-serif;
   text-align: left;
 
+  p.article-preview-type {
+    margin: 0 8px;
+    color: darken($light-gray, 30%);
+    font-size: 14px
+  }
+
+  p.time-since:after{
+      content: ' sedan';
+    }
+
+  .article-type-and-date
+  {
+    @include display(flex);
+
+  }
+
+  .fa.large{
+    font-family: 'FontAwesome';
+    font-size: 2em;
+    margin-top: 8px;
+  }
   h1, h2, h3, p {
     margin: 0;
   }
 
   hr {
-    border-bottom: 1px solid $dark-gray;
+    border-bottom: 1px solid darken($light-gray, 20%);
     border-left: none;
     border-right: none;
     border-top: none;
@@ -68,7 +89,7 @@ article.single-article-preview {
     margin-bottom: 1.2em;
 
     @include media($medium-screen) {
-      font-size: 1.2em;
+      font-size: 1em;
     }
   }
 
