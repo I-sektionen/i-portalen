@@ -21,51 +21,6 @@ div#article-create-large
 #article-create-form-buttons
     margin-top: 5em
 
-
-article.news-preview
-    +span-columns(12)
-    border-radius: 3px
-    border-left: 3px solid $isektionen-yellow
-    padding: 0px 15px 15px 15px
-    //border-bottom: 2px solid $light-gray
-    margin-bottom: 1em
-    &:hover
-        //box-shadow: 1px 1px 5px $light-gray
-        +transition-duration(0.5s)
-    .meta
-        +display(flex)
-        +flex-wrap(wrap)
-        & > span::before
-            font-family: 'FontAwesome'
-        span
-            margin-right: 1em
-            padding: 10px 0
-            text-transform: uppercase
-            font-size: 12px
-        .date
-            &::before
-                padding-right: 0.5em
-                content: '\f073'
-        .tags
-            &::before
-                padding-right: 0.5em
-                content: '\f02b'
-        .author
-            &::before
-                padding-right: 0.5em
-                content: '\f040'
-    p
-        line-height: 1.5
-        font-size: 14px
-        margin: 1em 0
-
-    .read-more-fake
-        font-size: 1em
-
-    .article-lead
-        font-size: 14px
-        font-style: italic
-
 .pagination
     text-align: center
     .step-links
@@ -104,52 +59,6 @@ article.news-preview
             .active
                 background-color: #f2f0f1
 
-article.news-single-view
-    +span-columns(10)
-    padding: 0px 15px 15px 15px
-    margin-bottom: 1em
-    h5
-        font-weight: 700
-        font-size: 30px
-        padding-bottom: 5px
-        padding-top: 16px
-        border-bottom: 3px solid $light-gray
-    hr
-        +align-self(flex-start)
-    .meta
-        +display(flex)
-        +flex-wrap(wrap)
-        & > span::before
-            font-family: 'FontAwesome'
-        span
-            margin-right: 1em
-            padding: 10px 0
-            text-transform: uppercase
-            font-size: 12px
-        .date
-            &::before
-                padding-right: 0.5em
-                content: '\f073'
-        .tags
-            &::before
-                padding-right: 0.5em
-                content: '\f02b'
-        .author
-            &::before
-                padding-right: 0.5em
-                content: '\f040'
-    p
-        line-height: 1.5
-        font-size: 14px
-        margin: 1em 0
-
-    .article-lead
-        font-size: 14px
-        font-style: italic
-
-    .btn-read-more
-        //@media
-        +align-self(center)
 
 
 article.news-preview-organisation
