@@ -6,10 +6,16 @@
 
 {% block content %}
 
-    <article class="single-article">
-        <p class="type">Event</p>
+    <article class="news-feed-content">
+        <div class="article-type-and-date">
+            <!-- <p class="type">Nyhet</p>-->
+            <i class="fa fa-calendar large"></i>
+            <div class="article-preview-time-organisation">
+                <p class="article-preview-type">{{ event.organisations.all|safeseq|join:", " }}</p>
+                <p class="article-preview-type time-since">{{ event.visible_from|timesince}}</p>
+            </div>
+        </div>
         <h1>{{ event.headline }}</h1>
-        <h2>{{ event.lead }}</h2>
         <p class="date">
             <i class="fa fa-calendar"></i>
             <span class="meta-content">{{ event.start|date:"d N Y" }}</span>
@@ -19,11 +25,10 @@
 
             <i class="fa fa-map-o"></i>
             <span class="meta-content">{{ event.location }}</span>
+
         </p>
-        <p></p>
+        <h2>{{ event.lead|truncatewords_html:50 }}</h2>
         <p>{{ event.body|markdown }}</p>
-        <hr>
-        <p class="author">Skapad av {{ event.user }}</p>
     </article>
 
     <div class="register-button">
@@ -46,10 +51,10 @@
             {% else %}
                 <p><i class="fa fa-check-circle-o"></i> Du är anmäld.</p>
                 {% if event.can_deregister %}
-                <form method="post" action="{% url "unregister" event.pk %}">
-                    {% csrf_token %}
-                    <button type="submit" title="snälla">Avanmäl mig</button>
-                </form>
+                    <form method="post" action="{% url "unregister" event.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" title="snälla">Avanmäl mig</button>
+                    </form>
                 {% else %}
                     <p>Det är för sent att avanmäla sig nu.</p>
                 {% endif %}

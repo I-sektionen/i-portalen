@@ -1765,24 +1765,24 @@ article.event-preview-organisation p {
   margin-right: 0;
 }
 
-article.single-article-preview {
+article.news-feed-content {
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   text-align: left;
 }
-article.single-article-preview::after {
+article.news-feed-content::after {
   clear: both;
   content: "";
   display: table;
 }
-article.single-article-preview p.article-preview-type {
+article.news-feed-content p.article-preview-type {
   margin: 0 8px;
   color: #ababab;
   font-size: 14px;
 }
-article.single-article-preview p.time-since:after {
+article.news-feed-content p.time-since:after {
   content: ' sedan';
 }
-article.single-article-preview .article-type-and-date {
+article.news-feed-content .article-type-and-date {
   display: -webkit-box;
   display: -moz-box;
   display: box;
@@ -1792,30 +1792,30 @@ article.single-article-preview .article-type-and-date {
   display: flex;
   margin-bottom: 0.5em;
 }
-article.single-article-preview .fa.large {
+article.news-feed-content .fa.large {
   font-family: 'FontAwesome';
   font-size: 2em;
   margin-top: 8px;
 }
-article.single-article-preview h1, article.single-article-preview h2, article.single-article-preview h3, article.single-article-preview p {
+article.news-feed-content h1, article.news-feed-content h2, article.news-feed-content h3, article.news-feed-content p {
   margin: 0;
 }
-article.single-article-preview hr {
+article.news-feed-content hr {
   border-bottom: 1px solid #c4c4c4;
   border-left: none;
   border-right: none;
   border-top: none;
   margin: 1.5em 0;
 }
-article.single-article-preview p {
+article.news-feed-content p {
   color: #333;
   line-height: 1.5;
 }
-article.single-article-preview a {
+article.news-feed-content a {
   color: #2D701E;
   text-decoration: none;
 }
-article.single-article-preview .type {
+article.news-feed-content .type {
   border-bottom: 1px solid;
   display: inline-block;
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
@@ -1827,18 +1827,18 @@ article.single-article-preview .type {
   text-align: left;
   text-transform: uppercase;
 }
-article.single-article-preview h1 {
+article.news-feed-content h1 {
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   font-size: 1.2em;
   font-weight: 600;
   margin-bottom: 0.6em;
 }
 @media screen and (min-width: 600px) {
-  article.single-article-preview h1 {
+  article.news-feed-content h1 {
     font-size: 2em;
   }
 }
-article.single-article-preview h2 {
+article.news-feed-content h2 {
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   font-size: 1.0em;
   font-weight: 400;
@@ -1846,11 +1846,11 @@ article.single-article-preview h2 {
   margin-bottom: 1.2em;
 }
 @media screen and (min-width: 600px) {
-  article.single-article-preview h2 {
+  article.news-feed-content h2 {
     font-size: 1em;
   }
 }
-article.single-article-preview code {
+article.news-feed-content code {
   background: #F7F7F7;
   border-radius: 4.5px;
   border: 1px solid #E0E0E0;
@@ -1860,7 +1860,7 @@ article.single-article-preview code {
   padding: 0.1em 0.4em;
   white-space: nowrap;
 }
-article.single-article-preview h3 {
+article.news-feed-content h3 {
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   font-size: 1em;
   font-weight: 700;
@@ -1868,31 +1868,31 @@ article.single-article-preview h3 {
   margin-bottom: 0.5em;
   text-transform: uppercase;
 }
-article.single-article-preview p.date {
+article.news-feed-content p.date {
   color: rgba(51, 51, 51, 0.4);
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   font-size: 1em;
   margin-bottom: 0.5em;
 }
-article.single-article-preview p.date span {
+article.news-feed-content p.date span {
   margin-right: 1em;
 }
-article.single-article-preview p {
+article.news-feed-content p {
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   font-weight: 300;
   letter-spacing: 1;
   margin-bottom: 1.5em;
 }
-article.single-article-preview p span {
+article.news-feed-content p span {
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   font-size: 0.8em;
   font-weight: 600;
   text-transform: uppercase;
 }
-article.single-article-preview hr {
+article.news-feed-content hr {
   color: #333;
 }
-article.single-article-preview a.read-more {
+article.news-feed-content a.read-more {
   display: inline-block;
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   font-size: 0.8em;
@@ -1901,13 +1901,13 @@ article.single-article-preview a.read-more {
   position: relative;
   text-transform: uppercase;
 }
-article.single-article-preview a.read-more span {
+article.news-feed-content a.read-more span {
   font-size: 1.7em;
   position: absolute;
   right: -10px;
   top: -2px;
 }
-article.single-article-preview p.author {
+article.news-feed-content p.author {
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   font-style: italic;
 }
@@ -2252,130 +2252,6 @@ article.single-article-preview p.author {
 }
 #article-create-form .errorlist {
   color: #e33c3c;
-}
-
-article.single-article {
-  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-  text-align: left;
-}
-article.single-article::after {
-  clear: both;
-  content: "";
-  display: table;
-}
-article.single-article h1, article.single-article h2, article.single-article h3, article.single-article p {
-  margin: 0;
-}
-article.single-article hr {
-  border-bottom: 1px solid #f7f7f7;
-  border-left: none;
-  border-right: none;
-  border-top: none;
-  margin: 1.5em 0;
-}
-article.single-article p {
-  color: #333;
-  line-height: 1.5;
-}
-article.single-article a {
-  color: #f9d026;
-  text-decoration: none;
-}
-article.single-article .type {
-  border-bottom: 1px solid;
-  display: inline-block;
-  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-  font-size: 0.7em;
-  font-weight: 900;
-  letter-spacing: 1px;
-  margin-bottom: 2em;
-  padding: 0.1em 0;
-  text-align: left;
-  text-transform: uppercase;
-}
-article.single-article h1 {
-  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-  font-size: 2em;
-  font-weight: 600;
-  margin-bottom: 0.6em;
-}
-@media screen and (min-width: 600px) {
-  article.single-article h1 {
-    font-size: 2.4em;
-  }
-}
-article.single-article h2 {
-  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-  font-size: 1.2em;
-  font-weight: 400;
-  line-height: 1.4em;
-  margin-bottom: 1.2em;
-}
-@media screen and (min-width: 600px) {
-  article.single-article h2 {
-    font-size: 1.4em;
-  }
-}
-article.single-article code {
-  background: #F7F7F7;
-  border-radius: 4.5px;
-  border: 1px solid #E0E0E0;
-  font-family: monaco;
-  font-size: 0.65em;
-  font-style: normal;
-  padding: 0.1em 0.4em;
-  white-space: nowrap;
-}
-article.single-article h3 {
-  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-  font-size: 1em;
-  font-weight: 700;
-  line-height: 1.4em;
-  margin-bottom: 0.5em;
-  text-transform: uppercase;
-}
-article.single-article p.date {
-  color: rgba(51, 51, 51, 0.4);
-  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-  font-size: 1em;
-  margin-bottom: 0.5em;
-}
-article.single-article p.date span {
-  margin-right: 1em;
-}
-article.single-article p {
-  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-  font-weight: 300;
-  letter-spacing: 1;
-  margin-bottom: 1.5em;
-}
-article.single-article p span {
-  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-  font-size: 0.8em;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-article.single-article hr {
-  width: 3em;
-}
-article.single-article a.read-more {
-  display: inline-block;
-  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-  font-size: 0.8em;
-  font-weight: 700;
-  margin-left: 0.2em;
-  position: relative;
-  text-transform: uppercase;
-}
-article.single-article a.read-more span {
-  font-size: 1.7em;
-  position: absolute;
-  right: -10px;
-  top: -2px;
-}
-article.single-article p.author {
-  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-  font-style: italic;
 }
 
 .accordion-tabs {

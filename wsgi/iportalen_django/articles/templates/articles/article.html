@@ -7,23 +7,25 @@
 {% endblock %}
 
 {% block content %}
-    <article class="single-article">
-        <p class="type">Nyhet</p>
+    <article class="news-feed-content">
+        <div class="article-type-and-date">
+            <!-- <p class="type">Nyhet</p>-->
+            <i class="fa fa-newspaper-o large"></i>
+            <div class="article-preview-time-organisation">
+                <p class="article-preview-type">{{ article.organisations.all|safeseq|join:", " }}</p>
+                <p class="article-preview-type time-since">{{ article.visible_from|timesince}}</p>
+            </div>
+        </div>
         <h1>{{ article.headline }}</h1>
-        <h2>{{ article.lead }}</h2>
+        <h2>{{ article.lead|truncatewords_html:50 }}</h2>
         <p class="date">
-            {{ article.created|date:"Y-m-d" }}
+
             {% if article.tags.all  %}
                 <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
             {% endif %}
         </p>
-        <p>{{ article.body|markdown }}</p>
+        <a href="{{ article.get_absolute_url }}">Läs mer</a>
         <hr>
-        <p class="author">{{ article.organisations.all|safeseq|join:", " }}</p>
-        {% if article.attachment %}
-            <p>Bifogad fil: {{ article.filename }}
-                <a href="{% url "article_download" article.pk %}"><button type="button">Ladda ner</button></a>
-            </p>
-        {% endif %}
+
     </article>
 {% endblock %}

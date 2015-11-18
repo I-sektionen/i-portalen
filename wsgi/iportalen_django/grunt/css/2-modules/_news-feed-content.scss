@@ -1,10 +1,10 @@
-article.single-article {
+article.news-feed-content {
   $base-border-radius: 3px !default;
   $base-line-height: 1.5em !default;
   $base-spacing: 1.5em !default;
-  $action-color: #477DCA !default;
-  $dark-gray: #333 !default;
-  $light-gray: #DDD !default;
+  $action-color: $isektionen-green;
+  //$dark-gray: #333 !default;
+  //$light-gray: #DDD !default;
   $medium-screen: em(640) !default;
   $base-font-color: $dark-gray !default;
   $sans-serif: $base-font-family;
@@ -14,12 +14,34 @@ article.single-article {
   font-family: $sans-serif;
   text-align: left;
 
+  p.article-preview-type {
+    margin: 0 8px;
+    color: darken($light-gray, 30%);
+    font-size: 14px
+  }
+
+  p.time-since:after{
+      content: ' sedan';
+    }
+
+  .article-type-and-date
+  {
+    @include display(flex);
+    margin-bottom: 0.5em;
+
+  }
+
+  .fa.large{
+    font-family: 'FontAwesome';
+    font-size: 2em;
+    margin-top: 8px;
+  }
   h1, h2, h3, p {
     margin: 0;
   }
 
   hr {
-    border-bottom: 1px solid $light-gray;
+    border-bottom: 1px solid darken($light-gray, 20%);
     border-left: none;
     border-right: none;
     border-top: none;
@@ -51,24 +73,24 @@ article.single-article {
 
   h1 {
     font-family: $sans-serif-2;
-    font-size: 2em;
+    font-size: 1.2em;
     font-weight: 600;
     margin-bottom: 0.6em;
 
     @include media($medium-screen) {
-      font-size: 2.4em;
+      font-size: 2em;
     }
   }
 
   h2 {
     font-family: $sans-serif;
-    font-size: 1.2em;
+    font-size: 1.0em;
     font-weight: 400;
     line-height: 1.4em;
     margin-bottom: 1.2em;
 
     @include media($medium-screen) {
-      font-size: 1.4em;
+      font-size: 1em;
     }
   }
 
@@ -119,7 +141,8 @@ article.single-article {
   }
 
   hr {
-    width: 3em;
+    //width: 20em;
+    color: $dark-gray
   }
 
   a.read-more {
