@@ -54,6 +54,7 @@ INSTALLED_APPS = (
     'organisations',
     'iportalen',
     'storages',
+    'bookings',
 )
 
 MIDDLEWARE_CLASSES = (
