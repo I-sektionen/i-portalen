@@ -10,7 +10,7 @@
         {% for content in content_feed_list %}
             {% if content.type == "article" %}
                 {% with article=content %}
-                    <article class="single-article-preview">
+                    <article class="news-feed-content">
                         <div class="article-type-and-date">
                             <!-- <p class="type">Nyhet</p>-->
                             <i class="fa fa-newspaper-o large"></i>
@@ -19,7 +19,6 @@
                                 <p class="article-preview-type time-since">{{ article.visible_from|timesince}}</p>
                             </div>
                         </div>
-
                         <h1>{{ article.headline }}</h1>
                         <h2>{{ article.lead|truncatewords_html:50 }}</h2>
                         <p class="date">
@@ -36,15 +35,13 @@
             {% endif %}
             {% if content.type == "event" %}
                 {% with event=content %}
-                    <article class="single-article-preview">
+                    <article class="news-feed-content">
                         <div class="article-type-and-date">
-                            <div class="article-type-and-date">
-                                <!-- <p class="type">Nyhet</p>-->
-                                <i class="fa fa-calendar large"></i>
-                                <div class="article-preview-time-organisation">
-                                    <p class="article-preview-type">{{ event.organisations.all|safeseq|join:", " }}</p>
-                                    <p class="article-preview-type time-since">{{ event.visible_from|timesince}}</p>
-                                </div>
+                            <!-- <p class="type">Nyhet</p>-->
+                            <i class="fa fa-calendar large"></i>
+                            <div class="article-preview-time-organisation">
+                                <p class="article-preview-type">{{ event.organisations.all|safeseq|join:", " }}</p>
+                                <p class="article-preview-type time-since">{{ event.visible_from|timesince}}</p>
                             </div>
                         </div>
                         <h1>{{ event.headline }}</h1>
