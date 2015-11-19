@@ -663,10 +663,10 @@ picture {
   flex-wrap: wrap;
 }
 .footer ul {
-  -webkit-flex-basis: 13em;
-  -moz-flex-basis: 13em;
-  flex-basis: 13em;
-  -ms-flex-preferred-size: 13em;
+  -webkit-flex-basis: 26em;
+  -moz-flex-basis: 26em;
+  flex-basis: 26em;
+  -ms-flex-preferred-size: 26em;
   -webkit-flex-shrink: 0;
   -moz-flex-shrink: 0;
   flex-shrink: 0;
