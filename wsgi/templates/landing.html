@@ -24,6 +24,7 @@
                             </div>
                         </div>
                         <a href="{{ article.get_absolute_url }}"><h1>{{ article.headline }}</h1></a>
+                        <!-- TODO add reals tags -->
                         <p class="meta">
                             <i class="fa fa-tags"></i>
                             <span>Tagg, hardcoded, notworking</span>
@@ -46,6 +47,7 @@
                             </div>
                         </div>
                         <a href="{{ event.get_absolute_url }}"><h1>{{ event.headline }}</h1></a>
+                        <!-- TODO add non hardcoded metadata-->
                         <p class="meta">
                             <i class="fa fa-calendar"></i>
                             <span>{{ event.start|date:"d N Y" }}</span>

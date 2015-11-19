@@ -23,10 +23,10 @@
         </div>
         <h1>{{ article.headline }}</h1>
         <h2>{{ article.lead|truncatewords_html:50 }}</h2>
+        <!-- TODO add reals tags -->
         <p class="meta">
-            {% if article.tags.all  %}
-                <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
-            {% endif %}
+            <i class="fa fa-tags"></i>
+            <span>Tagg, hardcoded, notworking</span>
         </p>
     </article>
 {% endblock %}
