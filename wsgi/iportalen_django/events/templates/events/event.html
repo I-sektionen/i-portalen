@@ -35,6 +35,22 @@
         <p>{{ event.body|markdown }}</p>
     </article>
 
+    <div class="button-group">
+        <label>
+            <span class="button-group-item">Anmäl</span>
+        </label>
+        <label>
+            <span class="button-group-item">Anmäl som reserv</span>
+        </label>
+        <label>
+            <span class="action-button-group-item">Avanmäl</span>
+        </label>
+        <label>
+            <span class="button-group-item">Administrera event</span>
+        </label>
+    </div>
+    <!--
+
     <div class="register-button">
         {% if event.enable_registration %}
             {% if not registered %}
@@ -72,4 +88,5 @@
             </a>
         {% endif %}
     </div>
+    -->
 {% endblock %}
