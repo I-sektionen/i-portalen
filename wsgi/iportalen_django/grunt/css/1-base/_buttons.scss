@@ -5,6 +5,7 @@ button, .button {
   $button-text-color: lighten($dark-gray, 15%);
 
   appearance: none;
+  text-transform: none;
   background-color: $button-background-color;
   border: 0;
   border-radius: $base-border-radius;
