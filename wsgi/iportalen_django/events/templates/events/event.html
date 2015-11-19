@@ -16,16 +16,20 @@
             </div>
         </div>
         <h1>{{ event.headline }}</h1>
-        <p class="date">
+        <!-- TODO add non-hardcoded meta data -->
+        <p class="meta">
             <i class="fa fa-calendar"></i>
-            <span class="meta-content">{{ event.start|date:"d N Y" }}</span>
-
+            <span>{{ event.start|date:"d N Y" }}</span>
             <i class="fa fa-clock-o"></i>
-            <span class="meta-content">{{ event.start|time:"H:i" }}</span>
-
-            <i class="fa fa-map-o"></i>
-            <span class="meta-content">{{ event.location }}</span>
-
+            <span>{{ event.start|time:"H:i" }}</span>
+            <i class="fa fa-map-marker"></i>
+            <span>{{ event.location }}</span>
+            <i class="fa fa-users"></i>
+            <span>78 (200)</span>
+            <i class="fa fa-exclamation-circle"></i>
+            <span>3 dagar kvar</span>
+            <i class="fa fa-tags"></i>
+            <span>Tagg, hardcoded, notworking</span>
         </p>
         <h2>{{ event.lead|truncatewords_html:50 }}</h2>
         <p>{{ event.body|markdown }}</p>
