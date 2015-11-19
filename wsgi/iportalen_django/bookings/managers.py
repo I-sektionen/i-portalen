@@ -22,6 +22,7 @@ class BookingManager(models.Manager):
             # Throw error
             return None
 
+        count = 0
         while has_next:
             try:
                 print(booking)
@@ -45,11 +46,18 @@ class BookingManager(models.Manager):
 
             # Try to book next slot.
 
-            if (current_date >= end_date) and (slot == end_slot):
+            count += 1
+            if count == 10:
+                print("Något gick nog galet =/")
+                has_next = False
+
+
+
+            if (current_date == end_date) and (slot == end_slot):
                 has_next = False
             else:
                 # if last slot of the day, add day and jump to first slot.
-                if slots == slots.reverse()[0]:
+                if slot == slots.reverse()[0]:
                     slot = slots[0]
                     current_date = current_date + timedelta(days=1)
                 else:
@@ -59,9 +67,8 @@ class BookingManager(models.Manager):
                         if s == slot:
                             break
                         cnt = + 1
-                    if cnt + 1 >= len(slots):
-                        slot = slots[0]
-                    else:
-                        slot = slots[cnt+1]
+                    slot = slots[cnt+1]
         booking.save()
+        for p in partial_bookings:
+            p.save()
         return booking
