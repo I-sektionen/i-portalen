@@ -1,0 +1,60 @@
+.button-group {
+  $button-group-background: $light-gray;
+  $button-group-color: $dark-gray;
+  $button-group-inner-border: 1px solid lighten(silver, 18%);
+  $button-group-color-checked: white;
+  $button-group-shadow: 0px 3px 0px darken($light-gray, 10%);
+  input {
+    display: none;
+  }
+
+  label {
+    margin-bottom: 1em;
+
+    @include media($large-screen) {
+      float: left;
+      margin-right: 1em;
+    }
+
+    .button-group-item {
+      text-transform: none;
+      background: $button-group-background;
+      box-shadow: $button-group-shadow;
+      border-radius: 3px;
+      border: 0;
+      color: $button-group-color;
+      cursor: pointer;
+      display: inline-block;
+      font-size: $base-font-size;
+      font-weight: normal;
+      line-height: 1;
+      padding: 0.75em 1em;
+      width: 100%;
+
+      &:focus,
+      &:hover {
+        background-color: darken($button-group-background, 3%);
+      }
+    }
+    $action-button-group-background-color: $isektionen-yellow;
+    $action-button-group-shadow-color: darken($action-button-group-background-color, 10%);
+    $action-button-group-shadow: 0px 3px 0px $action-button-group-shadow-color;
+    $action-button-group-text-color: #fff;
+    .action-button-group-item {
+      @extend .button-group-item;
+      background: $action-button-group-background-color;
+      box-shadow: $action-button-group-shadow;
+      color: $action-button-group-text-color;
+
+            &:focus,
+      &:hover {
+        background-color: shade($action-button-group-background-color, 5%);
+      }
+
+    }
+  }
+}
+
+
+
+
