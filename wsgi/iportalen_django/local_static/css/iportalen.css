@@ -407,6 +407,7 @@ html {
 
 button, .button, .action-button {
   appearance: none;
+  text-transform: none;
   background-color: #f7f7f7;
   border: 0;
   border-radius: 3px;
@@ -655,10 +656,12 @@ picture {
     margin-right: 1em;
   }
 }
-.button-group label .button-group-item {
+.button-group label .button-group-item, .button-group label .action-button-group-item {
+  text-transform: none;
   background: #f7f7f7;
   box-shadow: 0px 3px 0px #dedede;
   border-radius: 3px;
+  border: 0;
   color: #333;
   cursor: pointer;
   display: inline-block;
@@ -668,8 +671,16 @@ picture {
   padding: 0.75em 1em;
   width: 100%;
 }
-.button-group label .button-group-item:focus, .button-group label .button-group-item:hover {
+.button-group label .button-group-item:focus, .button-group label .action-button-group-item:focus, .button-group label .button-group-item:hover, .button-group label .action-button-group-item:hover {
   background-color: #f0f0f0;
+}
+.button-group label .action-button-group-item {
+  background: #f9d026;
+  box-shadow: 0px 3px 0px #e6ba06;
+  color: #fff;
+}
+.button-group label .action-button-group-item:focus, .button-group label .action-button-group-item:hover {
+  background-color: #edc624;
 }
 
 .footer {

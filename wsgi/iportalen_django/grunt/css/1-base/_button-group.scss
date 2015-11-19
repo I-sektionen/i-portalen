@@ -17,9 +17,11 @@
     }
 
     .button-group-item {
+      text-transform: none;
       background: $button-group-background;
       box-shadow: $button-group-shadow;
       border-radius: 3px;
+      border: 0;
       color: $button-group-color;
       cursor: pointer;
       display: inline-block;
@@ -34,5 +36,25 @@
         background-color: darken($button-group-background, 3%);
       }
     }
+    $action-button-group-background-color: $isektionen-yellow;
+    $action-button-group-shadow-color: darken($action-button-group-background-color, 10%);
+    $action-button-group-shadow: 0px 3px 0px $action-button-group-shadow-color;
+    $action-button-group-text-color: #fff;
+    .action-button-group-item {
+      @extend .button-group-item;
+      background: $action-button-group-background-color;
+      box-shadow: $action-button-group-shadow;
+      color: $action-button-group-text-color;
+
+            &:focus,
+      &:hover {
+        background-color: shade($action-button-group-background-color, 5%);
+      }
+
+    }
   }
 }
+
+
+
+
