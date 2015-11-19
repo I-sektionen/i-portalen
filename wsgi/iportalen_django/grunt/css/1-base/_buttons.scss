@@ -1,7 +1,4 @@
-
-
-
-#{$all-buttons}, button, .button {
+button, .button {
 
   $button-background-color: $light-gray;
   $button-shadow-color: darken($button-background-color, 10%);
@@ -27,7 +24,7 @@
   user-select: none;
   vertical-align: middle;
   white-space: nowrap;
-  box-shadow: $button-shadow
+  box-shadow: $button-shadow;
 
   &:hover,
   &:focus {
@@ -43,18 +40,31 @@
       background-color: $button-background-color;
     }
   }
-
-
+}
   $action-button-background-color: $isektionen-yellow;
-  $action-button-shadow-color: darken($button-background-color, 10%);
-  $action-button-shadow: 0px 3px 0px darken($light-gray, 10%);
+  $action-button-shadow-color: darken($action-button-background-color, 10%);
+  $action-button-shadow: 0px 3px 0px darken($action-button-background-color, 10%);
   $action-button-text-color: #fff;
 
-
-  .action-button {
+.action-button {
     @extend .button;
-    background-color: $action-button-color;
-    box-shadow: 0px 3px 0px $button-shadow-color;
+    background-color: $action-button-background-color;
+    box-shadow: $action-button-shadow;
+    color: $action-button-text-color;
+
+    &:hover,
+  &:focus {
+    background-color: shade($action-button-background-color, 5%);
+    color: $action-button-text-color;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    &:hover {
+      background-color: $action-button-background-color;
+    }
+  }
 
   }
-}
