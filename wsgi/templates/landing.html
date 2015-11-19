@@ -6,7 +6,12 @@
 {% block content %}
     {# gets all articles via template tag #}
     <section id="news-feed">
-        <h1>Nyheter</h1>
+    <div id="content-select-nav">
+    <a href="#" class="content-type-nav active">Allt</a>
+    <a href="#" class="content-type-nav">Nyheter</a>
+    <a href="#" class="content-type-nav">Event</a>
+    </div>
+
         {% for content in content_feed_list %}
             {% if content.type == "article" %}
                 {% with article=content %}
@@ -19,7 +24,7 @@
                                 <p class="article-preview-type time-since">{{ article.visible_from|timesince}}</p>
                             </div>
                         </div>
-                        <h1>{{ article.headline }}</h1>
+                        <a href="{{ article.get_absolute_url }}"><h1>{{ article.headline }}</h1></a>
                         <p class="meta">
                             {% if article.tags.all  %}
                                 <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
@@ -42,7 +47,7 @@
                                 <p class="article-preview-type time-since">{{ event.visible_from|timesince}}</p>
                             </div>
                         </div>
-                        <h1>{{ event.headline }}</h1>
+                        <a href="{{ event.get_absolute_url }}"><h1>{{ event.headline }}</h1></a>
                         <p class="meta">
                             <i class="fa fa-calendar"></i>
                             <span class="meta-content">{{ event.start|date:"d N Y" }}</span>

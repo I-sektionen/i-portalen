@@ -1766,7 +1766,7 @@ article.event-preview-organisation p {
 
 /**
  * This file is used to style all content, both in the news feed and in the single view
- *
+ * SCSS from Thoughtbots Refills
 **/
 article.news-feed-content {
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
@@ -1817,6 +1817,15 @@ article.news-feed-content p {
 article.news-feed-content a {
   color: #2D701E;
   text-decoration: none;
+}
+article.news-feed-content a:hover {
+  text-decoration: underline;
+}
+article.news-feed-content a h1 {
+  color: #333;
+}
+article.news-feed-content a h1:hover {
+  text-decoration: underline;
 }
 article.news-feed-content .type {
   border-bottom: 1px solid;
@@ -2047,6 +2056,20 @@ article.news-feed-content p.author {
   margin-right: 2.35765%;
   width: 100%;
 }
+#news-feed #content-select-nav {
+  margin-bottom: 2em;
+}
+#news-feed a.content-type-nav {
+  text-transform: uppercase;
+  color: #ababab;
+  padding: 0.2em;
+  margin-right: 2em;
+  margin-bottom: 2em;
+  font-weight: bold;
+}
+#news-feed .active {
+  border-bottom: 2px solid #f9d026;
+}
 #news-feed:last-child {
   margin-right: 0;
 }
@@ -2055,7 +2078,7 @@ article.news-feed-content p.author {
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 100%;
+    width: 87.05267%;
   }
   #news-feed:last-child {
     margin-right: 0;

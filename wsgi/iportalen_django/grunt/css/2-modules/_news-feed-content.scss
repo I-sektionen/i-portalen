@@ -1,6 +1,6 @@
 /**
  * This file is used to style all content, both in the news feed and in the single view
- *
+ * SCSS from Thoughtbots Refills
 **/
 article.news-feed-content {
   $base-border-radius: 3px !default;
@@ -60,6 +60,19 @@ article.news-feed-content {
   a {
     color: $action-color;
     text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      color: $dark-gray;
+      &:hover {
+      text-decoration: underline;
+    }
+
+    }
+
   }
 
   .type {
