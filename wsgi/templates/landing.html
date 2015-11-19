@@ -20,16 +20,14 @@
                             </div>
                         </div>
                         <h1>{{ article.headline }}</h1>
-                        <h2>{{ article.lead|truncatewords_html:50 }}</h2>
-                        <p class="date">
-
+                        <p class="meta">
                             {% if article.tags.all  %}
                                 <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
                             {% endif %}
                         </p>
+                        <h2>{{ article.lead|truncatewords_html:50 }}</h2>
                         <a href="{{ article.get_absolute_url }}">Läs mer</a>
                         <hr>
-
                     </article>
                 {% endwith %}
             {% endif %}
@@ -45,7 +43,7 @@
                             </div>
                         </div>
                         <h1>{{ event.headline }}</h1>
-                        <p class="date">
+                        <p class="meta">
                             <i class="fa fa-calendar"></i>
                             <span class="meta-content">{{ event.start|date:"d N Y" }}</span>
 
