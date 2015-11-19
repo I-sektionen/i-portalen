@@ -647,19 +647,19 @@ picture {
   display: none;
 }
 .button-group label {
-  margin-bottom: 0;
+  margin-bottom: 1em;
 }
 @media screen and (min-width: 900px) {
   .button-group label {
     float: left;
+    margin-right: 1em;
   }
 }
 .button-group label .button-group-item {
-  background: #fff;
-  border-left: 1px solid silver;
-  border-radius: 0;
-  border-right: 1px solid silver;
-  color: gray;
+  background: #f7f7f7;
+  box-shadow: 0px 3px 0px #dedede;
+  border-radius: 3px;
+  color: #333;
   cursor: pointer;
   display: inline-block;
   font-size: 1em;
@@ -668,49 +668,8 @@ picture {
   padding: 0.75em 1em;
   width: 100%;
 }
-@media screen and (min-width: 900px) {
-  .button-group label .button-group-item {
-    border-bottom: 1px solid silver;
-    border-left: 0;
-    border-right: 1px solid #eeeeee;
-    border-top: 1px solid silver;
-    width: auto;
-  }
-}
 .button-group label .button-group-item:focus, .button-group label .button-group-item:hover {
-  background-color: #f7f7f7;
-}
-.button-group label:first-child .button-group-item {
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  border-top: 1px solid silver;
-}
-@media screen and (min-width: 900px) {
-  .button-group label:first-child .button-group-item {
-    border-bottom-left-radius: 3px;
-    border-left: 1px solid silver;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 0;
-  }
-}
-.button-group label:last-child .button-group-item {
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-bottom: 1px solid silver;
-}
-@media screen and (min-width: 900px) {
-  .button-group label:last-child .button-group-item {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 3px;
-    border-right: 1px solid silver;
-    border-top-right-radius: 3px;
-  }
-}
-.button-group label input:checked + .button-group-item {
-  background: #f9d026;
-  border: 1px solid #cea605;
-  box-shadow: inset 0 1px 2px #e6ba06;
-  color: white;
+  background-color: #f0f0f0;
 }
 
 .footer {
