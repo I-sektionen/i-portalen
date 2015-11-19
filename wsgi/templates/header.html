@@ -32,7 +32,7 @@
                                             {% csrf_token %}
                                             <input class="username-holder" type="text" name="username" placeholder="Liu-id">
                                             <input class="password-holder" type="password" name="password" placeholder="Lösenord">
-                                            <input class="submit-holder primary" type="submit" value="Logga in">
+                                            <input class="submit-holder button action-button" type="submit" value="Logga in">
                                         </form>
                                         <a href="{% url "password_reset" %}">Glömt lösenord</a>
                                     </div>
