@@ -11,7 +11,6 @@
     <a href="#" class="content-type-nav">Nyheter</a>
     <a href="#" class="content-type-nav">Event</a>
     </div>
-
         {% for content in content_feed_list %}
             {% if content.type == "article" %}
                 {% with article=content %}
@@ -26,9 +25,8 @@
                         </div>
                         <a href="{{ article.get_absolute_url }}"><h1>{{ article.headline }}</h1></a>
                         <p class="meta">
-                            {% if article.tags.all  %}
-                                <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
-                            {% endif %}
+                            <i class="fa fa-tags"></i>
+                            <span>Tagg, hardcoded, notworking</span>
                         </p>
                         <h2>{{ article.lead|truncatewords_html:50 }}</h2>
                         <a href="{{ article.get_absolute_url }}">Läs mer</a>
@@ -50,14 +48,17 @@
                         <a href="{{ event.get_absolute_url }}"><h1>{{ event.headline }}</h1></a>
                         <p class="meta">
                             <i class="fa fa-calendar"></i>
-                            <span class="meta-content">{{ event.start|date:"d N Y" }}</span>
-
+                            <span>{{ event.start|date:"d N Y" }}</span>
                             <i class="fa fa-clock-o"></i>
-                            <span class="meta-content">{{ event.start|time:"H:i" }}</span>
-
-                            <i class="fa fa-map-o"></i>
-                            <span class="meta-content">{{ event.location }}</span>
-
+                            <span>{{ event.start|time:"H:i" }}</span>
+                            <i class="fa fa-map-marker"></i>
+                            <span>{{ event.location }}</span>
+                            <i class="fa fa-users"></i>
+                            <span>78 (200)</span>
+                            <i class="fa fa-exclamation-circle"></i>
+                            <span>3 dagar kvar</span>
+                            <i class="fa fa-tags"></i>
+                            <span>Tagg, hardcoded, notworking</span>
                         </p>
                         <h2>{{ event.lead|truncatewords_html:50 }}</h2>
                         <a href="{{ event.get_absolute_url }}">Läs mer</a>

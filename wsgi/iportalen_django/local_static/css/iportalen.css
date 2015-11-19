@@ -1823,6 +1823,7 @@ article.news-feed-content a:hover {
 }
 article.news-feed-content a h1 {
   color: #333;
+  margin-bottom: 0.3em;
 }
 article.news-feed-content a h1:hover {
   text-decoration: underline;
@@ -1883,11 +1884,14 @@ article.news-feed-content h3 {
 article.news-feed-content p.meta {
   color: rgba(51, 51, 51, 0.4);
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-  font-size: 1em;
   margin-bottom: 0.5em;
 }
 article.news-feed-content p.meta span {
-  margin-right: 1em;
+  margin-right: 2em;
+  text-transform: none;
+}
+article.news-feed-content p.meta i {
+  color: black;
 }
 article.news-feed-content p {
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
