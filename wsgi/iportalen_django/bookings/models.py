@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.conf import settings
 from datetime import datetime, timedelta
-
+from django.core.exceptions import ValidationError
 
 
 
@@ -22,6 +22,26 @@ class BookingSlot(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     bookable = models.ForeignKey("Bookable")
+
+    def clean(self):
+        if self.start_time >= self.end_time:
+            raise ValidationError('End time must be set after start time.')
+
+        slots = BookingSlot.objects.filter(bookable=self.bookable)
+        for slot in slots:
+            if slot == self:  # This does not work.... 
+                break  # In case of update might self and slot be the same.
+
+            if self.start_time < slot.start_time:  # Före
+                if self.end_time > slot.start_time:
+                    print(slot)
+                    print(self + " | " + slot)
+                    raise ValidationError('The timeslots are end- and start times are invalid. They are overlapping. Före')
+            else:  # Efter
+                if self.start_time < slot.end_time:
+                    print(self + " | " + slot)
+                    raise ValidationError("The timeslots are end- and start times are invalid. They are overlapping. Efter")
+        super(BookingSlot, self).clean()
 
     def __str__(self):
         return str(self.start_time) + " - " + str(self.end_time) + " (" + self.bookable.name + ")"

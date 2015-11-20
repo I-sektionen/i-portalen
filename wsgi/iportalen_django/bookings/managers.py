@@ -25,19 +25,12 @@ class BookingManager(models.Manager):
         count = 0
         while has_next:
             try:
-                print(booking)
-                print(slot)
-                print(current_date)
                 p = PartialBooking(booking=booking,
                                    slot=slot,
                                    date=current_date)
-                print("0")
                 p.clean_fields()
-                print("1!")
                 p.clean()
-                print("2!")
                 p.validate_unique()
-                print("3!")
                 #p.full_clean(validate_unique=True)
                 partial_bookings.append(p)
             except ValidationError:
