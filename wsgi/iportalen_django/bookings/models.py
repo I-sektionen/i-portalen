@@ -27,19 +27,22 @@ class BookingSlot(models.Model):
         if self.start_time >= self.end_time:
             raise ValidationError('End time must be set after start time.')
 
+        # Create: Should just check if it fulfills all criterias.
+        # Update: Should check same things, but find out which element being updated.
+
         slots = BookingSlot.objects.filter(bookable=self.bookable)
         for slot in slots:
-            if slot == self:  # This does not work.... 
+            if slot == self:  # This does not work....
                 break  # In case of update might self and slot be the same.
 
             if self.start_time < slot.start_time:  # Före
                 if self.end_time > slot.start_time:
                     print(slot)
-                    print(self + " | " + slot)
+ #                   print(self + " | " + slot)
                     raise ValidationError('The timeslots are end- and start times are invalid. They are overlapping. Före')
             else:  # Efter
                 if self.start_time < slot.end_time:
-                    print(self + " | " + slot)
+#                    print(self + " | " + slot)
                     raise ValidationError("The timeslots are end- and start times are invalid. They are overlapping. Efter")
         super(BookingSlot, self).clean()
 

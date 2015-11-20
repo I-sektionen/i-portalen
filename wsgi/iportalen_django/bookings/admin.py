@@ -6,7 +6,7 @@ from .models import Bookable, Booking, BookingSlot, VariableCostAmount, Invoice,
 class BookingSlotInline(admin.TabularInline):
     model = BookingSlot
     extra = 0
-
+    ordering = ("start_time", )
 
 class BookableAdmin(admin.ModelAdmin):
     inlines = [
