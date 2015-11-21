@@ -8,7 +8,8 @@ from django.core.exceptions import ValidationError
 
 class Bookable(models.Model):
     name = models.CharField(max_length=512)
-    max_number_of_bookings = models.IntegerField()  # Maximum number of simultaneous bookings.
+    max_number_of_bookings = models.IntegerField(default=1)  # Maximum number of simultaneous bookings.
+    max_number_of_slots_in_booking = models.IntegerField(default=1)  # Max length of booking
 
     def __str__(self):
         return self.name
@@ -37,12 +38,9 @@ class BookingSlot(models.Model):
 
             if self.start_time < slot.start_time:  # Före
                 if self.end_time > slot.start_time:
-                    print(slot)
- #                   print(self + " | " + slot)
                     raise ValidationError('The timeslots are end- and start times are invalid. They are overlapping. Före')
             else:  # Efter
                 if self.start_time < slot.end_time:
-#                    print(self + " | " + slot)
                     raise ValidationError("The timeslots are end- and start times are invalid. They are overlapping. Efter")
         super(BookingSlot, self).clean()
 

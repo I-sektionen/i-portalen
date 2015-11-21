@@ -8,6 +8,8 @@
     <a href=""><button type="button">Framåt</button></a>
     <form method="post" action="{% url "make_booking" bookable_id %}">
     {% csrf_token %}
+    {{ form }}
+
     <div class="calendar">
         {% for day in booking_status %}
             <div class="cal-day" id="{{day.swe_date}}">
