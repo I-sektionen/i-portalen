@@ -14,13 +14,9 @@ class NewBookingForm(forms.Form):
     forms.CharField(max_length=300)
 
 
-class BookingForm(forms.ModelForm):
-    class Meta:
-        model = Booking
-        fields = ['bookable', ]
-        widgets = {
-            'date': forms.DateInput(attrs={'class': 'datepicker'}),
-        }
+class BookingForm(forms.Form):
+    start = forms.ChoiceField()
+    end = forms.ChoiceField()
 
 
 class BookingSlotForm(forms.ModelForm):

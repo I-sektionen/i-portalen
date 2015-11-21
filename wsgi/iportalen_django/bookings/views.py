@@ -1,9 +1,12 @@
+from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseForbidden, HttpResponse, Http404
+from bookings.exceptions import NoSlots, InvalidInput, MaxLength, MultipleBookings
 
 from .models import Booking, Bookable, Invoice, BookingSlot, PartialBooking
 from .forms import BookingForm
-
+from utils.time import first_day_of_week
 import datetime
 
 from reportlab.pdfgen import canvas
@@ -41,18 +44,12 @@ def invoice_pdf(request, invoice_id):
     return response
 
 
-def first_day_of_week(week, year):
-    ret = datetime.datetime.strptime('%04d-%02d-1' % (year, week), '%Y-%W-%w')
-    if datetime.date(year, 1, 4).isoweekday() > 4:
-        ret -= datetime.timedelta(days=7)
-    return ret
-
-
 def make_booking(request, bookable_id, year=None, week=None):
     if (year is not None) or (week is not None):
         year_range = range(1990, 2300)
         week_range = range(1, 53)
-
+        year = int(year)
+        week = int(week)
         if (year not in year_range) and (week not in week_range):
             raise Http404("Invalid date, year & week")
         elif week not in week_range:
@@ -63,7 +60,7 @@ def make_booking(request, bookable_id, year=None, week=None):
         today = datetime.datetime.today().isocalendar()
         year = today[0]
         week = today[1]
-
+    form = BookingForm(request.POST or None)
     bookable = get_object_or_404(Bookable, pk=bookable_id)
     slots = BookingSlot.objects.filter(bookable__exact=bookable)
 
@@ -79,10 +76,11 @@ def make_booking(request, bookable_id, year=None, week=None):
                          1: "tisdag",
                          2: "onsdag",
                          3: "torsdag",
-                         4:  "fredag",
+                         4: "fredag",
                          5: "lördag",
                          6: "söndag"}
-
+    start = []
+    end = []
     #  Want to set: Date(Name, day, month), slots, slot status.
     for i in range(0, 7):
         day = {}
@@ -98,29 +96,43 @@ def make_booking(request, bookable_id, year=None, week=None):
                 day["slots"].append((slot, False))
             else:
                 day["slots"].append((slot, True))
+                start.append(("{date}_{time}".format(date=day['date'].strftime("%Y%m%d"), time=slot.start_time),
+                              "{date} {time}".format(date=day['date'].strftime("%Y-%m-%d"), time=slot.start_time)))
+                end.append(("{date}_{time}".format(date=day['date'].strftime("%Y%m%d"), time=slot.end_time),
+                            "{date} {time}".format(date=day['date'].strftime("%Y-%m-%d"), time=slot.end_time)))
 
         booking_status_for_week.append(day)
-
+    form.fields['start'].choices = start
+    form.fields['end'].choices = end
     if request.method == "POST":
-        form = BookingForm(request.POST)
         if form.is_valid():
-            booking = form.save(commit=False)
-            booking.bookable = bookable
-
-            # Make sure it is the right user
-            booking.user = request.user
-
-            # Ensure that the user hasn't booked to much.
-            query = Booking.objects.filter(user__exact=booking.user)
-            if query.count() > booking.bookable.max_number_of_bookings:
-                return HttpResponseForbidden()
-
-            booking.save()
-            return redirect("make_booking", bookable_id=bookable_id)
-
-    # Send new form bound to the right bookable and user.
-    booking = Booking(user=request.user, bookable=bookable)
-    form = BookingForm(instance=booking)
+            start = form.cleaned_data['start']
+            end = form.cleaned_data['end']
+            start_list = start.split("_")
+            end_list = end.split("_")
+            start_date = datetime.datetime.strptime(start_list[0], "%Y%m%d").date()
+            end_date = datetime.datetime.strptime(end_list[0], "%Y%m%d").date()
+            start_slot = BookingSlot.objects.get(bookable=bookable, start_time=start_list[1])
+            end_slot = BookingSlot.objects.get(bookable=bookable, end_time=end_list[1])
+            try:
+                Booking.objects.make_a_booking(bookable=bookable,
+                                               start_date=start_date,
+                                               end_date=end_date,
+                                               start_slot=start_slot,
+                                               end_slot=end_slot,
+                                               user=request.user)
+                messages.success(request, "YAY")
+                return redirect("make_booking", bookable_id=bookable_id)
+            except NoSlots as e:
+                messages.error(request, e.reason)
+            except InvalidInput as e:
+                messages.error(request, e.reason)
+            except ValidationError:
+                messages.error(request, "There exist already booked slots within your booking.")
+            except MaxLength as e:
+                messages.error(request, e.reason)
+            except MultipleBookings as e:
+                messages.error(request, e.reason)
 
     return render(request, "bookings/book.html", {
         "form": form,
