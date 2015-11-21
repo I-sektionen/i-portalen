@@ -9,7 +9,7 @@ from .forms import BookingForm
 from utils.time import first_day_of_week
 import datetime
 
-from reportlab.pdfgen import canvas
+#from reportlab.pdfgen import canvas
 """
 - See my bookings
 - Make new booking
@@ -28,6 +28,8 @@ def index(request):
 
 
 def invoice_pdf(request, invoice_id):
+    return redirect('index')
+"""
     invoice = get_object_or_404(Invoice, pk=invoice_id)
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'filename="' + invoice_id + '.pdf"'
@@ -42,7 +44,7 @@ def invoice_pdf(request, invoice_id):
     p.save()
 
     return response
-
+"""
 
 def make_booking(request, bookable_id, year=None, week=None):
     if (year is not None) or (week is not None):

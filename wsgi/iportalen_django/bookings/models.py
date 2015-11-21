@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 from django.core.exceptions import ValidationError
 
 
-
 class Bookable(models.Model):
     name = models.CharField(max_length=512)
     max_number_of_bookings = models.IntegerField(default=1)  # Maximum number of simultaneous bookings.
@@ -13,6 +12,9 @@ class Bookable(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('make_booking', args=[str(self.pk)])
 
     class Meta:
         verbose_name = 'bokningsbart objekt'
