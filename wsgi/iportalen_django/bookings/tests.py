@@ -13,7 +13,7 @@ class EventTests(TestCase):
         creator_pall = IUser.objects.create_user(username="liuid123")
         booker.full_clean()
 
-        bookable = Bookable.objects.create(name="bil", max_number_of_bookings=2)
+        bookable = Bookable.objects.create(name="bil", max_number_of_bookings=2, max_number_of_slots_in_booking=10)
         bookable.full_clean()
 
         b1 = BookingSlot(start_time=time(hour=8, minute=0), end_time=time(hour=12, minute=0), bookable=bookable)
@@ -94,8 +94,8 @@ class EventTests(TestCase):
         slots = BookingSlot.objects.filter(bookable=bookable).order_by("-start_time")
 
         booking = Booking.objects.make_a_booking(bookable=bookable,
-                                                 start_date=date(year=2012, month=10, day=1),
-                                                 end_date=date(year=2012, month=10, day=2),
+                                                 start_date=date(year=2112, month=10, day=1),
+                                                 end_date=date(year=2112, month=10, day=2),
                                                  start_slot=slots[0],
                                                  end_slot=slots[1],
                                                  user=booker)
