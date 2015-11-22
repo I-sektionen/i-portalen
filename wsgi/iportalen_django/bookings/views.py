@@ -1,9 +1,10 @@
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseForbidden, HttpResponse, Http404
-from bookings.exceptions import NoSlots, InvalidInput, MaxLength, MultipleBookings
+from django.http import HttpResponseForbidden, HttpResponse, Http404, JsonResponse
+from django.utils import timezone
 
+from bookings.exceptions import NoSlots, InvalidInput, MaxLength, MultipleBookings
 from .models import Booking, Bookable, Invoice, BookingSlot, PartialBooking
 from .forms import BookingForm
 from utils.time import first_day_of_week
@@ -141,3 +142,62 @@ def make_booking(request, bookable_id, year=None, week=None):
         "bookable_id": bookable_id,
         "booking_status": booking_status_for_week,
     })
+
+
+def api_view(request, bookable_id, weeks_forward=0):
+    bookable = get_object_or_404(Bookable, pk=bookable_id)
+    slots = BookingSlot.objects.filter(bookable=bookable).order_by("start_time")
+    partial_bookings = PartialBooking.objects.filter(booking__bookable=bookable)
+
+    bookable_dict = {
+        'name': bookable.name,
+        'max_number_of_bookings': bookable.max_number_of_bookings,
+        'max_number_of_slots_in_booking': bookable.max_number_of_slots_in_booking
+    }
+
+    # Move to number of weeks forward relative to today, then backup to monday.
+    start_date = timezone.now()
+    start_date += datetime.timedelta(weeks=weeks_forward, days=1)  # Extra day is if today is monday.
+    while start_date.weekday() != 0:
+        start_date -= datetime.timedelta(days=1)
+    end_date = start_date + datetime.timedelta(days=14)
+
+    def daterange(start_date, end_date):
+        for n in range(int ((end_date - start_date).days)):
+            yield start_date + datetime.timedelta(n)
+
+    # Från ett datum till sista, skapa en array med datum, slots och huruvida det är bokat eller ej.
+    bookings_dict = []
+    cnt = 0
+    for single_date in daterange(start_date, end_date):
+        slot_array = []
+        cnt += 1
+        for slot in slots:
+            booked = True
+            if partial_bookings.filter(date=single_date, slot=slot).exists():
+                booked = False
+            tmp = {
+                'start_time': slot.start_time,
+                'end_time': slot.end_time,
+                'available': booked,
+            }
+            slot_array.append(tmp)
+
+        date_info = {
+            'weekday': single_date.weekday(),
+            'year': single_date.year,
+            'month': single_date.month,
+            'day': single_date.day,
+
+        }
+        bookings_dict.append({
+            'date': date_info,
+            'slots': slot_array,
+        })
+
+    data = {
+        'bookable': bookable_dict,
+        'bookings': bookings_dict,
+    }
+    return JsonResponse(data)
+

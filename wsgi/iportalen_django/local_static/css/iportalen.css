@@ -1968,6 +1968,10 @@ article.event-preview-organisation p {
   margin-right: 0;
 }
 
+.unavailable {
+  background-color: lightcoral;
+}
+
 #master-container {
   position: relative;
   -webkit-transition: 0.5s ease-out;

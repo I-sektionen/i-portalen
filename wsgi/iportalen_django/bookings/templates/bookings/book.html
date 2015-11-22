@@ -1,6 +1,27 @@
 {% extends "master.html" %}
 {% block title %}Gör en bokning{% endblock %}
 {% block content %}
+    {% comment %}
+        jQuery script   - Fetches todays date
+                        - Fetches this week, and next.
+                        - Fetches slots
+                        - Renders html elements.
+                        - UI to select start and end.
+                        - Connect to form for start and end.
+
+                        - Next step: max slots, validation and so on.
+
+        Django views:   - Todays date
+                        - Days in week, given date.
+                        - Slots, given bookable. Availability and so on.
+
+
+    {% endcomment %}
+    <div class="booking">
+    {% comment %}
+        This is where the booking form is rendered by the script booking.js
+    {% endcomment %}
+    </div>
     {% if week == 1 %}
     <a href="{% url "make_booking" bookable_id year   %}"><button type="button">Bakåt</button></a>
 
@@ -37,14 +58,19 @@
 
 {% endblock %}
 
-{% block extra_scripts %}
+{% block after_scripts %}
  <script>
-  $(function() {
+  /*
+     $(function() {
     $( ".datepicker" ).datepicker({
       changeMonth: true,
-      changeYear: true,
+      changeYear: true
     });
   });
+  */
+  jQuery(document).ready(function(){
+                generate_booking_form({{ bookable_id }})
+        });
   </script>
 
 {% endblock %}
