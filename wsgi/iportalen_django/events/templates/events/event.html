@@ -34,59 +34,52 @@
         <h2>{{ event.lead|truncatewords_html:50 }}</h2>
         <p>{{ event.body|markdown }}</p>
     </article>
-
+    <p>Anmälningsstopp: {{ event.entry_deadline|date:"Y-m-d H:i:s" }}</p>
+            {% if event.extra_deadline %}<p>Anmälningsstopp för att {{ event.extra_deadline_text }}: {{ event.extra_deadline|date:"Y-m-d H:i:s" }}</p>{% endif %}
     <div class="button-group">
-        <label>
-            <span class="button-group-item">Anmäl</span>
-        </label>
-        <label>
-            <span class="button-group-item">Anmäl som reserv</span>
-        </label>
-        <label>
-            <span class="action-button-group-item">Avanmäl</span>
-        </label>
-        <label>
-            <span class="button-group-item">Administrera event</span>
-        </label>
-    </div>
-    <!--
+    {% if event.enable_registration %}
+        {% if not registered %}
 
-    <div class="register-button">
-        {% if event.enable_registration %}
-            {% if not registered %}
-                <p>Anmälningsstopp: {{ event.entry_deadline|date:"Y-m-d H:i:s" }}</p>
-                {% if event.extra_deadline %}<p>Anmälningsstopp för att {{ event.extra_deadline_text }}: {{ event.extra_deadline|date:"Y-m-d H:i:s" }}</p>{% endif %}
 
-                {% if not event.full %}
-                    <form method="post" action="{% url "register_to_event" event.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" title="snälla">Anmäl mig</button>
-                    </form>
-                {% else %}
-                    <form method="post" action="{% url "register_as_reserve" event.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" title="snälla">Anmäl mig som reserv</button>
-                    </form>
-                {% endif %}
+
+            {% if not event.full %}
+                <form method="post" action="{% url "register_to_event" event.pk %}">
+                    {% csrf_token %}
+                    <label>
+                        <button class="button-group-item"  type="submit" title="snälla">Anmäl mig</button>
+                    </label>
+                </form>
             {% else %}
-                <p><i class="fa fa-check-circle-o"></i> Du är anmäld.</p>
-                {% if event.can_deregister %}
-                    <form method="post" action="{% url "unregister" event.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" title="snälla">Avanmäl mig</button>
-                    </form>
-                {% else %}
-                    <p>Det är för sent att avanmäla sig nu.</p>
-                {% endif %}
+                <form method="post" action="{% url "register_as_reserve" event.pk %}">
+                    {% csrf_token %}
+                    <label>
+                        <button class="button-group-item" type="submit" title="snälla">Anmäl mig som reserv</button>
+                    </label>
+                </form>
+            {% endif %}
+        {% else %}
+            <p><i class="fa fa-check-circle-o"></i> Du är anmäld.</p>
+            {% if event.can_deregister %}
+                <form method="post" action="{% url "unregister" event.pk %}">
+                    {% csrf_token %}
+                    <label>
+                        <button class="button-group-item" type="submit" title="snälla">Avanmäl mig</button>
+                    </label>
+                </form>
+            {% else %}
+                <p>Det är för sent att avanmäla sig nu.</p>
             {% endif %}
         {% endif %}
-    </div>
-    <div class="admin-event">
-        {% if can_administer %}
-            <a href="{% url "administer_event" event.pk %}">
-                <button type="button">Administrera <i class="fa fa-wrench"></i></button>
+    {% endif %}
+<div class="admin-event">
+    {% if can_administer %}
+        <label>
+            <a class="button action-button-group-item" href="{% url "administer_event" event.pk %}">
+                Administrera evenemang
             </a>
-        {% endif %}
-    </div>
-    -->
+        </label>
+
+    {% endif %}
+</div>
+</div>
 {% endblock %}
