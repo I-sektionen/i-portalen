@@ -17,19 +17,8 @@
     }
 
     .button-group-item {
-      text-transform: none;
-      background: $button-group-background;
-      box-shadow: $button-group-shadow;
-      border-radius: 3px;
-      border: 0;
-      color: $button-group-color;
-      cursor: pointer;
-      display: inline-block;
-      font-size: $base-font-size;
-      font-weight: normal;
-      line-height: 1;
-      padding: 0.75em 1em;
-      width: 100%;
+      @extend .button;
+
 
       &:focus,
       &:hover {
