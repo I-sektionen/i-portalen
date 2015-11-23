@@ -1,6 +1,6 @@
 /**
  * This file is used to style all content, both in the news feed and in the single view
- *
+ * SCSS from Thoughtbots Refills
 **/
 article.news-feed-content {
   $base-border-radius: 3px !default;
@@ -60,6 +60,20 @@ article.news-feed-content {
   a {
     color: $action-color;
     text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      color: $dark-gray;
+      margin-bottom: 0.3em;
+      &:hover {
+      text-decoration: underline;
+    }
+
+    }
+
   }
 
   .type {
@@ -118,16 +132,18 @@ article.news-feed-content {
    text-transform: uppercase;
   }
 
-  p.date {
+  p.meta {
     color: transparentize($base-font-color, 0.6);
     font-family: $sans-serif;
-    font-size: 1em;
     margin-bottom: 0.5em;
-
     span {
-      margin-right: 1em;
+      margin-right: 2em;
+      text-transform: none;
     }
 
+    i {
+      color: black;
+    }
   }
 
   p {

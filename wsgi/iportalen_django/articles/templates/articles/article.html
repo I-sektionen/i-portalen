@@ -23,13 +23,11 @@
         </div>
         <h1>{{ article.headline }}</h1>
         <h2>{{ article.lead|truncatewords_html:50 }}</h2>
-        <p class="date">
-
-            {% if article.tags.all  %}
-                <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
-            {% endif %}
+        <!-- TODO add reals tags -->
+        <p class="meta">
+            <i class="fa fa-tags"></i>
+            <span>Tagg, hardcoded, notworking</span>
         </p>
-        <a href="{{ article.get_absolute_url }}">Läs mer</a>
-        <hr>
+    <p>{{ article.body }}</p>
     </article>
 {% endblock %}
