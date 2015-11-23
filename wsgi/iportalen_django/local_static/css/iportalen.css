@@ -704,6 +704,18 @@ picture {
   max-width: 35em;
   text-align: center;
 }
+.footer a.magic > span {
+  content: 'ADD';
+  style: none;
+  color: rgba(51, 51, 51, 0.4);
+}
+.footer a.magic:hover > span {
+  display: none;
+}
+.footer a.magic:hover:before {
+  content: 'fulkod';
+  color: rgba(51, 51, 51, 0.4);
+}
 
 header {
   padding: 1em 0;
