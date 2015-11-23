@@ -4043,11 +4043,11 @@ function generate_booking_form(pk){
         var bookings = data.bookings;
 
         $element.append("<div><p>" + bookable.name +"</p></div>");
-        var $days = $element.append("<div class=\"days\"></div>");
-
+        $element.append("<div class=\"days\"></div>");
+        var $days = jQuery(".days");
         //Each day
         jQuery.each( bookings, function(index, value){
-            var s = "<div>";
+            var s = "<div class=\"single_day\">";
             var d = value.date;
             s = s + "<p>Datum: " + d.year + "-" + d.month + "-" + d.day;
             //Each slot:
