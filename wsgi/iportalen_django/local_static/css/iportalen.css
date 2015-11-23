@@ -1968,8 +1968,40 @@ article.event-preview-organisation p {
   margin-right: 0;
 }
 
-.unavailable {
+div.booking div.days {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  border-color: #006600;
+  border-style: solid;
+}
+div.booking div.days::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+div.booking div.days div.single_day {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 31.76157%;
+  border-color: black;
+  border-style: solid;
+}
+div.booking div.days div.single_day:last-child {
+  margin-right: 0;
+}
+div.booking div.days div.single_day:nth-child(3n) {
+  margin-right: 0;
+}
+div.booking div.days div.single_day:nth-child(3n+1) {
+  clear: left;
+}
+div.booking div.days div.single_day .unavailable {
   background-color: lightcoral;
+}
+div.booking div.days div.single_day .available {
+  background-color: lightgreen;
 }
 
 #master-container {

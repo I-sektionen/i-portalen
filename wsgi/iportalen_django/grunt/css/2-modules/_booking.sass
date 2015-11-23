@@ -1,3 +1,14 @@
-
-.unavailable
-  background-color: lightcoral
+div.booking
+  div.days
+    +outer-container()
+    border-color: #006600
+    border-style: solid
+    div.single_day
+      +span-columns(4)
+      +omega(3n)
+      border-color: black
+      border-style: solid
+      .unavailable
+        background-color: lightcoral
+      .available
+        background-color: lightgreen
