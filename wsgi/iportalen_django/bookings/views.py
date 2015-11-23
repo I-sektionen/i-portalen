@@ -63,6 +63,7 @@ def make_booking(request, bookable_id, year=None, week=None):
         today = datetime.datetime.today().isocalendar()
         year = today[0]
         week = today[1]
+        print(week)
     form = BookingForm(request.POST or None)
     bookable = get_object_or_404(Bookable, pk=bookable_id)
     slots = BookingSlot.objects.filter(bookable__exact=bookable)
@@ -74,73 +75,63 @@ def make_booking(request, bookable_id, year=None, week=None):
                                                  date__gte=monday,
                                                  date__lte=sunday)
 
-    booking_status_for_week = []
-    days_of_week_dict = {0: "måndag",
-                         1: "tisdag",
-                         2: "onsdag",
-                         3: "torsdag",
-                         4: "fredag",
-                         5: "lördag",
-                         6: "söndag"}
     start = []
     end = []
     #  Want to set: Date(Name, day, month), slots, slot status.
-    for i in range(0, 7):
-        day = {}
+    for week_delta in range(0, 4):
+        for i in range(0, 7):
+            day = {}
 
-        # Add the dates and swedish name.
-        day["date"] = monday + datetime.timedelta(days=i)
-        day["swe_date"] = days_of_week_dict[day["date"].weekday()]
+            # Add the dates and swedish name.
+            day["date"] = monday + datetime.timedelta(days=i + (week_delta * 7))
 
-        #  Loop which checks status for each bookable slot. False meaning it is taken. True it is free.
-        day["slots"] = []
-        for slot in slots:
-            if booked_slots.filter(date__exact=day["date"], slot__exact=slot).exists():
-                day["slots"].append((slot, False))
-            else:
-                day["slots"].append((slot, True))
-                start.append(("{date}_{time}".format(date=day['date'].strftime("%Y%m%d"), time=slot.start_time),
-                              "{date} {time}".format(date=day['date'].strftime("%Y-%m-%d"), time=slot.start_time)))
-                end.append(("{date}_{time}".format(date=day['date'].strftime("%Y%m%d"), time=slot.end_time),
-                            "{date} {time}".format(date=day['date'].strftime("%Y-%m-%d"), time=slot.end_time)))
+            #  Loop which checks status for each bookable slot. False meaning it is taken. True it is free.
+            day["slots"] = []
+            for slot in slots:
+                if booked_slots.filter(date__exact=day["date"], slot__exact=slot).exists():
+                    day["slots"].append((slot, False))
+                else:
+                    day["slots"].append((slot, True))
+                    start.append(("{date}_{time}".format(date=day['date'].strftime("%Y%m%d"), time=slot.start_time),
+                                  "{date} {time}".format(date=day['date'].strftime("%Y-%m-%d"), time=slot.start_time)))
+                    end.append(("{date}_{time}".format(date=day['date'].strftime("%Y%m%d"), time=slot.end_time),
+                                "{date} {time}".format(date=day['date'].strftime("%Y-%m-%d"), time=slot.end_time)))
 
-        booking_status_for_week.append(day)
-    form.fields['start'].choices = start
-    form.fields['end'].choices = end
-    if request.method == "POST":
-        if form.is_valid():
-            start = form.cleaned_data['start']
-            end = form.cleaned_data['end']
-            start_list = start.split("_")
-            end_list = end.split("_")
-            start_date = datetime.datetime.strptime(start_list[0], "%Y%m%d").date()
-            end_date = datetime.datetime.strptime(end_list[0], "%Y%m%d").date()
-            start_slot = BookingSlot.objects.get(bookable=bookable, start_time=start_list[1])
-            end_slot = BookingSlot.objects.get(bookable=bookable, end_time=end_list[1])
-            try:
-                Booking.objects.make_a_booking(bookable=bookable,
-                                               start_date=start_date,
-                                               end_date=end_date,
-                                               start_slot=start_slot,
-                                               end_slot=end_slot,
-                                               user=request.user)
-                messages.success(request, "YAY")
-                return redirect("make_booking", bookable_id=bookable_id)
-            except NoSlots as e:
-                messages.error(request, e.reason)
-            except InvalidInput as e:
-                messages.error(request, e.reason)
-            except ValidationError:
-                messages.error(request, "There exist already booked slots within your booking.")
-            except MaxLength as e:
-                messages.error(request, e.reason)
-            except MultipleBookings as e:
-                messages.error(request, e.reason)
+        form.fields['start'].choices = start
+        form.fields['end'].choices = end
+        if request.method == "POST":
+            if form.is_valid():
+                start = form.cleaned_data['start']
+                end = form.cleaned_data['end']
+                start_list = start.split("_")
+                end_list = end.split("_")
+                start_date = datetime.datetime.strptime(start_list[0], "%Y%m%d").date()
+                end_date = datetime.datetime.strptime(end_list[0], "%Y%m%d").date()
+                start_slot = BookingSlot.objects.get(bookable=bookable, start_time=start_list[1])
+                end_slot = BookingSlot.objects.get(bookable=bookable, end_time=end_list[1])
+                try:
+                    Booking.objects.make_a_booking(bookable=bookable,
+                                                   start_date=start_date,
+                                                   end_date=end_date,
+                                                   start_slot=start_slot,
+                                                   end_slot=end_slot,
+                                                   user=request.user)
+                    messages.success(request, "YAY")
+                    return redirect("make_booking", bookable_id=bookable_id)
+                except NoSlots as e:
+                    messages.error(request, e.reason)
+                except InvalidInput as e:
+                    messages.error(request, e.reason)
+                except ValidationError:
+                    messages.error(request, "There exist already booked slots within your booking.")
+                except MaxLength as e:
+                    messages.error(request, e.reason)
+                except MultipleBookings as e:
+                    messages.error(request, e.reason)
 
     return render(request, "bookings/book.html", {
         "form": form,
         "bookable_id": bookable_id,
-        "booking_status": booking_status_for_week,
     })
 
 
