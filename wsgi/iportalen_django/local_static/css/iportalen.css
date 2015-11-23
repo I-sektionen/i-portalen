@@ -1891,6 +1891,10 @@ header #user-menu-tool #user-button {
   }
 }
 
+.tab-content .col_date {
+  padding-left: 5em;
+}
+
 #article-create-form-text p, #article-column-right p {
   margin-top: -0.3em;
   font-size: 12px;
