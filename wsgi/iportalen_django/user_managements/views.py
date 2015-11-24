@@ -187,20 +187,18 @@ def reset_confirm(request, uidb64=None, token=None):
     return password_reset_confirm(request, template_name='user_managements/reset/pw_res_confirm.html',
                                   uidb64=uidb64,
                                   token=token,
-                                  post_reset_redirect=reverse('front page'))
-
+                                  post_reset_redirect=reverse('password_reset_complete'))
 
 def reset_done(request):
     # return password_reset_done(request, template_name='user_managements/reset/pw_res_done.html')
     messages.info(request, "Ett mail kommer inom kort skickas till mailadressen som angavs. "
                            "I den finns en länk för att skapa ett nytt lösenord. "
-                           "Om det inte kommer något mail, vänligen försök igen, "
-                           "om det fortfarande inte kommer något mail, kontakta InfO")
+                           "Om det inte kommer något mail, vänligen kontakta info@isektionen.se")
     return redirect("/")
 
 
 def reset_complete(request):
-    messages.info(request, "Du har ett nytt lösenord, testa det.")
+    messages.info(request, "Ditt lösenord är uppdaterat, logga in nedan.")
     return redirect(reverse("login_view"))
 
 

@@ -77,6 +77,12 @@ class Event(models.Model):
                                            verbose_name='arrangör',
                                            help_text="Organisation(er) som arrangerar evenemanget. Medlemmar i dessa kan senare ändra eventet.")
 
+
+    def _type(self):
+        return "event"
+
+    type = property(_type)
+
     @property
     def preregistrations(self):
         query = EntryAsPreRegistered.objects.filter(event__exact=self)
