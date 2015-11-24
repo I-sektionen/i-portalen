@@ -1,6 +1,6 @@
 __author__ = 'isac'
 from django import forms
-from .models import Booking, BookingSlot
+from .models import BookingSlot
 
 
 """

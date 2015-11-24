@@ -55,6 +55,7 @@ INSTALLED_APPS = (
     'iportalen',
     'storages',
     'bookings',
+    'django_extensions',
 )
 
 MIDDLEWARE_CLASSES = (

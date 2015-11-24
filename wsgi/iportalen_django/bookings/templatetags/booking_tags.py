@@ -6,6 +6,4 @@ from bookings.models import Bookable
 @register.assignment_tag()
 def get_all_bookables():
     bookables = Bookable.objects.all()
-    print("hej")
-    print(bookables)
     return bookables
