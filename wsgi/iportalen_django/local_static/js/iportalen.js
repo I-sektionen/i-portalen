@@ -4043,9 +4043,12 @@ function generate_booking_form(pk){
         var bookings = data.bookings;
 
         $element.append("<div><p>" + bookable.name +"</p></div>");
+        $element.append("<div id=\"year\"></div>");
         $element.append("<div id=\"days\"></div>");
         var $days = jQuery("#days");
         //Each day
+        var year = null;
+        var year_str = null;
         jQuery.each( bookings, function(index, value){
             var s = "<div class=\"single_day\">";
             var d = value.date;
@@ -4057,24 +4060,39 @@ function generate_booking_form(pk){
             if (day <10){
                 day = "0"+day;
             }
-            s = s + "<p>" + d.year + "-" + month + "-" + day;
+            if (year == null){
+                year = d.year;
+                year_str = d.year;
+            }
+            if (year != d.year){
+                year = d.year;
+                year_str = year_str + " - " + d.year;
+            }
+            s = s + "<p>" + d.day + "/" + d.month;
             //Each slot:
             jQuery.each( value.slots, function( index, value2 ){
                 s = s + "<div data-start=\""+d.year + "" + month + "" + day+"_"+value2.start_time + "\" " +
                      "data-end=\""+d.year + "" + month + "" + day+"_"+value2.end_time + "\" class=\"slot";
                 if(value2.available){
-                    s = s + " available\" onclick=\"select_booking_slot(this)\">";
+                    if(value2.blocked){
+                        s = s + " blocked\">";
+                    } else {
+                        s = s + " available\" onclick=\"select_booking_slot(this)\">";
+                    }
                 } else {
                     s = s + " unavailable\">";
                 }
-                s = s + "<p>" + value2.start_time + "</p>";
-                s = s + "<p>" + value2.end_time + "</p>";
+                var start_time = value2.start_time.split(':');
+                var end_time = value2.end_time.split(':');
+                s = s + "<p>" + start_time[0] + ":" + start_time[1] + "</p>";
+                s = s + "<p>" + end_time[0] + ":" + end_time[1] + "</p>";
                 s = s + "</div>";
             });
              // Write values to child!
 
             $days.append(s);
         });
+        $('#year').append("<p>"+year_str+"</p>");
     });
     $("#id_end").attr("hidden","");
     $("#id_start").attr("hidden","");

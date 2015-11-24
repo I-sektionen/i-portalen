@@ -2001,6 +2001,9 @@ div.booking div#days div.single_day .available {
 div.booking div#days div.single_day .choosen {
   background-color: lightblue;
 }
+div.booking div#days div.single_day .blocked {
+  background-color: lightgray;
+}
 
 #master-container {
   position: relative;

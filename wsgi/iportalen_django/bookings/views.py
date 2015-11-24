@@ -1,14 +1,14 @@
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseForbidden, HttpResponse, Http404, JsonResponse
+from django.http import Http404, JsonResponse
 from django.utils import timezone
 
 from bookings.exceptions import NoSlots, InvalidInput, MaxLength, MultipleBookings
+from utils.time import first_day_of_week
 from .models import Booking, Bookable, Invoice, BookingSlot, PartialBooking
 from .forms import BookingForm
-from utils.time import first_day_of_week
-import datetime
+
 
 #from reportlab.pdfgen import canvas
 """
@@ -60,17 +60,16 @@ def make_booking(request, bookable_id, year=None, week=None):
         elif year not in year_range:
             raise Http404("Invalid date, year.")
     else:
-        today = datetime.datetime.today().isocalendar()
+        today = timezone.datetime.today().isocalendar()
         year = today[0]
         week = today[1]
-        print(week)
     form = BookingForm(request.POST or None)
     bookable = get_object_or_404(Bookable, pk=bookable_id)
     slots = BookingSlot.objects.filter(bookable__exact=bookable)
 
     # Find all partial bookings made.
     monday = first_day_of_week(week=week, year=year)
-    sunday = monday + datetime.timedelta(days=6)
+    sunday = monday + timezone.timedelta(days=6)
     booked_slots = PartialBooking.objects.filter(booking__bookable__exact=bookable,
                                                  date__gte=monday,
                                                  date__lte=sunday)
@@ -78,12 +77,12 @@ def make_booking(request, bookable_id, year=None, week=None):
     start = []
     end = []
     #  Want to set: Date(Name, day, month), slots, slot status.
-    for week_delta in range(0, 4):
+    for week_delta in range(0, 16):
         for i in range(0, 7):
             day = {}
 
             # Add the dates and swedish name.
-            day["date"] = monday + datetime.timedelta(days=i + (week_delta * 7))
+            day["date"] = monday + timezone.timedelta(days=i + (week_delta * 7))
 
             #  Loop which checks status for each bookable slot. False meaning it is taken. True it is free.
             day["slots"] = []
@@ -99,35 +98,37 @@ def make_booking(request, bookable_id, year=None, week=None):
 
         form.fields['start'].choices = start
         form.fields['end'].choices = end
-        if request.method == "POST":
-            if form.is_valid():
-                start = form.cleaned_data['start']
-                end = form.cleaned_data['end']
-                start_list = start.split("_")
-                end_list = end.split("_")
-                start_date = datetime.datetime.strptime(start_list[0], "%Y%m%d").date()
-                end_date = datetime.datetime.strptime(end_list[0], "%Y%m%d").date()
-                start_slot = BookingSlot.objects.get(bookable=bookable, start_time=start_list[1])
-                end_slot = BookingSlot.objects.get(bookable=bookable, end_time=end_list[1])
-                try:
-                    Booking.objects.make_a_booking(bookable=bookable,
-                                                   start_date=start_date,
-                                                   end_date=end_date,
-                                                   start_slot=start_slot,
-                                                   end_slot=end_slot,
-                                                   user=request.user)
-                    messages.success(request, "YAY")
-                    return redirect("make_booking", bookable_id=bookable_id)
-                except NoSlots as e:
-                    messages.error(request, e.reason)
-                except InvalidInput as e:
-                    messages.error(request, e.reason)
-                except ValidationError:
-                    messages.error(request, "There exist already booked slots within your booking.")
-                except MaxLength as e:
-                    messages.error(request, e.reason)
-                except MultipleBookings as e:
-                    messages.error(request, e.reason)
+    if request.method == "POST":
+        if form.is_valid():
+            start_str = form.cleaned_data['start']
+            end_str = form.cleaned_data['end']
+            start_list = start_str.split("_")
+            end_list = end_str.split("_")
+
+            start_date = timezone.datetime.strptime(start_list[0], "%Y%m%d").date()
+            end_date = timezone.datetime.strptime(end_list[0], "%Y%m%d").date()
+            start_slot = BookingSlot.objects.get(bookable=bookable, start_time=start_list[1])
+            end_slot = BookingSlot.objects.get(bookable=bookable, end_time=end_list[1])
+            try:
+                Booking.objects.make_a_booking(bookable=bookable,
+                                               start_date=start_date,
+                                               end_date=end_date,
+                                               start_slot=start_slot,
+                                               end_slot=end_slot,
+                                               user=request.user)
+                messages.success(request, "YAY")
+                return redirect("make_booking", bookable_id=bookable_id)
+            except NoSlots as e:
+                messages.error(request, e.reason)
+            except InvalidInput as e:
+                messages.error(request, e.reason)
+            except ValidationError:
+                messages.error(request, "There exist already booked slots within your booking.")
+            except MaxLength as e:
+                messages.error(request, e.reason)
+            except MultipleBookings as e:
+                messages.error(request, e.reason)
+
 
     return render(request, "bookings/book.html", {
         "form": form,
@@ -136,6 +137,11 @@ def make_booking(request, bookable_id, year=None, week=None):
 
 
 def api_view(request, bookable_id, weeks_forward=0):
+    today = timezone.datetime.today().isocalendar()
+    year = today[0]
+    week = today[1] + weeks_forward
+    monday = first_day_of_week(week=week, year=year)
+
     bookable = get_object_or_404(Bookable, pk=bookable_id)
     slots = BookingSlot.objects.filter(bookable=bookable).order_by("start_time")
     partial_bookings = PartialBooking.objects.filter(booking__bookable=bookable)
@@ -147,15 +153,12 @@ def api_view(request, bookable_id, weeks_forward=0):
     }
 
     # Move to number of weeks forward relative to today, then backup to monday.
-    start_date = timezone.now()
-    start_date += datetime.timedelta(weeks=weeks_forward, days=1)  # Extra day is if today is monday.
-    while start_date.weekday() != 0:
-        start_date -= datetime.timedelta(days=1)
-    end_date = start_date + datetime.timedelta(days=14)
+    start_date = monday
+    end_date = start_date + timezone.timedelta(weeks=2)
 
     def daterange(start_date, end_date):
-        for n in range(int ((end_date - start_date).days)):
-            yield start_date + datetime.timedelta(n)
+        for n in range(int((end_date - start_date).days)):
+            yield start_date + timezone.timedelta(n)
 
     # Från ett datum till sista, skapa en array med datum, slots och huruvida det är bokat eller ej.
     bookings_dict = []
@@ -167,10 +170,18 @@ def api_view(request, bookable_id, weeks_forward=0):
             booked = True
             if partial_bookings.filter(date=single_date, slot=slot).exists():
                 booked = False
+            blocked = False
+
+            if single_date.date() <= timezone.datetime.now().date():
+                blocked = True
+                if single_date.date() == timezone.datetime.now().date() and \
+                        slot.start_time > timezone.datetime.now().time():
+                    blocked = False
             tmp = {
                 'start_time': slot.start_time,
                 'end_time': slot.end_time,
                 'available': booked,
+                'blocked': blocked
             }
             slot_array.append(tmp)
 

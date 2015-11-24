@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.conf import settings
-from datetime import datetime, timedelta
+from django.utils import timezone
 from django.core.exceptions import ValidationError
 
 
@@ -81,7 +81,7 @@ class Invoice(models.Model):
                               choices=INVOICE_STATUSES,
                               default=CREATED)
 
-    due = models.DateField(default=datetime.now()+timedelta(days=30), verbose_name='förfallo dag')
+    due = models.DateField(default=timezone.datetime.now()+timezone.timedelta(days=30), verbose_name='förfallo dag')
     booking = models.ForeignKey("Booking", verbose_name='bokning')
 
     def get_absolute_url(self):
