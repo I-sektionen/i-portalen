@@ -405,7 +405,7 @@ html {
   box-sizing: inherit;
 }
 
-button, .button, .action-button {
+button, .button, .action-button, .button-group label .button-group-item, .button-group label .action-button-group-item {
   appearance: none;
   text-transform: none;
   background-color: #f7f7f7;
@@ -428,15 +428,15 @@ button, .button, .action-button {
   white-space: nowrap;
   box-shadow: 0px 3px 0px #dedede;
 }
-button:hover, button:focus, .button:hover, .action-button:hover, .button:focus, .action-button:focus {
+button:hover, button:focus, .button:hover, .action-button:hover, .button-group label .button-group-item:hover, .button-group label .action-button-group-item:hover, .button:focus, .action-button:focus, .button-group label .button-group-item:focus, .button-group label .action-button-group-item:focus {
   background-color: #ebebeb;
   color: #595959;
 }
-button:disabled, .button:disabled, .action-button:disabled {
+button:disabled, .button:disabled, .action-button:disabled, .button-group label .button-group-item:disabled, .button-group label .action-button-group-item:disabled {
   cursor: not-allowed;
   opacity: 0.5;
 }
-button:disabled:hover, .button:disabled:hover, .action-button:disabled:hover {
+button:disabled:hover, .button:disabled:hover, .action-button:disabled:hover, .button-group label .button-group-item:disabled:hover, .button-group label .action-button-group-item:disabled:hover {
   background-color: #f7f7f7;
 }
 
@@ -655,21 +655,6 @@ picture {
     float: left;
     margin-right: 1em;
   }
-}
-.button-group label .button-group-item, .button-group label .action-button-group-item {
-  text-transform: none;
-  background: #f7f7f7;
-  box-shadow: 0px 3px 0px #dedede;
-  border-radius: 3px;
-  border: 0;
-  color: #333;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 1em;
-  font-weight: normal;
-  line-height: 1;
-  padding: 0.75em 1em;
-  width: 100%;
 }
 .button-group label .button-group-item:focus, .button-group label .action-button-group-item:focus, .button-group label .button-group-item:hover, .button-group label .action-button-group-item:hover {
   background-color: #f0f0f0;
@@ -2037,6 +2022,43 @@ article.news-feed-content p.author {
 }
 .pagination .step-links .meta .active {
   background-color: #f2f0f1;
+}
+
+div.booking div#days {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  border-color: #006600;
+  border-style: solid;
+}
+div.booking div#days div.single_day {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  flex-basis: 14%;
+  border-color: black;
+  border-style: solid;
+}
+div.booking div#days div.single_day .unavailable {
+  background-color: lightcoral;
+}
+div.booking div#days div.single_day .available {
+  background-color: lightgreen;
+}
+div.booking div#days div.single_day .choosen {
+  background-color: lightblue;
+}
+div.booking div#days div.single_day .blocked {
+  background-color: lightgray;
 }
 
 #master-container {
