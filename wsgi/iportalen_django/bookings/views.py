@@ -88,6 +88,23 @@ def make_booking(request, bookable_id, weeks_forward=0):
 
         form.fields['start'].choices = start
         form.fields['end'].choices = end
+
+    user = request.user
+    nr_of_active_bookings = 0
+    now = timezone.now()
+    for b in Booking.objects.filter(user=user):
+        active = False
+        for p in b.bookings.all():
+            if p.date > now.date():
+                active = True
+            elif p.date == now.date():
+                if p.slot.end_time > now.time():
+                    active = True
+        if active:
+            nr_of_active_bookings += 1
+    if bookable.max_number_of_bookings <= nr_of_active_bookings:
+        messages.warning(request, "Du har redan bokat {:} det maximala antalet gånger i rad som du får".format(bookable.name))
+
     if request.method == "POST":
         if form.is_valid():
             start_str = form.cleaned_data['start']
@@ -123,6 +140,7 @@ def make_booking(request, bookable_id, weeks_forward=0):
     return render(request, "bookings/book.html", {
         "form": form,
         "bookable_id": bookable_id,
+        "bookable": bookable,
         "weeks_forward": weeks_forward,
     })
 
@@ -138,6 +156,22 @@ def api_view(request, bookable_id, weeks_forward=0):
     bookable = get_object_or_404(Bookable, pk=bookable_id)
     slots = BookingSlot.objects.filter(bookable=bookable).order_by("start_time")
     partial_bookings = PartialBooking.objects.filter(booking__bookable=bookable)
+
+    user = request.user
+    nr_of_active_bookings = 0
+    now = timezone.now()
+    for b in Booking.objects.filter(user=user):
+        active = False
+        for p in b.bookings.all():
+            if p.date > now.date():
+                active = True
+            elif p.date == now.date():
+                if p.slot.end_time > now.time():
+                    active = True
+        if active:
+            nr_of_active_bookings += 1
+
+    user_dict = {"nr_of_active_bookings": nr_of_active_bookings}
 
     bookable_dict = {
         'name': bookable.name,
@@ -187,6 +221,7 @@ def api_view(request, bookable_id, weeks_forward=0):
         })
 
     data = {
+        'user': user_dict,
         'bookable': bookable_dict,
         'bookings': bookings_list,
     }
