@@ -4,7 +4,7 @@ from django.views.generic import TemplateView, RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import create_content, approve_content, placeholder, article_pagination
+from .views import create_content, approve_content, placeholder, display_news_feed
 
 from articles import urls as article_urls
 from user_managements import urls as user_urls
@@ -15,7 +15,7 @@ from bookings import urls as booking_urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', view=article_pagination, name="front page"),
+    url(r'^$', view=display_news_feed, name="news_feed"),
     url(r'^articles/', include(article_urls)),
     url(r'^user/', include(user_urls)),
     url(r'^event/', include(event_urls)),

@@ -19,7 +19,7 @@
                 <li>
                     <div class="modal">
                         <label for="modal-1" class="button-small">
-                            <div class="modal-trigger">Mitt Konto</div>
+                            <div class="modal-trigger">Logga in</div>
                         </label>
 
                         <input class="modal-state" id="modal-1" type="checkbox" />
@@ -34,9 +34,15 @@
                                             {% csrf_token %}
                                             <input class="username-holder" type="text" name="username" placeholder="Liu-id">
                                             <input class="password-holder" type="password" name="password" placeholder="Lösenord">
-                                            <input class="submit-holder primary" type="submit" value="Logga in">
+                                            <div class="button-group">
+                                                <label>
+                                                    <input class="action-button-group-item" type="submit" value="Logga in">
+                                                </label>
+                                                <label>
+                                                    <a href="{% url "password_reset" %}" class="button-group-item">Glömt lösenord?</a>
+                                                </label>
+                                            </div>
                                         </form>
-                                        <a href="{% url "password_reset" %}">Glömt lösenord</a>
                                     </div>
                                 </div>
                             </div>

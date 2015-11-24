@@ -4219,6 +4219,23 @@ $('.datetimepicker').datetimepicker({
 
 
 var MOBILE_BREAKPOINT = 900;;/**
+ * Created by andreas on 09/11/15.
+ */
+$(document).ready(function() {
+  var menuToggle = $('#js-centered-navigation-mobile-menu').unbind();
+  $('#js-centered-navigation-menu').removeClass("show");
+
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-centered-navigation-menu').slideToggle(function(){
+      if($('#js-centered-navigation-menu').is(':hidden')) {
+        $('#js-centered-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+});
+
+;/**
  * Created by MagnusForzelius on 2015-10-31.
  */
 
