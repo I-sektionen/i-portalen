@@ -108,7 +108,6 @@ class Event(models.Model):
         list = []
         for el in q:
             list.append(el.user)
-            print(el.timestamp)
         return list
 
     @property
@@ -298,7 +297,6 @@ class Event(models.Model):
                 multi = ["tags", "organisations"]
                 for field in self.replacing._meta.get_fields():
                     if field.name not in exclude:
-                        print(field.name)
                         if field.name not in multi:
                             setattr(self.replacing, field.name, getattr(self, field.name))
                         else:
@@ -335,7 +333,6 @@ class Event(models.Model):
         else:
             s = SpeakerList.objects.create(user=u, event=self)
             s.first = True
-            print("Forst")
         s.save()
         return True
 

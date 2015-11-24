@@ -10,6 +10,7 @@ from articles import urls as article_urls
 from user_managements import urls as user_urls
 from events import urls as event_urls
 from organisations import urls as org_urls
+from bookings import urls as booking_urls
 
 
 urlpatterns = [
@@ -21,6 +22,7 @@ urlpatterns = [
     url(r'^create_content/', view=create_content, name="create content"),
     url(r'^approve_content/', view=approve_content, name="approve content"),
     url(r'^organisations/', include(org_urls)),
+    url(r'^booking/', include(booking_urls)),
     url(r'^placeholder/', view=placeholder, name="placeholder"),
     url(r'^student', RedirectView.as_view(pattern_name='front page', permanent=True)),  # Om någon har sparat /student som favorit skickar vi dem till startsidan
 ]
