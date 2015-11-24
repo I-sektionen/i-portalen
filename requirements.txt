@@ -7,5 +7,4 @@ django-storages-redux
 boto
 urllib3
 django_extensions
-pygraphviz
 pytz
