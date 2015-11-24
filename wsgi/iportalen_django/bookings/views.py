@@ -5,7 +5,7 @@ from django.http import Http404, JsonResponse
 from django.utils import timezone
 
 from bookings.exceptions import NoSlots, InvalidInput, MaxLength, MultipleBookings
-from utils.time import first_day_of_week
+from utils.time import first_day_of_week, daterange
 from .models import Booking, Bookable, Invoice, BookingSlot, PartialBooking
 from .forms import BookingForm
 
@@ -47,22 +47,12 @@ def invoice_pdf(request, invoice_id):
     return response
 """
 
-def make_booking(request, bookable_id, year=None, week=None):
-    if (year is not None) or (week is not None):
-        year_range = range(1990, 2300)
-        week_range = range(1, 53)
-        year = int(year)
-        week = int(week)
-        if (year not in year_range) and (week not in week_range):
-            raise Http404("Invalid date, year & week")
-        elif week not in week_range:
-            raise Http404("Invalid date, week.")
-        elif year not in year_range:
-            raise Http404("Invalid date, year.")
-    else:
-        today = timezone.datetime.today().isocalendar()
-        year = today[0]
-        week = today[1]
+def make_booking(request, bookable_id, weeks_forward=0):
+    weeks_forward = int(weeks_forward)
+    today = timezone.datetime.today() + timezone.timedelta(weeks=weeks_forward)
+    today = today.isocalendar()
+    year = today[0]
+    week = today[1]
     form = BookingForm(request.POST or None)
     bookable = get_object_or_404(Bookable, pk=bookable_id)
     slots = BookingSlot.objects.filter(bookable__exact=bookable)
@@ -133,13 +123,16 @@ def make_booking(request, bookable_id, year=None, week=None):
     return render(request, "bookings/book.html", {
         "form": form,
         "bookable_id": bookable_id,
+        "weeks_forward": weeks_forward,
     })
 
 
 def api_view(request, bookable_id, weeks_forward=0):
-    today = timezone.datetime.today().isocalendar()
+    weeks_forward = int(weeks_forward)
+    today = timezone.datetime.today() + timezone.timedelta(weeks=weeks_forward)
+    today = today.isocalendar()
     year = today[0]
-    week = today[1] + weeks_forward
+    week = today[1]
     monday = first_day_of_week(week=week, year=year)
 
     bookable = get_object_or_404(Bookable, pk=bookable_id)
@@ -156,12 +149,8 @@ def api_view(request, bookable_id, weeks_forward=0):
     start_date = monday
     end_date = start_date + timezone.timedelta(weeks=2)
 
-    def daterange(start_date, end_date):
-        for n in range(int((end_date - start_date).days)):
-            yield start_date + timezone.timedelta(n)
-
     # Från ett datum till sista, skapa en array med datum, slots och huruvida det är bokat eller ej.
-    bookings_dict = []
+    bookings_list = []
     cnt = 0
     for single_date in daterange(start_date, end_date):
         slot_array = []
@@ -192,14 +181,14 @@ def api_view(request, bookable_id, weeks_forward=0):
             'day': single_date.day,
 
         }
-        bookings_dict.append({
+        bookings_list.append({
             'date': date_info,
             'slots': slot_array,
         })
 
     data = {
         'bookable': bookable_dict,
-        'bookings': bookings_dict,
+        'bookings': bookings_list,
     }
     return JsonResponse(data)
 

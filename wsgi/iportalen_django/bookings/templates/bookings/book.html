@@ -23,23 +23,19 @@
         This is where the booking form is rendered by the script booking.js
     {% endcomment %}
     </div>
-    {% if week == 1 %}
-    <a href="{% url "make_booking" bookable_id year   %}"><button type="button">Bakåt</button></a>
-
-    {% endif %}
-    <a href=""><button type="button">Framåt</button></a>
-    <form method="post" action="{% url "make_booking" bookable_id %}">
-    {% csrf_token %}
-        {% for field in form %}
-            {{ field }}
-        {% endfor %}
-    <button type="submit">Boka</button>
-    </form>
-    <ul>
-    {% for slot in booked_slots %}
-        <li> {{ slot.slot }} | {{ slot.date}} </li>
-    {% endfor %}
-    </ul>
+    <div class="button-group">
+        {% if weeks_forward > 0 %}
+        <a href="{% url "make_booking_week" bookable_id weeks_forward|add:"-1"  %}"><button type="button">Bakåt</button></a>
+        {% endif %}
+        <a href="{% url "make_booking_week" bookable_id weeks_forward|add:"1"  %}"><button type="button">Frammåt</button></a>
+        <form method="post" action="">
+        {% csrf_token %}
+            {% for field in form %}
+                {{ field }}
+            {% endfor %}
+        <button type="submit">Boka</button>
+        </form>
+    </div>
 
 {% endblock %}
 
@@ -54,7 +50,7 @@
   });
   */
   jQuery(document).ready(function(){
-                generate_booking_form({{ bookable_id }})
+                generate_booking_form({{ bookable_id }}, {{ weeks_forward }})
         });
   </script>
 

@@ -4036,8 +4036,9 @@ else
 ;/**
  * Created by isac on 2015-11-22.
  */
-function generate_booking_form(pk){
-    jQuery.get('booking/book/'+pk+"/api/" , function( data ){
+function generate_booking_form(pk, weeks_forward){
+    console.log(weeks_forward);
+    jQuery.get('booking/book/'+pk+"/api/"+weeks_forward+"/" , function( data ){
         var $element = jQuery(".booking");
         var bookable = data.bookable;
         var bookings = data.bookings;
