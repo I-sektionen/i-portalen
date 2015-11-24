@@ -1,19 +1,26 @@
-div.booking
-  div#days
-    +display(flex)
-    flex-wrap: wrap
-    border-color: #006600
-    border-style: solid
-    div.single_day
-      +flex(1)
-      flex-basis: 14%
-      border-color: black
+div.booking-container
+  div.booking
+    div#days
+      +display(flex)
+      flex-wrap: wrap
+      border-color: #006600
       border-style: solid
-      .unavailable
-        background-color: lightcoral
-      .available
-        background-color: lightgreen
-      .choosen
-        background-color: lightblue
-      .blocked
-        background-color: lightgray
+      div.single_day
+        +flex(1)
+        flex-basis: 14%
+        border-color: black
+        border-style: solid
+        .unavailable
+          background-color: lightcoral
+        .available
+          background-color: lightgreen
+        .choosen
+          background-color: lightblue
+        .blocked
+          background-color: lightgray
+  .third-container
+    +outer-container()
+    .third
+      +span-columns(4)
+      .center
+        text-align: center
