@@ -186,4 +186,33 @@ class Booking(models.Model):
         verbose_name_plural = 'bokningar'
 
     def __str__(self):
-        return self.bookable.name + ", av " + self.user.username
+        td = self.get_time_of_booking()
+        return self.bookable.name + " bokad " + str(td["start_time"]) + " " + str(td["start_date"]) + " - " + \
+               str(td["end_time"]) + " " + str(td["end_date"]) + ", av dig"
+
+    def get_time_of_booking(self):
+        start_time = None
+        end_time = None
+        start_date = None
+        end_date = None
+        for p in self.bookings.all():
+            if not start_time:
+                start_time = p.slot.start_time
+            if not end_time:
+                end_time = p.slot.end_time
+            if not start_date:
+                start_date = p.date
+            if not end_date:
+                end_date = p.date
+            if start_time > p.slot.start_time:
+                start_time = p.slot.start_time
+            if end_time < p.slot.end_time:
+                end_time = p.slot.end_time
+            if start_date > p.date:
+                start_date = p.date
+            if end_date < p.date:
+                end_date = p.date
+        return {"start_time":start_time,
+                "end_time": end_time,
+                "start_date": start_date,
+                "end_date": end_date}
