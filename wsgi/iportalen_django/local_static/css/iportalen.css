@@ -2047,6 +2047,10 @@ div.booking-container div.booking div#days div.single_day {
   flex-basis: 14%;
   border-color: black;
   border-style: solid;
+  line-height: 1;
+}
+div.booking-container div.booking div#days div.single_day p {
+  padding: 3px;
 }
 div.booking-container div.booking div#days div.single_day .unavailable {
   background-color: lightcoral;

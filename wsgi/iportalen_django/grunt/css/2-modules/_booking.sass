@@ -5,11 +5,16 @@ div.booking-container
       flex-wrap: wrap
       border-color: #006600
       border-style: solid
+
       div.single_day
         +flex(1)
         flex-basis: 14%
         border-color: black
         border-style: solid
+        p
+          padding: 3px
+
+        line-height: 1
         .unavailable
           background-color: lightcoral
         .available
@@ -18,6 +23,7 @@ div.booking-container
           background-color: lightblue
         .blocked
           background-color: lightgray
+
   .third-container
     +outer-container()
     .third

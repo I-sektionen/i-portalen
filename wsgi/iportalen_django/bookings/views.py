@@ -5,8 +5,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404, JsonResponse
 from django.utils import timezone
 
-from bookings.exceptions import NoSlots, InvalidInput, MaxLength, MultipleBookings
-from utils.time import first_day_of_week, daterange
+from bookings.exceptions import NoSlots, InvalidInput, MaxLength, MultipleBookings, TooShortNotice
+from utils.time import first_day_of_week, daterange, combine_date_and_time
 from .models import Booking, Bookable, Invoice, BookingSlot, PartialBooking
 from .forms import BookingForm
 
@@ -136,6 +136,8 @@ def make_booking(request, bookable_id, weeks_forward=0):
                 messages.error(request, e.reason)
             except MultipleBookings as e:
                 messages.error(request, e.reason)
+            except TooShortNotice as e:
+                messages.error(request, e.reason)
 
 
     return render(request, "bookings/book.html", {
@@ -146,9 +148,9 @@ def make_booking(request, bookable_id, weeks_forward=0):
     })
 
 
-@login_required
-def remove_booking(request, id):
-    booking = get_object_or_404(Booking, pk=id)
+@login_required()
+def remove_booking(request, bookable_id):
+    booking = get_object_or_404(Booking, pk=bookable_id)
     if request.user.pk == booking.user.pk:
         booking.delete()
     return redirect("my_bookings")
@@ -185,7 +187,8 @@ def api_view(request, bookable_id, weeks_forward=0):
     bookable_dict = {
         'name': bookable.name,
         'max_number_of_bookings': bookable.max_number_of_bookings,
-        'max_number_of_slots_in_booking': bookable.max_number_of_slots_in_booking
+        'max_number_of_slots_in_booking': bookable.max_number_of_slots_in_booking,
+        'hours_before_booking': bookable.hours_before_booking
     }
 
     # Move to number of weeks forward relative to today, then backup to monday.
@@ -203,8 +206,8 @@ def api_view(request, bookable_id, weeks_forward=0):
             if partial_bookings.filter(date=single_date, slot=slot).exists():
                 booked = False
             blocked = False
-
-            if single_date.date() <= timezone.datetime.now().date():
+            cant_book = combine_date_and_time(single_date, slot.start_time) - timezone.timedelta(hours=bookable.hours_before_booking) < timezone.datetime.now()
+            if cant_book:
                 blocked = True
                 if single_date.date() == timezone.datetime.now().date() and \
                         slot.start_time > timezone.datetime.now().time():
