@@ -90,11 +90,11 @@
             </li>
             <li><a href="{% url "placeholder" %}">Studier</a>
             </li>
-            <li class="more"><a href="{% url "placeholder" %}">Tjänster</a>
+            <li class="more"><a href="">Tjänster</a>
                 <div class="submenu-wrapper">
                     <ul class="submenu">
                         <li>Bokningar</li>
-                        <li><a href="{% url 'index' %}">Mina Bokningar</a></li>
+                        <li><a href="{% url 'my_bookings' %}">Mina Bokningar</a></li>
                         {% for bookable in bookables %}
                             <li><a href="{{ bookable.get_absolute_url }}">{{ bookable.name|title }}</a></li>
                         {% endfor %}
