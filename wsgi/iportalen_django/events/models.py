@@ -213,12 +213,14 @@ class Event(models.Model):
         if not user.is_authenticated():
             return False
         if user != self.user:
+            user_org = user.get_organisations()
             try:
-                if user.groups is None:
+                if user_org is []:
                     return False
-                if self.admin_group is None:
+                if self.organisations.all() is None:
                     return False
-                elif self.admin_group not in user.groups:  # I LOVE PYTHON <3
+                elif not set(self.organisations.all()).intersection(set(user_org)):  # I LOVE PYTHON <3
+                    # Think of it as a venn diagram where the intersections is the organisations that both the user and the event have.
                     return False
             except:
                 return False
