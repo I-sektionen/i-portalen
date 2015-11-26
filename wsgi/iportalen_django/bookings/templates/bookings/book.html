@@ -22,7 +22,15 @@
         <div class="booking">
         <div><h1>{{ bookable.name|capfirst }}</h1></div>
                 <div id="year"></div>
-                <div id="days"></div>
+                <div id="days">
+                    <div class="single_day"><p><strong>Måndag</strong></p></div>
+                    <div class="single_day"><p><strong>Tisdag</strong></p></div>
+                    <div class="single_day"><p><strong>Onsdag</strong></p></div>
+                    <div class="single_day"><p><strong>Torsdag</strong></p></div>
+                    <div class="single_day"><p><strong>Fredag</strong></p></div>
+                    <div class="single_day"><p><strong>Lördag</strong></p></div>
+                    <div class="single_day"><p><strong>Söndag</strong></p></div>
+                </div>
         {% comment %}
             This is where the booking form is rendered by the script booking.js
         {% endcomment %}

@@ -6,7 +6,7 @@
     {% if bookings %}
         <h2>Dina tidigare bokningar:</h2>
         {% for booking in bookings %}
-        <p>{{ booking }}</p>
+        <p>{{ booking }}. {% if booking.can_be_unbooked %}<a href="{% url 'remove_booking' booking.pk %}">Ta bort bokningen.</a> {% endif %}</p>
     {% endfor %}
     {% else %}
     <p>Du har inga aktuella bokningar.</p>

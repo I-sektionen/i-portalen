@@ -48,7 +48,11 @@ function generate_booking_form(pk, weeks_forward){
                             s = s + ">";
                     }
                 } else {
-                    s = s + " unavailable\">";
+                    if(value2.blocked){
+                        s = s + " blocked\">";
+                    } else {
+                        s = s + " unavailable\">";
+                    }
                 }
                 var start_time = value2.start_time.split(':');
                 var end_time = value2.end_time.split(':');

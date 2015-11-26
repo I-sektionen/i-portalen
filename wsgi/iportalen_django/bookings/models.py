@@ -3,12 +3,13 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-
+from utils.time import has_passed, combine_date_and_time
 
 class Bookable(models.Model):
     name = models.CharField(max_length=512)
     max_number_of_bookings = models.IntegerField(default=1)  # Maximum number of simultaneous bookings.
     max_number_of_slots_in_booking = models.IntegerField(default=1)  # Max length of booking
+    hours_before_booking = models.IntegerField(default=24)  # must book at least this many hours befor booking starts.
 
     def __str__(self):
         return self.name
@@ -187,8 +188,16 @@ class Booking(models.Model):
 
     def __str__(self):
         td = self.get_time_of_booking()
-        return self.bookable.name + " bokad " + str(td["start_time"]) + " " + str(td["start_date"]) + " - " + \
-               str(td["end_time"]) + " " + str(td["end_date"]) + ", av dig"
+        return self.bookable.name + " bokad " + str(td["start"].time()) + " " + str(td["start"].date()) + " - " + \
+               str(td["end"].time()) + " " + str(td["end"].date()) + ", av dig"
+
+
+    def _can_be_unbooked(self):
+        time = self.get_time_of_booking()
+        if has_passed(time["start"]-timezone.timedelta(hours=self.bookable.hours_before_booking)):
+            return False
+        return True
+    can_be_unbooked = property(_can_be_unbooked)
 
     def get_time_of_booking(self):
         start_time = None
@@ -212,7 +221,6 @@ class Booking(models.Model):
                 start_date = p.date
             if end_date < p.date:
                 end_date = p.date
-        return {"start_time":start_time,
-                "end_time": end_time,
-                "start_date": start_date,
-                "end_date": end_date}
+
+        return {"start": combine_date_and_time(start_date, start_time),
+                "end": combine_date_and_time(end_date, end_time)}
