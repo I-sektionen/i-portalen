@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404, JsonResponse
@@ -22,7 +23,7 @@ from .forms import BookingForm
 def index(request):
     bookings = Booking.objects.all()
     bookables = Bookable.objects.all()
-    return render(request, "bookings/index.html", {
+    return render(request, "bookings/my_bookings.html", {
         "bookings": bookings,
         "bookables": bookables,
     })
@@ -143,6 +144,14 @@ def make_booking(request, bookable_id, weeks_forward=0):
         "bookable": bookable,
         "weeks_forward": weeks_forward,
     })
+
+
+@login_required
+def remove_booking(request, id):
+    booking = get_object_or_404(Booking, pk=id)
+    if request.user.pk == booking.user.pk:
+        booking.delete()
+    return redirect("my_bookings")
 
 
 def api_view(request, bookable_id, weeks_forward=0):
