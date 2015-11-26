@@ -1,22 +1,22 @@
 from django.db import models
-from .exceptions import InvalidInput, NoSlots, MultipleBookings, MaxLength
+from .exceptions import InvalidInput, NoSlots, MultipleBookings, MaxLength, TooShortNotice
 from django.db import transaction
 from .models import PartialBooking, BookingSlot
-
-from datetime import timedelta
 from django.utils import timezone
-
+from utils.time import combine_date_and_time
 
 
 class BookingManager(models.Manager):
 
     @transaction.atomic
     def make_a_booking(self, bookable, start_date, end_date, start_slot, end_slot, user):
-        now = timezone.now()
+        now = timezone.datetime.now()
         if start_date < now.date():
             raise InvalidInput("Can't book backwards in time.")
         if start_date == now.date() and start_slot.start_time < now.time():
             raise InvalidInput("Booking has already started.")
+        if combine_date_and_time(start_date, start_slot.start_time) - timezone.timedelta(hours=bookable.hours_before_booking) < now:
+            raise TooShortNotice("Too short notice")
         if start_date > end_date:
             raise InvalidInput("Start date must be before end date.")
         if start_date == end_date and start_slot.start_time > end_slot.start_time:
@@ -63,7 +63,7 @@ class BookingManager(models.Manager):
                 if slot == slots.reverse()[0]:
                     print(slots[0])
                     slot = slots[0]
-                    current_date = current_date + timedelta(days=1)
+                    current_date = current_date + timezone.timedelta(days=1)
                 else:
                     # Go to the next slot.
                     cnt = 0
