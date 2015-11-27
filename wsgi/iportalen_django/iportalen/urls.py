@@ -11,6 +11,7 @@ from user_managements import urls as user_urls
 from events import urls as event_urls
 from organisations import urls as org_urls
 from bookings import urls as booking_urls
+from course_evaluations import urls as course_urls
 
 
 urlpatterns = [
@@ -25,6 +26,7 @@ urlpatterns = [
     url(r'^booking/', include(booking_urls)),
     url(r'^placeholder/', view=placeholder, name="placeholder"),
     url(r'^student', RedirectView.as_view(pattern_name='front page', permanent=True)),  # Om någon har sparat /student som favorit skickar vi dem till startsidan
+    url(r'^course_evaluation/', include(course_urls)),
 ]
 if not settings.ON_PASS:
     urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
