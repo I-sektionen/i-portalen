@@ -34,7 +34,8 @@ class Evaluation(models.Model):
     course = models.ForeignKey(Course, verbose_name="kurs", on_delete=models.SET_NULL, null=True, blank=False)
     reward = models.ForeignKey(Reward, verbose_name="belönig", on_delete=models.SET_NULL, null=True, blank=False)
     period = models.ForeignKey(Period, verbose_name="läsperiod", on_delete=models.SET_NULL, null=True, blank=False)
-    user = models.ForeignKey(IUser, verbose_name="kurs", null=False, blank=False)
+    user = models.ForeignKey(IUser, verbose_name="användare", null=False, blank=False)
+    evaluated = models.BooleanField(verbose_name="genomförd", default=False)
 
     class Meta:
         unique_together = (('course', 'period'),)  # Make sure only one booking on one data and timeslot.
