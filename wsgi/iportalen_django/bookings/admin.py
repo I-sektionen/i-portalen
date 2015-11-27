@@ -6,7 +6,8 @@ from .models import Bookable, Booking, BookingSlot, VariableCostAmount, Invoice,
 class BookingSlotInline(admin.TabularInline):
     model = BookingSlot
     extra = 0
-    ordering = ("start_time", )
+    ordering = ("start_time",)
+
 
 class BookableAdmin(admin.ModelAdmin):
     inlines = [
@@ -43,17 +44,16 @@ class FixedCostInline(admin.TabularInline):
 
 
 class UserInvoiceAdmin(admin.ModelAdmin):
+    # fields = ('invoice_pdf_url', )
 
-    #fields = ('invoice_pdf_url', )
-
-    #invoice_pdf_url.allow_tags = True
-    #invoice_pdf_url.short_description = 'Länk till PDF fakturan.'
-
+    # invoice_pdf_url.allow_tags = True
+    # invoice_pdf_url.short_description = 'Länk till PDF fakturan.'
 
     inlines = [
         VariableCostInline,
         FixedCostInline,
     ]
+
 
 admin.site.register(Bookable, BookableAdmin)
 admin.site.register(Booking, BookingsAdmin)

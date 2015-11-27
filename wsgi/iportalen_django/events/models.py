@@ -5,10 +5,11 @@ from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
 from utils.validators import less_than_160_characters_validator
 from organisations.models import Organisation
-
 from tags.models import Tag
 from .exceptions import CouldNotRegisterException
 from .managers import SpeakerListManager
+
+
 # A user can register and deregister
 # The admin can:
 # - Change properties of an event
@@ -33,110 +34,185 @@ class Event(models.Model):
     )
 
     #  Description:
-    headline = models.CharField(verbose_name='arrangemangets namn',help_text="Ge ditt evenemang en titel, till exempel 'Excelutbildning med Knowit'", max_length=255)
-    lead = models.TextField(verbose_name='kort beskrivning', help_text="Ge en kort beskrivning av ditt event. Max 160 tecken. Tex. 'Få cellsynt kompetens med Knowit!'", validators=[less_than_160_characters_validator])
-    body = models.TextField(verbose_name='beskrivning', help_text="Beskrivning av eventet")
-    location = models.CharField(max_length=30, verbose_name="plats", help_text="Plats för eventet tex. C1 eller Märkesbacken")
+    headline = models.CharField(
+        verbose_name='arrangemangets namn',
+        help_text="Ge ditt evenemang en titel, till exempel 'Excelutbildning med Knowit'",
+        max_length=255)
+    lead = models.TextField(
+        verbose_name='kort beskrivning',
+        help_text="Ge en kort beskrivning av ditt event. Max 160 tecken. Tex. 'Få cellsynt kompetens med Knowit!'",
+        validators=[less_than_160_characters_validator])
+    body = models.TextField(
+        verbose_name='beskrivning',
+        help_text="Beskrivning av eventet")
+    location = models.CharField(
+        max_length=30,
+        verbose_name="plats",
+        help_text="Plats för eventet tex. C1 eller Märkesbacken")
 
-    start = models.DateTimeField(verbose_name='starttid', help_text="När startar arrangemanget?")  # When the event starts.
-    end = models.DateTimeField(verbose_name='sluttid', help_text="När slutar arrangemanget?")  # When the event ends.
+    start = models.DateTimeField(
+        verbose_name='starttid',
+        help_text="När startar arrangemanget?")  # When the event starts.
+    end = models.DateTimeField(
+        verbose_name='sluttid',
+        help_text="När slutar arrangemanget?")  # When the event ends.
 
-    enable_registration = models.BooleanField(verbose_name='användare kan anmäla sig')
-    registration_limit = models.PositiveIntegerField(verbose_name='antal platser', help_text="Hur många kan anmäla sig?" ,blank=True, null=True)
+    enable_registration = models.BooleanField(
+        verbose_name='användare kan anmäla sig')
+    registration_limit = models.PositiveIntegerField(
+        verbose_name='antal platser', help_text="Hur många kan anmäla sig?", blank=True, null=True)
 
     extra_deadline = models.DateTimeField(
         verbose_name='extra anmälningsstopp',
         help_text="Exempelvis: Datum att anmäla sig innan för att få mat. Kan lämnas tomt.",
         blank=True,
         null=True)
-    extra_deadline_text = models.CharField(max_length=255,
-                                           verbose_name="beskrivning till det extra anmälningsstoppet",
-                                           help_text="Ex. få mat, garanteras fika osv. Lämna tomt om extra anmälningsstopp ej angivits.",
-                                           blank=True,
-                                           null=True)
+    extra_deadline_text = models.CharField(
+        max_length=255,
+        verbose_name="beskrivning till det extra anmälningsstoppet",
+        help_text="Ex. få mat, garanteras fika osv. Lämna tomt om extra anmälningsstopp ej angivits.",
+        blank=True,
+        null=True)
     # Dagar innan start för avanmälan. Räknas bakåt från 'start'
-    deregister_delta = models.PositiveIntegerField(verbose_name='Sista dag för använmälan',
-                                                   default=1,
-                                                   help_text="Sista dag för avanmälan i antal dagar innan eventet")
+    deregister_delta = models.PositiveIntegerField(
+        verbose_name='Sista dag för använmälan',
+        default=1,
+        help_text="Sista dag för avanmälan i antal dagar innan eventet")
 
-    visible_from = models.DateTimeField(verbose_name="Datum för publicering")
+    visible_from = models.DateTimeField(
+        verbose_name="Datum för publicering")
 
     #  Access rights
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)  # User with admin rights/creator.
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, verbose_name='användare', null=True,
+        on_delete=models.SET_NULL)  # User with admin rights/creator.
     # The group which has admin rights. If left blank is it only the user who can admin.
-    tags = models.ManyToManyField(Tag, verbose_name='tag', blank=True)
+    tags = models.ManyToManyField(
+        Tag, verbose_name='tag', blank=True)
 
-    status = models.CharField(max_length=1, choices=STATUSES, default=DRAFT, blank=False, null=False)
+    status = models.CharField(
+        max_length=1, choices=STATUSES, default=DRAFT, blank=False, null=False)
     rejection_message = models.TextField(blank=True, null=True)
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
     replacing = models.ForeignKey('self', null=True, blank=True, default=None, on_delete=models.SET_NULL)
-    organisations = models.ManyToManyField(Organisation,
-                                           blank=True,
-                                           default=None,
-                                           verbose_name='arrangör',
-                                           help_text="Organisation(er) som arrangerar evenemanget. Medlemmar i dessa kan senare ändra eventet.")
+    organisations = models.ManyToManyField(
+        Organisation,
+        blank=True,
+        default=None,
+        verbose_name='arrangör',
+        help_text="Organisation(er) som arrangerar evenemanget. Medlemmar i dessa kan senare ändra eventet.")
 
+    ###########################################################################
+    # Meta data for model
+    ###########################################################################
+    class Meta:
+        verbose_name = "Arrangemang"
+        verbose_name_plural = "Arrangemang"
+        permissions = (('can_approve_event', 'Can approve event'),)
+
+    ###########################################################################
+    # Overridden and standard functions
+    ###########################################################################
+
+    def save(self, *args, **kwargs):
+        """Override save to set created and modifed date before saving."""
+        if not self.id:
+            self.created = timezone.now()
+        self.modified = timezone.now()
+        super(Event, self).save(*args, **kwargs)
+
+    def __str__(self):
+        """Return string representation of object"""
+        return self.headline
+
+    def get_absolute_url(self):
+        """Get url of object"""
+        return "/event/%i/" % self.id
+
+    ###########################################################################
+    # Properties reachable in template
+    ###########################################################################
 
     def _type(self):
+        """Return model name"""
         return "event"
 
     type = property(_type)
 
     @property
     def preregistrations(self):
-        query = EntryAsPreRegistered.objects.filter(event__exact=self)
-        list = []
+        """Returns list of preregistered users."""
+        query = EntryAsPreRegistered.objects.filter(event=self)
+        user_list = []
         for el in query:
-            list.append(el.user)
-        return list
+            user_list.append(el.user)
+        return user_list
 
     @property
     def reserves(self):
-        q = EntryAsReserve.objects.filter(event__exact=self)
-        list = []
+        """Returns list of reserve users."""
+        q = EntryAsReserve.objects.filter(event=self)
+        user_list = []
         for el in q:
-            list.append(el.user)
-        return list
-
-    def reserves_object(self):
-        return EntryAsReserve.objects.filter(event__exact=self)
+            user_list.append(el.user)
+        return user_list
 
     @property
     def participants(self):
-        q = EntryAsParticipant.objects.filter(event__exact=self)
-        list = []
+        """Returns list of participating users."""
+        q = EntryAsParticipant.objects.filter(event=self)
+        user_list = []
         for el in q:
-            list.append(el.user)
-        return list
+            user_list.append(el.user)
+        return user_list
 
     @property
     def number_of_preregistrations(self):
-        return EntryAsPreRegistered.objects.filter(event__exact=self).count()
+        """Returns number of preregistered users."""
+        return EntryAsPreRegistered.objects.filter(event=self).count()
 
     @property
     def number_of_reserves(self):
-        return EntryAsReserve.objects.filter(event__exact=self).count()
+        """Returns number of reserve users."""
+        return EntryAsReserve.objects.filter(event=self).count()
 
     @property
     def number_of_checked_in_participants(self):
-        return EntryAsParticipant.objects.filter(event__exact=self).count()
+        """Returns number of participating users."""
+        return EntryAsParticipant.objects.filter(event=self).count()
 
-    # Is the event full?
     @property
     def full(self):
+        """Check if the event full"""
         return self.number_of_preregistrations >= self.registration_limit
 
-    #  This method determines if a specific user can register to an event.
-    def register_user(self, user):
+    @property
+    def entry_deadline(self):
+        """Returns the register deadline"""
+        return self.start - timezone.timedelta(days=self.deregister_delta)
 
+    @property
+    def can_deregister(self):
+        """Check if register deadline have passed"""
+        return self.start - timezone.timedelta(days=self.deregister_delta) > timezone.now()
+
+    ###########################################################################
+    # Member function
+    ###########################################################################
+
+    def reserves_object(self):
+        return EntryAsReserve.objects.filter(event=self)
+
+    def register_user(self, user):
+        """This method determines if a specific user can register to an event."""
         # possible to register?
         if not self.enable_registration:
             raise CouldNotRegisterException(event=self, reason="registering är avstängd")
 
         # Already registered?
         try:
-            EntryAsPreRegistered.objects.get(event__exact=self, user__exact=user)
+            EntryAsPreRegistered.objects.get(event=self, user=user)
             raise CouldNotRegisterException(event=self, reason="du är redan registrerad")
         except ObjectDoesNotExist:
             pass
@@ -151,18 +227,10 @@ class Event(models.Model):
 
         EntryAsPreRegistered(user=user, event=self).save()
         try:
-            entry = EntryAsReserve.objects.get(user__exact=user, event__exact=self)
+            entry = EntryAsReserve.objects.get(user=user, event=self)
             entry.delete()
         except ObjectDoesNotExist:
             pass
-
-    @property
-    def entry_deadline(self):
-        return self.start-timezone.timedelta(days=self.deregister_delta)
-
-    @property
-    def can_deregister(self):
-        return self.start-timezone.timedelta(days=self.deregister_delta) > timezone.now()
 
     def deregister_user(self, user):
         # Deregistration time has passed.
@@ -170,14 +238,14 @@ class Event(models.Model):
             return CouldNotRegisterException(event=self, reason="avanmälningstiden har passerats")
         found = False
         try:
-            entry = EntryAsPreRegistered.objects.get(event__exact=self, user__exact=user)
+            entry = EntryAsPreRegistered.objects.get(event=self, user=user)
             entry.delete()
             found = True
         except ObjectDoesNotExist:
             pass
         if not found:
             try:
-                entry = EntryAsReserve.objects.get(event__exact=self, user__exact=user)
+                entry = EntryAsReserve.objects.get(event=self, user=user)
                 entry.delete()
                 found = True
             except ObjectDoesNotExist:
@@ -212,30 +280,17 @@ class Event(models.Model):
     def can_administer(self, user):
         if not user.is_authenticated():
             return False
-        if user != self.user:
-            user_org = user.get_organisations()
-            try:
-                if user_org is []:
-                    return False
-                if self.organisations.all() is None:
-                    return False
-                elif not set(self.organisations.all()).intersection(set(user_org)):  # I LOVE PYTHON <3
-                    # Think of it as a venn diagram where the intersections is the organisations that both the user and the event have.
-                    return False
-            except:
-                return False
-        return True
-
-    #  This method changes the event status to approval mode.
-    def send_to_approval(self, user):
-        if user != self.user:
-            return False
-        if self.status == Event.DRAFT or self.status == Event.REJECTED:
-            self.status = Event.BEING_REVIEWED
-            self.save()
+        event_orgs = self.organisations.all()
+        user_orgs = user.get_organisations()
+        intersection = set(event_orgs).intersection(user_orgs)
+        # Like a venn diagram where the intersections is the organisations that both the user and the event have.
+        if intersection:
             return True
-        else:
-            return False
+        if self.user == user:
+            return True
+        if user.has_perm("events.can_approve_event"):
+            return True
+        return False
 
     def get_new_status(self, draft):
         try:
@@ -265,8 +320,6 @@ class Event(models.Model):
                 return {"new": False, "status": Event.DRAFT}
             else:
                 return {"new": False, "status": Event.BEING_REVIEWED}
-
-
 
     # Rejects an event from being published, attaches message if present.
     def reject(self, user, msg=None):
@@ -309,12 +362,12 @@ class Event(models.Model):
             return True
         return False
 
-    #Add speaker
-    #remove speaker
-    #Move up speaker
-    #Move down
-    #Clear list
-    #Get all
+    # Add speaker
+    # remove speaker
+    # Move up speaker
+    # Move down
+    # Clear list
+    # Get all
 
     def get_user_from_speech_nr(self, speech_nr):
         return self.entryasparticipant_set.get(speech_nr=speech_nr)
@@ -324,7 +377,6 @@ class Event(models.Model):
 
     def add_speaker_to_queue(self, speech_nr):
         u = self.get_user_from_speech_nr(speech_nr=speech_nr).user
-        q = SpeakerList.objects.filter(event=self)
         first_object = not SpeakerList.objects.filter(event=self).exists()
         if not first_object:
             last = SpeakerList.objects.get(event=self, next_speaker=None)
@@ -349,7 +401,7 @@ class Event(models.Model):
             sp.next_speaker.first = True
             sp.next_speaker.save()
         sp.delete()
-    
+
     def remove_speaker_from_queue(self, speech_nr):
         u = self.get_user_from_speech_nr(speech_nr=speech_nr).user
         to_remove = SpeakerList.objects.filter(event=self, user=u)
@@ -384,32 +436,14 @@ class Event(models.Model):
         except ObjectDoesNotExist:
             return []
 
-        result = []
-        result.append({'first_name': first.user.first_name,
-                       'last_name': first.user.last_name})
-        next = first.next_speaker
-        while next is not None:
-            result.append({'first_name': next.user.first_name,
-                           'last_name': next.user.last_name})
-            next = next.next_speaker
+        result = [{'first_name': first.user.first_name,
+                   'last_name': first.user.last_name}]
+        next_speaker = first.next_speaker
+        while next_speaker is not None:
+            result.append({'first_name': next_speaker.user.first_name,
+                           'last_name': next_speaker.user.last_name})
+            next_speaker = next_speaker.next_speaker
         return result
-
-    class Meta:
-        verbose_name = "Arrangemang"
-        verbose_name_plural = "Arrangemang"
-        permissions = (('can_approve_event', 'Can approve event'),)
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.created = timezone.now()
-        self.modified = timezone.now()
-        super(Event, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return self.headline
-
-    def get_absolute_url(self):
-        return "/event/%i/" % self.id
 
 
 ######################################################################
@@ -423,11 +457,11 @@ class EntryAsReserve(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def position(self):
-        entries = EntryAsReserve.objects.filter(event__exact=self.event).order_by("timestamp")
+        entries = EntryAsReserve.objects.filter(event=self.event).order_by("timestamp")
 
         for pos, entry in enumerate(entries):
             if entries[pos] == entry:
-                return pos+1
+                return pos + 1
         return None
 
     class Meta:
@@ -469,7 +503,8 @@ class EntryAsParticipant(models.Model):
 
     def add_speech_nr(self):
         try:
-            self.speech_nr = EntryAsParticipant.objects.filter(event_id=self.event_id).order_by('-speech_nr')[0].speech_nr + 1
+            self.speech_nr = EntryAsParticipant.objects.filter(event_id=self.event_id).order_by('-speech_nr')[
+                                 0].speech_nr + 1
         except:
             self.speech_nr = 1
         self.save()

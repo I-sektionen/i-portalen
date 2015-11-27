@@ -4,6 +4,7 @@ import argparse
 import re
 import codecs
 
+
 def main(argv):
     parser = argparse.ArgumentParser(description='Translate islands-id')
     parser.add_argument("-i", "--input", dest="input",
@@ -55,7 +56,7 @@ def main(argv):
     for line in input_file:
         try:
             if args.input_separator:
-                islands_idn.append(line.split(args.input_separator)[args.input_column-1].replace('"',''))
+                islands_idn.append(line.split(args.input_separator)[args.input_column-1].replace('"', ''))
             else:
                 islands_idn.append(line)
         except:

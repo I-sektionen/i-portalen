@@ -1,5 +1,4 @@
 from itertools import chain
-from django.template.loader_tags import register
 from django import template
 from tags.models import Tag
 

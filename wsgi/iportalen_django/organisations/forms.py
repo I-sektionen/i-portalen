@@ -1,5 +1,4 @@
 from django import forms
-
 from .models import Organisation
 
 
@@ -8,9 +7,9 @@ class OrganisationForm(forms.ModelForm):
         model = Organisation
         fields = ('description', 'contact_info', 'leader', 'image')
 
+        # This method add the right class to time/date fields.
+        # def __init__(self, *args, **kwargs):
 
-    # This method add the right class to time/date fields.
-    #def __init__(self, *args, **kwargs):
 
 class AddOrganisationForm(forms.ModelForm):
     class Meta:
