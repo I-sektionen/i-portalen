@@ -56,6 +56,7 @@ INSTALLED_APPS = (
     'storages',
     'bookings',
     'django_extensions',
+    'course_evaluations'
 )
 
 MIDDLEWARE_CLASSES = (
