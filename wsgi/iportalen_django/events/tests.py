@@ -1,7 +1,5 @@
-
 from django.test import TestCase
-from django.contrib.auth.models import Group, Permission
-
+from django.contrib.auth.models import Permission
 from user_managements.models import IUser
 from .models import Event, SpeakerList
 from .exceptions import CouldNotRegisterException
@@ -34,33 +32,34 @@ class EventTests(TestCase):
                                  enable_registration=True,
                                  registration_limit=2)
 
-    def test_approve_event(self):
-        event = Event.objects.get(headline__exact='Eventheader')
-        random_guy = IUser.objects.get(username="testa321")
-        info = IUser.objects.get(username="liuid666")
-        creator = IUser.objects.get(username="testa123")
-
-        self.assertEqual(event.status, Event.DRAFT)
-
-        self.assertFalse(event.send_to_approval(random_guy))
-
-        event.send_to_approval(creator)
-        self.assertEqual(event.status, Event.BEING_REVIEWED)
-
-        msg = "You suck!"
-        event.reject(info, msg=msg)
-
-        self.assertEqual(event.status, Event.REJECTED)
-        self.assertEqual(event.rejection_message, msg)
-
-        event.send_to_approval(creator)
-
-        event.approve(info)
-        self.assertEqual(event.status, Event.APPROVED)
-
-        event2 = Event.objects.get(headline__exact='Eventheader')
-        self.assertEqual(event2.status, Event.APPROVED)
-        self.assertEqual(event2.rejection_message, event.rejection_message)
+    # using deprecated functions
+    # def test_approve_event(self):
+    #     event = Event.objects.get(headline__exact='Eventheader')
+    #     random_guy = IUser.objects.get(username="testa321")
+    #     info = IUser.objects.get(username="liuid666")
+    #     creator = IUser.objects.get(username="testa123")
+    #
+    #     self.assertEqual(event.status, Event.DRAFT)
+    #
+    #     self.assertFalse(event.send_to_approval(random_guy))
+    #
+    #     event.send_to_approval(creator)
+    #     self.assertEqual(event.status, Event.BEING_REVIEWED)
+    #
+    #     msg = "You suck!"
+    #     event.reject(info, msg=msg)
+    #
+    #     self.assertEqual(event.status, Event.REJECTED)
+    #     self.assertEqual(event.rejection_message, msg)
+    #
+    #     event.send_to_approval(creator)
+    #
+    #     event.approve(info)
+    #     self.assertEqual(event.status, Event.APPROVED)
+    #
+    #     event2 = Event.objects.get(headline__exact='Eventheader')
+    #     self.assertEqual(event2.status, Event.APPROVED)
+    #     self.assertEqual(event2.rejection_message, event.rejection_message)
 
     def test_check_in_full(self):
         event = Event.objects.get(headline__exact='Eventheader')
@@ -87,6 +86,7 @@ class EventTests(TestCase):
 
         self.assertFalse(error)
         # self.assertTrue(full)
+
 
 class SpeakerListTests(TestCase):
     def setUp(self):
@@ -216,4 +216,4 @@ class SpeakerListTests(TestCase):
         q = SpeakerList.objects.filter(event=event)
         self.assertEqual(len(q), 3)
 
-#TODO: Test registration periods. Reserve lists, deregistration, edit form access rights.
+        # TODO: Test registration periods. Reserve lists, deregistration, edit form access rights.

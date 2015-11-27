@@ -28,7 +28,7 @@
         {% endfor %}
         <div class="pagination">
             <span class="step-links">
-            <div class="meta">
+            <span class="meta">
                 {% if articles.has_previous %}
                     <span class="prev"><a href="?page={{ articles.previous_page_number }}">Prev</a></span>
                 {% endif %}
@@ -42,7 +42,7 @@
                 {% if articles.has_next %}
                     <span class="next"><a href="?page={{ articles.next_page_number }}">Next</a></span>
                 {% endif %}
-            </div>
+            </span>
             </span>
         </div>
     </section>
