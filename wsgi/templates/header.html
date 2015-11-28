@@ -88,7 +88,13 @@
                     </div>
                 </div>
             </li>
-            <li><a href="{% url "placeholder" %}">Studier</a>
+            <li class="more"><a href="">Studier</a>
+                <div class="submenu-wrapper">
+                    <ul class="submenu">
+                        <li>Studienämnden</li>
+                        <li><a href="{% url 'evaluate_course' %}">Utvärdera en kurs!</a></li>
+                    </ul>
+                </div>
             </li>
             <li class="more"><a href="">Tjänster</a>
                 <div class="submenu-wrapper">
