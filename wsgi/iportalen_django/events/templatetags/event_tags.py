@@ -16,9 +16,15 @@ def get_all_events():
     return events
 
 @register.assignment_tag
-def get_event(pk):
-    event = Event.objects.get(pk=pk)
-    return event
+def get_event(event, user):
+    can_administer = event.can_administer(user)
+    if event.status == Event.APPROVED or can_administer:
+        return {
+            "can_administer": can_administer,
+            "registered": event.registered(user),
+        }
+    else:
+        return None
 
 @register.assignment_tag
 def get_organisation_events(organisation_pk):
