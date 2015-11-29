@@ -1,50 +1,71 @@
+from django.contrib import messages
 from django.http import HttpResponseForbidden, HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db import transaction
-from .models import Article, Tag
+from .models import Article
 from .forms import ArticleForm
+from tags.models import Tag
 
 
 @login_required()
-@transaction.atomic
-def create_or_modify_article(request, article_id=None):
-    a = None
-    if article_id:
-        a = Article.objects.get(pk=article_id)
-        if not a.has_permission_to_change(request.user):
-            raise PermissionDenied
+def create_or_modify_article(request, pk=None):
+    if pk:  # if pk is set we modify an existing article.
+        duplicates = Article.objects.filter(replacing_id=pk)
+        if duplicates:
+            links = ""
+            for d in duplicates:
+                links += "<a href='{0}'>{1}</a><br>".format(d.get_absolute_url(), d.headline)
+            messages.error(
+                request,
+                "Det finns redan en ändrad version av det här arrangemanget! Är du säker på att du vill ändra den här?"
+                "<br>Följande ändringar är redan föreslagna: <br> {:}".format(links),
+                extra_tags='safe')
+        article = get_object_or_404(Article, pk=pk)
+        if not article.can_administer(request.user):
+            return HttpResponseForbidden()
+        form = ArticleForm(request.POST or None, instance=article)
+    else:  # new article.
+        form = ArticleForm(request.POST or None)
     if request.method == 'POST':
-        form = ArticleForm(request.POST, request.FILES, instance=a)
-
-        # check whether it's valid:
         if form.is_valid():
-            a = form.save(commit=False)
-            if a.approved:
-                a.replacing_id = a.id
-                a.approved = False
-                a.id = None
+            article = form.save(commit=False)
 
-            a.user = request.user
-            a.save()
-            form.save_m2m()
-            if a.draft:
-                return redirect(articles_by_user)
+            if form.cleaned_data['draft']:
+                draft = True
             else:
-                message = "Din artikel är nu skickad för granskning."
-                return render(request, "articles/confirmation.html", {'message': message, 'article_id': article_id})
+                draft = False
+
+            status = article.get_new_status(draft)
+            article.status = status["status"]
+            article.user = request.user
+
+            if status["new"]:
+                article.replacing_id = article.id
+                article.id = None
+
+            article.save()
+            form.save_m2m()
+            if article.status == Article.DRAFT:
+                messages.success(request, "Dina ändringar har sparats i ett utkast.")
+            elif article.status == Article.BEING_REVIEWED:
+                messages.success(request, "Dina ändringar har skickats för granskning.")
+            return redirect('articles by user')
         else:
-            return render(request, 'articles/article_form.html', {'form': form, 'article_id': article_id})
-    else:
-        form = ArticleForm(instance=a)
-        return render(request, 'articles/article_form.html', {'form': form, 'article_id': article_id})
+            messages.error(request, "Det uppstod ett fel, se detaljer nedan.")
+            return render(request, 'articles/article_form.html', {
+                'form': form,
+            })
+    return render(request, 'articles/article_form.html', {
+        'form': form,
+    })
 
 
-def single_article(request, article_id):
-    article = Article.objects.get(pk=article_id)
-    if article.approved:
+def single_article(request, pk):
+    article = Article.objects.get(pk=pk)
+    if article.status == Article.APPROVED:
         return render(request, 'articles/article.html', {'article': article})
     elif request.user == article.user:
         return render(request, 'articles/article.html', {'article': article})
@@ -52,7 +73,7 @@ def single_article(request, article_id):
 
 
 def all_articles(request):
-    articles = Article.objects.filter(approved=True,
+    articles = Article.objects.filter(status=Article.APPROVED,
                                       visible_from__lte=timezone.now(),
                                       visible_to__gte=timezone.now())
     return render(request, 'articles/articles.html', {'articles': articles})
@@ -61,7 +82,7 @@ def all_articles(request):
 @login_required()
 def all_unapproved_articles(request):
     if request.user.has_perm("articles.can_approve_article"):
-        articles = Article.objects.filter(approved=False, draft=False, visible_to__gte=timezone.now())
+        articles = Article.objects.filter(status=Article.BEING_REVIEWED, visible_to__gte=timezone.now())
         return render(request, 'articles/approve_articles.html', {'articles': articles})
     else:
         raise PermissionDenied
@@ -69,82 +90,60 @@ def all_unapproved_articles(request):
 
 @login_required()
 @transaction.atomic
-def approve_article(request, article_id):
-    if request.user.has_perm("articles.can_approve_article"):
-        a = Article.objects.get(pk=article_id)
-        if a.draft:
-            # cant publish article in draft state
-            return HttpResponseForbidden()
-        a.approved = True
-        if a.replacing:
-            tags = list(a.tags.all())  # must be above any save because of atomic.
-            orgs = list(a.organisations.all())
-            a.tags.clear()
-            a.organisations.clear()
-        a.save()
-        if a.replacing:
-            old = Article.objects.get(pk=a.replacing_id)
-            old.delete()
-            a.pk = a.replacing_id
-            a.save()
-            a.refresh_from_db()
-            for t in tags:
-                a.tags.add(t)
-            for t in orgs:
-                a.organisations.add(t)
-            a.replacing = None
-            a.save()
-
+def approve_article(request, pk):
+    article = Article.objects.get(pk=pk)
+    if article.approve(request.user):
         return redirect(all_unapproved_articles)
     else:
         raise PermissionDenied
 
 
 @login_required()
-def unapprove_article(request, article_id):
-    if request.user.has_perm("articles.can_approve_article"):
-        a = Article.objects.get(pk=article_id)
-        a.draft = True
-        a.save()
-        message = ("Artikeln har gått tillbaka till utkast läget, maila gärna <a href='mailto:" +
-                   a.user.email +
-                   "?Subject=Avslag%20publicering%20av%20artikel' target='_top'>" +
-                   a.user.email +
+def unapprove_article(request, event_id):
+    article = Article.objects.get(pk=event_id)
+    if article.reject(request.user):
+        # TODO: Ganska horribel lösning...
+        message = ("Eventet har gått avslagits, maila gärna <a href='mailto:" +
+                   article.user.email +
+                   "?Subject=Avslag%20publicering%20av%20event' target='_top'>" +
+                   article.user.email +
                    "</a> med en förklaring till avslaget.<br>" +
-                   "<a href='/articles/unapproved'>Tillbaka till listan över artiklar att godkänna.</a>")
+                   "<a href='/event/unapproved'>Tillbaka till listan över event att godkänna.</a>")
         return render(request, 'articles/confirmation.html', {'message': message})
     else:
         raise PermissionDenied
 
 
 def articles_by_tag(request, tag_name):
-    articles = Tag.objects.get(name=tag_name).article_set.filter(approved=True)
+    articles = Tag.objects.get(name=tag_name).article_set.filter(status=Article.APPROVED)
     return render(request, 'articles/articles.html', {'articles': articles})
 
 
 @login_required()
 def articles_by_user(request):
-
     user_articles = request.user.article_set.filter(visible_to__gte=timezone.now()).order_by('-visible_from')
     user_org = request.user.get_organisations()
 
     for o in user_org:
         user_articles |= o.article_set.filter(visible_to__gte=timezone.now()).order_by('-visible_from')
 
-    return render(request, 'articles/my_articles.html', {'user_articles': user_articles.order_by('-visible_from').distinct()})
+    return render(request, 'articles/my_articles.html',
+                  {'user_articles': user_articles.order_by('-visible_from').distinct()})
+
 
 @login_required()
-def delete_article(request, article_id):
-    article = Article.objects.get(pk=article_id)
+def delete_article(request, pk):
+    article = Article.objects.get(pk=pk)
 
     if article.draft and request.user == article.user:
         article.delete()
         return redirect(articles_by_user)
     raise PermissionDenied
 
+
 @login_required()
-def article_file_download(request, article_id):
-    article = Article.objects.get(pk=article_id)
+def article_file_download(request, pk):
+    article = Article.objects.get(pk=pk)
     article_filename = article.attachment
     response = HttpResponse(article_filename)
     response['Content-Disposition'] = 'attachment; filename="article_file.pdf"'

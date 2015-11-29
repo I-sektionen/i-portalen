@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from utils.time import has_passed, combine_date_and_time
 
+
 class Bookable(models.Model):
     name = models.CharField(max_length=512)
     max_number_of_bookings = models.IntegerField(default=1)  # Maximum number of simultaneous bookings.
@@ -41,10 +42,12 @@ class BookingSlot(models.Model):
 
             if self.start_time < slot.start_time:  # Före
                 if self.end_time > slot.start_time:
-                    raise ValidationError('The timeslots are end- and start times are invalid. They are overlapping. Före')
+                    raise ValidationError(
+                        'The timeslots are end- and start times are invalid. They are overlapping. Före')
             else:  # Efter
                 if self.start_time < slot.end_time:
-                    raise ValidationError("The timeslots are end- and start times are invalid. They are overlapping. Efter")
+                    raise ValidationError(
+                        "The timeslots are end- and start times are invalid. They are overlapping. Efter")
         super(BookingSlot, self).clean()
 
     def __str__(self):
@@ -82,7 +85,7 @@ class Invoice(models.Model):
                               choices=INVOICE_STATUSES,
                               default=CREATED)
 
-    due = models.DateField(default=timezone.datetime.now()+timezone.timedelta(days=30), verbose_name='förfallo dag')
+    due = models.DateField(default=timezone.datetime.now() + timezone.timedelta(days=30), verbose_name='förfallo dag')
     booking = models.ForeignKey("Booking", verbose_name='bokning')
 
     def get_absolute_url(self):
@@ -153,6 +156,7 @@ class VariableCostTemplate(models.Model):
         verbose_name = 'mall'
         verbose_name_plural = 'mallar för rörliga kostnader'
 
+
 class VariableCostAmount(models.Model):
     units = models.DecimalField(max_digits=9, decimal_places=2)
     template = models.ForeignKey(VariableCostTemplate)
@@ -169,6 +173,7 @@ class VariableCostAmount(models.Model):
 
     def __str__(self):
         return self.template.title
+
 
 # This has to be here. Sorry! (PartialBooking is not loaded when this import occurs otherwise.)
 # TODO: Refactor this model file inte several parts.
@@ -189,14 +194,14 @@ class Booking(models.Model):
     def __str__(self):
         td = self.get_time_of_booking()
         return self.bookable.name + " bokad " + str(td["start"].time()) + " " + str(td["start"].date()) + " - " + \
-               str(td["end"].time()) + " " + str(td["end"].date()) + ", av dig"
-
+            str(td["end"].time()) + " " + str(td["end"].date()) + ", av dig"
 
     def _can_be_unbooked(self):
         time = self.get_time_of_booking()
-        if has_passed(time["start"]-timezone.timedelta(hours=self.bookable.hours_before_booking)):
+        if has_passed(time["start"] - timezone.timedelta(hours=self.bookable.hours_before_booking)):
             return False
         return True
+
     can_be_unbooked = property(_can_be_unbooked)
 
     def get_time_of_booking(self):

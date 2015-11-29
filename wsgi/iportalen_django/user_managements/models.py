@@ -8,8 +8,8 @@ from organisations.models import Organisation
 from utils.validators import liu_id_validator
 
 YEAR_CHOICES = []
-for r in range(1969, (datetime.datetime.now().year+10)):
-    YEAR_CHOICES.append((r,r))
+for r in range(1969, (datetime.datetime.now().year + 10)):
+    YEAR_CHOICES.append((r, r))
 
 
 class BachelorProfile(models.Model):
@@ -40,7 +40,6 @@ class MasterProfile(models.Model):
 
 # Liuid as username and <liuid>@student.liu.se as email
 class IUser(AbstractBaseUser, PermissionsMixin):
-
     # basic fields
     username = models.CharField(verbose_name='LiU-ID', unique=True, max_length=8, validators=[liu_id_validator])
     email = models.EmailField(verbose_name='Email')
@@ -58,9 +57,12 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(verbose_name='kön', max_length=255, null=True, blank=True)
     allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
     start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
-    expected_exam_year = models.IntegerField(verbose_name='förväntat examensår', choices=YEAR_CHOICES, default=datetime.datetime.now().year+5)
-    bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil', on_delete=models.SET_NULL)
-    master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil', on_delete=models.SET_NULL)
+    expected_exam_year = models.IntegerField(verbose_name='förväntat examensår', choices=YEAR_CHOICES,
+                                             default=datetime.datetime.now().year + 5)
+    bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil',
+                                         on_delete=models.SET_NULL)
+    master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil',
+                                       on_delete=models.SET_NULL)
     rfid_number = models.CharField(verbose_name='rfid', max_length=255, null=True, blank=True)
     is_member = models.NullBooleanField(verbose_name="Är medlem?", blank=True, null=True, default=None)
 
@@ -72,15 +74,11 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     @property
     def get_menu_choices(self):
 
-        menu_choices = []  # List of extra menu choices.
-
-        menu_choices.append(('Lägg upp innehåll', reverse('create content')))  # Everyone can create article.
-
-        menu_choices.append(('Min sida', reverse('mypage_view') ))
-
+        menu_choices = [('Lägg upp innehåll', reverse('create content')),
+                        ('Min sida', reverse('mypage_view'))]  # List of extra menu choices.
 
         if self.article_set.filter(visible_to__gte=timezone.now()):
-             menu_choices.append(('Mina Artiklar', reverse('articles by user')))
+            menu_choices.append(('Mina Artiklar', reverse('articles by user')))
 
         menu_choices.append(('Mina Event', reverse('events by user')))
 
@@ -102,7 +100,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         try:
-            return self.first_name+" "+self.last_name
+            return self.first_name + " " + self.last_name
         except:
             return self.username
 

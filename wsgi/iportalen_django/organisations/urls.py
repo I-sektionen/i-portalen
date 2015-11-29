@@ -1,5 +1,4 @@
-__author__ = 'jonathan'
-from django.conf.urls import include, url
+from django.conf.urls import url
 from .views import (
     organisation,
     edit_organisation,
