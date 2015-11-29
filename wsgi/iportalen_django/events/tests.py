@@ -3,7 +3,7 @@ from django.contrib.auth.models import Permission
 from user_managements.models import IUser
 from .models import Event, SpeakerList
 from .exceptions import CouldNotRegisterException
-
+from django.utils import timezone
 
 class EventTests(TestCase):
     def setUp(self):
@@ -26,9 +26,9 @@ class EventTests(TestCase):
                                  lead="Eventlead",
                                  body="Eventbody",
                                  location="C1",
-                                 start="3015-11-04 15:34",
-                                 end="3015-11-04 16:56",
-                                 visible_from="2014-11-04 15:34",
+                                 start=timezone.make_aware(timezone.datetime.strptime("3015-11-04 15:34", "%Y-%m-%d %H:%M")),
+                                 end=timezone.make_aware(timezone.datetime.strptime("3015-11-04 16:56", "%Y-%m-%d %H:%M")),
+                                 visible_from=timezone.make_aware(timezone.datetime.strptime("2014-11-04 15:34", "%Y-%m-%d %H:%M")),
                                  enable_registration=True,
                                  registration_limit=2)
 
@@ -102,9 +102,9 @@ class SpeakerListTests(TestCase):
                                  lead="Eventlead",
                                  body="Eventbody",
                                  location="C1",
-                                 start="3015-11-04 15:34",
-                                 end="3015-11-04 16:56",
-                                 visible_from="2014-11-04 15:34",
+                                 start=timezone.make_aware(timezone.datetime.strptime("3015-11-04 15:34", "%Y-%m-%d %H:%M")),
+                                 end=timezone.make_aware(timezone.datetime.strptime("3015-11-04 16:56", "%Y-%m-%d %H:%M")),
+                                 visible_from=timezone.make_aware(timezone.datetime.strptime("2014-11-04 15:34", "%Y-%m-%d %H:%M")),
                                  enable_registration=True,
                                  registration_limit=2)
 
