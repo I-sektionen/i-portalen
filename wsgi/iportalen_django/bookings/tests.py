@@ -1,6 +1,6 @@
 from django.test import TestCase
 from user_managements.models import IUser
-from datetime import date, time
+from datetime import date, time  # TODO: change to django timezone
 from django.core.exceptions import ValidationError
 
 from .models import Booking, BookingSlot, Bookable, PartialBooking

@@ -3,7 +3,8 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-from utils.time import has_passed, combine_date_and_time
+from utils.time import has_passed, combine_date_and_time, now_plus_one_month
+
 
 class Bookable(models.Model):
     name = models.CharField(max_length=512)
@@ -82,7 +83,7 @@ class Invoice(models.Model):
                               choices=INVOICE_STATUSES,
                               default=CREATED)
 
-    due = models.DateField(default=timezone.datetime.now()+timezone.timedelta(days=30), verbose_name='förfallo dag')
+    due = models.DateField(default=now_plus_one_month, verbose_name='förfallo dag')
     booking = models.ForeignKey("Booking", verbose_name='bokning')
 
     def get_absolute_url(self):
@@ -152,6 +153,7 @@ class VariableCostTemplate(models.Model):
     class Meta:
         verbose_name = 'mall'
         verbose_name_plural = 'mallar för rörliga kostnader'
+
 
 class VariableCostAmount(models.Model):
     units = models.DecimalField(max_digits=9, decimal_places=2)
