@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.db import migrations, models
 from django.conf import settings
 import datetime
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('bookings', '0002_auto_20150825_0735'),
     ]
@@ -19,7 +17,9 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterModelOptions(
             name='booking',
-            options={'verbose_name': 'bokning', 'permissions': (('unlimited_num_of_bookings', 'Unlimited number of bookings'),), 'verbose_name_plural': 'bokningar'},
+            options={'verbose_name': 'bokning',
+                     'permissions': (('unlimited_num_of_bookings', 'Unlimited number of bookings'),),
+                     'verbose_name_plural': 'bokningar'},
         ),
         migrations.AlterModelOptions(
             name='bookingslot',
@@ -79,7 +79,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='invoice',
             name='due',
-            field=models.DateField(default=datetime.datetime(2015, 12, 11, 21, 12, 22, 867297), verbose_name='förfallo dag'),
+            field=models.DateField(default=datetime.datetime(2015, 12, 11, 21, 12, 22, 867297),
+                                   verbose_name='förfallo dag'),
         ),
         migrations.AlterField(
             model_name='partialbooking',
