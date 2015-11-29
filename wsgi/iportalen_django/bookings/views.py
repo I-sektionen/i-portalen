@@ -2,16 +2,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import Http404, JsonResponse
+from django.http import JsonResponse
 from django.utils import timezone
-
 from bookings.exceptions import NoSlots, InvalidInput, MaxLength, MultipleBookings, TooShortNotice
 from utils.time import first_day_of_week, daterange, combine_date_and_time
 from .models import Booking, Bookable, Invoice, BookingSlot, PartialBooking
 from .forms import BookingForm
 
-
-#from reportlab.pdfgen import canvas
+# from reportlab.pdfgen import canvas
 """
 - See my bookings
 - Make new booking
@@ -31,6 +29,8 @@ def index(request):
 
 def invoice_pdf(request, invoice_id):
     return redirect('index')
+
+
 """
     invoice = get_object_or_404(Invoice, pk=invoice_id)
     response = HttpResponse(content_type='application/pdf')
@@ -47,6 +47,7 @@ def invoice_pdf(request, invoice_id):
 
     return response
 """
+
 
 def make_booking(request, bookable_id, weeks_forward=0):
     weeks_forward = int(weeks_forward)
@@ -70,13 +71,9 @@ def make_booking(request, bookable_id, weeks_forward=0):
     #  Want to set: Date(Name, day, month), slots, slot status.
     for week_delta in range(0, 16):
         for i in range(0, 7):
-            day = {}
-
-            # Add the dates and swedish name.
-            day["date"] = monday + timezone.timedelta(days=i + (week_delta * 7))
+            day = {"date": monday + timezone.timedelta(days=i + (week_delta * 7)), "slots": []}
 
             #  Loop which checks status for each bookable slot. False meaning it is taken. True it is free.
-            day["slots"] = []
             for slot in slots:
                 if booked_slots.filter(date__exact=day["date"], slot__exact=slot).exists():
                     day["slots"].append((slot, False))
@@ -104,7 +101,8 @@ def make_booking(request, bookable_id, weeks_forward=0):
         if active:
             nr_of_active_bookings += 1
     if bookable.max_number_of_bookings <= nr_of_active_bookings:
-        messages.warning(request, "Du har redan bokat {:} det maximala antalet gånger i rad som du får".format(bookable.name))
+        messages.warning(request,
+                         "Du har redan bokat {:} det maximala antalet gånger i rad som du får".format(bookable.name))
 
     if request.method == "POST":
         if form.is_valid():
@@ -138,7 +136,6 @@ def make_booking(request, bookable_id, weeks_forward=0):
                 messages.error(request, e.reason)
             except TooShortNotice as e:
                 messages.error(request, e.reason)
-
 
     return render(request, "bookings/book.html", {
         "form": form,
@@ -206,11 +203,12 @@ def api_view(request, bookable_id, weeks_forward=0):
             if partial_bookings.filter(date=single_date, slot=slot).exists():
                 booked = False
             blocked = False
-            cant_book = combine_date_and_time(single_date, slot.start_time) - timezone.timedelta(hours=bookable.hours_before_booking) < timezone.datetime.now()
+            cant_book = combine_date_and_time(single_date, slot.start_time) - timezone.timedelta(
+                hours=bookable.hours_before_booking) < timezone.datetime.now()
             if cant_book:
                 blocked = True
                 if single_date.date() == timezone.datetime.now().date() and \
-                        slot.start_time > timezone.datetime.now().time():
+                   slot.start_time > timezone.datetime.now().time():
                     blocked = False
             tmp = {
                 'start_time': slot.start_time,
@@ -238,4 +236,3 @@ def api_view(request, bookable_id, weeks_forward=0):
         'bookings': bookings_list,
     }
     return JsonResponse(data)
-

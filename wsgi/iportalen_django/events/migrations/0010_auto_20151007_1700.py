@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.db import models, migrations
 from django.conf import settings
 import datetime
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('events', '0009_auto_20151006_2258'),
@@ -66,7 +64,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterModelOptions(
             name='event',
-            options={'verbose_name_plural': 'Arrangemang', 'verbose_name': 'Arrangemang', 'permissions': (('can_approve_article', 'Can approve article'),)},
+            options={'verbose_name_plural': 'Arrangemang', 'verbose_name': 'Arrangemang',
+                     'permissions': (('can_approve_article', 'Can approve article'),)},
         ),
         migrations.AddField(
             model_name='event',

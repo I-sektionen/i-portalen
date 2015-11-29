@@ -2,7 +2,6 @@ from django.test import TestCase
 from user_managements.models import IUser
 from datetime import date, time  # TODO: change to django timezone
 from django.core.exceptions import ValidationError
-
 from .models import Booking, BookingSlot, Bookable, PartialBooking
 
 
@@ -20,8 +19,10 @@ class EventTests(TestCase):
         b1.full_clean()
         b1.save()
 
-        BookingSlot.objects.create(start_time=time(hour=12, minute=1), end_time=time(hour=13, minute=0), bookable=bookable)
-        BookingSlot.objects.create(start_time=time(hour=13, minute=1), end_time=time(hour=17, minute=0), bookable=bookable)
+        BookingSlot.objects.create(start_time=time(hour=12, minute=1), end_time=time(hour=13, minute=0),
+                                   bookable=bookable)
+        BookingSlot.objects.create(start_time=time(hour=13, minute=1), end_time=time(hour=17, minute=0),
+                                   bookable=bookable)
 
         self.kamera = Bookable.objects.create(name="kamera", max_number_of_bookings=2)
 

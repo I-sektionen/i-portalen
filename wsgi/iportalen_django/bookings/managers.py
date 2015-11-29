@@ -7,7 +7,6 @@ from utils.time import combine_date_and_time
 
 
 class BookingManager(models.Manager):
-
     @transaction.atomic
     def make_a_booking(self, bookable, start_date, end_date, start_slot, end_slot, user):
         now = timezone.now()
@@ -15,7 +14,8 @@ class BookingManager(models.Manager):
             raise InvalidInput("Can't book backwards in time.")
         if start_date == now.date() and start_slot.start_time < now.time():
             raise InvalidInput("Booking has already started.")
-        if combine_date_and_time(start_date, start_slot.start_time) - timezone.timedelta(hours=bookable.hours_before_booking) < now:
+        if combine_date_and_time(start_date, start_slot.start_time) - timezone.timedelta(
+                hours=bookable.hours_before_booking) < now:
             raise TooShortNotice("Too short notice")
         if start_date > end_date:
             raise InvalidInput("Start date must be before end date.")
@@ -71,7 +71,7 @@ class BookingManager(models.Manager):
                         if s == slot:
                             break
                         cnt += 1
-                    slot = slots[cnt+1]
+                    slot = slots[cnt + 1]
         if len(partial_bookings) > bookable.max_number_of_slots_in_booking:
             raise MaxLength("Too many slots in booking")
         for p in partial_bookings:
