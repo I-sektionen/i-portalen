@@ -20,13 +20,8 @@ from user_managements.models import IUser
 
 def view_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    can_administer = event.can_administer(request.user)
-    if event.status == Event.APPROVED or can_administer:
-        return render(request, "events/event.html", {
-            "event": event,
-            "can_administer": can_administer,
-            "registered": event.registered(request.user),
-        })
+    if event.status == Event.APPROVED or event.can_administer(request.user):
+        return render(request, "events/event.html", {"event": event})
     else:
         return HttpResponseForbidden()
 
