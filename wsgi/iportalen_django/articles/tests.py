@@ -13,12 +13,11 @@ class ArticleTests (TestCase):
         :return:
         """
         u = IUser.objects.create_user(username="isaek808")
-        publish_time = timezone.now() + timezone.timedelta(days=30)
         unpublish_time = timezone.now() + timezone.timedelta(days=35)
         a = Article(headline="headline",
                     lead="a short lead",
                     body="an even shorter boyd",
-                    visible_from=publish_time,
+                    visible_from=timezone.now(),
                     visible_to=unpublish_time,
                     user=u,
                     )

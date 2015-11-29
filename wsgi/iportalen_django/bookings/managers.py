@@ -61,7 +61,6 @@ class BookingManager(models.Manager):
             else:
                 # if last slot of the day, add day and jump to first slot.
                 if slot == slots.reverse()[0]:
-                    print(slots[0])
                     slot = slots[0]
                     current_date = current_date + timezone.timedelta(days=1)
                 else:
