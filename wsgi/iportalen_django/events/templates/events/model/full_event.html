@@ -1,0 +1,85 @@
+{% load event_tags %}
+{% load iportalen_tags %}
+{% get_event event request.user as res %}
+{% with res.can_administer as can_administer %}
+{% with res.registered as registered %}
+<article class="news-feed-content">
+    <div class="article-type-and-date">
+        <!-- <p class="type">Nyhet</p>-->
+        <i class="fa fa-calendar large"></i>
+        <div class="article-preview-time-organisation">
+            <p class="article-preview-type">{{ event.organisations.all|safeseq|join:", " }}</p>
+            <p class="article-preview-type time-since">{{ event.visible_from|timesince}}</p>
+        </div>
+    </div>
+    <h1>{{ event.headline }}</h1>
+    <p class="meta">
+        <i class="fa fa-calendar"></i>
+        <span>{{ event.start|date:"d N Y" }}</span>
+        <i class="fa fa-clock-o"></i>
+        <span>{{ event.start|time:"H:i" }}</span>
+        <i class="fa fa-map-marker"></i>
+        <span>{{ event.location }}</span>
+        {% if event.enable_registration %}
+            <i class="fa fa-users"></i>
+            <span>{{ event.number_of_preregistrations }} ({{ event.registration_limit }})</span>
+            <span title="Tid innan anmälan stänger"><i class="fa fa-exclamation-circle"></i>
+            <span>{% if event.can_deregister %}{{ event.entry_deadline|timeuntil }}{% else %}Anmälan är stängd{% endif %}</span></span>
+        {% endif %}
+
+        {% if event.tags.all  %}
+            <i class="fa fa-tags"></i>
+            <span>{{ event.tags.all|safeseq|join:", " }}</span>
+        {% endif %}
+    </p>
+    <h2>{{ event.lead|truncatewords_html:50 }}</h2>
+    <p>{{ event.body|markdown }}</p>
+</article>
+<p>Anmälningsstopp: {{ event.entry_deadline|date:"Y-m-d H:i:s" }}</p>
+{% if event.extra_deadline %}
+    <p>Anmälningsstopp för att {{ event.extra_deadline_text }}: {{ event.extra_deadline|date:"Y-m-d H:i:s" }}</p>
+{% endif %}
+<div class="button-group">
+    {% if event.enable_registration %}
+        {% if not registered %}
+            {% if not event.full %}
+                <form method="post" action="{% url "register_to_event" event.pk %}">
+                    {% csrf_token %}
+                    <label>
+                        <button class="button-group-item"  type="submit" title="snälla">Anmäl mig</button>
+                    </label>
+                </form>
+            {% else %}
+                <form method="post" action="{% url "register_as_reserve" event.pk %}">
+                    {% csrf_token %}
+                    <label>
+                        <button class="button-group-item" type="submit" title="snälla">Anmäl mig som reserv</button>
+                    </label>
+                </form>
+            {% endif %}
+        {% else %}
+            <p><i class="fa fa-check-circle-o"></i> Du är anmäld.</p>
+            {% if event.can_deregister %}
+                <form method="post" action="{% url "unregister" event.pk %}">
+                    {% csrf_token %}
+                    <label>
+                        <button class="button-group-item" type="submit" title="snälla">Avanmäl mig</button>
+                    </label>
+                </form>
+            {% else %}
+                <p>Det är för sent att avanmäla sig nu.</p>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+    <div class="admin-event">
+        {% if can_administer %}
+            <label>
+                <a class="button action-button-group-item" href="{% url "administer_event" event.pk %}">
+                    Administrera evenemang
+                </a>
+            </label>
+        {% endif %}
+    </div>
+</div>
+{% endwith %}
+{% endwith %}
