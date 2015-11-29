@@ -2087,6 +2087,29 @@ div.booking-container .third-container .third .center {
   text-align: center;
 }
 
+#evaluate-course ul {
+  padding-left: 40px;
+  margin-bottom: 1em;
+}
+#evaluate-course #forms .form {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+#evaluate-course #forms .form .field {
+  -webkit-box-flex: 6;
+  -moz-box-flex: 6;
+  box-flex: 6;
+  -webkit-flex: 6;
+  -moz-flex: 6;
+  -ms-flex: 6;
+  flex: 6;
+}
+
 #master-container {
   position: relative;
   -webkit-transition: 0.5s ease-out;
