@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from django.utils import timezone
 
 from django.test import TestCase
 
@@ -13,8 +13,8 @@ class ArticleTests (TestCase):
         :return:
         """
         u = IUser.objects.create_user(username="isaek808")
-        publish_time = datetime.now() + timedelta(days=30)
-        unpublish_time = datetime.now() + timedelta(days=35)
+        publish_time = timezone.now() + timezone.timedelta(days=30)
+        unpublish_time = timezone.now() + timezone.timedelta(days=35)
         a = Article(headline="headline",
                     lead="a short lead",
                     body="an even shorter boyd",
