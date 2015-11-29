@@ -9,7 +9,7 @@ from utils.time import combine_date_and_time
 class BookingManager(models.Manager):
     @transaction.atomic
     def make_a_booking(self, bookable, start_date, end_date, start_slot, end_slot, user):
-        now = timezone.datetime.now()
+        now = timezone.now()
         if start_date < now.date():
             raise InvalidInput("Can't book backwards in time.")
         if start_date == now.date() and start_slot.start_time < now.time():

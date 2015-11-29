@@ -1,4 +1,3 @@
-import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.urlresolvers import reverse
@@ -8,8 +7,8 @@ from organisations.models import Organisation
 from utils.validators import liu_id_validator
 
 YEAR_CHOICES = []
-for r in range(1969, (datetime.datetime.now().year + 10)):
-    YEAR_CHOICES.append((r, r))
+for r in range(1969, (timezone.now().year+10)):
+    YEAR_CHOICES.append((r,r))
 
 
 class BachelorProfile(models.Model):
@@ -56,9 +55,9 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     city = models.CharField(verbose_name='ort', max_length=255, null=True, blank=True)
     gender = models.CharField(verbose_name='kön', max_length=255, null=True, blank=True)
     allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
-    start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
+    start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=timezone.now().year)
     expected_exam_year = models.IntegerField(verbose_name='förväntat examensår', choices=YEAR_CHOICES,
-                                             default=datetime.datetime.now().year + 5)
+                                             default=timezone.now().year + 5)
     bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil',
                                          on_delete=models.SET_NULL)
     master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil',
