@@ -1,0 +1,26 @@
+{% load iportalen_tags %}
+<article class="news-feed-content">
+    <div class="article-type-and-date">
+        <!-- <p class="type">Nyhet</p>-->
+        <i class="fa fa-newspaper-o large"></i>
+        <div class="article-preview-time-organisation">
+            <p class="article-preview-type">{{ article.organisations.all|safeseq|join:", " }}</p>
+            <p class="article-preview-type time-since">{{ article.visible_from|timesince}}</p>
+        </div>
+    </div>
+    <h1>{{ article.headline }}</h1>
+    <h2>{{ article.lead }}</h2>
+    <p class="meta">
+        {% if article.tags.all  %}
+            <i class="fa fa-tags"></i>
+            <span>{{ article.tags.all|safeseq|join:", " }}</span>
+        {% endif %}
+
+    </p>
+    {{ article.body|markdown }}
+    {% if article.attachment %}
+        <p>Bifogad fil: {{ article.filename }}
+            <a href="{% url "article_download" article.pk %}"><button type="button">Ladda ner</button></a>
+        </p>
+    {% endif %}
+</article>
