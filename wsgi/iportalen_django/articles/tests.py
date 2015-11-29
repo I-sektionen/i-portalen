@@ -20,12 +20,11 @@ class ArticleTests (TestCase):
                     body="an even shorter boyd",
                     visible_from=publish_time,
                     visible_to=unpublish_time,
-                    approved=False,
                     user=u,
                     )
 
         self.assertEqual(a.headline, "headline")
-        self.assertFalse(a.approved)
+
 
 
 

@@ -42,10 +42,12 @@ class BookingSlot(models.Model):
 
             if self.start_time < slot.start_time:  # Före
                 if self.end_time > slot.start_time:
-                    raise ValidationError('The timeslots are end- and start times are invalid. They are overlapping. Före')
+                    raise ValidationError(
+                        'The timeslots are end- and start times are invalid. They are overlapping. Före')
             else:  # Efter
                 if self.start_time < slot.end_time:
-                    raise ValidationError("The timeslots are end- and start times are invalid. They are overlapping. Efter")
+                    raise ValidationError(
+                        "The timeslots are end- and start times are invalid. They are overlapping. Efter")
         super(BookingSlot, self).clean()
 
     def __str__(self):
@@ -172,6 +174,7 @@ class VariableCostAmount(models.Model):
     def __str__(self):
         return self.template.title
 
+
 # This has to be here. Sorry! (PartialBooking is not loaded when this import occurs otherwise.)
 # TODO: Refactor this model file inte several parts.
 from .managers import BookingManager
@@ -191,14 +194,14 @@ class Booking(models.Model):
     def __str__(self):
         td = self.get_time_of_booking()
         return self.bookable.name + " bokad " + str(td["start"].time()) + " " + str(td["start"].date()) + " - " + \
-               str(td["end"].time()) + " " + str(td["end"].date()) + ", av dig"
-
+            str(td["end"].time()) + " " + str(td["end"].date()) + ", av dig"
 
     def _can_be_unbooked(self):
         time = self.get_time_of_booking()
-        if has_passed(time["start"]-timezone.timedelta(hours=self.bookable.hours_before_booking)):
+        if has_passed(time["start"] - timezone.timedelta(hours=self.bookable.hours_before_booking)):
             return False
         return True
+
     can_be_unbooked = property(_can_be_unbooked)
 
     def get_time_of_booking(self):

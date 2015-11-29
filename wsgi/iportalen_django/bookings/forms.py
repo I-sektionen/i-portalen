@@ -1,7 +1,5 @@
-__author__ = 'isac'
 from django import forms
 from .models import BookingSlot
-
 
 """
 - Bookable is already selected in prior step.

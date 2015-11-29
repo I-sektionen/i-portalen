@@ -72,7 +72,7 @@
         {% endfor %}
         <div class="pagination">
             <span class="step-links">
-            <div class="meta">
+            <span class="meta">
                 {% if content_feed_list.has_previous %}
                     <span class="prev"><a href="?page={{ content_feed_list.previous_page_number }}">Prev</a></span>
                 {% endif %}
@@ -86,7 +86,7 @@
                 {% if news_list.has_next %}
                     <span class="next"><a href="?page={{ content_feed_list.next_page_number }}">Next</a></span>
                 {% endif %}
-            </div>
+            </span>
             </span>
         </div>
     </section>

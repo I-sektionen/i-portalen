@@ -111,6 +111,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name='partialbooking',
-            unique_together=set([('slot', 'date')]),
+            unique_together={('slot', 'date')},
         ),
     ]

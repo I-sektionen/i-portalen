@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.db import models, migrations
 from django.conf import settings
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('articles', '0003_auto_20150711_0029'),
     ]
@@ -15,7 +13,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='article',
             name='body',
-            field=models.TextField(verbose_name='brödtext', help_text='Brödtext som syns efter att ha klickat på läs mer.'),
+            field=models.TextField(verbose_name='brödtext',
+                                   help_text='Brödtext som syns efter att ha klickat på läs mer.'),
         ),
         migrations.AlterField(
             model_name='article',
@@ -30,7 +29,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='article',
             name='user',
-            field=models.ForeignKey(verbose_name='användare', to=settings.AUTH_USER_MODEL, help_text='Skribent av texten'),
+            field=models.ForeignKey(verbose_name='användare', to=settings.AUTH_USER_MODEL,
+                                    help_text='Skribent av texten'),
         ),
         migrations.AlterField(
             model_name='article',

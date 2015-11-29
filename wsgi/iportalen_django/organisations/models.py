@@ -19,7 +19,6 @@ class Organisation(models.Model):
         (UTSKOTT, "Utskott"),
     )
 
-
     name = models.CharField(verbose_name='Namn',
                             help_text="Namn för organisationen",
                             max_length=255,
@@ -31,9 +30,9 @@ class Organisation(models.Model):
                                    null=True,
                                    blank=True)
     contact_info = models.EmailField(verbose_name='Mejlkontakt',
-                                    help_text="Kontaktinformation för organisationen",
-                                    null=True,
-                                    blank=True)
+                                     help_text="Kontaktinformation för organisationen",
+                                     null=True,
+                                     blank=True)
     image = models.FileField(verbose_name='Bild',
                              help_text="Bild för organisationen",
                              upload_to="organisations",
@@ -70,7 +69,6 @@ class Organisation(models.Model):
     class Meta:
         verbose_name = "organisation"
         verbose_name_plural = "organisationer"
-
 
     def __str__(self):
         return self.name
