@@ -106,7 +106,7 @@ if ON_PASS:
         }
     }
 elif ON_JENKINS:
-     DATABASES = {
+    DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': os.environ['JENKINS_DB_NAME'],

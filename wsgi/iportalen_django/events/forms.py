@@ -1,10 +1,10 @@
 from django import forms
-
 from .models import Event
 
 
 class EventForm(forms.ModelForm):
     draft = forms.BooleanField(label="Utkast", required=False, help_text="Sparar utan att publicera")
+
     class Meta:
         model = Event
         fields = '__all__'
@@ -15,8 +15,6 @@ class EventForm(forms.ModelForm):
         super(EventForm, self).__init__(*args, **kwargs)
         self.fields['visible_from'].widget.attrs['class'] = 'datetimepicker'
         self.fields['visible_from'].widget.attrs['placeholder'] = self.fields['visible_from'].help_text
-
-
 
         self.fields['location'].widget.attrs['placeholder'] = self.fields['location'].help_text
         self.fields['start'].widget.attrs['placeholder'] = self.fields['start'].help_text
@@ -29,8 +27,6 @@ class EventForm(forms.ModelForm):
         self.fields['deregister_delta'].widget.attrs['placeholder'] = self.fields['deregister_delta'].help_text
 
         self.fields['lead'].widget.attrs['placeholder'] = self.fields['lead'].help_text
-
-
 
         self.fields['start'].widget.attrs['class'] = 'datetimepicker'
         self.fields['end'].widget.attrs['class'] = 'datetimepicker'
@@ -50,8 +46,6 @@ class EventForm(forms.ModelForm):
             self.add_error('registration_limit', "Du måste välja ett maximalt antal anmälningar.")
 
 
-
-
 class CheckForm(forms.Form):
     user = forms.CharField()
     force_check_in = forms.BooleanField(required=False)
@@ -68,7 +62,7 @@ class SpeakerForm(forms.Form):
 
 class ImportEntriesForm(forms.Form):
     users = forms.CharField(
-        widget=forms.Textarea(attrs={"rows": 15, "placeholder":"abcde123\nfghij456\nklmno789\n..."}),
+        widget=forms.Textarea(attrs={"rows": 15, "placeholder": "abcde123\nfghij456\nklmno789\n..."}),
         help_text="Ange ett liu-id per rad inga andra tecken är tillåtna."
     )
 
