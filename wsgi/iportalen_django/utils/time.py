@@ -26,3 +26,7 @@ def has_passed(time):
     if timezone.datetime.now() >= time:
         return True
     return False
+
+
+def now():
+    return timezone.now()

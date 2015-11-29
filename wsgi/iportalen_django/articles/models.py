@@ -1,11 +1,10 @@
 from django.db import models, transaction
 from django.utils import timezone
 from django.conf import settings
-import datetime
 import os
 from tags.models import Tag
 from utils.validators import less_than_160_characters_validator
-from utils.time import now_plus_one_month
+from utils import time
 from organisations.models import Organisation
 
 # Internal:
@@ -43,11 +42,11 @@ class Article(models.Model):
     visible_from = models.DateTimeField(
         verbose_name='publicering',
         help_text="Publiceringsdatum",
-        default=datetime.datetime.now)
+        default=time.now)
     visible_to = models.DateTimeField(
         verbose_name='avpublicering',
         help_text="Avpubliceringsdatum",
-        default=now_plus_one_month)
+        default=time.now_plus_one_month)
     status = models.CharField(
         max_length=1,
         choices=STATUSES,
