@@ -6,73 +6,23 @@
 {% block content %}
     {# gets all articles via template tag #}
     <section id="news-feed">
-    <div id="content-select-nav">
-    <a href="#" class="content-type-nav active">Allt</a>
-    <a href="#" class="content-type-nav">Nyheter</a>
-    <a href="#" class="content-type-nav">Event</a>
-    </div>
+        <div id="content-select-nav">
+            <a href="{% url "news_feed" %}" class="content-type-nav active">Allt</a>
+            <a href="{% url "articles" %}" class="content-type-nav">Nyheter</a>
+            <a href="{% url "event_calender" %}" class="content-type-nav">Event</a>
+        </div>
         {% for content in content_feed_list %}
             {% if content.type == "article" %}
-                {% with article=content %}
-                    <article class="news-feed-content">
-                        <div class="article-type-and-date">
-                            <!-- <p class="type">Nyhet</p>-->
-                            <i class="fa fa-newspaper-o large"></i>
-                            <div class="article-preview-time-organisation">
-                                <p class="article-preview-type">{{ article.organisations.all|safeseq|join:", " }}</p>
-                                <p class="article-preview-type time-since">{{ article.visible_from|timesince}}</p>
-                            </div>
-                        </div>
-                        <a href="{{ article.get_absolute_url }}"><h1>{{ article.headline }}</h1></a>
-                        <!-- TODO add reals tags -->
-                        <p class="meta">
-                            <i class="fa fa-tags"></i>
-                            <span>Tagg, hardcoded, notworking</span>
-                        </p>
-                        <h2>{{ article.lead|truncatewords_html:50 }}</h2>
-                        <a href="{{ article.get_absolute_url }}">Läs mer</a>
-                        <hr>
-                    </article>
-                {% endwith %}
+                {% include "articles/model/small_article.html" with article=content %}
             {% endif %}
             {% if content.type == "event" %}
-                {% with event=content %}
-                    <article class="news-feed-content">
-                        <div class="article-type-and-date">
-                            <!-- <p class="type">Nyhet</p>-->
-                            <i class="fa fa-calendar large"></i>
-                            <div class="article-preview-time-organisation">
-                                <p class="article-preview-type">{{ event.organisations.all|safeseq|join:", " }}</p>
-                                <p class="article-preview-type time-since">{{ event.visible_from|timesince}}</p>
-                            </div>
-                        </div>
-                        <a href="{{ event.get_absolute_url }}"><h1>{{ event.headline }}</h1></a>
-                        <!-- TODO add non hardcoded metadata-->
-                        <p class="meta">
-                            <i class="fa fa-calendar"></i>
-                            <span>{{ event.start|date:"d N Y" }}</span>
-                            <i class="fa fa-clock-o"></i>
-                            <span>{{ event.start|time:"H:i" }}</span>
-                            <i class="fa fa-map-marker"></i>
-                            <span>{{ event.location }}</span>
-                            <i class="fa fa-users"></i>
-                            <span>78 (200)</span>
-                            <i class="fa fa-exclamation-circle"></i>
-                            <span>3 dagar kvar</span>
-                            <i class="fa fa-tags"></i>
-                            <span>Tagg, hardcoded, notworking</span>
-                        </p>
-                        <h2>{{ event.lead|truncatewords_html:50 }}</h2>
-                        <a href="{{ event.get_absolute_url }}">Läs mer</a>
-                        <hr>
-                    </article>
-                {% endwith %}
+                {% include "events/model/small_event.html" with event=content %}
             {% endif %}
 
         {% endfor %}
         <div class="pagination">
             <span class="step-links">
-            <div class="meta">
+            <span class="meta">
                 {% if content_feed_list.has_previous %}
                     <span class="prev"><a href="?page={{ content_feed_list.previous_page_number }}">Prev</a></span>
                 {% endif %}
@@ -86,7 +36,7 @@
                 {% if news_list.has_next %}
                     <span class="next"><a href="?page={{ content_feed_list.next_page_number }}">Next</a></span>
                 {% endif %}
-            </div>
+            </span>
             </span>
         </div>
     </section>

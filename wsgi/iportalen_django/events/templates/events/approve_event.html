@@ -1,35 +1,17 @@
 {% extends "master.html" %}
-{% load article_tags %}
 {% load iportalen_tags %}
 
 {% block content %}
 
 {% for event in events %}
-    <h4>{{ event.headline }}</h4>
-        <div class="meta">
-            <span class="date">
-                    <span class="meta-content">{{ event.start|date:"d N Y" }}</span>
-            </span>
-            <span class="time">
-                <span class="meta-content">{{ event.start|time:"H:i" }}</span>
-            </span>
-            <span class="place">
-                <span class="meta-content">{{ event.location }}</span>
-            </span>
-        </div>
-        <p>
-            {{ event.lead }}
-        </p>
-        <p>
-            {{ event.body|markdown }}
-        </p>
-        {% if can_administer %}
-            <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
-        {% endif %}
+    {% include "events/model/full_event.html" with pk=event.pk %}
+    {% if can_administer %}
+        <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
+    {% endif %}
 
     <a href="{% url "approve event" event.pk %}"><button class="btn-read-more">Godkänn</button></a>
     <a href="{% url "unapprove event" event.pk %}"><button class="btn-read-more">Avslå</button></a>
 {% empty %}
-    <p>Inga event väntar på att godkännas, bra jobb! :)</p>
+    <p>Inga event väntar på att godkännas, bra jobbat! :)</p>
 {% endfor %}
 {% endblock %}

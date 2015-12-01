@@ -10,25 +10,11 @@
     <section id="news-feed">
         <h1>Nyheter</h1>
         {% for article in articles %}
-            <article class="news-preview">
-                <div class="meta">
-                    <span class="date">{{ article.visible_from|date:"d N Y" }}</span>
-                    <span class="author">{{ article.organisations.all|safeseq|join:", " }}</span>
-                    {# Don't render tags for articles without tags #}
-                    {% if article.tags.all %}
-                        <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
-                    {% endif %}
-                </div>
-                <h5>{{ article.headline }}</h5>
-
-                <p>{{ article.lead|truncatewords_html:50 }}</p>
-                <a href="{{ article.get_absolute_url }}">Läs mer</a>
-
-            </article>
+            {% include "articles/model/small_article.html" with article=article %}
         {% endfor %}
         <div class="pagination">
             <span class="step-links">
-            <div class="meta">
+            <span class="meta">
                 {% if articles.has_previous %}
                     <span class="prev"><a href="?page={{ articles.previous_page_number }}">Prev</a></span>
                 {% endif %}
@@ -42,7 +28,7 @@
                 {% if articles.has_next %}
                     <span class="next"><a href="?page={{ articles.next_page_number }}">Next</a></span>
                 {% endif %}
-            </div>
+            </span>
             </span>
         </div>
     </section>
@@ -50,19 +36,7 @@
         <h1>Kommande</h1>
         {% get_all_events as events %}
         {% for event in events %}
-            <article class="event-preview">
-                <div class="meta">
-                    <span class="date">{{ event.start|date:"d N Y" }}</span>
-                    <span class="time">{{ event.start|time:"H:i" }}</span>
-                    <span class="location">{{ event.location }}</span>
-                </div>
-                <h4>{{ event.headline }}</h4>
-                <a href="{% url "event" event.pk %}">Läs mer</a>
-                <!--
-                {% if event.enable_registration %}
-                    <a href="{% url "event" event.pk %}"><button>Anmäl</button></a>
-                {% endif %}-->
-            </article>
+            {% include "events/model/small_event.html" with event=event %}
         {% endfor %}
     </section>
 {% endblock %}
