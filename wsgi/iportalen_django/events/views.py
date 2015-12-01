@@ -12,7 +12,7 @@ from utils.validators import liu_id_validator
 
 
 from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm
-from .models import Event, EntryAsPreRegistered, EntryAsReserve, SpeakerList
+from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticipant, SpeakerList
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
 # Create your views here.
