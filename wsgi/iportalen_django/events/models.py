@@ -123,6 +123,21 @@ class Event(models.Model):
     def number_of_checked_in_participants(self):
         return EntryAsParticipant.objects.filter(event__exact=self).count()
 
+    @property
+    def no_show(self):
+        preregistered = EntryAsPreRegistered.objects.filter(event=self)
+        participants = EntryAsParticipant.objects.filter(event=self)
+        preregistered_list=[]
+        participant_list=[]
+        for p in preregistered:
+            preregistered_list.append(p.user)
+        for p in participants:
+            participant_list.append(p.user)
+        print(preregistered_list)
+        print(participant_list)
+        no_show = set(preregistered_list).difference(set(participant_list))
+        return no_show
+
     # Is the event full?
     @property
     def full(self):
