@@ -57,9 +57,11 @@
             <h1>Medlemmar</h1>
             <table>
                 <thead>
-                    <th>Namn</th>
-                    <th>Post</th>
-                    <th>Kontaktuppgifter</th>
+                    <tr>
+                        <th>Namn</th>
+                        <th>Post</th>
+                        <th>Kontaktuppgifter</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr>
@@ -93,8 +95,10 @@
             <h1>Artiklar</h1>
             <table>
                 <thead>
-                <th>Titel</th>
-                <th>Publicerad</th>
+                    <tr>
+                        <th>Titel</th>
+                        <th>Publicerad</th>
+                    </tr>
                 </thead>
                 <tbody>
                 {% for article in articles %}
@@ -114,8 +118,10 @@
             <h1>Event</h1>
             <table>
                 <thead>
-                <th>Titel</th>
-                <th>Publicerad</th>
+                    <tr>
+                        <th>Titel</th>
+                        <th>Publicerad</th>
+                    </tr>
                 </thead>
                 <tbody>
                 {% for event in events %}

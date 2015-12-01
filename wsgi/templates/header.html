@@ -1,6 +1,8 @@
 {% load staticfiles %}
 {% load organisation_tags %}
+{% load booking_tags %}
 {% get_menu_organisations as menu_orgs %}
+{% get_all_bookables as bookables %}
 <header role="banner">
     <div id="top-menu-bar">
         <div id="logo">
@@ -32,9 +34,15 @@
                                             {% csrf_token %}
                                             <input class="username-holder" type="text" name="username" placeholder="Liu-id">
                                             <input class="password-holder" type="password" name="password" placeholder="Lösenord">
-                                            <input class="submit-holder primary" type="submit" value="Logga in">
+                                            <div class="button-group">
+                                                <label>
+                                                    <input class="action-button-group-item" type="submit" value="Logga in">
+                                                </label>
+                                                <label>
+                                                    <a href="{% url "password_reset" %}" class="button-group-item">Glömt lösenord?</a>
+                                                </label>
+                                            </div>
                                         </form>
-                                        <a href="{% url "password_reset" %}">Glömt lösenord</a>
                                     </div>
                                 </div>
                             </div>
@@ -80,9 +88,24 @@
                     </div>
                 </div>
             </li>
-            <li><a href="{% url "placeholder" %}">Studier</a>
+            <li class="more"><a href="">Studier</a>
+                <div class="submenu-wrapper">
+                    <ul class="submenu">
+                        <li>Studienämnden</li>
+                        <li><a href="{% url 'evaluate_course' %}">Utvärdera en kurs!</a></li>
+                    </ul>
+                </div>
             </li>
-            <li><a href="{% url "placeholder" %}">Tjänster</a>
+            <li class="more"><a href="">Tjänster</a>
+                <div class="submenu-wrapper">
+                    <ul class="submenu">
+                        <li>Bokningar</li>
+                        <li><a href="{% url 'my_bookings' %}">Mina Bokningar</a></li>
+                        {% for bookable in bookables %}
+                            <li><a href="{{ bookable.get_absolute_url }}">{{ bookable.name|title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </li>
         </ul>
     </nav>

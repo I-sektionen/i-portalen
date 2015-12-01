@@ -405,18 +405,19 @@ html {
   box-sizing: inherit;
 }
 
-button, input[type="button"], input[type="reset"], input[type="submit"] {
+button, .button, .action-button, .button-group label .button-group-item, .button-group label .action-button-group-item {
   appearance: none;
-  background-color: #f9d026;
+  text-transform: none;
+  background-color: #f7f7f7;
   border: 0;
   border-radius: 3px;
-  color: #fff;
+  color: #595959;
   cursor: pointer;
   display: inline-block;
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
   font-size: 1em;
   -webkit-font-smoothing: antialiased;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1;
   padding: 0.75em 1.5em;
   text-decoration: none;
@@ -425,16 +426,34 @@ button, input[type="button"], input[type="reset"], input[type="submit"] {
   user-select: none;
   vertical-align: middle;
   white-space: nowrap;
+  box-shadow: 0px 3px 0px #dedede;
 }
-button:hover, button:focus, input[type="button"]:hover, input[type="button"]:focus, input[type="reset"]:hover, input[type="reset"]:focus, input[type="submit"]:hover, input[type="submit"]:focus {
-  background-color: #edc624;
-  color: #fff;
+button:hover, button:focus, .button:hover, .action-button:hover, .button-group label .button-group-item:hover, .button-group label .action-button-group-item:hover, .button:focus, .action-button:focus, .button-group label .button-group-item:focus, .button-group label .action-button-group-item:focus {
+  background-color: #ebebeb;
+  color: #595959;
 }
-button:disabled, input[type="button"]:disabled, input[type="reset"]:disabled, input[type="submit"]:disabled {
+button:disabled, .button:disabled, .action-button:disabled, .button-group label .button-group-item:disabled, .button-group label .action-button-group-item:disabled {
   cursor: not-allowed;
   opacity: 0.5;
 }
-button:disabled:hover, input[type="button"]:disabled:hover, input[type="reset"]:disabled:hover, input[type="submit"]:disabled:hover {
+button:disabled:hover, .button:disabled:hover, .action-button:disabled:hover, .button-group label .button-group-item:disabled:hover, .button-group label .action-button-group-item:disabled:hover {
+  background-color: #f7f7f7;
+}
+
+.action-button {
+  background-color: #f9d026;
+  box-shadow: 0px 3px 0px #e6ba06;
+  color: #fff;
+}
+.action-button:hover, .action-button:focus {
+  background-color: #edc624;
+  color: #fff;
+}
+.action-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.action-button:disabled:hover {
   background-color: #f9d026;
 }
 
@@ -623,6 +642,30 @@ img,
 picture {
   margin: 0;
   max-width: 100%;
+}
+
+.button-group input {
+  display: none;
+}
+.button-group label {
+  margin-bottom: 1em;
+}
+@media screen and (min-width: 900px) {
+  .button-group label {
+    float: left;
+    margin-right: 1em;
+  }
+}
+.button-group label .button-group-item:focus, .button-group label .action-button-group-item:focus, .button-group label .button-group-item:hover, .button-group label .action-button-group-item:hover {
+  background-color: #f0f0f0;
+}
+.button-group label .action-button-group-item {
+  background: #f9d026;
+  box-shadow: 0px 3px 0px #e6ba06;
+  color: #fff;
+}
+.button-group label .action-button-group-item:focus, .button-group label .action-button-group-item:hover {
+  background-color: #edc624;
 }
 
 .footer {
@@ -1979,6 +2022,92 @@ article.news-feed-content p.author {
 }
 .pagination .step-links .meta .active {
   background-color: #f2f0f1;
+}
+
+div.booking-container div.booking div#days {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  border-color: #006600;
+  border-style: solid;
+}
+div.booking-container div.booking div#days div.single_day {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  flex-basis: 14%;
+  border-color: black;
+  border-style: solid;
+  line-height: 1;
+}
+div.booking-container div.booking div#days div.single_day p {
+  padding: 3px;
+}
+div.booking-container div.booking div#days div.single_day .unavailable {
+  background-color: lightcoral;
+}
+div.booking-container div.booking div#days div.single_day .available {
+  background-color: lightgreen;
+}
+div.booking-container div.booking div#days div.single_day .choosen {
+  background-color: lightblue;
+}
+div.booking-container div.booking div#days div.single_day .blocked {
+  background-color: lightgray;
+}
+div.booking-container .third-container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+div.booking-container .third-container::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+div.booking-container .third-container .third {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 31.76157%;
+}
+div.booking-container .third-container .third:last-child {
+  margin-right: 0;
+}
+div.booking-container .third-container .third .center {
+  text-align: center;
+}
+
+#evaluate-course ul {
+  padding-left: 40px;
+  margin-bottom: 1em;
+}
+#evaluate-course #forms .form {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+#evaluate-course #forms .form .field {
+  -webkit-box-flex: 6;
+  -moz-box-flex: 6;
+  box-flex: 6;
+  -webkit-flex: 6;
+  -moz-flex: 6;
+  -ms-flex: 6;
+  flex: 6;
 }
 
 #master-container {
