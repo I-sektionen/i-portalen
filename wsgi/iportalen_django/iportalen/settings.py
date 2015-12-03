@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'reversion',
     'tags',
     'user_managements',
@@ -200,3 +201,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'noreply@i-portalen.se'
 EMAIL_HOST_PASSWORD = '***REMOVED***'
+
+SITE_ID = 2

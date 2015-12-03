@@ -39,3 +39,11 @@ def get_organisation_events(organisation_pk):
 @register.assignment_tag
 def event_can_administer(event, user):
     return event.can_administer(user)
+
+@register.assignment_tag
+def event_reserve(event, user):
+    return event.reserve(user)
+
+@register.assignment_tag
+def event_reserve_nr(event, user):
+    return event.reserve_nr(user)
