@@ -1,8 +1,10 @@
+from django.contrib.sites.models import Site
 from django.db import models, transaction
 from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import send_mail
 from utils.validators import less_than_160_characters_validator
 from organisations.models import Organisation
 from tags.models import Tag
@@ -248,6 +250,7 @@ class Event(models.Model):
         except ObjectDoesNotExist:
             pass
 
+    @transaction.atomic
     def deregister_user(self, user):
         # Deregistration time has passed.
         if not self.can_deregister:
@@ -256,6 +259,20 @@ class Event(models.Model):
         try:
             entry = EntryAsPreRegistered.objects.get(event=self, user=user)
             entry.delete()
+            reserves = EntryAsReserve.objects.filter(event=self).order_by("timestamp")
+            if reserves.exists():
+                user = reserves[0]
+                self.register_user(reserves[0].user)
+                subject = "Du har blivit uppflyttad från reservlistan!"
+                body = "".join(["<p>Grattis!</p>",
+                                "<p>Du har blivit uppflyttad från reservlistan och är nu anmäld till {event}.</p>",
+                                "<p>Vill du inte ha din plats kan du avanmäla dig på länken ",
+                                "<a href='{site}{link}'>{site}{link}</a></p>"]
+                               ).format(event=self.headline,
+                                        site=Site.objects.get_current().domain,
+                                        link=self.get_absolute_url())
+                send_mail(subject, "", settings.EMAIL_HOST_USER, [user.user.email, ], fail_silently=False, html_message=body)
+                user.delete()
             found = True
         except ObjectDoesNotExist:
             pass
@@ -285,6 +302,14 @@ class Event(models.Model):
         if (user in self.preregistrations) or (user in self.reserves):
             return True
         return False
+
+    def reserve(self, user):
+        if user in self.reserves:
+            return True
+        return False
+
+    def reserve_nr(self, user):
+        return self.reserves_object().get(user=user).position()
 
     def check_in(self, user):
         if user in self.participants:
@@ -476,7 +501,7 @@ class EntryAsReserve(models.Model):
         entries = EntryAsReserve.objects.filter(event=self.event).order_by("timestamp")
 
         for pos, entry in enumerate(entries):
-            if entries[pos] == entry:
+            if entries[pos].user == self.user:
                 return pos + 1
         return None
 
