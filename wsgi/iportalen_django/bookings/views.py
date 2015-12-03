@@ -202,14 +202,10 @@ def api_view(request, bookable_id, weeks_forward=0):
             booked = True
             if partial_bookings.filter(date=single_date, slot=slot).exists():
                 booked = False
-            blocked = False
-            cant_book = combine_date_and_time(single_date, slot.start_time) - timezone.timedelta(
-                hours=bookable.hours_before_booking) < timezone.datetime.now()
-            if cant_book:
-                blocked = True
-                if single_date.date() == timezone.datetime.now().date() and \
-                   slot.start_time > timezone.datetime.now().time():
-                    blocked = False
+
+            blocked = (combine_date_and_time(single_date, slot.start_time) - timezone.timedelta(
+                hours=bookable.hours_before_booking)) < timezone.now()
+
             tmp = {
                 'start_time': slot.start_time,
                 'end_time': slot.end_time,
