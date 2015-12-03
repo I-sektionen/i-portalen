@@ -1,4 +1,5 @@
 from django import forms
+from django.utils import timezone
 from .models import Event
 
 
@@ -44,6 +45,22 @@ class EventForm(forms.ModelForm):
         registration_limit = self.cleaned_data.get("registration_limit")
         if enable_registration and not registration_limit:
             self.add_error('registration_limit', "Du måste välja ett maximalt antal anmälningar.")
+        if registration_limit and not enable_registration:
+            self.add_error('enable_registration',
+                           "Du ha valt ett maximalt antal anmälningar "
+                           "men inte kryssat i rutan för att tillåta anmälningar")
+        end = self.cleaned_data.get("end")
+        start = self.cleaned_data.get("start")
+        visible_from = self.cleaned_data.get("visible_from")
+        if end:
+            if visible_from:
+                if end < visible_from:
+                    self.add_error('end', "Datumet måste vara före publiceringsdatumet.")
+            if start:
+                if start > end:
+                    self.add_error('start', "Datumet måste vara före slut datumet.")
+            if end < timezone.now():
+                self.add_error('end', "Datumet måste vara före dagens datum.")
 
 
 class CheckForm(forms.Form):
