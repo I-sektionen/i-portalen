@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django import forms
 from .models import Article
@@ -29,3 +30,14 @@ class ArticleForm(forms.ModelForm):
         self.fields['body'].widget.attrs['placeholder'] = self.fields['body'].help_text
         self.fields['visible_to'].widget.attrs['placeholder'] = self.fields['visible_to'].help_text
         self.fields['visible_from'].widget.attrs['placeholder'] = self.fields['visible_from'].help_text
+
+    def clean(self):
+        super(ArticleForm, self).clean()
+        visible_to = self.cleaned_data.get("visible_to")
+        visible_from = self.cleaned_data.get("visible_from")
+        if visible_to:
+            if visible_from:
+                if visible_to < timezone.now():
+                    self.add_error('visible_to', "Datumet måste vara före dagens datum.")
+            if visible_to < visible_from:
+                self.add_error('visible_to', "Datumet måste vara före publiceringsdatumet.")
