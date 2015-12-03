@@ -15,7 +15,7 @@ def first_day_of_week(week, year):  # found on stackoverflow...
 
 def daterange(start_date, end_date):
     for n in range(int((end_date - start_date).days)):
-        yield timezone.make_aware(start_date + timezone.timedelta(n))
+        yield start_date + timezone.timedelta(n)
 
 
 def combine_date_and_time(date, time):
