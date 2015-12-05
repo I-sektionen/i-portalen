@@ -66,22 +66,32 @@
                 <tbody>
                     <tr>
                         <td>
-                            {% if organisation.leader.first_name and organisation.leader.last_name %}
-                                {{ organisation.leader.first_name|capfirst }} {{ organisation.leader.last_name|capfirst }}
-                            {% endif %}
-                        </td>
-                        <td>Ordförande</td>
-                        <td>{{ organisation.leader.email }}</td>
-                    </tr>
-                    {% for u in organisation.group.user_set.all %}
-                        <tr>
-                            {% ifnotequal organisation.leader.pk u.pk %}
-                                {% if u.first_name and u.last_name %}
-                                    <td>
-                                        {{ u.first_name|capfirst }} {{ u.last_name|capfirst }}
+                            {% for member in members %}
+                                {% ifequal organisation.leader.pk member.user.pk %}
+                                    {{ member.user.first_name|capfirst }} {{ member.user.last_name|capfirst }}
                                     </td>
-                                    <td>Övrig</td>
-                                    <td>{{ u.email }}</td>
+                                    <td>{{ member.post }}</td>
+                                    {% if member.email %}
+                                    <td>{{ member.email }}</td>
+                                    {% else %}
+                                    <td>{{ organisation.leader.email }}</td>
+                                    {% endif %}
+                                {% endifequal %}
+                            {% endfor %}
+                    </tr>
+                    {% for member in members %}
+                        <tr>
+                            {% ifnotequal organisation.leader.pk member.user.pk %}
+                                {% if member.user.first_name and member.user.last_name %}
+                                    <td>
+                                        {{ member.user.first_name|capfirst }} {{ member.user.last_name|capfirst }}
+                                    </td>
+                                    <td>{{ member.post }}</td>
+                                    {% if member.email %}
+                                    <td>{{ member.email }}</td>
+                                    {% else %}
+                                    <td>{{ organisation.leader.email }}</td>
+                                    {% endif %}
                                 {% endif %}
                             {% endifnotequal %}
                         </tr>
