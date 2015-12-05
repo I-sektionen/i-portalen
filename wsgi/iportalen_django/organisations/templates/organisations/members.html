@@ -3,22 +3,36 @@
 {% endblock %}
 {% block content %}
     <div>
+    <a href="{% url "edit_organisation" organisation.name %}"><button type="button">Tillbaka</button></a>
     <h1>Ändra medlemmar</h1>
+        <p>Lägg till, ta bort samt uppdatera medlemmarna i {{ organisation.name }}. Användare är den person
+            som avses. "Post" innebär den titel som ska visas bredvid användar namnet, ex "Ordföranden". Email
+        avser en postspecifik email. Till exempel "ordforande@isektionen.se" istället för en vanlig liu-mail.
+        Klicka till sist på "Spara ändringar" för att se till att dina ändringar just sparas.</p>
         <form method="post" action="">
+        <button type="submit">Spara ändringar</button>
             <table>
+            <thead>
+                <tr>
+                    <th>Användare</th><th>Post</th><th>Email</th><th>Radera?</th>
+                </tr>
+            </thead>
             {{ formset.management_form }}
             {% for form in formset %}
                 {% csrf_token %}
                 <tr>
+
                     <td>{{ form.user }}</td>
                     <td>{{ form.post }}</td>
+                    <td>{{ form.email }}</td>
                     {% if formset.can_delete %}
-                        <td>Ta bort? {{ form.DELETE }}</td>
+                        <td>{{ form.DELETE }}</td>
                     {% endif %}
                 </tr>
+                {{ form.id }}
             {% endfor %}
             </table>
-        <button type="submit">Spara</button>
+
         </form>
     </div>
 
