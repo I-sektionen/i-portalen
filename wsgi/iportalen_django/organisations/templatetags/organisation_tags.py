@@ -42,3 +42,10 @@ def get_child_organisations(org_pk):
 @register.assignment_tag
 def can_edit_organisation(user, org):
     return org.can_edit(user)
+
+@register.assignment_tag
+def get_organisation_leader(org):
+    try:
+        return org.organisationpost_set.get(user=org.leader)
+    except:
+        return None
