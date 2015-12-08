@@ -1,6 +1,13 @@
 {% extends "master.html" %}
+{% block hero %}
+{% endblock %}
 {% block content %}
     <div>
+        <h1>Ändra uppgifter</h1>
+        <p>Här kan du administrear uppgifter för {{ organisation.name }}. Glöm inte att trycka på spara
+            ändringar längst ned på sidan när du är färdig.</p>
+        <a href="{% url "organisation" organisation.name %}"><button type="button">Tillbaka</button></a>
+        <a href="{% url "edit_organisation_members" organisation.name %}"><button type="button">Hantera medlemmar</button></a>
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.non_field_errors }}
@@ -34,8 +41,9 @@
             <br>
             <br>
 
-            <input type="submit" value="Submit" />
+            <button type="submit">Spara ändringar</button>
         </form>
+
     </div>
 
 {% endblock %}

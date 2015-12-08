@@ -63,25 +63,31 @@
                         <th>Kontaktuppgifter</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody>{% get_organisation_leader organisation as leader %}
                     <tr>
                         <td>
-                            {% if organisation.leader.first_name and organisation.leader.last_name %}
-                                {{ organisation.leader.first_name|capfirst }} {{ organisation.leader.last_name|capfirst }}
-                            {% endif %}
+                            {{ organisation.leader.first_name|capfirst }} {{ organisation.leader.last_name|capfirst }}
                         </td>
-                        <td>Ordförande</td>
+                        <td>{{ leader.post }}</td>
+                        {% if leader.email %}
+                        <td>{{ leader.email }}</td>
+                        {% else %}
                         <td>{{ organisation.leader.email }}</td>
+                        {% endif %}
                     </tr>
-                    {% for u in organisation.group.user_set.all %}
+                    {% for member in members %}
                         <tr>
-                            {% ifnotequal organisation.leader.pk u.pk %}
-                                {% if u.first_name and u.last_name %}
+                            {% ifnotequal organisation.leader.pk member.user.pk %}
+                                {% if member.user.first_name and member.user.last_name %}
                                     <td>
-                                        {{ u.first_name|capfirst }} {{ u.last_name|capfirst }}
+                                        {{ member.user.first_name|capfirst }} {{ member.user.last_name|capfirst }}
                                     </td>
-                                    <td>Övrig</td>
-                                    <td>{{ u.email }}</td>
+                                    <td>{{ member.post }}</td>
+                                    {% if member.email %}
+                                    <td>{{ member.email }}</td>
+                                    {% else %}
+                                    <td></td>
+                                    {% endif %}
                                 {% endif %}
                             {% endifnotequal %}
                         </tr>
