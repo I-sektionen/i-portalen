@@ -63,21 +63,17 @@
                         <th>Kontaktuppgifter</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody>{% get_organisation_leader organisation as leader %}
                     <tr>
                         <td>
-                            {% for member in members %}
-                                {% ifequal organisation.leader.pk member.user.pk %}
-                                    {{ member.user.first_name|capfirst }} {{ member.user.last_name|capfirst }}
-                                    </td>
-                                    <td>{{ member.post }}</td>
-                                    {% if member.email %}
-                                    <td>{{ member.email }}</td>
-                                    {% else %}
-                                    <td>{{ organisation.leader.email }}</td>
-                                    {% endif %}
-                                {% endifequal %}
-                            {% endfor %}
+                            {{ organisation.leader.first_name|capfirst }} {{ organisation.leader.last_name|capfirst }}
+                        </td>
+                        <td>{{ leader.post }}</td>
+                        {% if leader.email %}
+                        <td>{{ leader.email }}</td>
+                        {% else %}
+                        <td>{{ organisation.leader.email }}</td>
+                        {% endif %}
                     </tr>
                     {% for member in members %}
                         <tr>
@@ -90,7 +86,7 @@
                                     {% if member.email %}
                                     <td>{{ member.email }}</td>
                                     {% else %}
-                                    <td>{{ organisation.leader.email }}</td>
+                                    <td></td>
                                     {% endif %}
                                 {% endif %}
                             {% endifnotequal %}
