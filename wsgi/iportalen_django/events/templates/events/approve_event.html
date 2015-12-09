@@ -2,16 +2,33 @@
 {% load iportalen_tags %}
 
 {% block content %}
-
+<div id="events-to-approve">
 {% for event in events %}
-    {% include "events/model/full_event.html" with pk=event.pk %}
-    {% if can_administer %}
-        <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
-    {% endif %}
+    <div class="event-to-approve">
+    {% include "events/model/full_event.html" with pk=event.pk preview=True %}
+        <p>
+            Eventet skapades av: {{ event.user.first_name }} {{ event.user.last_name }} ({{ event.user }})
+            {% if event.organisations %}
+                med:
+                {% for org in event.organisations.all %}
+                 {{ org }}
+                {% endfor %}
+                som ägare.
+            {% else %}
+                åt sig själv.
+            {% endif %}
+        </p>
+        <p>
+            {% if event.enable_registration %} Anmälan kommer att vara möjlig.
+            {% else %} Anmälan kommer EJ att vara möjlig.
+            {% endif %}
+        </p>
 
+    </div>
     <a href="{% url "approve event" event.pk %}"><button class="btn-read-more">Godkänn</button></a>
     <a href="{% url "unapprove event" event.pk %}"><button class="btn-read-more">Avslå</button></a>
 {% empty %}
     <p>Inga event väntar på att godkännas, bra jobbat! :)</p>
 {% endfor %}
+</div>
 {% endblock %}
