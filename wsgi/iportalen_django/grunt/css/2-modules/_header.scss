@@ -1,11 +1,11 @@
 header.navigation {
   $base-border-color: gainsboro !default;
-  $base-border-radius: 3px !default;
+  $base-border-radius: $base-border-radius;
   //$action-color: #477DCA !default;
   //$dark-gray: #333 !default;
   $large-screen: em(860) !default;
   $navigation-padding: 1em;
-  $navigation-background: $light-gray;
+  $navigation-background: $white;
   $navigation-color: transparentize($dark-gray, 0.3);
   $navigation-color-hover: $dark-gray;
   $navigation-height: 60px;
@@ -16,8 +16,9 @@ header.navigation {
   $navigation-search-border: 1px solid darken($navigation-background, 5);
   $navigation-active-link-color: transparentize(white, 0.5);
   $navigation-submenu-padding: 1em;
-  $navigation-submenu-width: 12em;
+  $navigation-submenu-width: 24em;
   $horizontal-bar-mode: $large-screen;
+  $navigation-submenu-font-size: 1em;
 
   background-color: $navigation-background;
   border-bottom: 1px solid darken($navigation-background, 10);
@@ -82,7 +83,7 @@ header.navigation {
     display: none;
     margin: 0 auto;
     overflow: visible;
-    padding: 0;
+    padding: 1em;
     width: 100%;
     z-index: 9999;
 
@@ -100,12 +101,12 @@ header.navigation {
   // The nav items
 
   ul li.nav-link {
-    background: $navigation-background;
+    //background: $navigation-background;
     display: block;
-    line-height: $navigation-height;
+    line-height: 30px;
     overflow: hidden;
     padding-right: 0.8em;
-    text-align: right;
+    //text-align: right;
     width: 100%;
     z-index: 9999;
 
@@ -116,6 +117,15 @@ header.navigation {
       text-decoration: none;
       width: auto;
     }
+
+    // This sets fonts size all main categories in the menu i.e "Sektionen" or "Föreningar"
+    & > a:first-child {
+
+      font-size: 1.5em;
+      font-weight: 400;
+
+    }
+
 
     a {
       color: $navigation-color;
@@ -148,7 +158,7 @@ header.navigation {
     }
 
     > ul > li:first-child a  {
-      padding-top: 1em;
+      //padding-top: 1em;
     }
 
     a {
@@ -159,11 +169,6 @@ header.navigation {
       padding-right: 0.6em;
     }
 
-    > a:after {
-      @include position(absolute, auto -0.4em auto auto);
-      content: '\25BE';
-      color: $navigation-color;
-    }
   }
 
   li.more {
@@ -181,13 +186,6 @@ header.navigation {
       @include media($horizontal-bar-mode) {
         margin-right: $navigation-submenu-padding;
       }
-
-      &:after {
-        content: '›';
-        font-size: 1.2em;
-        position: absolute;
-        right: $navigation-submenu-padding / 2;
-      }
     }
 
     &:focus > .submenu,
@@ -202,20 +200,14 @@ header.navigation {
   }
 
   ul.submenu {
-    display: none;
-    padding-left: 0;
+
+    padding-left: 1em;
 
     @include media($horizontal-bar-mode) {
+      display: none;
       left: -$navigation-submenu-padding;
       position: absolute;
       top: 1.5em;
-    }
-
-    .submenu {
-      @include media($horizontal-bar-mode) {
-        left: $navigation-submenu-width - 0.2em;
-        top: 0;
-      }
     }
 
     li {
@@ -238,10 +230,11 @@ header.navigation {
       }
 
       a {
-        background-color: darken($navigation-background, 3%);
         display: inline-block;
-        text-align: right;
         width: 100%;
+        font-size: $navigation-submenu-font-size;
+        font-weight: 400;
+        text-transform: uppercase;
 
         @include media($horizontal-bar-mode) {
           background-color: $navigation-background;
@@ -256,7 +249,7 @@ header.navigation {
   // Elements on the far right
 
   .navigation-tools {
-    background: #505050;
+    background: $dark-gray;
     clear: both;
     display: block;
     height: $navigation-height;
@@ -273,13 +266,8 @@ header.navigation {
     $user-nav-tools-link-size: 12px;
     $user-nav-tools-link-weight: bold;
 
-
-
-
-
     @include display(flex);
     padding: $user-nav-tools-padding;
-
 
     a {
       color: $user-nav-tools-link-color;
