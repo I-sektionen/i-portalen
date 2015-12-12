@@ -16,7 +16,7 @@ header.navigation {
   $navigation-search-border: 1px solid darken($navigation-background, 5);
   $navigation-active-link-color: transparentize(white, 0.5);
   $navigation-submenu-padding: 1em;
-  $navigation-submenu-width: 24em;
+  $navigation-submenu-width: 18em;
   $horizontal-bar-mode: $large-screen;
   $navigation-submenu-font-size: 1em;
 
@@ -121,12 +121,16 @@ header.navigation {
     // This sets fonts size all main categories in the menu i.e "Sektionen" or "Föreningar"
     & > a:first-child {
 
-      font-size: 1.5em;
-      font-weight: 400;
+      font-size: 1.2em;
+      font-weight: 600;
 
+      //reset font sizes for desktop
+      @include media($horizontal-bar-mode)
+      {
+        font-size: 1em;
+        font-weight: 400;
+      }
     }
-
-
     a {
       color: $navigation-color;
       display: inline-block;
@@ -190,7 +194,7 @@ header.navigation {
 
     &:focus > .submenu,
     &:hover > .submenu {
-      display: block;
+      visibility: visible;
     }
 
     @include media($horizontal-bar-mode) {
@@ -200,14 +204,40 @@ header.navigation {
   }
 
   ul.submenu {
-
     padding-left: 1em;
 
     @include media($horizontal-bar-mode) {
-      display: none;
+      visibility: hidden;
       left: -$navigation-submenu-padding;
       position: absolute;
+
       top: 1.5em;
+      @include display(flex);
+      border-radius: 3px;
+      background: $white;
+
+     //TODO make hover more pleasant with arrow visible
+/*      .arrow-up {
+        position: absolute;
+        top: -10px;
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid $white;
+      }*/
+
+
+    }
+
+
+    .submenu-column {
+
+      @include media($horizontal-bar-mode) {
+        min-width: $navigation-submenu-width;
+        text-align: center;
+      }
+
     }
 
     li {
@@ -234,12 +264,11 @@ header.navigation {
         width: 100%;
         font-size: $navigation-submenu-font-size;
         font-weight: 400;
-        text-transform: uppercase;
 
         @include media($horizontal-bar-mode) {
           background-color: $navigation-background;
           padding-left: $navigation-submenu-padding;
-          text-align: left;
+          text-align: center;
           width: $navigation-submenu-width;
         }
       }
@@ -259,29 +288,29 @@ header.navigation {
       clear: none;
       float: right;
     }
-  .user-nav-tools {
-    list-style: none;
-    $user-nav-tools-padding: 1em;
-    $user-nav-tools-link-color: $white;
-    $user-nav-tools-link-size: 12px;
-    $user-nav-tools-link-weight: bold;
+    .user-nav-tools {
+      list-style: none;
+      $user-nav-tools-padding: 1em;
+      $user-nav-tools-link-color: $white;
+      $user-nav-tools-link-size: 12px;
+      $user-nav-tools-link-weight: bold;
 
-    @include display(flex);
-    padding: $user-nav-tools-padding;
+      @include display(flex);
+      padding: $user-nav-tools-padding;
 
-    a {
-      color: $user-nav-tools-link-color;
-      font-size: $user-nav-tools-link-size;
-      font-weight: $user-nav-tools-link-weight;
-      text-transform: uppercase;
+      a {
+        color: $user-nav-tools-link-color;
+        font-size: $user-nav-tools-link-size;
+        font-weight: $user-nav-tools-link-weight;
+        text-transform: uppercase;
+
+      }
+
+      & > * {
+        @include flex(1);
+      }
 
     }
-
-    & > * {
-      @include flex(1);
-    }
-
-  }
 
   }
 
