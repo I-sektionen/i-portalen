@@ -1,112 +1,43 @@
-{% load staticfiles %}
-{% load organisation_tags %}
-{% load booking_tags %}
-{% get_menu_organisations as menu_orgs %}
-{% get_all_bookables as bookables %}
-<header role="banner">
-    <div id="top-menu-bar">
-        <div id="logo">
-            <a href="/">
-                <img src=" {% static "iportalen/logo_iportalen.png" %}" alt="logo">
-            </a>
-        </div>
-        <div id="user-menu-tool">
-            {% if request.user.is_authenticated %}
-                <li class="js-menu-trigger sliding-panel-button">
-                    <span id="user-button">{{ request.user.username }} &#9776</span>
+<header class="navigation" role="banner">
+    <div class="navigation-wrapper">
+        <a href="javascript:void(0)" class="logo">
+            <img src="https://s3.amazonaws.com/iportalen-us/images/iportalen_logo.png" alt="Logo Image">
+        </a>
+        <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">MENU</a>
+        <nav role="navigation">
+            <ul id="js-navigation-menu" class="navigation-menu show">
+                <li class="nav-link"><a href="javascript:void(0)">Kalender</a></li>
+                <li class="nav-link more"><a href="javascript:void(0)">Sektionen</a>
+                    <ul class="submenu">
+                        <li><a href="javascript:void(0)">Styret</a></li>
+                        <li><a href="javascript:void(0)">Utlandsutskottet</a></li>
+                        <li><a href="javascript:void(0)">Informationsutskottet</a></li>
+                        <li><a href="javascript:void(0)">Utbildningsutskottet</a></li>
+                        <li><a href="javascript:void(0)">Marknadsföringsutskottet</a></li>
+                        <li><a href="javascript:void(0)">Studienämnden</a></li>
+                        <li><a href="javascript:void(0)">Alumniutskottet</a></li>
+                    </ul>
                 </li>
-            {% else %}
+                <li class="nav-link"><a href="javascript:void(0)">Föreningar</a></li>
+                <li class="nav-link more"><a href="javascript:void(0)">Tjänster</a>
+                    <ul class="submenu">
+                        <li><a href="javascript:void(0)">Filarkiv</a></li>
+                        <li><a href="javascript:void(0)">Boka JulIus</a></li>
+                        <li><a href="javascript:void(0)">Utvärdera en kurs</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="navigation-tools">
+            <ul class="user-nav-tools">
                 <li>
-                    <div class="modal">
-                        <label for="modal-1" class="button-small">
-                            <div class="modal-trigger">Logga in</div>
-                        </label>
-
-                        <input class="modal-state" id="modal-1" type="checkbox" />
-
-                        <div class="modal-fade-screen">
-                            <div class="modal-inner">
-                                <div class="modal-close" for="modal-1"></div>
-                                <div class="outer-form-div">
-                                    <div class="form-div">
-                                        <h4>Logga in på I-Portalen</h4>
-                                        <form class="login-form" action="{% url "login_view" %}" method="post">
-                                            {% csrf_token %}
-                                            <input class="username-holder" type="text" name="username" placeholder="Liu-id">
-                                            <input class="password-holder" type="password" name="password" placeholder="Lösenord">
-                                            <div class="button-group">
-                                                <label>
-                                                    <input class="action-button-group-item" type="submit" value="Logga in">
-                                                </label>
-                                                <label>
-                                                    <a href="{% url "password_reset" %}" class="button-group-item">Glömt lösenord?</a>
-                                                </label>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <a href=""><i class="fa fa-plus">Administrera innehåll</i></a>
                 </li>
-            {% endif %}
+                <li>
+                    <a href=""><i class="fa fa-user"></i>Kontoinställningar</a>
+                </li>
+            </ul>
+
         </div>
     </div>
-
-    <nav role="navigation">
-        <div id="menu-toggle">
-            <h4 id="menu-toggle-title">MENY</h4>
-            <span id="menu-toggle-button">&#9776;</span>
-        </div>
-        <ul id="navigation-menu">
-            <li><a href="/">Start</a>
-            </li>
-            <li><a href="{% url "event_calender" %}">Kalender</a>
-            </li>
-            <li class="more"><a href="">Om sektionen</a>
-                <!-- A WRAPPER TO CONTROL FLEX DIRECTION FOR SUBMENUS -->
-                <div class="submenu-wrapper">
-                    <div class="submenu-container">
-                        <ul class="submenu">
-                            <li>Sektionen</li>
-                            {% for o in menu_orgs.sektionen %}
-                                <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
-                            {% endfor %}
-                        </ul>
-                        <ul class="submenu">
-                            <li>Utskott</li>
-                            {% for o in menu_orgs.utskott %}
-                                <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
-                            {% endfor %}
-                        </ul>
-                        <ul class="submenu">
-                            <li>Föreningar</li>
-                            {% for o in menu_orgs.foreningar %}
-                                <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </li>
-            <li class="more"><a href="">Studier</a>
-                <div class="submenu-wrapper">
-                    <ul class="submenu">
-                        <li>Studienämnden</li>
-                        <li><a href="{% url 'evaluate_course' %}">Utvärdera en kurs!</a></li>
-                    </ul>
-                </div>
-            </li>
-            <li class="more"><a href="">Tjänster</a>
-                <div class="submenu-wrapper">
-                    <ul class="submenu">
-                        <li>Bokningar</li>
-                        <li><a href="{% url 'my_bookings' %}">Mina Bokningar</a></li>
-                        {% for bookable in bookables %}
-                            <li><a href="{{ bookable.get_absolute_url }}">{{ bookable.name|title }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </li>
-        </ul>
-    </nav>
 </header>
