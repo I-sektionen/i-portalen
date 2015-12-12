@@ -39,6 +39,16 @@ class MasterProfile(models.Model):
 
 # Liuid as username and <liuid>@student.liu.se as email
 class IUser(AbstractBaseUser, PermissionsMixin):
+    MAN = 'm'
+    WOMEN = 'w'
+    OTHER = 'o'  # Other / non-binary
+    UNSPECIFIED = 'u'  # Don't want to specify
+    GENDER_OPTIONS = (
+        (MAN, 'man'),
+        (WOMEN, 'kvinna'),
+        (OTHER, 'Annat / Icke-binär'),
+        (UNSPECIFIED, 'Vill ej ange')
+    )
     # basic fields
     username = models.CharField(verbose_name='LiU-ID', unique=True, max_length=8, validators=[liu_id_validator])
     email = models.EmailField(verbose_name='Email')
@@ -53,7 +63,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     address = models.CharField(verbose_name='adress', max_length=255, null=True, blank=True)
     zip_code = models.CharField(verbose_name='postnummer', max_length=255, null=True, blank=True)
     city = models.CharField(verbose_name='ort', max_length=255, null=True, blank=True)
-    gender = models.CharField(verbose_name='kön', max_length=255, null=True, blank=True)
+    gender = models.CharField(verbose_name='kön', max_length=1, null=True, blank=False, choices=GENDER_OPTIONS)
     allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
     start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=timezone.now().year)
     expected_exam_year = models.IntegerField(verbose_name='förväntat examensår', choices=YEAR_CHOICES,
@@ -121,6 +131,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = "användare"
         verbose_name_plural = "användare"
+        permissions = (('can_view_users', 'Can view users'),)
 
     def get_organisations(self):
         organisations = []

@@ -1,11 +1,12 @@
 from django.core.exceptions import ValidationError, PermissionDenied
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
-from django.contrib.auth.decorators import login_required
-from .forms import ChangeUserInfoForm, AddWhiteListForm, MembershipForm
+from django.contrib.auth.decorators import login_required, permission_required
+from .forms import ChangeUserInfoForm, AddWhiteListForm, MembershipForm, SegmentUsersForm
 from .models import IUser
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.db.models import Q
 from utils.text import random_string_generator
 from django.contrib.auth.views import (
     password_reset_confirm,
@@ -14,6 +15,7 @@ from django.contrib.auth.views import (
 from utils.kobra import get_user_by_liu_id, LiuGetterError, LiuNotFoundError
 import re
 import time
+import operator
 
 
 def logout_view(request):
@@ -327,3 +329,30 @@ def update_list_of_users_from_kobra(request):
     else:
         form = AddWhiteListForm()
     return render(request, "user_managements/add_whitelist.html", {'form': form})
+
+
+@login_required()
+@permission_required('user_managements.can_view_users')
+def filter_users(request):
+    users = None
+    if request.method == 'POST':
+        form = SegmentUsersForm(request.POST)
+        if form.is_valid():
+            #Gender:
+            gender = form.cleaned_data['gender']
+            queries = [Q(gender=x) for x in gender]
+            query = queries.pop()
+            for item in queries:
+                query |= item
+
+
+            users = IUser.objects.filter(query)  # Search result
+        else:
+            users = None  # Not valid form
+    else:
+        form = SegmentUsersForm()  # First time
+
+    return render(request, 'user_managements/search_users.html', {
+        'form': form,
+        'users': users,
+    })
