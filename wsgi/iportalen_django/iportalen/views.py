@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
@@ -39,6 +39,11 @@ def article_pagination(request):
         articles = paginator.page(paginator.num_pages)
 
     return render(request, 'front_page.html', {'articles': articles})
+
+
+@login_required()
+def glasscubes_link(request):
+    return redirect("https://industriellekonomi.glasscubes.com/share/s/d6msv3iv5a4g36o8d5q1ct2uvm")
 
 
 def display_news_feed(request):
