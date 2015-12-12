@@ -57,29 +57,37 @@
             <h1>Medlemmar</h1>
             <table>
                 <thead>
-                    <th>Namn</th>
-                    <th>Post</th>
-                    <th>Kontaktuppgifter</th>
+                    <tr>
+                        <th>Namn</th>
+                        <th>Post</th>
+                        <th>Kontaktuppgifter</th>
+                    </tr>
                 </thead>
-                <tbody>
+                <tbody>{% get_organisation_leader organisation as leader %}
                     <tr>
                         <td>
-                            {% if organisation.leader.first_name and organisation.leader.last_name %}
-                                {{ organisation.leader.first_name|capfirst }} {{ organisation.leader.last_name|capfirst }}
-                            {% endif %}
+                            {{ organisation.leader.first_name|capfirst }} {{ organisation.leader.last_name|capfirst }}
                         </td>
-                        <td>Ordförande</td>
+                        <td>{{ leader.post }}</td>
+                        {% if leader.email %}
+                        <td>{{ leader.email }}</td>
+                        {% else %}
                         <td>{{ organisation.leader.email }}</td>
+                        {% endif %}
                     </tr>
-                    {% for u in organisation.group.user_set.all %}
+                    {% for member in members %}
                         <tr>
-                            {% ifnotequal organisation.leader.pk u.pk %}
-                                {% if u.first_name and u.last_name %}
+                            {% ifnotequal organisation.leader.pk member.user.pk %}
+                                {% if member.user.first_name and member.user.last_name %}
                                     <td>
-                                        {{ u.first_name|capfirst }} {{ u.last_name|capfirst }}
+                                        {{ member.user.first_name|capfirst }} {{ member.user.last_name|capfirst }}
                                     </td>
-                                    <td>Övrig</td>
-                                    <td>{{ u.email }}</td>
+                                    <td>{{ member.post }}</td>
+                                    {% if member.email %}
+                                    <td>{{ member.email }}</td>
+                                    {% else %}
+                                    <td></td>
+                                    {% endif %}
                                 {% endif %}
                             {% endifnotequal %}
                         </tr>
@@ -93,13 +101,15 @@
             <h1>Artiklar</h1>
             <table>
                 <thead>
-                <th>Titel</th>
-                <th>Publicerad</th>
+                    <tr>
+                        <th>Titel</th>
+                        <th>Publicerad</th>
+                    </tr>
                 </thead>
                 <tbody>
                 {% for article in articles %}
                     <tr>
-                        <td><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></td>
+                        <td><a href="{{ article.get_absolute_url }}">{{ article.headline|truncatechars:18 }}</a></td>
                         <td>{{ article.created|date:"Y-m-d" }}</td>
                         <td></td>
                     </tr>
@@ -114,8 +124,10 @@
             <h1>Event</h1>
             <table>
                 <thead>
-                <th>Titel</th>
-                <th>Publicerad</th>
+                    <tr>
+                        <th>Titel</th>
+                        <th>Publicerad</th>
+                    </tr>
                 </thead>
                 <tbody>
                 {% for event in events %}

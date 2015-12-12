@@ -1,0 +1,44 @@
+{% extends "master.html" %}
+{# This file defines the front page and is a own kind of master page #}
+{% load iportalen_tags %}
+{% include "header.html" %}
+
+{% block content %}
+    {# gets all articles via template tag #}
+    <section id="news-feed">
+        <div id="content-select-nav">
+            <a href="{% url "news_feed" %}" class="content-type-nav active">Allt</a>
+            <a href="{% url "articles" %}" class="content-type-nav">Nyheter</a>
+            <a href="{% url "event_calender" %}" class="content-type-nav">Event</a>
+        </div>
+        {% for content in content_feed_list %}
+            {% if content.type == "article" %}
+                {% include "articles/model/small_article.html" with article=content %}
+            {% endif %}
+            {% if content.type == "event" %}
+                {% include "events/model/small_event.html" with event=content %}
+            {% endif %}
+
+        {% endfor %}
+        <div class="pagination">
+            <span class="step-links">
+            <span class="meta">
+                {% if content_feed_list.has_previous %}
+                    <span class="prev"><a href="?page={{ content_feed_list.previous_page_number }}">Prev</a></span>
+                {% endif %}
+                {% for number in content_feed_list.paginator.page_range|slice:":10" %}
+                    {% if number == content_feed_list.number %}
+                        <a class="pagenumber active" href="">{{ number }}</a>
+                    {%  else %}
+                        <a class="pagenumber" href="?page={{ number }}">{{ number }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if news_list.has_next %}
+                    <span class="next"><a href="?page={{ content_feed_list.next_page_number }}">Next</a></span>
+                {% endif %}
+            </span>
+            </span>
+        </div>
+    </section>
+
+{% endblock %}

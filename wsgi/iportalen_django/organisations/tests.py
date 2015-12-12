@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.auth.models import Group, Permission
 
 from user_managements.models import IUser
-from .models import Organisation
+from organisations.models import Organisation
 
 
 class OrganisationTests(TestCase):

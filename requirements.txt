@@ -1,4 +1,5 @@
-Django>=1.8.1,<1.8.99
+reversion
+Django>=1.9.0,<1.9.99
 dj-static
 mysqlclient
 django-reversion
@@ -6,3 +7,5 @@ markdown
 django-storages-redux
 boto
 urllib3
+django_extensions
+pytz

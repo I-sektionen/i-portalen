@@ -1,8 +1,9 @@
 from django.contrib import admin
 from .models import Article
-import reversion
+from reversion.admin import VersionAdmin
 
-class ArticleAdmin(reversion.VersionAdmin):
+
+class ArticleAdmin(VersionAdmin):
     pass
 
 admin.site.register(Article, ArticleAdmin)
