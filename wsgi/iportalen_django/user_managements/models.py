@@ -77,11 +77,11 @@ class IUser(AbstractBaseUser, PermissionsMixin):
                         ('Min sida', reverse('mypage_view'))]  # List of extra menu choices.
 
         if self.article_set.filter(visible_to__gte=timezone.now()):
-            menu_choices.append(('Mina Artiklar', reverse('articles by user')))
+            menu_choices.append(('Mina Artiklar', reverse('articles:articles by user')))
 
-        menu_choices.append(('Mina Event', reverse('events by user')))
+        menu_choices.append(('Mina Event', reverse('events:events by user')))
 
-        menu_choices.append(('Mina Anmälningar', reverse('registered_on_events')))
+        menu_choices.append(('Mina Anmälningar', reverse('events:registered_on_events')))
 
         if self.has_perm("articles.can_approve_article"):
             menu_choices.append(('Godkänn Innehåll', reverse('approve content')))  # With perm to edit articles.
@@ -93,7 +93,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
             menu_choices.append(("Lägg till Liu-idn i whitelist", reverse('add users to whitelist')))
 
         if self.has_perm("organisations.add_organisation"):
-            menu_choices.append(("Lägg till en organisation", reverse('add organisation')))
+            menu_choices.append(("Lägg till en organisation", reverse('organisations:add organisation')))
 
         return menu_choices
 

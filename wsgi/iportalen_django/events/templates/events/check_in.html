@@ -1,7 +1,7 @@
 {% extends "master.html" %}
 
 {% block content %}
-        <form method="post" action="{% url "check in" event.pk %}">
+        <form method="post" action="{% url "events:check in" event.pk %}">
             {% csrf_token %}
             <input type="text" name="input">
             <button type="submit">Skicka</button>

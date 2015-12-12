@@ -31,7 +31,7 @@ def edit_organisation(request, organisation_name):
         if form.is_valid():
             form.save()
 
-        return redirect(reverse("organisation", kwargs={'organisation_name': organisation_name}))
+        return redirect(reverse("organisations:organisation", kwargs={'organisation_name': organisation_name}))
     else:
         form = OrganisationForm(instance=my_organisation)
         return render(request, "organisations/organisation_form.html",
