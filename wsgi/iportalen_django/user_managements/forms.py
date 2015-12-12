@@ -80,3 +80,15 @@ class AddWhiteListForm(forms.Form):
 class MembershipForm(forms.Form):
     user = forms.CharField(label="Liu-id", validators=[liu_id_validator, ])
     password = forms.CharField(label='Lösenord', widget=forms.PasswordInput)
+
+
+class SegmentUsersForm(forms.Form):
+    gender = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                       choices=IUser.GENDER_OPTIONS,
+                                       required=False)
+    start_year = forms.IntegerField(min_value=2000,
+                                    max_value=2500,
+                                    required=False)
+    end_year = forms.IntegerField(min_value=2000,
+                                  max_value=2500,
+                                  required=False)
