@@ -6,9 +6,9 @@
 {% block content %}
     <section id="news-feed">
         <div id="content-select-nav">
-            <a href="{% url "news_feed" %}" class="content-type-nav">Allt</a>
-            <a href="{% url "articles" %}" class="content-type-nav">Nyheter</a>
-            <a href="{% url "event_calender" %}" class="content-type-nav active">Event</a>
+            <a href="{% url "news feed" %}" class="content-type-nav">Allt</a>
+            <a href="{% url "articles:articles" %}" class="content-type-nav">Nyheter</a>
+            <a href="{% url "events:calender" %}" class="content-type-nav active">Event</a>
         </div>
         {% get_all_events as events %}
         {% for event in events %}

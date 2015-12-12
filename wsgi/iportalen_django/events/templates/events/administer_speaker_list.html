@@ -25,7 +25,7 @@
 {% include "scripts.html" %}
 <script>
     jQuery(document).ready(function(){
-        speaker_list_admin("{% url "event speaker api" event.pk %}");
+        speaker_list_admin("{% url "events:speaker api" event.pk %}");
     });
 </script>
 

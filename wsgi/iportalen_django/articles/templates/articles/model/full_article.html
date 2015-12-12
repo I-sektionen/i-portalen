@@ -20,7 +20,7 @@
     {{ article.body|markdown }}
     {% if article.attachment %}
         <p>Bifogad fil: {{ article.filename }}
-            <a href="{% url "article_download" article.pk %}"><button type="button">Ladda ner</button></a>
+            <a href="{% url "articles:download" article.pk %}"><button type="button">Ladda ner</button></a>
         </p>
     {% endif %}
 </article>
