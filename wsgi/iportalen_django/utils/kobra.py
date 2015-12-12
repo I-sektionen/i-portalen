@@ -1,6 +1,6 @@
-__author__ = 'jonathan'
 import json
-from utils.security import decode
+
+
 class LiuNotFoundError(Exception):
     pass
 
@@ -32,7 +32,9 @@ def _make_call_to_kobra(payload):
     # The flask server reverse checks the ip of iportalen-webgroup.rhcloud.com and only allows calls from that ip
     # Best regards Jonathan, Webmaster 2015-2016
     ##############################################################################
-    #import requests
+    # import requests
+    key = None
+    value = None
     for k in payload:
         key = k
         value = payload[k]

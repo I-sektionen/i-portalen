@@ -6,11 +6,13 @@
         <h1>Artiklar</h1>
         <table>
             <thead>
-            <th colspan="2">Rubrik</th>
-            <th>Publicering</th>
-            <th>Ändra</th>
-            <th colspan="2">Ägare</th>
-            <th>Status</th>
+            <tr>
+                <th colspan="2">Rubrik</th>
+                <th>Publicering</th>
+                <th>Ändra</th>
+                <th colspan="2">Ägare</th>
+                <th>Status</th>
+            </tr>
             </thead>
             <tbody>
             {% for article in user_articles %}
@@ -19,13 +21,17 @@
                     <td>{{ article.created|date:"Y-m-d" }}</td>
                     <td><a href="{{ article.get_absolute_url }}edit"><button>Ändra</button></a></td>
                     <td colspan="2">{{ article.organisations.all|safeseq|join:", " }}</td>
-                    {% if article.draft %}
-                        <td>Utkast</td>
-                    {% elif article.draft = False and article.approved  = False %}
-                        <td>Väntar på godkännande</td>
-                    {% elif article.approved %}
-                        <td>Publicerad</td>
-                    {% endif %}
+                    <td>
+                        {% if article.status == "r" %}
+                            Avslaget
+                        {% elif article.status == "a" %}
+                            Godkännt
+                        {% elif article.status == "b" %}
+                            Väntar på godkännande
+                        {% elif article.status == "d" %}
+                            Utkast
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

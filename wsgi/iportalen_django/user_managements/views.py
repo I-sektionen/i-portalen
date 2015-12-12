@@ -1,5 +1,4 @@
 from django.core.exceptions import ValidationError, PermissionDenied
-from django.db import transaction
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
@@ -13,9 +12,9 @@ from django.contrib.auth.views import (
     password_reset,
 )
 from utils.kobra import get_user_by_liu_id, LiuGetterError, LiuNotFoundError
-
 import re
 import time
+
 
 def logout_view(request):
     logout(request)
@@ -38,8 +37,8 @@ def login(request):
             user_account = IUser.objects.filter(username__exact=username)
             if user_account.exists() and user_account[0].last_login is None and user_account[0].is_active:
                 #  The user-account exists, but the user must login in a first time.
-                    messages.info(request, "Du måste aktivera ditt konto innan du kan logga in första gången.")
-                    return redirect("password_reset", liu_id=username)
+                messages.info(request, "Du måste aktivera ditt konto innan du kan logga in första gången.")
+                return redirect("password_reset", liu_id=username)
             else:
                 # the authentication system was unable to verify the username and password
                 messages.error(request, "Fel Liu-id eller lösenord.")
@@ -60,7 +59,7 @@ def login(request):
                     except:
                         pass
                     user.save()
-                    form = MembershipForm(initial={"user":user.username})
+                    form = MembershipForm(initial={"user": user.username})
                     return render(request, "user_managements/membership.html", {"form": form})
                 elif user.is_member is True:
                     auth_login(request, user)
@@ -89,7 +88,8 @@ def become_member(request):
             user.is_member = True
             user.save()
             auth_login(request, user)
-            messages.info(request,"Tack för att du vill vara medlem i sektionen. Du kan nu utnyttja sektionens tjänster.")
+            messages.info(request,
+                          "Tack för att du vill vara medlem i sektionen. Du kan nu utnyttja sektionens tjänster.")
             return redirect("/")
         else:
             messages.error(request, "Fel Liu-id eller lösenord.")
@@ -104,14 +104,15 @@ def become_member(request):
                 return render(request, "user_managements/membership.html", {"form": form})
             user.is_member = False
             user.save()
-            messages.info(request,"Vad tråkigt att du inte vill vara medlem i sektionen. "
-                                  "Om du ångrar dig kan du kontakta Info@isektionen.se")
+            messages.info(request, "Vad tråkigt att du inte vill vara medlem i sektionen. "
+                                   "Om du ångrar dig kan du kontakta Info@isektionen.se")
             return redirect("/")
         else:
             messages.error(request, "Fel Liu-id eller lösenord.")
             return render(request, "user_managements/membership.html", {"form": form})
     else:
         return redirect(reverse("login_view"))
+
 
 @login_required()
 def my_page_view(request):
@@ -129,11 +130,10 @@ def change_user_info_view(request):
         return redirect(reverse("mypage_view"))
     else:
         form = ChangeUserInfoForm(instance=user)
-        return render(request, "user_managements/user_info_form.html", {'form':form})
+        return render(request, "user_managements/user_info_form.html", {'form': form})
 
 
 @login_required()
-@transaction.atomic
 def add_users_to_white_list(request):
     user = request.user
     if not user.has_perm("user_managements.add_iuser"):
@@ -145,7 +145,7 @@ def add_users_to_white_list(request):
             errors = False
 
             for liu_id in list_of_liu_id:
-                temp_user = IUser(username=liu_id.lower(), email=liu_id.lower()+"@student.liu.se")
+                temp_user = IUser(username=liu_id.lower(), email=liu_id.lower() + "@student.liu.se")
                 temp_user.set_password(random_string_generator())
                 try:
                     temp_user.validate_unique()
@@ -167,6 +167,25 @@ def add_users_to_white_list(request):
                         "Det uppstod ett fel för användaren med Liu-id: {:}.\n{:}".format(liu_id, str_error))
                     continue
                 temp_user.save()
+                try:
+                    user = IUser.objects.get(username=liu_id)
+                    kobra_dict = get_user_by_liu_id(liu_id)
+                    user.email = kobra_dict['email'].lower()
+                    user.last_name = kobra_dict['last_name'].lower()
+                    user.first_name = kobra_dict['first_name'].lower()
+
+                    while len(kobra_dict['rfid_number']) < 10:
+                        kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
+
+                    user.rfid_number = kobra_dict['rfid_number']
+                    user.p_nr = kobra_dict['personal_number']
+                    user.save()
+                except IUser.DoesNotExist:
+                    messages.error(request, "Användaren {:} sparades inte som den skulle.".format(liu_id))
+                except LiuNotFoundError:
+                    messages.error(request, "Kan inte ansluta till kobra.")
+                except LiuGetterError:
+                    messages.error(request, "Fel i anslutingen till kobra.")
             if errors:
                 messages.info(request, "De användare utan fel har skapats och kan nu återställa sitt lösenord.")
             else:
@@ -180,27 +199,26 @@ def reset(request, liu_id=None):
     return password_reset(request, template_name='user_managements/reset/pw_res.html',
                           email_template_name='user_managements/reset/pw_res_email.html',
                           subject_template_name='user_managements/reset/pw_res_email_subject.txt',
-                          extra_context={'liu_id': liu_id},)
+                          extra_context={'liu_id': liu_id}, )
 
 
 def reset_confirm(request, uidb64=None, token=None):
     return password_reset_confirm(request, template_name='user_managements/reset/pw_res_confirm.html',
                                   uidb64=uidb64,
                                   token=token,
-                                  post_reset_redirect=reverse('front page'))
+                                  post_reset_redirect=reverse('password_reset_complete'))
 
 
 def reset_done(request):
     # return password_reset_done(request, template_name='user_managements/reset/pw_res_done.html')
     messages.info(request, "Ett mail kommer inom kort skickas till mailadressen som angavs. "
                            "I den finns en länk för att skapa ett nytt lösenord. "
-                           "Om det inte kommer något mail, vänligen försök igen, "
-                           "om det fortfarande inte kommer något mail, kontakta InfO")
+                           "Om det inte kommer något mail, vänligen kontakta info@isektionen.se")
     return redirect("/")
 
 
 def reset_complete(request):
-    messages.info(request, "Du har ett nytt lösenord, testa det.")
+    messages.info(request, "Ditt lösenord är uppdaterat, logga in nedan.")
     return redirect(reverse("login_view"))
 
 
@@ -230,6 +248,7 @@ def update_user_from_kobra(request, liu_id):
     except LiuGetterError:
         messages.error(request, "Fel i anslutingen till kobra.")
     return render(request, "user_managements/kobra.html")
+
 
 @login_required()
 def update_all_users_from_kobra(request):

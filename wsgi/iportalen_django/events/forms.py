@@ -1,10 +1,11 @@
 from django import forms
-
+from django.utils import timezone
 from .models import Event
 
 
 class EventForm(forms.ModelForm):
     draft = forms.BooleanField(label="Utkast", required=False, help_text="Sparar utan att publicera")
+
     class Meta:
         model = Event
         fields = '__all__'
@@ -15,8 +16,6 @@ class EventForm(forms.ModelForm):
         super(EventForm, self).__init__(*args, **kwargs)
         self.fields['visible_from'].widget.attrs['class'] = 'datetimepicker'
         self.fields['visible_from'].widget.attrs['placeholder'] = self.fields['visible_from'].help_text
-
-
 
         self.fields['location'].widget.attrs['placeholder'] = self.fields['location'].help_text
         self.fields['start'].widget.attrs['placeholder'] = self.fields['start'].help_text
@@ -29,8 +28,6 @@ class EventForm(forms.ModelForm):
         self.fields['deregister_delta'].widget.attrs['placeholder'] = self.fields['deregister_delta'].help_text
 
         self.fields['lead'].widget.attrs['placeholder'] = self.fields['lead'].help_text
-
-
 
         self.fields['start'].widget.attrs['class'] = 'datetimepicker'
         self.fields['end'].widget.attrs['class'] = 'datetimepicker'
@@ -48,8 +45,22 @@ class EventForm(forms.ModelForm):
         registration_limit = self.cleaned_data.get("registration_limit")
         if enable_registration and not registration_limit:
             self.add_error('registration_limit', "Du måste välja ett maximalt antal anmälningar.")
-
-
+        if registration_limit and not enable_registration:
+            self.add_error('enable_registration',
+                           "Du ha valt ett maximalt antal anmälningar "
+                           "men inte kryssat i rutan för att tillåta anmälningar")
+        end = self.cleaned_data.get("end")
+        start = self.cleaned_data.get("start")
+        visible_from = self.cleaned_data.get("visible_from")
+        if end:
+            if visible_from:
+                if end < visible_from:
+                    self.add_error('end', "Datumet måste vara före publiceringsdatumet.")
+            if start:
+                if start > end:
+                    self.add_error('start', "Datumet måste vara före slut datumet.")
+            if end < timezone.now():
+                self.add_error('end', "Datumet måste vara före dagens datum.")
 
 
 class CheckForm(forms.Form):
@@ -68,7 +79,7 @@ class SpeakerForm(forms.Form):
 
 class ImportEntriesForm(forms.Form):
     users = forms.CharField(
-        widget=forms.Textarea(attrs={"rows": 15, "placeholder":"abcde123\nfghij456\nklmno789\n..."}),
+        widget=forms.Textarea(attrs={"rows": 15, "placeholder": "abcde123\nfghij456\nklmno789\n..."}),
         help_text="Ange ett liu-id per rad inga andra tecken är tillåtna."
     )
 

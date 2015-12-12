@@ -1,8 +1,20 @@
 #news-feed
+  //holds all links above newsfeed
+  #content-select-nav
+    margin-bottom: 2em
+  a.content-type-nav
+    text-transform: uppercase
+    color: darken($light-gray, 30%)
+    padding: 0.2em
+    margin-right: 2em
+    margin-bottom: 2em
+    font-weight: bold
+  .active
+    border-bottom: 2px solid $isektionen-yellow
+
   +span-columns(12)
   +media($large-screen-up)
-    +span-columns(5)
-
+    +span-columns(7)
 
 #upcoming
   +span-columns(12)

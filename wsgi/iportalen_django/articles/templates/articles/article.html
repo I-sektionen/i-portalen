@@ -1,29 +1,14 @@
+<!--
+--
+- This files contains the view rendered for *single articles*
+-
+-->
 {% extends "master.html" %}
-{% load article_tags %}
-{% load iportalen_tags %}
 {% load staticfiles %}
 
 {% block hero %}
 {% endblock %}
 
 {% block content %}
-    <article class="single-article">
-        <p class="type">Nyhet</p>
-        <h1>{{ article.headline }}</h1>
-        <h2>{{ article.lead }}</h2>
-        <p class="date">
-            {{ article.created|date:"Y-m-d" }}
-            {% if article.tags.all  %}
-                <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
-            {% endif %}
-        </p>
-        <p>{{ article.body|markdown }}</p>
-        <hr>
-        <p class="author">{{ article.organisations.all|safeseq|join:", " }}</p>
-        {% if article.attachment %}
-            <p>Bifogad fil: {{ article.filename }}
-                <a href="{% url "article_download" article.pk %}"><button type="button">Ladda ner</button></a>
-            </p>
-        {% endif %}
-    </article>
+{% include "articles/model/full_article.html" with article=article %}
 {% endblock %}
