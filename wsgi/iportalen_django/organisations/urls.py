@@ -10,5 +10,5 @@ urlpatterns = [
     url(r'^create/$', add_organisation, name='create'),
     url(r'^(?P<organisation_name>[^/]+)/$', organisation, name='organisation'),
     url(r'^(?P<organisation_name>[^/]+)/edit/$', edit_organisation, name='edit'),
-    url(r'^(?P<organisation_name>[^/]+)/members/$', edit_memebers, name='edit_organisation_members'),
+    url(r'^(?P<organisation_name>[^/]+)/members/$', edit_memebers, name='edit organisation members'),
 ]
