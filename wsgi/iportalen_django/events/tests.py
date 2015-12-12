@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import Permission
 from user_managements.models import IUser
-from .models import Event, SpeakerList
+from events.models import Event, SpeakerList
 from .exceptions import CouldNotRegisterException
 from django.utils import timezone
 

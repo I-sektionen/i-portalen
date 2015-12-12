@@ -2,7 +2,7 @@ from django.utils import timezone
 
 from django.test import TestCase
 
-from .models import Article
+from articles.models import Article
 from user_managements.models import IUser
 
 
