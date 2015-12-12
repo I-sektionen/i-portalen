@@ -1008,7 +1008,10 @@ header.navigation .navigation-tools .user-nav-tools {
   padding: 1em;
 }
 header.navigation .navigation-tools .user-nav-tools a {
-  color: #333;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 header.navigation .navigation-tools .user-nav-tools > * {
   -webkit-box-flex: 1;
