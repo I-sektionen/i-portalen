@@ -27,7 +27,7 @@ from .views import (
 
 urlpatterns = [
     url(r'(?P<pk>[0-9]+)/$', view=view_event, name="event"),
-    url(r'create_event/$', view=create_or_modify_event, name="create event"),
+    url(r'create/$', view=create_or_modify_event, name="create event"),
     url(r'(?P<pk>[0-9]+)/edit/$', view=create_or_modify_event, name="edit event"),
     url(r'(?P<pk>[0-9]+)/register/$', view=register_to_event, name="register_to_event"),
     url(r'(?P<pk>[0-9]+)/register_reserve/$', view=register_as_reserve, name="register_as_reserve"),

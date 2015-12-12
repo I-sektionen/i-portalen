@@ -20,9 +20,9 @@
                 {% endfor %}
             </tbody>
         </table>
-    <a href="{% url "event_participants_download" event.pk %}"><button type="button">Ladda ner deltagare</button></a>
+    <a href="{% url "events:event_participants_download" event.pk %}"><button type="button">Ladda ner deltagare</button></a>
     {% event_can_administer event request.user as can_administer %}
     {% if can_administer %}
-        <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
+        <a href="{% url "events:administer_event" event.pk %}"><button type="button">Admin</button></a>
     {% endif %}
 {% endblock %}

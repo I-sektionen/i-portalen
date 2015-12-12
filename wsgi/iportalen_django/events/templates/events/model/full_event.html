@@ -44,14 +44,14 @@
     {% if event.enable_registration %}
         {% if not registered %}
             {% if not event.full %}
-                <form method="post" action="{% url "register_to_event" event.pk %}">
+                <form method="post" action="{% url "events:register_to_event" event.pk %}">
                     {% csrf_token %}
                     <label>
                         <button class="button-group-item"  type="submit" title="snälla">Anmäl mig</button>
                     </label>
                 </form>
             {% else %}
-                <form method="post" action="{% url "register_as_reserve" event.pk %}">
+                <form method="post" action="{% url "events:register_as_reserve" event.pk %}">
                     {% csrf_token %}
                     <label>
                         <button class="button-group-item" type="submit" title="snälla">Anmäl mig som reserv</button>
@@ -68,7 +68,7 @@
             {% endif %}
 
             {% if event.can_deregister %}
-                <form method="post" action="{% url "unregister" event.pk %}">
+                <form method="post" action="{% url "events:unregister" event.pk %}">
                     {% csrf_token %}
                     <label>
                         <button class="button-group-item" type="submit" title="snälla">Avanmäl mig</button>
@@ -84,7 +84,7 @@
     <div class="admin-event">
         {% if can_administer %}
             <label>
-                <a class="button action-button-group-item" href="{% url "administer_event" event.pk %}">
+                <a class="button action-button-group-item" href="{% url "events:administer_event" event.pk %}">
                     Administrera evenemang
                 </a>
             </label>

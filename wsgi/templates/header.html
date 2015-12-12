@@ -61,7 +61,7 @@
         <ul id="navigation-menu">
             <li><a href="/">Start</a>
             </li>
-            <li><a href="{% url "event_calender" %}">Kalender</a>
+            <li><a href="{% url "events:event_calender" %}">Kalender</a>
             </li>
             <li class="more"><a href="">Om sektionen</a>
                 <!-- A WRAPPER TO CONTROL FLEX DIRECTION FOR SUBMENUS -->
@@ -92,7 +92,7 @@
                 <div class="submenu-wrapper">
                     <ul class="submenu">
                         <li>Studienämnden</li>
-                        <li><a href="{% url 'evaluate_course' %}">Utvärdera en kurs!</a></li>
+                        <li><a href="{% url 'course_evaluations:evaluate_course' %}">Utvärdera en kurs!</a></li>
                     </ul>
                 </div>
             </li>
@@ -100,7 +100,7 @@
                 <div class="submenu-wrapper">
                     <ul class="submenu">
                         <li>Bokningar</li>
-                        <li><a href="{% url 'my_bookings' %}">Mina Bokningar</a></li>
+                        <li><a href="{% url 'bookings:my_bookings' %}">Mina Bokningar</a></li>
                         {% for bookable in bookables %}
                             <li><a href="{{ bookable.get_absolute_url }}">{{ bookable.name|title }}</a></li>
                         {% endfor %}

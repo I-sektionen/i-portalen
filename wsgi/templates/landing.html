@@ -8,8 +8,8 @@
     <section id="news-feed">
         <div id="content-select-nav">
             <a href="{% url "news_feed" %}" class="content-type-nav active">Allt</a>
-            <a href="{% url "articles" %}" class="content-type-nav">Nyheter</a>
-            <a href="{% url "event_calender" %}" class="content-type-nav">Event</a>
+            <a href="{% url "articles:articles" %}" class="content-type-nav">Nyheter</a>
+            <a href="{% url "events:event_calender" %}" class="content-type-nav">Event</a>
         </div>
         {% for content in content_feed_list %}
             {% if content.type == "article" %}

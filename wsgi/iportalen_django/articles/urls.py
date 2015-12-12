@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/approve$', views.approve_article, name='approve article'),
     url(r'^(?P<pk>[0-9]+)/unapprove$', views.unapprove_article, name='unapproves article'),
     url(r'^tag/(?P<tag_name>[^/]+)/$', views.articles_by_tag, name='articles by tag'),
-    url(r'^user/$', views.articles_by_user, name='articles by user'),
+    url(r'^my_articles/$', views.articles_by_user, name='articles by user'),
     url(r'^(?P<pk>[0-9]+)/delete/$', views.delete_article, name='delete article'),
     url(r'^(?P<pk>[0-9]+)/download/$', views.article_file_download, name='article_download'),
 

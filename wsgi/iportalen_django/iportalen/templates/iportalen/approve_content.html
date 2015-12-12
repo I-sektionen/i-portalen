@@ -3,7 +3,7 @@
 {% block content %}
 <div id="content">
     <h4>Godkänn innehåll till i-portalen</h4>
-    <a href="{% url "unapproved articles" %}"><p>Godkänn artiklar.</p></a>
-    <a href="{% url "unapproved events" %}"><p>Godkänn event.</p></a>
+    <a href="{% url "articles:unapproved articles" %}"><p>Godkänn artiklar.</p></a>
+    <a href="{% url "events:unapproved events" %}"><p>Godkänn event.</p></a>
 </div>
 {% endblock %}

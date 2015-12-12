@@ -28,7 +28,7 @@
     <div id="organisation-admin-panel">
     {% can_edit_organisation request.user organisation as can_edit %}
         {% if can_edit %}
-            <a href="{% url "edit_organisation" organisation.name %}">
+            <a href="{% url "organisations:edit_organisation" organisation.name %}">
                 <button>Ändra info</button>
             </a>
         {% endif %}
@@ -132,7 +132,7 @@
                 <tbody>
                 {% for event in events %}
                     <tr>
-                        <td><a href="{% url "event" event.pk %}">{{ article.headline }}</a></td>
+                        <td><a href="{% url "events:event" event.pk %}">{{ article.headline }}</a></td>
                         <td>{{ event.created|date:"Y-m-d" }}</td>
                         <td></td>
                     </tr>
