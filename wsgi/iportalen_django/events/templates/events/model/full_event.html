@@ -40,6 +40,7 @@
     <p>Anmälningsstopp för att {{ event.extra_deadline_text }}: {{ event.extra_deadline|date:"Y-m-d H:i:s" }}</p>
 {% endif %}
 <div class="button-group">
+    {% if not preview %}
     {% if event.enable_registration %}
         {% if not registered %}
             {% if not event.full %}
@@ -78,6 +79,8 @@
             {% endif %}
         {% endif %}
     {% endif %}
+    {% endif %}
+    {% if not preview %}
     <div class="admin-event">
         {% if can_administer %}
             <label>
@@ -87,6 +90,7 @@
             </label>
         {% endif %}
     </div>
+    {% endif %}
 </div>
 {% endwith %}
 {% endwith %}
