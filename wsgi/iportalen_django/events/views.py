@@ -35,7 +35,7 @@ def register_to_event(request, pk):
         except CouldNotRegisterException as err:
             messages.error(request,
                            "Fel, kunde inte registrera dig på " + err.event.headline + " för att " + err.reason + ".")
-    return redirect("event", pk=pk)
+    return redirect("events:event", pk=pk)
 
 
 @login_required()
@@ -73,7 +73,7 @@ def register_as_reserve(request, pk):
         entry = event.register_reserve(request.user)
         messages.success(request,
                          "Du är nu anmäld som reserv på eventet, du har plats nr. " + str(entry.position()) + ".")
-    return redirect("event", pk=pk)
+    return redirect("events:event", pk=pk)
 
 
 @login_required()
@@ -289,7 +289,7 @@ def unregister(request, pk):
         except CouldNotRegisterException as err:
             messages.error(request,
                            "Fel, kunde inte avregistrera dig på " + err.event.headline + " för att " + err.reason + ".")
-    return redirect("event", pk=pk)
+    return redirect("events:event", pk=pk)
 
 
 def event_calender(request):
@@ -362,7 +362,7 @@ def create_or_modify_event(request, pk=None):
                 messages.success(request, "Dina ändringar har sparats i ett utkast.")
             elif event.status == Event.BEING_REVIEWED:
                 messages.success(request, "Dina ändringar har skickats för granskning.")
-            return redirect('events by user')
+            return redirect('events:by user')
         else:
             messages.error(request, "Det uppstod ett fel, se detaljer nedan.")
             return render(request, 'events/create_event.html', {

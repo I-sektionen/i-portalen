@@ -123,7 +123,7 @@ def make_booking(request, bookable_id, weeks_forward=0):
                                                end_slot=end_slot,
                                                user=request.user)
                 messages.success(request, "YAY")
-                return redirect("make_booking", bookable_id=bookable_id)
+                return redirect("bookings:make booking", bookable_id=bookable_id)
             except NoSlots as e:
                 messages.error(request, e.reason)
             except InvalidInput as e:
@@ -150,7 +150,7 @@ def remove_booking(request, bookable_id):
     booking = get_object_or_404(Booking, pk=bookable_id)
     if request.user.pk == booking.user.pk:
         booking.delete()
-    return redirect("my_bookings")
+    return redirect("bookings:my bookings")
 
 
 def api_view(request, bookable_id, weeks_forward=0):

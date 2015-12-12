@@ -3,15 +3,15 @@
 {% endblock %}
 {% block content %}
     <ul>
-        <li><a href="{% url "events:event_preregistrations" event.pk %}">Se anmälningar</a></li>
-        <li><a href="{% url "events:event_participants" event.pk %}">Se deltagare</a></li>
-        <li><a href="{% url "events:event_speech_nr_list" event.pk %}">Se lista över talarnummer</a></li>
-        <li><a href="{% url "events:event administer speaker list" event.pk %}">Admin Talarlistan</a></li>
-        <li><a href="{% url "events:event speaker display" event.pk %}">Se Talarlistan</a></li>
-        <li><a href="{% url "events:event_reserves" event.pk %}">Se reserver</a></li>
-        <li><a href="{% url "events:event_check_in" event.pk %}">Starta incheckning</a></li>
-        <li><a href="{% url "events:edit event" event.pk %}">Ändra event</a></li>
-        <li><a href="{% url "events:import_registrations" event.pk %}">Importera anmälningar</a></li>
+        <li><a href="{% url "events:preregistrations" event.pk %}">Se anmälningar</a></li>
+        <li><a href="{% url "events:participants" event.pk %}">Se deltagare</a></li>
+        <li><a href="{% url "events:speech nr list" event.pk %}">Se lista över talarnummer</a></li>
+        <li><a href="{% url "events:administer speaker list" event.pk %}">Admin Talarlistan</a></li>
+        <li><a href="{% url "events:speaker display" event.pk %}">Se Talarlistan</a></li>
+        <li><a href="{% url "events:reserves" event.pk %}">Se reserver</a></li>
+        <li><a href="{% url "events:check in" event.pk %}">Starta incheckning</a></li>
+        <li><a href="{% url "events:edit" event.pk %}">Ändra event</a></li>
+        <li><a href="{% url "events:import registrations" event.pk %}">Importera anmälningar</a></li>
 
     </ul>
 {% endblock %}
