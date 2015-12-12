@@ -67,7 +67,6 @@ header.navigation {
   }
 
   // Nav menu
-
   nav {
     float: none;
     min-height: $navigation-height;
@@ -270,7 +269,13 @@ header.navigation {
   .user-nav-tools {
     list-style: none;
     $user-nav-tools-padding: 1em;
-    $user-nav-tools-link-color: $dark-gray;
+    $user-nav-tools-link-color: $white;
+    $user-nav-tools-link-size: 12px;
+    $user-nav-tools-link-weight: bold;
+
+
+
+
 
     @include display(flex);
     padding: $user-nav-tools-padding;
@@ -278,6 +283,10 @@ header.navigation {
 
     a {
       color: $user-nav-tools-link-color;
+      font-size: $user-nav-tools-link-size;
+      font-weight: $user-nav-tools-link-weight;
+      text-transform: uppercase;
+
     }
 
     & > * {
