@@ -859,8 +859,14 @@ header.navigation ul li.nav-link {
   }
 }
 header.navigation ul li.nav-link > a:first-child {
-  font-size: 1.5em;
-  font-weight: 400;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+@media screen and (min-width: 900px) {
+  header.navigation ul li.nav-link > a:first-child {
+    font-size: 1em;
+    font-weight: 400;
+  }
 }
 header.navigation ul li.nav-link a {
   color: rgba(51, 51, 51, 0.7);
@@ -910,7 +916,7 @@ header.navigation li.more > a {
   }
 }
 header.navigation li.more:focus > .submenu, header.navigation li.more:hover > .submenu {
-  display: block;
+  visibility: visible;
 }
 @media screen and (min-width: 900px) {
   header.navigation li.more {
@@ -923,10 +929,34 @@ header.navigation ul.submenu {
 }
 @media screen and (min-width: 900px) {
   header.navigation ul.submenu {
-    display: none;
+    visibility: hidden;
     left: -1em;
     position: absolute;
     top: 1.5em;
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+    border-radius: 3px;
+    background: white;
+    /*      .arrow-up {
+            position: absolute;
+            top: -10px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid $white;
+          }*/
+  }
+}
+@media screen and (min-width: 900px) {
+  header.navigation ul.submenu .submenu-column {
+    min-width: 18em;
+    text-align: center;
   }
 }
 header.navigation ul.submenu li {
@@ -952,14 +982,13 @@ header.navigation ul.submenu li a {
   width: 100%;
   font-size: 1em;
   font-weight: 400;
-  text-transform: uppercase;
 }
 @media screen and (min-width: 900px) {
   header.navigation ul.submenu li a {
     background-color: white;
     padding-left: 1em;
-    text-align: left;
-    width: 24em;
+    text-align: center;
+    width: 18em;
   }
 }
 header.navigation .navigation-tools {
