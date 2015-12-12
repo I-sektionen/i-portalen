@@ -52,7 +52,7 @@ def create_or_modify_article(request, pk=None):
                 messages.success(request, "Dina ändringar har sparats i ett utkast.")
             elif article.status == Article.BEING_REVIEWED:
                 messages.success(request, "Dina ändringar har skickats för granskning.")
-            return redirect('articles by user')
+            return redirect('articles:by user')
         else:
             messages.error(request, "Det uppstod ett fel, se detaljer nedan.")
             return render(request, 'articles/article_form.html', {

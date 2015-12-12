@@ -28,7 +28,7 @@
     <div id="organisation-admin-panel">
     {% can_edit_organisation request.user organisation as can_edit %}
         {% if can_edit %}
-            <a href="{% url "organisations:edit_organisation" organisation.name %}">
+            <a href="{% url "organisations:edit" organisation.name %}">
                 <button>Ändra info</button>
             </a>
         {% endif %}

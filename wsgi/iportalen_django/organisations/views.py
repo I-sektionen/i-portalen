@@ -78,7 +78,7 @@ def edit_memebers(request, organisation_name):
                         org_post.user = entry['user']
                         org_post.save()
                         group.user_set.add(org_post.user)
-            return redirect("edit_organisation_members", organisation_name=my_organisation.name)
+            return redirect("organisations:edit_organisation_members", organisation_name=my_organisation.name)
         else:
             return render(request, "organisations/members.html", {
                         'organisation': my_organisation,
