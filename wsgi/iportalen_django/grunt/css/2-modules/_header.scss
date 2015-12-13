@@ -26,7 +26,6 @@ header.navigation {
   $navigation-submenu-font-size: 1em;
 
   background-color: $navigation-background;
-  border-bottom: 1px solid darken($navigation-background, 10);
   min-height: $navigation-height;
   width: 100%;
   z-index: 999;
@@ -303,6 +302,7 @@ header.navigation {
           padding-left: $navigation-submenu-padding;
           text-align: center;
           width: $navigation-submenu-width;
+          font-weight: 600;
         }
       }
     }

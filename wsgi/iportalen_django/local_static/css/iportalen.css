@@ -766,7 +766,6 @@ picture {
 */
 header.navigation {
   background-color: white;
-  border-bottom: 1px solid #e6e6e6;
   min-height: 60px;
   width: 100%;
   z-index: 999;
@@ -1017,6 +1016,7 @@ header.navigation ul.submenu li a {
     padding-left: 1em;
     text-align: center;
     width: 18em;
+    font-weight: 600;
   }
 }
 header.navigation .navigation-tools {
