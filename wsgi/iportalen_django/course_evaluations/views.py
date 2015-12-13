@@ -2,9 +2,10 @@ from django.contrib import messages
 from  django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ValidationError
 from django.db import transaction
+from django.forms import modelformset_factory, formset_factory
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from course_evaluations.forms import EvaluationForm, PeriodForm, YearForm
+from course_evaluations.forms import EvaluationForm, PeriodForm, YearForm, CourseForm
 from .models import Period, Course, Evaluation, Reward, Year
 
 
@@ -45,14 +46,6 @@ def evaluate_course(request):
 @permission_required('courses.delete_course')
 def admin(request):
     return render(request, "course_evaluations/admin/index.html",)
-
-
-@login_required
-@permission_required('courses.add_course')
-@permission_required('courses.change_course')
-@permission_required('courses.delete_course')
-def create_or_modify_courses(request):
-    return render(request, "course_evaluations/admin/courses.html",)
 
 
 @login_required
@@ -150,3 +143,27 @@ def edit_period(request, pk):
             form.save()
 
     return render(request, "course_evaluations/admin/edit_period.html", {"form": form})
+
+@login_required
+@transaction.atomic
+@permission_required('courses.add_course')
+@permission_required('courses.change_course')
+@permission_required('courses.delete_course')
+def create_courses(request):
+    courses = Course.objects.all()
+    CourseFormSet = formset_factory(CourseForm, max_num=1000, extra=10, can_delete=False)
+
+    if request.method == 'POST':
+        formset = CourseFormSet(request.POST)
+        if formset.is_valid():
+            for entry in formset.cleaned_data:
+                if not entry == {}:
+                    c = Course.objects.create(code=entry['code'], name=entry['name'])
+                    print(c)
+            formset = CourseFormSet()
+            return render(request, "course_evaluations/admin/add_courses.html", {"formset": formset, "courses": courses})
+        else:
+            return render(request, "course_evaluations/admin/add_courses.html", {"formset": formset, "courses": courses})
+
+    formset = CourseFormSet()
+    return render(request, "course_evaluations/admin/add_courses.html", {"formset": formset, "courses": courses})
