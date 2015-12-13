@@ -241,9 +241,7 @@ header.navigation {
 
 
     }
-
     .submenu-column {
-
       @include media($horizontal-bar-mode) {
         min-width: $navigation-submenu-width;
         text-align: center;
@@ -307,7 +305,7 @@ header.navigation {
       $user-nav-tools-link-color-hover: transparentize($user-nav-tools-link-color, 0.3);
       $user-nav-tools-link-size: 0.5em;
       $user-nav-tools-link-weight: bold;
-      $user-nav-tools-horizontal-bar-mode-width: 20em;
+      $user-nav-tools-horizontal-bar-mode-width: 16em;
       @include media($horizontal-bar-mode) {
         width: $user-nav-tools-horizontal-bar-mode-width;
       }

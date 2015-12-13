@@ -1040,7 +1040,7 @@ header.navigation .navigation-tools .user-nav-tools {
 }
 @media screen and (min-width: 900px) {
   header.navigation .navigation-tools .user-nav-tools {
-    width: 20em;
+    width: 16em;
   }
 }
 header.navigation .navigation-tools .user-nav-tools a {
