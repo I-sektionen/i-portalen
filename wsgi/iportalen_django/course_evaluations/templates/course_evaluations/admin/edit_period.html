@@ -4,12 +4,18 @@
 {% endblock %}
 
 {% block content %}
+
     <form action="" method="post">
         {% csrf_token %}
-        {{ form }}
+        {% for field in form %}
+        <strong>{{ field.label }}</strong>
+        {{ field }}
+        {{ field.error }}
+        {% endfor %}
 
         <div id="article-create-form-buttons">
             <button type="submit">Spara ändringar</button>
+            <button onclick="goBack()">Tillbaka</button>
         </div>
     </form>
 {% endblock %}

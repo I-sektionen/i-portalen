@@ -1,0 +1,43 @@
+{% extends "master.html" %}
+
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+<h1>Kurser</h1>
+    <ul>
+        {% for course in courses %}
+            <li>{{ course }}</li>
+        {% empty %}
+            <li>Det finns inga kurser</li>
+        {% endfor %}
+    </ul>
+    <form method="post" action="">
+    <table id="form-table">
+        <tr>
+            <th>Kurskod</th><th>Kursnamn</th>
+        </tr>
+    {{ formset.management_form }}
+    {% for form in formset %}
+        {% csrf_token %}
+        <tr>
+            <td>{{ form.code }}{{ form.code.errors }}</td>
+            <td>{{ form.name }}{{ form.name.errors }}</td>
+        </tr>
+        {{ form.id }}
+    {% endfor %}
+    </table>
+    <button type="button" id="add_more">Lägg till fler fält</button>
+
+<button type="submit">Spara kurser</button>
+    <button onclick="goBack()">Tillbaka</button>
+</form>
+
+{% endblock %}
+{% block after_scripts %}
+<script>
+    $('#add_more').click(function() {
+        cloneMore('#form-table tr:last', 'form');
+    });
+</script>
+{% endblock %}

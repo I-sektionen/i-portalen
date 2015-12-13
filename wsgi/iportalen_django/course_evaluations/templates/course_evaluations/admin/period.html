@@ -4,7 +4,8 @@
 {% endblock %}
 
 {% block content %}
-    <a href="{% url 'course_evaluations:edit period' period.pk %}">Ändra</a>
+<a href="{% url 'course_evaluations:edit period' period.pk %}"><button>Ändra</button></a>
+    <button onclick="goBack()">Tillbaka</button>
     <table>
     <tr><td><strong>Name</strong></td><td>{{ period.name }}</td></tr>
     <tr><td><strong>Startdatum</strong></td><td>{{ period.start_date }}</td></tr>
