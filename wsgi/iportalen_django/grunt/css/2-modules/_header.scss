@@ -290,13 +290,27 @@ header.navigation {
       background: transparent;
       clear: none;
       float: right;
+
+
+
     }
     .user-nav-tools {
       list-style: none;
       $user-nav-tools-padding: 1em;
-      $user-nav-tools-link-color: $white;
+      $user-nav-tools-link-color: $light-gray;
+      $user-nav-tools-link-color-hover: transparentize($user-nav-tools-link-color, 0.3);
       $user-nav-tools-link-size: 0.5em;
       $user-nav-tools-link-weight: bold;
+      $user-nav-tools-horizontal-bar-mode-width: 20em;
+
+
+
+
+      @include media($horizontal-bar-mode) {
+        width: $user-nav-tools-horizontal-bar-mode-width;
+        border-left: 2px solid $light-gray;
+
+      }
 
       @include display(flex);
       @include justify-content(space-between);
@@ -308,8 +322,18 @@ header.navigation {
         font-weight: $user-nav-tools-link-weight;
         text-transform: uppercase;
 
+
+
+
         @include media($horizontal-bar-mode) {
           color: $dark-gray;
+
+          font-size: $user-nav-tools-link-size * 1.2;
+                  &:hover {
+
+          color: lighten($dark-gray, 30%);
+
+        }
         }
 
       }
@@ -323,8 +347,12 @@ header.navigation {
         }
 
         i {
-
           font-size: 3em;
+          margin-bottom: 3px;
+          @include media($horizontal-bar-mode) {
+            font-size: 2em;
+
+          }
 
         }
 

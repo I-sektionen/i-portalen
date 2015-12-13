@@ -1027,8 +1027,14 @@ header.navigation .navigation-tools .user-nav-tools {
   -ms-flex-pack: justify;
   padding: 1em;
 }
+@media screen and (min-width: 900px) {
+  header.navigation .navigation-tools .user-nav-tools {
+    width: 20em;
+    border-left: 2px solid #f7f7f7;
+  }
+}
 header.navigation .navigation-tools .user-nav-tools a {
-  color: white;
+  color: #f7f7f7;
   font-size: 0.5em;
   font-weight: bold;
   text-transform: uppercase;
@@ -1036,6 +1042,10 @@ header.navigation .navigation-tools .user-nav-tools a {
 @media screen and (min-width: 900px) {
   header.navigation .navigation-tools .user-nav-tools a {
     color: #333;
+    font-size: 0.6em;
+  }
+  header.navigation .navigation-tools .user-nav-tools a:hover {
+    color: gray;
   }
 }
 header.navigation .navigation-tools .user-nav-tools li {
@@ -1069,6 +1079,12 @@ header.navigation .navigation-tools .user-nav-tools li a {
 }
 header.navigation .navigation-tools .user-nav-tools li i {
   font-size: 3em;
+  margin-bottom: 3px;
+}
+@media screen and (min-width: 900px) {
+  header.navigation .navigation-tools .user-nav-tools li i {
+    font-size: 2em;
+  }
 }
 
 #sponsors .sponsor-placeholder {
