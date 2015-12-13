@@ -295,10 +295,11 @@ header.navigation {
       list-style: none;
       $user-nav-tools-padding: 1em;
       $user-nav-tools-link-color: $white;
-      $user-nav-tools-link-size: 12px;
+      $user-nav-tools-link-size: 0.5em;
       $user-nav-tools-link-weight: bold;
 
       @include display(flex);
+      @include justify-content(space-between);
       padding: $user-nav-tools-padding;
 
       a {
@@ -308,16 +309,28 @@ header.navigation {
         text-transform: uppercase;
 
         @include media($horizontal-bar-mode) {
-
           color: $dark-gray;
+        }
+
+      }
+
+      li {
+        text-align: center;
+        @include flex(1);
+        a {
+          @include display(flex);
+          @include flex-direction(column);
+        }
+
+        i {
+
+          font-size: 3em;
 
         }
 
       }
 
-      & > * {
-        @include flex(1);
-      }
+
 
     }
 
