@@ -1,3 +1,8 @@
+{% load staticfiles %}
+{% load organisation_tags %}
+{% load booking_tags %}
+{% get_menu_organisations as menu_orgs %}
+{% get_all_bookables as bookables %}
 <header class="navigation" role="banner">
     <div class="navigation-wrapper">
         <a href="javascript:void(0)" class="logo">
@@ -10,42 +15,40 @@
                 <li class="nav-link more"><a href="javascript:void(0)">Sektionen</a>
                     <ul class="submenu">
                         <div class="submenu-column">
-                            <li><a href="javascript:void(">Styret</a></li>
-                            <li><a href="javascript:void(">Utlandsutskottet</a></li>
-                            <li><a href="javascript:void(">Informationsutskottet</a></li>
-                            <li><a href="javascript:void(">Utbildningsutskottet</a></li>
-                            <li><a href="javascript:void(">Marknadsföringsutskottet</a></li>
+                            {% for o in menu_orgs.sektionen %}
+                                <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
+                            {% endfor %}
                         </div>
                         <div class="submenu-column">
-                            <li><a href="javascript:void(">Studienämnden</a></li>
-                            <li><a href="javascript:void(">Alumniutskottet</a></li>
-                            <li><a href="javascript:void(">Webgroup</a></li>
-                            <li><a href="javascript:void(">Valberedningen</a></li>
-                            <li><a href="javascript:void(">Arbetsmiljöombud</a></li>
+                            {% for o in menu_orgs.utskott %}
+                                <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
+                            {% endfor %}
                         </div>
                     </ul>
-                        <li class="nav-link more"><a href="javascript:void(0)">Föreningar</a>
+                        <li class="nav-link more"><a href="">Föreningar</a>
                             <ul class="submenu">
                                 <div class="submenu-column">
-                                    <li><a href="javascript:void(0)">Iris</a></li>
-                                    <li><a href="javascript:void(0)">IQual</a></li>
-                                    <li><a href="javascript:void(0)">Integrera</a></li>
-                                    <li><a href="javascript:void(0)">IQ</a></li>
+                                    <li><a href="">Iris</a></li>
+                                    <li><a href="">IQual</a></li>
+                                    <li><a href="">Integrera</a></li>
+                                    <li><a href="">IQ</a></li>
                                 </div>
                                 <div class="submenu-column">
-                                    <li><a href="javascript:void(0)">Clubmästeriet</a></li>
-                                    <li><a href="javascript:void(0)">PubIs</a></li>
-                                    <li><a href="javascript:void(0)">ESTEIM</a></li>
-                                    <li><a href="javascript:void(0)">Klassföräldrarna</a></li>
+                                    <li><a href="">Clubmästeriet</a></li>
+                                    <li><a href="">PubIs</a></li>
+                                    <li><a href="">ESTEIM</a></li>
+                                    <li><a href="">Klassföräldrarna</a></li>
                                 </div>
                             </ul>
                         </li>
                         <li class="nav-link more"><a href="javascript:void(0)">Tjänster</a>
                             <ul class="submenu">
                                 <div class="submenu-column">
-                                    <li><a href="javascript:void(0)">Filarkiv</a></li>
-                                    <li><a href="javascript:void(0)">Boka JulIus</a></li>
-                                    <li><a href="javascript:void(0)">Utvärdera en kurs</a></li>
+                                    {% for bookable in bookables %}
+                            <li><a href="{{ bookable.get_absolute_url }}">{{ bookable.name|title }}</a></li>
+                        {% endfor %}
+                                    <li><a href="{% url "glasscubes storage" %}">Filarkiv</a></li>
+                                    <li><a href="{% url 'course_evaluations:evaluate_course' %}">Utvärdera en kurs</a></li>
                                 </div>
                             </ul>
                         </li>
@@ -55,15 +58,15 @@
         <div class="navigation-tools">
             <ul class="user-nav-tools">
                 <li class=user-tools-button">
-                    <a href=""><i class="fa fa-calendar"></i><span>Event</span></a>
+                    <a href="{% url 'events:registered on' %}"><i class="fa fa-calendar"></i><span>Event</span></a>
                 </li>
                 <li class=user-tools-button">
-                    <a href="">
+                    <a href="{% url 'bookings:my bookings' %}">
                         <i class="fa fa-calendar-check-o"></i><span>Bokningar</span>
                     </a>
                 </li>
                 <li class=user-tools-button">
-                    <a href=""><i class="fa fa-user"></i><span>Konto</span></a>
+                    <a href="{% url 'my page' %}"><i class="fa fa-user"></i><span>Konto</span></a>
                 </li>
                 <li class=user-tools-button">
                     <a href=""><i class="fa fa-plus"></i><span>Innehåll</span></a>
