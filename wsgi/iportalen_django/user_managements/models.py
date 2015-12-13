@@ -8,7 +8,7 @@ from utils.validators import liu_id_validator
 
 YEAR_CHOICES = []
 for r in range(1969, (timezone.now().year+10)):
-    YEAR_CHOICES.append((r,r))
+    YEAR_CHOICES.append((r, r))
 
 
 class BachelorProfile(models.Model):
