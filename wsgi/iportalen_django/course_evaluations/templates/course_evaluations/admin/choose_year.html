@@ -1,0 +1,14 @@
+{% extends "master.html" %}
+
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+    <ul>
+    {% for year in years %}
+    <li><a href="{{ year.get_absolute_url }}">{{ year }}</a></li>
+    {% endfor %}
+    </ul>
+    <a href="{% url 'course_evaluations:create year' %}">Lägg till ett år</a>
+
+{% endblock %}

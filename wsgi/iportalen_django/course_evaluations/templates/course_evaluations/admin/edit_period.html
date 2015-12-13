@@ -1,0 +1,15 @@
+{% extends "master.html" %}
+
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form }}
+
+        <div id="article-create-form-buttons">
+            <button type="submit">Spara ändringar</button>
+        </div>
+    </form>
+{% endblock %}

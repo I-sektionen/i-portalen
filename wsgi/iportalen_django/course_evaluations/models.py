@@ -1,6 +1,30 @@
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
 from django.db import models
 from user_managements.models import IUser
+from django.utils import timezone
+
+
+class Year(models.Model):
+    YEAR_CHOICES = []
+    for r in range(2014, (timezone.now().year+50)):
+        YEAR_CHOICES.append((r,r))
+    year = models.IntegerField(verbose_name="år", unique=True, choices=YEAR_CHOICES,
+                               default=timezone.now().year)
+    vt1 = models.ForeignKey("Period", verbose_name="VT1", related_name="vt1")
+    vt2 = models.ForeignKey("Period", verbose_name="VT2", related_name="vt2")
+    ht1 = models.ForeignKey("Period", verbose_name="HT1", related_name="ht1")
+    ht2 = models.ForeignKey("Period", verbose_name="HT2", related_name="ht2")
+
+    class Meta:
+        verbose_name = 'år'
+        verbose_name_plural = 'år'
+
+    def __str__(self):
+        return "{year}".format(year=self.year)
+
+    def get_absolute_url(self):
+        return reverse('course_evaluations:admin year', kwargs={'year': self.year})
 
 
 class Course(models.Model):
@@ -27,8 +51,8 @@ class Reward(models.Model):
 
 
 class Period(models.Model):
-    start_date = models.DateTimeField(verbose_name="startdatum", help_text="startdatum för perioden")
-    end_date = models.DateTimeField(verbose_name="slutdatum", help_text="slutdatum för perioden")
+    start_date = models.DateField(verbose_name="startdatum", help_text="startdatum för perioden")
+    end_date = models.DateField(verbose_name="slutdatum", help_text="slutdatum för perioden")
     name = models.CharField(verbose_name="namn", help_text="Ex, 2016 VT1", max_length=255)
     courses = models.ManyToManyField(Course, verbose_name="kurser", help_text="kurser att utvärdera")
 
@@ -37,22 +61,29 @@ class Period(models.Model):
         verbose_name_plural = 'läsperioder'
 
     def __str__(self):
-        return "{name}".format(name=self.name)
+        return "{name} {start} - {end}".format(name=self.name, start=self.start_date, end=self.end_date)
 
-    def save(self, *args, **kwargs):
-        if self.start_time > self.end_time:
+    def get_absolute_url(self):
+        return reverse('course_evaluations:admin period', kwargs={'pk': self.pk})
+
+    def clean(self):
+        super(Period, self).clean()
+        if self.start_date > self.end_date:
             raise ValidationError('End time must be set after start time.')
 
         periods = Period.objects.all()
-        if self.id:
-            periods.exclude(pk=self.id)
+        if self.pk:
+            periods = periods.exclude(pk=self.pk)
         for period in periods:
-            if self.start_time < period.start_time:  # Före
-                if self.end_time > period.start_time:
+            if self.start_date < period.start_date:  # Före
+                if self.end_date > period.end_date:
                     raise ValidationError('The periods are end- and start times are invalid. They are overlapping. before')
             else:  # Efter
-                if self.start_time < period.end_time:
+                if self.start_date < period.end_date:
                     raise ValidationError("The periods are end- and start times are invalid. They are overlapping. after")
+
+    def save(self, *args, **kwargs):
+
         super(Period, self).save(*args, **kwargs)
 
     def get_free_courses(self):
