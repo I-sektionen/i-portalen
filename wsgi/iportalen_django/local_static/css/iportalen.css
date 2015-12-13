@@ -1030,7 +1030,6 @@ header.navigation .navigation-tools .user-nav-tools {
 @media screen and (min-width: 900px) {
   header.navigation .navigation-tools .user-nav-tools {
     width: 20em;
-    border-left: 2px solid #f7f7f7;
   }
 }
 header.navigation .navigation-tools .user-nav-tools a {
