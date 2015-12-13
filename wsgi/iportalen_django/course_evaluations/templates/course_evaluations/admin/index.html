@@ -1,0 +1,12 @@
+{% extends "master.html" %}
+
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+    <ul>
+    <li><a href="{% url "course_evaluations:choose year" %}">Välj år</a></li>
+    <li><a href="{% url "course_evaluations:edit course" %}">Ändra kurser</a></li>
+    </ul>
+
+{% endblock %}

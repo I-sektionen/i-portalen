@@ -1,10 +1,14 @@
 from django.contrib import messages
+from  django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ValidationError
-from django.shortcuts import render
+from django.db import transaction
+from django.shortcuts import render, redirect
 from django.utils import timezone
-from course_evaluations.forms import EvaluationForm
-from .models import Period, Course, Evaluation, Reward
+from course_evaluations.forms import EvaluationForm, PeriodForm, YearForm
+from .models import Period, Course, Evaluation, Reward, Year
 
+
+@login_required
 def evaluate_course(request):
     try:
         p = Period.objects.get(start_date__lte=timezone.now(), end_date__gte=timezone.now())
@@ -33,3 +37,116 @@ def evaluate_course(request):
             form = EvaluationForm(None, period=p)
 
     return render(request, "course_evaluations/evaluate_course.html", {"form": form, "rewards": rewards, "period": p, "user_evaluations": user_eval})
+
+
+@login_required
+@permission_required('courses.add_course')
+@permission_required('courses.change_course')
+@permission_required('courses.delete_course')
+def admin(request):
+    return render(request, "course_evaluations/admin/index.html",)
+
+
+@login_required
+@permission_required('courses.add_course')
+@permission_required('courses.change_course')
+@permission_required('courses.delete_course')
+def create_or_modify_courses(request):
+    return render(request, "course_evaluations/admin/courses.html",)
+
+
+@login_required
+@permission_required('courses.add_course')
+@permission_required('courses.change_course')
+@permission_required('courses.delete_course')
+def admin_year(request, year):
+    year = Year.objects.get(year=year)
+    return render(request, "course_evaluations/admin/year.html", {"year": year})
+
+@login_required
+@permission_required('courses.add_course')
+@permission_required('courses.change_course')
+@permission_required('courses.delete_course')
+def create_or_modify_rewards(request):
+    return render(request, "course_evaluations/admin/year.html")
+
+
+@login_required
+@permission_required('courses.add_course')
+@permission_required('courses.change_course')
+@permission_required('courses.delete_course')
+def choose_year(request):
+    years = Year.objects.all()
+    return render(request, "course_evaluations/admin/choose_year.html", {"years": years})
+
+
+@login_required
+@transaction.atomic
+@permission_required('courses.add_course')
+@permission_required('courses.change_course')
+@permission_required('courses.delete_course')
+def create_year(request):
+    form = YearForm(request.POST or None)
+    if request.POST:
+        if form.is_valid():
+
+            try:
+                ht1 = Period(start_date=form.cleaned_data['ht1_start'],
+                             end_date=form.cleaned_data['ht2_start']-timezone.timedelta(days=1),
+                             name="HT1")
+
+                ht2 = Period(start_date=form.cleaned_data['ht2_start'],
+                             end_date=form.cleaned_data['ht2_end'],
+                             name="HT2")
+
+                vt2 = Period(start_date=form.cleaned_data['vt2_start'],
+                             end_date=form.cleaned_data['vt2_end'],
+                             name="VT2")
+                vt1 = Period(start_date=form.cleaned_data['vt1_start'],
+                             end_date=form.cleaned_data['vt2_start']-timezone.timedelta(days=1),
+                             name="VT1")
+                vt1.clean()
+                vt2.clean()
+                ht1.clean()
+                ht2.clean()
+            except ValidationError:
+                form.add_error('vt1_start', 'VT1 överlappar med föregående år! var vänlig sätt ett annat datum!')
+                return render(request, "course_evaluations/admin/create_year.html", {"form": form})
+            vt1.save()
+            vt2.save()
+            ht1.save()
+            ht2.save()
+
+            year = Year(year=form.cleaned_data['year'],
+                        vt1=vt1,
+                        vt2=vt2,
+                        ht1=ht1,
+                        ht2=ht2)
+            year.save()
+            return redirect(year)
+    return render(request, "course_evaluations/admin/create_year.html", {"form": form})
+
+
+@login_required
+@transaction.atomic
+@permission_required('courses.add_course')
+@permission_required('courses.change_course')
+@permission_required('courses.delete_course')
+def admin_period(request, pk):
+    period = Period.objects.get(pk=pk)
+    return render(request, "course_evaluations/admin/period.html", {"period": period})
+
+
+@login_required
+@transaction.atomic
+@permission_required('courses.add_course')
+@permission_required('courses.change_course')
+@permission_required('courses.delete_course')
+def edit_period(request, pk):
+    period = Period.objects.get(pk=pk)
+    form = PeriodForm(request.POST or None, instance=period)
+    if request.POST:
+        if form.is_valid():
+            form.save()
+
+    return render(request, "course_evaluations/admin/edit_period.html", {"form": form})

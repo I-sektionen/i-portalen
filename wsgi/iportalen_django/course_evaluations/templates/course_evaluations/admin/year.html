@@ -1,0 +1,12 @@
+{% extends "master.html" %}
+
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ year.year }}</h1>
+    <h2><a href="{{ year.vt1.get_absolute_url }}">{{ year.vt1 }}</a></h2>
+    <h2><a href="{{ year.vt2.get_absolute_url }}">{{ year.vt2 }}</a></h2>
+    <h2><a href="{{ year.ht1.get_absolute_url }}">{{ year.ht1 }}</a></h2>
+    <h2><a href="{{ year.ht2.get_absolute_url }}">{{ year.ht2 }}</a></h2>
+{% endblock %}
