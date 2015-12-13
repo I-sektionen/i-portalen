@@ -49,6 +49,43 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         (OTHER, 'Annat / Icke-binär'),
         (UNSPECIFIED, 'Vill ej ange')
     )
+
+    YEAR1 = '1'
+    YEAR2 = '2'
+    YEAR3 = '3'
+    YEAR4 = '4'
+    YEAR5 = '5'
+    PAUSE = 'p'
+    STUDY_YEARS = (
+        (YEAR1, 'åk 1'),
+        (YEAR2, 'åk 2'),
+        (YEAR3, 'åk 3'),
+        (YEAR4, 'åk 4'),
+        (YEAR5, 'åk 5'),
+        (PAUSE, 'uppehåll')
+    )
+
+    A_CLASS = 'a'
+    B_CLASS = 'b'
+    C_CLASS = 'c'
+    D_CLASS = 'd'
+    E_CLASS = 'e'
+    F_CLASS = 'f'
+    IA_CLASS = 'x'
+    IB_CLASS = 'y'
+    UNSPECIFIED_CLASS = 'u'
+    CLASSES = (
+        (UNSPECIFIED_CLASS, 'ej angivet'),
+        (A_CLASS, 'a-klassen'),
+        (B_CLASS, 'b-klassen'),
+        (C_CLASS, 'c-klassen'),
+        (D_CLASS, 'd-klassen'),
+        (E_CLASS, 'e-klassen'),
+        (F_CLASS, 'f-klassen'),
+        (IA_CLASS, 'ia-klassen'),
+        (IB_CLASS, 'ib-klassen'),
+    )
+
     # basic fields
     username = models.CharField(verbose_name='LiU-ID', unique=True, max_length=8, validators=[liu_id_validator])
     email = models.EmailField(verbose_name='Email')
@@ -66,8 +103,18 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(verbose_name='kön', max_length=1, null=True, blank=False, choices=GENDER_OPTIONS)
     allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
     start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=timezone.now().year)
-    expected_exam_year = models.IntegerField(verbose_name='förväntat examensår', choices=YEAR_CHOICES,
-                                             default=timezone.now().year + 5)
+    current_year = models.CharField(verbose_name='nuvarande årskurs',
+                                    max_length=1,
+                                    choices=STUDY_YEARS,
+                                    default=YEAR1,
+                                    blank=False,
+                                    null=True)
+    klass = models.CharField(verbose_name="klass",
+                             max_length=1,
+                             choices=CLASSES,
+                             default=UNSPECIFIED_CLASS,
+                             blank=False,
+                             null=True)
     bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil',
                                          on_delete=models.SET_NULL)
     master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil',
