@@ -3,7 +3,7 @@
 {% endblock %}
 {% block content %}
     <div>
-    <a href="{% url "edit_organisation" organisation.name %}"><button type="button">Tillbaka</button></a>
+    <a href="{% url "organisations:edit" organisation.name %}"><button type="button">Tillbaka</button></a>
     <h1>Ändra medlemmar</h1>
         <p>Lägg till, ta bort samt uppdatera medlemmarna i {{ organisation.name }}. Användare är den person
             som avses. "Post" innebär den titel som ska visas bredvid användar namnet, ex "Ordföranden". Email
