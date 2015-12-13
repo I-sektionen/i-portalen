@@ -2,7 +2,7 @@ from django.test import TestCase
 from user_managements.models import IUser
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-from .models import Booking, BookingSlot, Bookable, PartialBooking
+from bookings.models import Booking, BookingSlot, Bookable, PartialBooking
 
 # Alla test använder time vilket är native python och inte django time, pallar inte lösa detta
 class EventTests(TestCase):
