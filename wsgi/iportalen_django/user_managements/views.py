@@ -338,14 +338,45 @@ def filter_users(request):
     if request.method == 'POST':
         form = SegmentUsersForm(request.POST)
         if form.is_valid():
-            #Gender:
+            query = Q()
+            # Gender:
             gender = form.cleaned_data['gender']
-            queries = [Q(gender=x) for x in gender]
-            query = queries.pop()
-            for item in queries:
-                query |= item
+            if gender:
+                queries = [Q(gender=x) for x in gender]
+                temp_query = queries.pop()
+                for item in queries:
+                    temp_query |= item
+                query &= temp_query
 
+            # Start year:
+            start_year = form.cleaned_data['start_year']
+            if start_year:
+                query &= Q(start_year__exact=start_year)
 
+            # End year:
+            end_year = form.cleaned_data['end_year']
+            if end_year:
+                query &= Q(end_year__exact=end_year)
+
+            # Bachelor:
+            bachelor_profile = form.cleaned_data['bachelor_profile']
+            if bachelor_profile:
+                queries = [Q(bachelor_profile=x) for x in bachelor_profile]
+                temp_query = queries.pop()
+                for item in queries:
+                    temp_query |= item
+                query &= temp_query
+
+            # Master:
+            master_profile = form.cleaned_data['master_profile']
+            if master_profile:
+                queries = [Q(master_profile=x) for x in master_profile]
+                temp_query = queries.pop()
+                for item in queries:
+                    temp_query |= item
+                query &= temp_query
+
+            # The final query:
             users = IUser.objects.filter(query)  # Search result
         else:
             users = None  # Not valid form
