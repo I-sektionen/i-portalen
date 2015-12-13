@@ -4,7 +4,7 @@ from django.views.generic import TemplateView, RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import create_content, approve_content, placeholder, display_news_feed
+from .views import create_content, approve_content, placeholder, display_news_feed, glasscubes_link
 
 from articles import urls as article_urls
 from user_managements import urls as user_urls
@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^placeholder/', view=placeholder, name="placeholder"),
     url(r'^student', RedirectView.as_view(pattern_name='front page', permanent=True)),  # Om någon har sparat /student som favorit skickar vi dem till startsidan
     url(r'^course_evaluation/', include(course_urls)),
+    url(r'^file_storage/', view=glasscubes_link, name="glasscubes_storage"),
 ]
 if not settings.ON_PASS:
     urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
