@@ -901,6 +901,17 @@ header.navigation li.more.nav-link a {
 header.navigation li.more.nav-link > a {
   padding-right: 0.6em;
 }
+@media screen and (min-width: 900px) {
+  header.navigation li.more.nav-link > a:after {
+    position: absolute;
+    top: auto;
+    right: -0.4em;
+    bottom: auto;
+    left: auto;
+    content: '\25BE';
+    color: #333;
+  }
+}
 header.navigation li.more {
   overflow: visible;
   padding-right: 0;

@@ -176,6 +176,15 @@ header.navigation {
       padding-right: 0.6em;
     }
 
+    > a:after {
+      @include media($horizontal-bar-mode) {
+        @include position(absolute, auto -0.4em auto auto);
+        content: '\25BE';
+        color: $navigation-color;
+      }
+    }
+
+
   }
 
   li.more {
@@ -219,16 +228,16 @@ header.navigation {
       border-radius: 3px;
       background: $white;
 
-     //TODO make hover more pleasant with arrow visible
-/*      .arrow-up {
-        position: absolute;
-        top: -10px;
-        width: 0;
-        height: 0;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-bottom: 8px solid $white;
-      }*/
+      //TODO make hover more pleasant with arrow visible
+      /*      .arrow-up {
+              position: absolute;
+              top: -10px;
+              width: 0;
+              height: 0;
+              border-left: 8px solid transparent;
+              border-right: 8px solid transparent;
+              border-bottom: 8px solid $white;
+            }*/
 
 
     }
@@ -315,10 +324,10 @@ header.navigation {
         @include media($horizontal-bar-mode) {
           color: $dark-gray;
           font-size: $user-nav-tools-link-size * 1.2;
-                  &:hover {
+          &:hover {
 
-          color: lighten($dark-gray, 30%);
-        }
+            color: lighten($dark-gray, 30%);
+          }
         }
       }
       li {
