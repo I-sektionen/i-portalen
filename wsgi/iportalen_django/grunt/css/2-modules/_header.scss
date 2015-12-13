@@ -1,3 +1,8 @@
+/*
+* This header is a modified version from Thoughtbots Refills
+* Written by Andreas Gustafsson 2015
+*/
+
 header.navigation {
   $base-border-color: gainsboro !default;
   $base-border-radius: $base-border-radius;
@@ -183,8 +188,6 @@ header.navigation {
         color: $navigation-color;
       }
     }
-
-
   }
 
   li.more {
@@ -204,8 +207,10 @@ header.navigation {
       }
     }
 
-    &:focus > .submenu,
-    &:hover > .submenu {
+    // show submenu on hover
+    &:focus,
+    &:hover .submenu {
+      opacity: 1;
       visibility: visible;
     }
 
@@ -215,37 +220,55 @@ header.navigation {
     }
   }
 
+  /*
+  * The submenu is the item showed on hover
+  */
   ul.submenu {
     padding-left: 1em;
+    $submenu-arrow-width: 8px;
+    $submenu-distance-from-item: 10em;
+    $submenu-arrow-distance-from-box: 0em;
 
     @include media($horizontal-bar-mode) {
-      visibility: hidden;
-      left: -$navigation-submenu-padding;
       position: absolute;
-
-      top: 1.5em;
-      @include display(flex);
+      @include transition (all 0.2s ease-in-out);
+      background: #fff;
+      border-radius: $base-border-radius;
+      font-size: 0.9em; // Make sure you use -webkit-backface-visibility: hidden; on the body element to prevent 1px nudging bugs.
+      line-height: 1.5em;
+      margin: 0 auto;
+      opacity: 0;
+      padding: 1em;
+      text-align: center;
+      visibility: hidden;
+      top: 4em;
+      z-index: 10;
+      left: -$navigation-submenu-padding;
       border-radius: 3px;
       background: $white;
+      display: flex;
 
-      //TODO make hover more pleasant with arrow visible
-      /*      .arrow-up {
-              position: absolute;
-              top: -10px;
-              width: 0;
-              height: 0;
-              border-left: 8px solid transparent;
-              border-right: 8px solid transparent;
-              border-bottom: 8px solid $white;
-            }*/
+      //This is the arrow at top of dropdown menu
 
+      &:after {
+      //@include position(absolute, null 0 null 0);
+      position: absolute;
+      top: -1.2em;
+      left: 0;
+      //this width indicates the distance from left corner. A higher percentage moves the arrow towards middle
+      width: 20%;
+      border: $submenu-arrow-width solid transparent;
+      bottom: $submenu-arrow-distance-from-box;
+      color: $white;
+      content: '▲';
+      font-size: 1.4em;
+      text-align: center;
+    }
 
     }
     .submenu-column {
       @include media($horizontal-bar-mode) {
-        min-width: $navigation-submenu-width;
         text-align: center;
-        padding-top: 1em;
       }
 
     }
@@ -276,7 +299,7 @@ header.navigation {
         font-weight: 400;
 
         @include media($horizontal-bar-mode) {
-          background-color: $navigation-background;
+          //background-color: $navigation-background;
           padding-left: $navigation-submenu-padding;
           text-align: center;
           width: $navigation-submenu-width;
