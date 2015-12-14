@@ -5,6 +5,7 @@
 
 {% block content %}
 <a href="{% url 'course_evaluations:edit period' period.pk %}"><button>Ändra</button></a>
+    <a href="{% url 'course_evaluations:evaluations' period.pk %}"><button>Utvärderingar</button></a>
     <button onclick="goBack()">Tillbaka</button>
     <table>
     <tr><td><strong>Name</strong></td><td>{{ period.name }}</td></tr>

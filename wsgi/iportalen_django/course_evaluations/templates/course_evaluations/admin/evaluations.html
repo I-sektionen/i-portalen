@@ -1,0 +1,20 @@
+{% extends "master.html" %}
+
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+
+    <a href="{% url 'course_evaluations:admin period' period.pk %}"><button>Tillbaka</button></a>
+    <h1>Utvärderingar {{ period }}</h1>
+    <table>
+    <tr><th>Kurs</th><th>Användare</th><th>Belöning</th><th>Utvärderad</th><th>Tabort</th></tr>
+    {% for eval in period.evaluation_set.all %}
+        <tr><td>{{ eval.course }}</td><td>{{ eval.user }}</td><td>{{ eval.reward }}</td><td>{{ eval.evaluated }}</td><td></td></tr>
+    {% endfor %}
+    {% for course in period.get_free_courses %}
+        <tr><td>{{ course }}</td><td></td><td></td><td></td><td></td></tr>
+    {% endfor %}
+    </table>
+
+{% endblock %}
