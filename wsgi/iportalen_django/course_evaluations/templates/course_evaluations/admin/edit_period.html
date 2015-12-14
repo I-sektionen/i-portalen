@@ -15,7 +15,7 @@
 
         <div id="article-create-form-buttons">
             <button type="submit">Spara ändringar</button>
-            <button onclick="goBack()">Tillbaka</button>
+            <a href="{% url 'course_evaluations:admin period' period.pk %}"><button type="button">Tillbaka</button></a>
         </div>
     </form>
 {% endblock %}

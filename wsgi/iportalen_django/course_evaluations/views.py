@@ -5,7 +5,7 @@ from django.db import transaction
 from django.forms import modelformset_factory, formset_factory
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from course_evaluations.forms import EvaluationForm, PeriodForm, YearForm, CourseForm
+from course_evaluations.forms import EvaluationForm, PeriodForm, YearForm, CourseForm, RewardForm
 from .models import Period, Course, Evaluation, Reward, Year
 
 
@@ -61,7 +61,27 @@ def admin_year(request, year):
 @permission_required('courses.change_course')
 @permission_required('courses.delete_course')
 def create_or_modify_rewards(request):
-    return render(request, "course_evaluations/admin/year.html")
+    rewards = Reward.objects.all()
+    RewardFormSet = modelformset_factory(Reward, fields="__all__", max_num=1000, extra=5, can_delete=False)
+
+    if request.method == 'POST':
+        formset = RewardFormSet(request.POST)
+        if formset.is_valid():
+            for entry in formset.cleaned_data:
+                if not entry == {}:
+                    if entry['id']:
+                        entry['id'].active = entry["active"]
+                        entry['id'].save()
+                    else:
+                        Reward.objects.create(name=entry['name'], active=entry['active'])
+            formset = RewardFormSet()
+            return render(request, "course_evaluations/admin/add_rewards.html", {"formset": formset, "rewards": rewards})
+        else:
+            return render(request, "course_evaluations/admin/add_rewards.html", {"formset": formset, "rewards": rewards})
+
+    formset = RewardFormSet()
+    return render(request, "course_evaluations/admin/add_rewards.html", {"formset": formset, "rewards": rewards})
+
 
 
 @login_required
@@ -142,7 +162,12 @@ def edit_period(request, pk):
         if form.is_valid():
             form.save()
 
-    return render(request, "course_evaluations/admin/edit_period.html", {"form": form})
+    return render(request, "course_evaluations/admin/edit_period.html", {'period': period, "form": form})
+
+
+def evaluations(request, pk):
+    period = Period.objects.get(pk=pk)
+    return render(request, "course_evaluations/admin/evaluations.html", {"period": period})
 
 @login_required
 @transaction.atomic

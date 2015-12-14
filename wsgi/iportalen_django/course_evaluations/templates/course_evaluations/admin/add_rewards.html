@@ -1,0 +1,45 @@
+{% extends "master.html" %}
+
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+<h1>Belönigar</h1>
+    <ul>
+        {% for reward in rewards %}
+            <li>{% if reward.active %}<strong>{{ reward }}</strong>{% else %}{{ reward }}{% endif %}</li>
+        {% empty %}
+            <li>Det finns inga belöningar</li>
+        {% endfor %}
+    </ul>
+    <br>
+    <p>Namnfältet går ej att redigera så om en belöning skall ändras måste man kryssa ur Aktiv och skapa en ny.</p>
+    <form method="post" action="">
+    <table id="form-table">
+        <tr>
+            <th>Namn</th><th>Aktiv</th>
+        </tr>
+    {{ formset.management_form }}
+    {% for form in formset %}
+        {% csrf_token %}
+        <tr>
+            <td>{{ form.name }}{{ form.name.errors }}</td>
+            <td>{{ form.active }}{{ form.active.errors }}</td>
+        </tr>
+        {{ form.id }}
+    {% endfor %}
+    </table>
+    <button type="button" id="add_more">Lägg till fler fält</button>
+
+<button type="submit">Spara ändringar</button>
+    <button onclick="goBack()">Tillbaka</button>
+</form>
+
+{% endblock %}
+{% block after_scripts %}
+<script>
+    $('#add_more').click(function() {
+        cloneMore('#form-table tr:last', 'form');
+    });
+</script>
+{% endblock %}

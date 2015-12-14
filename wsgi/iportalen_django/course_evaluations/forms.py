@@ -15,6 +15,7 @@ class PeriodForm(forms.ModelForm):
         widgets = {
             'courses': forms.CheckboxSelectMultiple,
         }
+
     def __init__(self, *args, **kwargs):
         super(PeriodForm, self).__init__(*args, **kwargs)
         self.fields['start_date'].widget.attrs['class'] = 'datepicker'
@@ -69,6 +70,7 @@ class EvaluationForm(forms.ModelForm):
     def __init__(self, *args, period, **kwargs):
         super(EvaluationForm, self).__init__(*args, **kwargs)
         self.fields['course'].choices = [(None, "---------")] + [(a.pk, str(a)) for a in period.get_free_courses()]
+        self.fields['reward'].choices = [(None, "---------")] + [(a.pk, str(a)) for a in Reward.objects.filter(active=True)]
 
 
 class CourseForm(forms.ModelForm):

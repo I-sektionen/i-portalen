@@ -1,8 +1,12 @@
+from itertools import chain
+
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
 from user_managements.models import IUser
 from django.utils import timezone
+
+PERIOD_CHOICES = [('VT1', 'VT1'), ('VT2', 'VT2'), ('HT1', 'HT1'), ('HT2', 'HT2')]
 
 
 class Year(models.Model):
@@ -40,8 +44,8 @@ class Course(models.Model):
 
 
 class Reward(models.Model):
-    name = models.CharField(verbose_name='belöning', max_length=255)
-
+    name = models.CharField(verbose_name='namn', max_length=255, unique=True)
+    active = models.BooleanField(verbose_name='aktiv', default=True)
     class Meta:
         verbose_name = 'belöning'
         verbose_name_plural = 'belöningar'
@@ -53,7 +57,7 @@ class Reward(models.Model):
 class Period(models.Model):
     start_date = models.DateField(verbose_name="startdatum", help_text="startdatum för perioden")
     end_date = models.DateField(verbose_name="slutdatum", help_text="slutdatum för perioden")
-    name = models.CharField(verbose_name="namn", help_text="Ex, 2016 VT1", max_length=255)
+    name = models.CharField(verbose_name="namn", help_text="Ex, VT1", choices=PERIOD_CHOICES, max_length=255)
     courses = models.ManyToManyField(Course, verbose_name="kurser", help_text="kurser att utvärdera")
 
     class Meta:
@@ -88,6 +92,12 @@ class Period(models.Model):
 
     def get_free_courses(self):
         ev_set = self.evaluation_set.all()
+        # Om en kurs går över 2 perioder ska den bara gå att anmäla sig till i en av dem.
+        if self.name == "HT2":
+            ev_set = list(chain(ev_set, self.ht2.all()[0].ht1.evaluation_set.all()))
+        if self.name == "VT2":
+            ev_set = list(chain(ev_set, self.vt2.all()[0].vt1.evaluation_set.all()))
+
         taken = set()
         for t in ev_set:
             taken.add(t.course)
