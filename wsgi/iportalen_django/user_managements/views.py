@@ -3,9 +3,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import ChangeUserInfoForm, AddWhiteListForm, MembershipForm
-from .models import IUser
+from .models import IUser, IpikureSubscriber
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.utils import timezone
 from utils.text import random_string_generator
 from django.contrib.auth.views import (
     password_reset_confirm,
@@ -327,3 +328,25 @@ def update_list_of_users_from_kobra(request):
     else:
         form = AddWhiteListForm()
     return render(request, "user_managements/add_whitelist.html", {'form': form})
+
+@login_required()
+def subscribe_to_ipikure(request):
+    # return password_reset_done(request, template_name='user_managements/reset/pw_res_done.html')
+    try:
+        subscriber = IpikureSubscriber.objects.get(user=request.user)
+        subscriber.date_subscribed = timezone.now()
+        messages.info(request, "Du prenumererar redan på Ipikuré")
+    except IpikureSubscriber.DoesNotExist:
+        IpikureSubscriber.objects.create(user=request.user)
+        messages.info(request, "Du prenumererar nu på Ipikuré")
+    #FIXA SÅ ATT EN ADMIN KAN HITTA LISTA MED ADRESSER PÅ ALLA PRENUMERANTER, kolla om inloggad prenumererat senaste året
+    #och visa knapp därefter om inte prenumererat
+
+    return render(request, "user_managements/subscribe_to_ipikure.html")
+
+@login_required()
+def ipikure_subscribers(request):
+    subscribers = IpikureSubscriber.objects.all().order_by('user__username')
+
+    return render(request, "user_managements/ipikure_subscribers.html",
+                          {'subscribers_list': subscribers})
