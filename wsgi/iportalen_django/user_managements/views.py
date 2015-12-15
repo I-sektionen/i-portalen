@@ -353,11 +353,6 @@ def filter_users(request):
             if start_year:
                 query &= Q(start_year__exact=start_year)
 
-            # End year:
-            end_year = form.cleaned_data['end_year']
-            if end_year:
-                query &= Q(end_year__exact=end_year)
-
             # Bachelor:
             bachelor_profile = form.cleaned_data['bachelor_profile']
             if bachelor_profile:
@@ -375,6 +370,26 @@ def filter_users(request):
                 for item in queries:
                     temp_query |= item
                 query &= temp_query
+
+            # current year:
+            current_year = form.cleaned_data['current_year']
+            if current_year:
+                queries = [Q(current_year=x) for x in current_year]
+                temp_query = queries.pop()
+                for item in queries:
+                    temp_query |= item
+                query &= temp_query
+
+            # class letter:
+            klass = form.cleaned_data['klass']
+            if klass:
+                queries = [Q(klass=x) for x in klass]
+                temp_query = queries.pop()
+                for item in queries:
+                    temp_query |= item
+                query &= temp_query
+
+
 
             # The final query:
             users = IUser.objects.filter(query)  # Search result

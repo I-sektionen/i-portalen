@@ -9,22 +9,39 @@
         {{ form }}
     <button type="submit">Sök</button>
     </form>
+    <div class="search-result">
+
     {% if users %}
         <table>
         <thead>
             <tr>
-                <th>Förnamn</th><th>Efternamn</th><th>Mailadress</th>
+                <th>Förnamn </th><th>Efternamn </th><th>liu-id </th>
             </tr>
         </thead>
         <tbody>
             {% for user in users %}
                 <tr>
-                    <td>{{ user.first_name|title }}</td><td>{{ user.last_name|title }}</td><td>{{ user.email }}</td>
+                    <td>{{ user.first_name|title }}</td><td>{{ user.last_name|title }}</td><td>{{ user.username}}</td>
                 </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        <table class="mail">
+            <thead>
+            <tr>
+                <th>Mailadress</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+            </tr>
             {% endfor %}
         </tbody>
         </table>
     {% else %}
         <h3>Du har inga träffar i den sökning.</h3>
     {% endif %}
+    </div>
 {% endblock %}

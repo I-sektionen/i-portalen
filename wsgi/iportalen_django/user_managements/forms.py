@@ -62,7 +62,7 @@ class CustomUserChangeForm(UserChangeForm):
 class ChangeUserInfoForm(forms.ModelForm):
     class Meta:
         model = IUser
-        fields = ('address', 'zip_code', 'city', 'gender', 'allergies', 'start_year', 'expected_exam_year')
+        fields = ('address', 'zip_code', 'city', 'gender', 'allergies', 'start_year')
 
 
 class AddWhiteListForm(forms.Form):
@@ -99,7 +99,11 @@ class SegmentUsersForm(forms.Form):
     start_year = forms.IntegerField(min_value=1969,
                                     max_value=2500,
                                     required=False)
-    end_year = forms.IntegerField(min_value=1974,
-                                  max_value=2500,
-                                  required=False)
+    current_year = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                             choices=IUser.STUDY_YEARS,
+                                             required=False)
+
+    klass = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                      choices=IUser.CLASSES,
+                                      required=False)
 
