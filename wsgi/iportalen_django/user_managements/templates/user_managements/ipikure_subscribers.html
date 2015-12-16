@@ -1,0 +1,29 @@
+{% extends "master.html" %}
+
+{% block content %}
+    <h1>Ipikuréprenumeranter</h1>
+    <table class="tables">
+        <thead>
+            <tr>
+                <th>Liu-ID</th>
+                <th>Namn</th>
+                <th>Adress</th>
+                <th>Postnummer</th>
+                <th>Ort</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subscriber in subscribers_list %}
+                <tr>
+                    <td>{{ subscriber.user.username }}</td>
+                    <td>{{ subscriber.user.first_name }} {{ subscriber.user.last_name }}</td>
+                    <td>{{ subscriber.user.address }}</td>
+                    <td>{{ subscriber.user.zip_code }}</td>
+                    <td>{{ subscriber.user.city }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}
