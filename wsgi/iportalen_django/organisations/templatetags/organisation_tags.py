@@ -19,15 +19,9 @@ def get_menu_organisations():
     organisations = {
         "sektionen": list(Organisation.objects.filter(
             organisation_type=Organisation.SEKTIONEN,
-            parent_organisation=None
-        ).order_by('name')),
-        "utskott": list(Organisation.objects.filter(
-            organisation_type=Organisation.UTSKOTT,
-            parent_organisation=None
         ).order_by('name')),
         "foreningar": list(Organisation.objects.filter(
             organisation_type=Organisation.FORENINGAR,
-            parent_organisation=None
         ).order_by('name')),
     }
     return organisations

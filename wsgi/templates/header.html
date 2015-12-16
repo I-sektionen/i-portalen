@@ -17,27 +17,25 @@
                         <div class="submenu-column">
                             {% for o in menu_orgs.sektionen %}
                                 <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
-                            {% endfor %}
-                        </div>
-                        <div class="submenu-column">
-                            {% for o in menu_orgs.utskott %}
-                                <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
+                                {% cycle 'False' 'False' 'False' 'False' 'True' as new_col silent %}
+                                {% if new_col == 'True' %}
+                                </div>
+                                <div class="submenu-column">
+                                {% endif %}
                             {% endfor %}
                         </div>
                     </ul>
                         <li class="nav-link more"><a href="">Föreningar</a>
                             <ul class="submenu">
                                 <div class="submenu-column">
-                                    <li><a href="">Iris</a></li>
-                                    <li><a href="">IQual</a></li>
-                                    <li><a href="">Integrera</a></li>
-                                    <li><a href="">IQ</a></li>
-                                </div>
-                                <div class="submenu-column">
-                                    <li><a href="">Clubmästeriet</a></li>
-                                    <li><a href="">PubIs</a></li>
-                                    <li><a href="">ESTEIM</a></li>
-                                    <li><a href="">Klassföräldrarna</a></li>
+                                    {% for o in menu_orgs.foreningar %}
+                                        <li><a href="{{ o.get_absolute_url }}">{{ o|title }}</a></li>
+                                        {% cycle 'False' 'False' 'False' 'False' 'True' as new_col silent %}
+                                        {% if new_col == 'True' %}
+                                        </div>
+                                        <div class="submenu-column">
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
                             </ul>
                         </li>
