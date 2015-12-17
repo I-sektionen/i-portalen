@@ -9,6 +9,8 @@
     {{ form }}
     <div id="article-create-form-buttons">
         <button type="submit">Skapa år</button>
+        <a href="{% url "course_evaluations:choose year" %}"><button type="button">Tillbaka</button></a>
+
     </div>
 </form>
 {% endblock %}
