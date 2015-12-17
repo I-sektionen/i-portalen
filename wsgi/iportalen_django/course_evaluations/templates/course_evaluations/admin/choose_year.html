@@ -9,6 +9,7 @@
     <li><a href="{{ year.get_absolute_url }}">{{ year }}</a></li>
     {% endfor %}
     </ul>
-    <a href="{% url 'course_evaluations:create year' %}">Lägg till ett år</a>
+    <a href="{% url 'course_evaluations:create year' %}"><button type="button">Lägg till ett år</button></a>
+    <a href="{% url 'course_evaluations:copy year' %}"><button type="button">Kopiera senaste året</button></a>
     <a href="{% url 'course_evaluations:admin' %}"><button type="button">Tillbaka</button></a>
 {% endblock %}

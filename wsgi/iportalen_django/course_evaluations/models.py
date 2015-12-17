@@ -5,9 +5,24 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from user_managements.models import IUser
 from django.utils import timezone
-from .managers import PeriodManager, YearManager
+from .managers import YearManager
+from django.db import transaction
+from organisations.models import Organisation
 
 PERIOD_CHOICES = [('VT1', 'VT1'), ('VT2', 'VT2'), ('HT1', 'HT1'), ('HT2', 'HT2')]
+
+
+class CourseEvaluationSettings(models.Model):
+    organisation = models.ForeignKey(Organisation, null=True, blank=False, on_delete=models.SET_NULL)
+    evaluate_course_text = models.TextField(null=True, blank=False)
+    mail_to_evaluator = models.TextField(null=True, blank=False)
+    mail_to_organisation = models.TextField(null=True, blank=False)
+    mail_addresses_to_organisation = models.TextField(null=True, blank=False)
+    contact_email = models.EmailField(null=True, blank=False)
+
+    def save(self, *args, **kwargs):
+        self.id = 1
+        super(CourseEvaluationSettings, self).save(*args, **kwargs)
 
 
 class Year(models.Model):
@@ -20,7 +35,8 @@ class Year(models.Model):
     vt2 = models.ForeignKey("Period", verbose_name="VT2", related_name="vt2")
     ht1 = models.ForeignKey("Period", verbose_name="HT1", related_name="ht1")
     ht2 = models.ForeignKey("Period", verbose_name="HT2", related_name="ht2")
-    objects = YearManager
+    objects = YearManager()
+    
     class Meta:
         verbose_name = 'år'
         verbose_name_plural = 'år'
@@ -30,6 +46,32 @@ class Year(models.Model):
 
     def get_absolute_url(self):
         return reverse('course_evaluations:admin year', kwargs={'year': self.year})
+
+    @transaction.atomic
+    def add_periods(self, vt1_start, vt2_start, vt2_end, ht1_start, ht2_start, ht2_end):
+        ht1 = Period(start_date=ht1_start,
+                     end_date=ht2_start-timezone.timedelta(days=1),
+                     name="HT1")
+
+        ht2 = Period(start_date=ht2_start,
+                     end_date=ht2_end,
+                     name="HT2")
+
+        vt2 = Period(start_date=vt2_start,
+                     end_date=vt2_end,
+                     name="VT2")
+        vt1 = Period(start_date=vt1_start,
+                     end_date=vt2_start-timezone.timedelta(days=1),
+                     name="VT1")
+        vt1.save()
+        vt2.save()
+        ht1.save()
+        ht2.save()
+        self.vt1_id = vt1.pk
+        self.vt2_id = vt2.pk
+        self.ht1_id = ht1.pk
+        self.ht2_id = ht2.pk
+        self.save()
 
 
 class Course(models.Model):
@@ -60,7 +102,7 @@ class Period(models.Model):
     end_date = models.DateField(verbose_name="slutdatum", help_text="slutdatum för perioden")
     name = models.CharField(verbose_name="namn", help_text="Ex, VT1", choices=PERIOD_CHOICES, max_length=255)
     courses = models.ManyToManyField(Course, verbose_name="kurser", help_text="kurser att utvärdera")
-    objects = PeriodManager
+
     class Meta:
         verbose_name = 'läsperiod'
         verbose_name_plural = 'läsperioder'
@@ -93,11 +135,11 @@ class Period(models.Model):
         if self.pk:
             periods = periods.exclude(pk=self.pk)
         for period in periods:
-            if self.start_date < period.start_date:  # Före
-                if self.end_date > period.end_date:
+            if self.start_date <= period.start_date:  # Före
+                if self.end_date >= period.end_date:
                     raise ValidationError('The periods are end- and start times are invalid. They are overlapping. before')
             else:  # Efter
-                if self.start_date < period.end_date:
+                if self.start_date <= period.end_date:
                     raise ValidationError("The periods are end- and start times are invalid. They are overlapping. after")
 
     def save(self, *args, **kwargs):
