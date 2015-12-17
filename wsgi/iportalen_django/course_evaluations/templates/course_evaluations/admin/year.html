@@ -10,4 +10,47 @@
     <h2><a href="{{ year.ht1.get_absolute_url }}">{{ year.ht1 }}</a></h2>
     <h2><a href="{{ year.ht2.get_absolute_url }}">{{ year.ht2 }}</a></h2>
     <a href="{% url "course_evaluations:choose year" %}"><button>Tillbaka</button></a>
+
+    <form action="" method="post">
+    {% csrf_token %}
+        <table id="courses-in-periods">
+            <tr><th>Kurs</th><th>VT1</th><th>VT2</th><th>HT1</th><th>HT2</th></tr>
+            {% for c in courses %}
+                <tr>
+                    <td>{{ c }}</td>
+                    <td>
+                        <label for="id_courses_vt1_{{ c.pk }}">
+                            <input {% if c in year.vt1.courses.all %}checked="checked"{% endif %}
+                                   id="id_courses_vt1_{{ c.pk }}"
+                                   name="courses_vt1"
+                                   type="checkbox"
+                                   value="{{ c.pk }}">
+                        </label>
+                    </td>
+                    <td><label for="id_courses_vt2_{{ c.pk }}">
+                            <input {% if c in year.vt2.courses.all %}checked="checked"{% endif %}
+                                   id="id_courses_vt2_{{ c.pk }}"
+                                   name="courses_vt2"
+                                   type="checkbox"
+                                   value="{{ c.pk }}">
+                        </label></td>
+                    <td><label for="id_courses_ht1_{{ c.pk }}">
+                            <input {% if c in year.ht1.courses.all %}checked="checked"{% endif %}
+                                   id="id_courses_ht1_{{ c.pk }}"
+                                   name="courses_ht1"
+                                   type="checkbox"
+                                   value="{{ c.pk }}">
+                        </label></td>
+                    <td><label for="id_courses_ht2_{{ c.pk }}">
+                            <input {% if c in year.ht2.courses.all %}checked="checked"{% endif %}
+                                   id="id_courses_ht2_{{ c.pk }}"
+                                   name="courses_ht2"
+                                   type="checkbox"
+                                   value="{{ c.pk }}">
+                        </label></td>
+                </tr>
+            {% endfor %}
+        </table>
+    <button type="submit">Spara ändringar</button>
+    </form>
 {% endblock %}
