@@ -70,6 +70,19 @@ class Period(models.Model):
     def get_absolute_url(self):
         return reverse('course_evaluations:admin period', kwargs={'pk': self.pk})
 
+    @property
+    def get_year(self):
+        year = None
+        if self.ht1.all():
+            year = self.ht1.all()
+        elif self.ht2.all():
+            year = self.ht2.all()
+        elif self.vt1.all():
+            year = self.vt1.all()
+        elif self.vt2.all():
+            year = self.vt2.all()
+        return year[0]
+
     def clean(self):
         super(Period, self).clean()
         if self.start_date > self.end_date:

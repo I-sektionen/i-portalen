@@ -30,7 +30,7 @@
     <button type="button" id="add_more">Lägg till fler fält</button>
 
 <button type="submit">Spara kurser</button>
-    <button onclick="goBack()">Tillbaka</button>
+    <a href="{% url 'course_evaluations:admin' %}"><button type="button">Tillbaka</button></a>
 </form>
 
 {% endblock %}
