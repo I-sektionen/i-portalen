@@ -104,7 +104,7 @@ class Event(models.Model):
         default=None,
         verbose_name='arrangör',
         help_text="Organisation(er) som arrangerar evenemanget. Medlemmar i dessa kan senare ändra eventet.")
-
+    sponsored = models.BooleanField(verbose_name='Sponsrat innehåll?', default=False)
     ###########################################################################
     # Meta data for model
     ###########################################################################
