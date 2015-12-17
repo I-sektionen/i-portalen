@@ -54,7 +54,14 @@ def admin(request):
 @permission_required('courses.delete_course')
 def admin_year(request, year):
     year = Year.objects.get(year=year)
-    return render(request, "course_evaluations/admin/year.html", {"year": year})
+    courses = Course.objects.all()
+    if request.method == 'POST':
+        year.vt1.update_courses_from_list(request.POST.getlist('courses_vt1'))
+        year.vt2.update_courses_from_list(request.POST.getlist('courses_vt2'))
+        year.ht1.update_courses_from_list(request.POST.getlist('courses_ht1'))
+        year.ht2.update_courses_from_list(request.POST.getlist('courses_ht2'))
+
+    return render(request, "course_evaluations/admin/year.html", {"year": year, "courses": courses})
 
 @login_required
 @permission_required('courses.add_course')

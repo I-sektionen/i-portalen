@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from user_managements.models import IUser
 from django.utils import timezone
+from .managers import PeriodManager, YearManager
 
 PERIOD_CHOICES = [('VT1', 'VT1'), ('VT2', 'VT2'), ('HT1', 'HT1'), ('HT2', 'HT2')]
 
@@ -15,11 +16,11 @@ class Year(models.Model):
         YEAR_CHOICES.append((r,r))
     year = models.IntegerField(verbose_name="år", unique=True, choices=YEAR_CHOICES,
                                default=timezone.now().year)
-    vt1 = models.ForeignKey("Period", verbose_name="VT1", related_name="vt1")
+    vt1 = models.ForeignKey("Period", verbose_name="VT1", related_name="vt1", )
     vt2 = models.ForeignKey("Period", verbose_name="VT2", related_name="vt2")
     ht1 = models.ForeignKey("Period", verbose_name="HT1", related_name="ht1")
     ht2 = models.ForeignKey("Period", verbose_name="HT2", related_name="ht2")
-
+    objects = YearManager
     class Meta:
         verbose_name = 'år'
         verbose_name_plural = 'år'
@@ -59,7 +60,7 @@ class Period(models.Model):
     end_date = models.DateField(verbose_name="slutdatum", help_text="slutdatum för perioden")
     name = models.CharField(verbose_name="namn", help_text="Ex, VT1", choices=PERIOD_CHOICES, max_length=255)
     courses = models.ManyToManyField(Course, verbose_name="kurser", help_text="kurser att utvärdera")
-
+    objects = PeriodManager
     class Meta:
         verbose_name = 'läsperiod'
         verbose_name_plural = 'läsperioder'
@@ -115,6 +116,19 @@ class Period(models.Model):
         for t in ev_set:
             taken.add(t.course)
         return set(self.courses.all()).difference(taken)
+
+    def update_courses_from_list(self, course_list):
+        original = self.courses.values_list('pk')
+        for a in course_list:
+            if (int(a),) in original:
+                pass
+            else:
+                self.courses.add(Course.objects.get(pk=a))
+        for a in original:
+            if str(a[0]) in course_list:
+                pass
+            else:
+                self.courses.remove(Course.objects.get(pk=str(a[0])))
 
 
 class Evaluation(models.Model):
