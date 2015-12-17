@@ -1,16 +1,21 @@
 from django.contrib import messages
-from  django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.forms import modelformset_factory, formset_factory
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from course_evaluations.forms import EvaluationForm, PeriodForm, YearForm, CourseForm, RewardForm
-from .models import Period, Course, Evaluation, Reward, Year
+from .models import Period, Course, Evaluation, Reward, Year, CourseEvaluationSettings
 
 
 @login_required
 def evaluate_course(request):
+    settings = CourseEvaluationSettings.objects.all()
+    if settings.exists():
+        settings = settings[0]
+    else:
+        settings = None
     try:
         p = Period.objects.get(start_date__lte=timezone.now(), end_date__gte=timezone.now())
     except Period.DoesNotExist:
@@ -36,8 +41,9 @@ def evaluate_course(request):
                 return render(request, "course_evaluations/evaluate_course.html", {"form": form})
             evaluation.save()
             form = EvaluationForm(None, period=p)
-
-    return render(request, "course_evaluations/evaluate_course.html", {"form": form, "rewards": rewards, "period": p, "user_evaluations": user_eval})
+    leader = "Lovisa Annerwall"  # TODO: get this from organisation
+    return render(request, "course_evaluations/evaluate_course.html", {
+        "form": form, "rewards": rewards, "period": p, "user_evaluations": user_eval, "settings": settings})
 
 
 @login_required
@@ -90,7 +96,6 @@ def create_or_modify_rewards(request):
     return render(request, "course_evaluations/admin/add_rewards.html", {"formset": formset, "rewards": rewards})
 
 
-
 @login_required
 @permission_required('courses.add_course')
 @permission_required('courses.change_course')
@@ -98,6 +103,17 @@ def create_or_modify_rewards(request):
 def choose_year(request):
     years = Year.objects.all()
     return render(request, "course_evaluations/admin/choose_year.html", {"years": years})
+
+
+@login_required
+@transaction.atomic
+@permission_required('courses.add_course')
+@permission_required('courses.change_course')
+@permission_required('courses.delete_course')
+def copy_last_year(request):
+    year = Year.objects.copy_last_year()
+    year.save()
+    return redirect(year)
 
 
 @login_required
