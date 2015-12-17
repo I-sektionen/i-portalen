@@ -87,6 +87,7 @@ class Article(models.Model):
         blank=False,
         verbose_name='organisationer',
         help_text="Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln.")
+    sponsored = models.BooleanField(verbose_name='Sponsrat innehåll?', default=False)
     objects = ArticleManager()  # Manager
 
     ###########################################################################
