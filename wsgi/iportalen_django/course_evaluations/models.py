@@ -28,7 +28,7 @@ class CourseEvaluationSettings(models.Model):
                                                        "{year} = Året, "
                                                        "{course} = Kursens kod och namn, "
                                                        "{reward} = Den valda belöningen")
-    mail_addresses_to_organisation = models.TextField(null=True, blank=False, help_text="En adress per rad.)
+    mail_addresses_to_organisation = models.TextField(null=True, blank=False, help_text="En adress per rad.")
     contact_email = models.EmailField(null=True, blank=False)
 
     def save(self, *args, **kwargs):
