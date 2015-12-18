@@ -12,10 +12,12 @@
             {% csrf_token %}
             {{ form.non_field_errors }}
 
-
             {{ form.description.errors }}
             {{ form.description.label_tag }}
-            {{ form.description }}
+            <div class="wmd-panel">
+                <div id="wmd-button-bar-body"></div>
+                {{ form.description }}
+            </div>
             {{ form.description.help_text }}
             <br>
             <br>
@@ -48,3 +50,8 @@
 
 {% endblock %}
 
+{% block after_scripts %}
+    <script>
+        markdown_organisation_preview()
+    </script>
+{% endblock %}
