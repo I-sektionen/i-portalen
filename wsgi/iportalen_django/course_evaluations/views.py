@@ -216,7 +216,7 @@ def evaluations(request, pk):
         for r in remove:
             period.evaluation_set.get(pk=r).delete()
         for e in period.evaluation_set.all():
-            if "{id}".format(id=e.pk) in evaluated:
+            if str(e.pk) in evaluated:
                 e.evaluated = True
                 e.save()
             else:
