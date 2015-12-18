@@ -7,14 +7,36 @@
 
     <a href="{% url 'course_evaluations:admin period' period.pk %}"><button>Tillbaka</button></a>
     <h1>Utvärderingar {{ period }}</h1>
-    <table>
-    <tr><th>Kurs</th><th>Användare</th><th>Belöning</th><th>Utvärderad</th><th>Tabort</th></tr>
-    {% for eval in period.evaluation_set.all %}
-        <tr><td>{{ eval.course }}</td><td>{{ eval.user }}</td><td>{{ eval.reward }}</td><td>{{ eval.evaluated }}</td><td></td></tr>
-    {% endfor %}
-    {% for course in period.get_free_courses %}
-        <tr><td>{{ course }}</td><td>-</td><td>-</td><td>-</td><td></td></tr>
-    {% endfor %}
-    </table>
-
+    <form action="" method="post">
+    {% csrf_token %}
+        <table>
+        <tr><th>Kurs</th><th>Användare</th><th>Belöning</th><th>Utvärderad</th><th>Ta bort</th></tr>
+        {% for eval in period.evaluation_set.all %}
+            <tr><td>{{ eval.course }}</td><td>{{ eval.user }}</td><td>{{ eval.reward }}</td>
+                <td>
+                    <label for="evaluated_{{ eval.pk }}">
+                        <input {% if eval.evaluated %}checked="checked"{% endif %}
+                               id="evaluated_{{ eval.pk }}"
+                               name="evaluated"
+                               type="checkbox"
+                               value="{{ eval.pk }}">
+                    </label>
+                </td>
+                <td>
+                    <label for="remove_{{ eval.pk }}">
+                        <input
+                               id="remove_{{ eval.pk }}"
+                               name="remove"
+                               type="checkbox"
+                               value="{{ eval.pk }}">
+                    </label>
+                </td>
+            </tr>
+        {% endfor %}
+        {% for course in period.get_free_courses %}
+            <tr><td>{{ course }}</td><td>-</td><td>-</td><td>-</td><td></td></tr>
+        {% endfor %}
+        </table>
+    <button type="submit">Spara ändringar</button>
+    </form>
 {% endblock %}

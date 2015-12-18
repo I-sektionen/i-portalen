@@ -210,7 +210,21 @@ def edit_period(request, pk):
 
 def evaluations(request, pk):
     period = Period.objects.get(pk=pk)
+    if request.POST:
+        remove = request.POST.getlist('remove')
+        evaluated = request.POST.getlist('evaluated')
+        for r in remove:
+            period.evaluation_set.get(pk=r).delete()
+        for e in period.evaluation_set.all():
+            if "{id}".format(id=e.pk) in evaluated:
+                e.evaluated = True
+                e.save()
+            else:
+                e.evaluated = False
+                e.save()
+
     return render(request, "course_evaluations/admin/evaluations.html", {"period": period})
+
 
 @login_required
 @transaction.atomic
