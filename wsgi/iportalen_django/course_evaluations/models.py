@@ -15,9 +15,20 @@ PERIOD_CHOICES = [('VT1', 'VT1'), ('VT2', 'VT2'), ('HT1', 'HT1'), ('HT2', 'HT2')
 class CourseEvaluationSettings(models.Model):
     organisation = models.ForeignKey(Organisation, null=True, blank=False, on_delete=models.SET_NULL)
     evaluate_course_text = models.TextField(null=True, blank=False)
-    mail_to_evaluator = models.TextField(null=True, blank=False)
-    mail_to_organisation = models.TextField(null=True, blank=False)
-    mail_addresses_to_organisation = models.TextField(null=True, blank=False)
+    mail_to_evaluator = models.TextField(null=True, blank=False, help_text="Följande variabler finns att tillgå: "
+                                                                           "{user} = Registrerade användarens förnamn, "
+                                                                           "{period} = namnet på perioden, "
+                                                                           "{year} = Året, "
+                                                                           "{course} = Kursens kod och namn")
+    mail_to_organisation = models.TextField(null=True, blank=False,
+                                            help_text="Följande variabler finns att tillgå: "
+                                                       "{user} = Registrerade användarens fullständiga namn, "
+                                                       "{user_email} = Registrerade användarens epost, "
+                                                       "{period} = namnet på perioden, "
+                                                       "{year} = Året, "
+                                                       "{course} = Kursens kod och namn, "
+                                                       "{reward} = Den valda belöningen")
+    mail_addresses_to_organisation = models.TextField(null=True, blank=False, help_text="En adress per rad.)
     contact_email = models.EmailField(null=True, blank=False)
 
     def save(self, *args, **kwargs):
