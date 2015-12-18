@@ -7,7 +7,8 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from course_evaluations.forms import EvaluationForm, PeriodForm, YearForm, CourseForm, RewardForm
 from .models import Period, Course, Evaluation, Reward, Year, CourseEvaluationSettings
-
+from utils.markdown import markdown_to_html
+from django.conf import settings as django_settings
 
 @login_required
 def evaluate_course(request):
@@ -40,8 +41,26 @@ def evaluate_course(request):
                 form = EvaluationForm(None, period=p)
                 return render(request, "course_evaluations/evaluate_course.html", {"form": form})
             evaluation.save()
+            subject = "Viktig information till dig som är utvärderingsansvarig!!"
+            body = markdown_to_html(settings.mail_to_evaluator).format(
+                user=request.user.first_name.capitalize(),
+                period=p.name,
+                year=p.get_year,
+                course=evaluation.course)
+            subject_org = "Viktig information till dig som är utvärderingsansvarig!!"
+            body_org = markdown_to_html(settings.mail_to_organisation).format(
+                user=request.user.get_full_name(),
+                user_email=request.user.email,
+                period=p.name,
+                year=p.get_year,
+                course=evaluation.course,
+                reward=evaluation.reward)
+            email_list = []
+            for email in settings.mail_addresses_to_organisation.split():
+                email_list.append(email)
+            send_mail(subject, "", django_settings.EMAIL_HOST_USER, [request.user.email, ], fail_silently=False, html_message=body)
+            send_mail(subject_org, "", django_settings.EMAIL_HOST_USER, email_list, fail_silently=False, html_message=body_org)
             form = EvaluationForm(None, period=p)
-    leader = "Lovisa Annerwall"  # TODO: get this from organisation
     return render(request, "course_evaluations/evaluate_course.html", {
         "form": form, "rewards": rewards, "period": p, "user_evaluations": user_eval, "settings": settings})
 

@@ -99,7 +99,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         try:
-            return self.first_name + " " + self.last_name
+            return self.first_name.capitalize() + " " + self.last_name.capitalize()
         except:
             return self.username
 
