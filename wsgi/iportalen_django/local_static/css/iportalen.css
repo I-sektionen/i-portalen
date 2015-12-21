@@ -1050,11 +1050,11 @@ header.navigation .navigation-tools .user-nav-tools {
   -o-justify-content: space-between;
   justify-content: space-between;
   -ms-flex-pack: justify;
-  padding: 1em;
+  padding: 1em 0em;
 }
 @media screen and (min-width: 900px) {
   header.navigation .navigation-tools .user-nav-tools {
-    width: 16em;
+    width: 20em;
   }
 }
 header.navigation .navigation-tools .user-nav-tools a {
@@ -1066,7 +1066,7 @@ header.navigation .navigation-tools .user-nav-tools a {
 @media screen and (min-width: 900px) {
   header.navigation .navigation-tools .user-nav-tools a {
     color: #333;
-    font-size: 0.6em;
+    font-size: 0.5em;
   }
   header.navigation .navigation-tools .user-nav-tools a:hover {
     color: gray;

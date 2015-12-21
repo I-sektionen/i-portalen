@@ -323,12 +323,12 @@ header.navigation {
     }
     .user-nav-tools {
       list-style: none;
-      $user-nav-tools-padding: 1em;
+      $user-nav-tools-padding: 1em 0em;
       $user-nav-tools-link-color: $light-gray;
       $user-nav-tools-link-color-hover: transparentize($user-nav-tools-link-color, 0.3);
       $user-nav-tools-link-size: 0.5em;
       $user-nav-tools-link-weight: bold;
-      $user-nav-tools-horizontal-bar-mode-width: 16em;
+      $user-nav-tools-horizontal-bar-mode-width: 20em;
       @include media($horizontal-bar-mode) {
         width: $user-nav-tools-horizontal-bar-mode-width;
       }
@@ -344,9 +344,8 @@ header.navigation {
 
         @include media($horizontal-bar-mode) {
           color: $dark-gray;
-          font-size: $user-nav-tools-link-size * 1.2;
+          font-size: $user-nav-tools-link-size;
           &:hover {
-
             color: lighten($dark-gray, 30%);
           }
         }
