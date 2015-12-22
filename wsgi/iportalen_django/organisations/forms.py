@@ -6,7 +6,9 @@ class OrganisationForm(forms.ModelForm):
     class Meta:
         model = Organisation
         fields = ('description', 'contact_info', 'leader', 'image')
-
+        widgets = {
+            'description': forms.Textarea(attrs={'class': 'wmd-input', 'id': 'wmd-input-body'}),
+        }
         # This method add the right class to time/date fields.
         # def __init__(self, *args, **kwargs):
 
