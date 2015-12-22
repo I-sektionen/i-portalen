@@ -4,11 +4,12 @@
 {% endblock %}
 
 {% block content %}
+    <div class="course-evaluation">
     <ul>
         <li><a href="{% url "course_evaluations:choose year" %}">Välj år</a></li>
         <li><a href="{% url "course_evaluations:create courses" %}">Lägg till kurser</a></li>
         <li><a href="{% url "course_evaluations:edit rewards" %}">Ändra belöningar</a></li>
 
     </ul>
-
+</div>
 {% endblock %}
