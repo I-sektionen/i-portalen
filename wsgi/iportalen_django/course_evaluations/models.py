@@ -99,7 +99,7 @@ class Course(models.Model):
 
 class Reward(models.Model):
     name = models.CharField(verbose_name='namn', max_length=255, unique=True)
-    active = models.BooleanField(verbose_name='aktiv', default=True)
+    active = models.BooleanField(verbose_name='aktiv', default=False)
     class Meta:
         verbose_name = 'belöning'
         verbose_name_plural = 'belöningar'
