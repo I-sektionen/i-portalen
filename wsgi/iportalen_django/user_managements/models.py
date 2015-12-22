@@ -95,11 +95,14 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         if self.has_perm("organisations.add_organisation"):
             menu_choices.append(("Lägg till en organisation", reverse('organisations:create')))
 
+        if self.has_perm('courses.add_course'):
+            menu_choices.append(("Administrera kursutvärderingar", reverse('course_evaluations:admin')))
+
         return menu_choices
 
     def get_full_name(self):
         try:
-            return self.first_name + " " + self.last_name
+            return self.first_name.capitalize() + " " + self.last_name.capitalize()
         except:
             return self.username
 
