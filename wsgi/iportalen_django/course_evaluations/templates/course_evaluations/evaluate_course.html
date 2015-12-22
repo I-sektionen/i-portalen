@@ -1,10 +1,12 @@
 {% extends "master.html" %}
-
+{% load iportalen_tags %}
 {% block hero %}
 {% endblock %}
 
 {% block content %}
     <section id="evaluate-course">
+        {{ settings.evaluate_course_text|markdown }}
+    {% comment %}
         <h1>Utvärdera en kurs!</h1>
 
         <h2>Bli kursutvärderare - Höj utbildningskvalitén</h2>
@@ -20,21 +22,27 @@
         <h2>Kompensation</h2>
         <p>I-sektionen ser utbildningsbevakning som en av de mest grundläggande pelarna i sin verksamhet. Som tack för din utvärderingsinsats får du välja ett valfritt kompensationsalternativ som syns om du loggar in nedan.</p>
 
-        <p>Du får ersättning i form av ett presentkort á 150kr, på något av nedanstående alternativ:</p>
+        <p>Du får ersättning i form av ett presentkort á 150kr. Du får ett presentkort per kursutvärdering. Alltså om du utvärderar 3 kurser får du möjlighet att välja 3 olika presentkort á 150kr, på något/några av nedanstående alternativ:</p>
 
         <!-- List of options -->
         <ul>
             {% for r in rewards %}
-                <li>{{ r }}</li>
+                {% if r.active %}
+                    <li>{{ r }}</li>
+                {% endif %}
             {% endfor %}
         </ul>
-        <p>Du får ett presentkort per kursutvärdering. Alltså om du utvärderar 3 kurser får du möjlighet att välja 3 olika presentkort á 150kr.</p>
+    {% endcomment %}
+
+
+        {% get_organisation_leader settings.organisation as leader %}
 
         <h2>Frågor</h2>
-        <p>Vid eventuella frågor eller funderingar är du välkommen att kontakta oss via snordf@isektionen.se.</p>
+        <p>Vid eventuella frågor eller funderingar är du välkommen att kontakta oss via {{ settings.contact_email }}.</p>
         <p>Med vänliga hälsningar</p>
-        <p>Lovisa Annerwall</p>
-        <p>Ordförande Studienämnden</p>
+
+        <p>{{ leader.user.first_name|capfirst }} {{ leader.user.last_name|capfirst }}</p>
+        <p>{{ leader.post }} {{ settings.organisation }}</p>
 
 
         {% if user_evaluations %}
@@ -58,7 +66,7 @@
                     <p>{{ form.reward.errors }}</p>
                 </div>
             </div>
-        <input type="submit" class="button" value="Anmäl">
+        <input type="submit" class="button action-button" value="Anmäl">
         </form>
     </section>
 {% endblock %}
