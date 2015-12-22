@@ -14,6 +14,7 @@ from .views import (
     become_member,
     update_all_users_from_kobra,
     update_list_of_users_from_kobra,
+    admin_menu,
 )
 
 urlpatterns = [
@@ -42,5 +43,5 @@ urlpatterns = [
         name="password_change"),
     url(r'^password_change/done$', password_change_done, {"template_name":'user_managements/change_pw_done.html'},
         name="password_change_done"),
-
+    url(r'^admin', admin_menu, name='user content'),
 ]

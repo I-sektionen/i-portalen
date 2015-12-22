@@ -327,3 +327,8 @@ def update_list_of_users_from_kobra(request):
     else:
         form = AddWhiteListForm()
     return render(request, "user_managements/add_whitelist.html", {'form': form})
+
+
+@login_required()
+def admin_menu(request):
+    return render(request, "user_managements/user_admin.html")
