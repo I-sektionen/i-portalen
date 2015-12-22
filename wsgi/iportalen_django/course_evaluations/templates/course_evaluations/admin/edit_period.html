@@ -4,7 +4,9 @@
 {% endblock %}
 
 {% block content %}
-
+    <div class="course-evaluation">
+<a href="{% url 'course_evaluations:admin period' period.pk %}"><button type="button">Tillbaka</button></a>
+    <hr>
     <form action="" method="post">
         {% csrf_token %}
         {% for field in form %}
@@ -15,7 +17,8 @@
 
         <div id="article-create-form-buttons">
             <button type="submit">Spara ändringar</button>
-            <a href="{% url 'course_evaluations:admin period' period.pk %}"><button type="button">Tillbaka</button></a>
+
         </div>
     </form>
+    </div>
 {% endblock %}

@@ -4,6 +4,9 @@
 {% endblock %}
 
 {% block content %}
+    <div class="course-evaluation">
+    <a href="{% url 'course_evaluations:admin' %}"><button type="button">Tillbaka</button></a>
+    <hr>
 <h1>Kurser</h1>
     <ul>
         {% for course in courses %}
@@ -30,9 +33,9 @@
     <button type="button" id="add_more">Lägg till fler fält</button>
 
 <button type="submit">Spara kurser</button>
-    <a href="{% url 'course_evaluations:admin' %}"><button type="button">Tillbaka</button></a>
-</form>
 
+</form>
+</div>
 {% endblock %}
 {% block after_scripts %}
 <script>

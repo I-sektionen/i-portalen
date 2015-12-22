@@ -4,12 +4,15 @@
 {% endblock %}
 
 {% block content %}
+    <div class="course-evaluation">
+    <a href="{% url "course_evaluations:choose year" %}"><button>Tillbaka</button></a>
+    <hr>
     <h1>{{ year.year }}</h1>
     <h2><a href="{{ year.vt1.get_absolute_url }}">{{ year.vt1 }}</a></h2>
     <h2><a href="{{ year.vt2.get_absolute_url }}">{{ year.vt2 }}</a></h2>
     <h2><a href="{{ year.ht1.get_absolute_url }}">{{ year.ht1 }}</a></h2>
     <h2><a href="{{ year.ht2.get_absolute_url }}">{{ year.ht2 }}</a></h2>
-    <a href="{% url "course_evaluations:choose year" %}"><button>Tillbaka</button></a>
+
 
     <form action="" method="post">
     {% csrf_token %}
@@ -53,4 +56,5 @@
         </table>
     <button type="submit">Spara ändringar</button>
     </form>
+    </div>
 {% endblock %}
