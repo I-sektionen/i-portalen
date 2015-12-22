@@ -13,6 +13,6 @@
     {% endfor %}
     </ul>
     <a href="{% url 'course_evaluations:create year' %}"><button type="button">Lägg till ett år</button></a>
-    <a href="{% url 'course_evaluations:copy year' %}"><button type="button">Kopiera senaste året</button></a>
+    <a title="Skapa ett nytt år genom att kopiera det senaste årets datum och kurser." href="{% url 'course_evaluations:copy year' %}"><button type="button">Kopiera senaste året</button></a>
 </div>
 {% endblock %}
