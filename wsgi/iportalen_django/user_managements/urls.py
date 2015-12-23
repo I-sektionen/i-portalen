@@ -16,7 +16,7 @@ from .views import (
     update_list_of_users_from_kobra,
     admin_menu,
     subscribe_to_ipikure,
-    ipikure_subscribers)
+    ipikure_subscribers,
     filter_users,
     all_users,
 )
