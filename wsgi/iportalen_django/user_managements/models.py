@@ -158,6 +158,9 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         if self.has_perm('user_managements.can_view_users'):
             menu_choices.append(('Alla användare', reverse('all users')))
 
+        if self.has_perm('user_managements.can_view_subscribers'):
+            menu_choices.append(('Lista Ipikuréprenumeranter', reverse('ipikure_subscribers')))
+
         return menu_choices
 
     def get_full_name(self):
@@ -201,6 +204,7 @@ class IpikureSubscriber(models.Model):
     class Meta:
         verbose_name = "ipikureprenumerant"
         verbose_name_plural = "ipikureprenumeranter"
+        permissions = (('can_view_subscribers', 'Can view subscribers'),)
 
     def __str__(self):
         return "{user}: {year}-{month}-{day}".format(user=self.user.username, year=self.date_subscribed.year, month=self.date_subscribed.month, day=self.date_subscribed.day)
