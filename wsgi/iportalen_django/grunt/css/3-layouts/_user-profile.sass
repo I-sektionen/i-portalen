@@ -1,16 +1,19 @@
-#user-info-form-adress-details
+#user-info-form-button
   +media($large-screen)
-    +span-columns(12 of 12)
-#user-info-form-other-details
-  +media($large-screen)
-    +span-columns(4 of 12)
+    float: right
 .form-field-wrapper
   +display(flex)
-  +flex-direction(row)
+  +flex-direction(column)
+  +media($large-screen)
+    +flex-direction(row)
   text-align: left
 
   label
     +flex(1)
 
   select, input, textarea
-    +flex(2)
+    +flex(1)
+
+  //This is not a reasonable solution, should done in django
+  textarea
+    height: 70px
