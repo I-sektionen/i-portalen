@@ -6,16 +6,18 @@
         <h1>Ändra uppgifter</h1>
         <p>Här kan du administrear uppgifter för {{ organisation.name }}. Glöm inte att trycka på spara
             ändringar längst ned på sidan när du är färdig.</p>
-        <a href="{% url "organisation" organisation.name %}"><button type="button">Tillbaka</button></a>
-        <a href="{% url "edit_organisation_members" organisation.name %}"><button type="button">Hantera medlemmar</button></a>
+        <a href="{% url "organisations:organisation" organisation.name %}"><button type="button">Tillbaka</button></a>
+        <a href="{% url "organisations:edit organisation members" organisation.name %}"><button type="button">Hantera medlemmar</button></a>
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.non_field_errors }}
 
-
             {{ form.description.errors }}
             {{ form.description.label_tag }}
-            {{ form.description }}
+            <div class="wmd-panel">
+                <div id="wmd-button-bar-body"></div>
+                {{ form.description }}
+            </div>
             {{ form.description.help_text }}
             <br>
             <br>
@@ -48,3 +50,8 @@
 
 {% endblock %}
 
+{% block after_scripts %}
+    <script>
+        markdown_organisation_preview()
+    </script>
+{% endblock %}

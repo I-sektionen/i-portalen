@@ -5,9 +5,9 @@
 {% block content %}
 {% for article in articles %}
     {% include "articles/model/full_article.html" with article=article %}
-    <a href="{% url "approve article" article.pk %}"><button class="btn-read-more">Godkänn</button></a>
-    <a href="{% url "unapproves article" article.pk %}"><button class="btn-read-more">Avslå</button></a>
-    <a href="{% url "edit article" article.pk %}"><button class="btn-read-more">Gör ändringar</button></a>
+    <a href="{% url "articles:approve" article.pk %}"><button class="btn-read-more">Godkänn</button></a>
+    <a href="{% url "articles:unapproves" article.pk %}"><button class="btn-read-more">Avslå</button></a>
+    <a href="{% url "articles:edit" article.pk %}"><button class="btn-read-more">Gör ändringar</button></a>
 
 {% empty %}
     <p>Det finns inga artiklar kvar att godkänna! Bra jobbat :)</p>
