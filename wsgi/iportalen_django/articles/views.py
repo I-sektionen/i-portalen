@@ -93,7 +93,7 @@ def all_unapproved_articles(request):
 def approve_article(request, pk):
     article = Article.objects.get(pk=pk)
     if article.approve(request.user):
-        return redirect(all_unapproved_articles)
+        return redirect('articles:unapproved')
     else:
         raise PermissionDenied
 
@@ -137,7 +137,7 @@ def delete_article(request, pk):
 
     if article.draft and request.user == article.user:
         article.delete()
-        return redirect(articles_by_user)
+        return redirect('articles:by user')
     raise PermissionDenied
 
 
