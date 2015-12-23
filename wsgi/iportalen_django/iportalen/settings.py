@@ -48,7 +48,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'iportalen',
-    'reversion',
     'storages',
     'tags',
     'user_managements',
