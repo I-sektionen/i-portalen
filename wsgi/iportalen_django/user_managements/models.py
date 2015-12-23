@@ -131,14 +131,14 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     def get_menu_choices(self):
 
         menu_choices = [('Lägg upp innehåll', reverse('create content')),
-                        ('Min sida', reverse('mypage_view'))]  # List of extra menu choices.
+                        ('Min sida', reverse('my page'))]  # List of extra menu choices.
 
         if self.article_set.filter(visible_to__gte=timezone.now()):
-            menu_choices.append(('Mina Artiklar', reverse('articles by user')))
+            menu_choices.append(('Mina Artiklar', reverse('articles:by user')))
 
-        menu_choices.append(('Mina Event', reverse('events by user')))
+        menu_choices.append(('Mina Event', reverse('events:by user')))
 
-        menu_choices.append(('Mina Anmälningar', reverse('registered_on_events')))
+        menu_choices.append(('Mina Anmälningar', reverse('events:registered on')))
 
         if self.has_perm("articles.can_approve_article"):
             menu_choices.append(('Godkänn Innehåll', reverse('approve content')))  # With perm to edit articles.
@@ -150,13 +150,16 @@ class IUser(AbstractBaseUser, PermissionsMixin):
             menu_choices.append(("Lägg till Liu-idn i whitelist", reverse('add users to whitelist')))
 
         if self.has_perm("organisations.add_organisation"):
-            menu_choices.append(("Lägg till en organisation", reverse('add organisation')))
+            menu_choices.append(("Lägg till en organisation", reverse('organisations:create')))
+
+        if self.has_perm('courses.add_course'):
+            menu_choices.append(("Administrera kursutvärderingar", reverse('course_evaluations:admin')))
 
         return menu_choices
 
     def get_full_name(self):
         try:
-            return self.first_name + " " + self.last_name
+            return self.first_name.capitalize() + " " + self.last_name.capitalize()
         except:
             return self.username
 
@@ -187,3 +190,14 @@ class IUser(AbstractBaseUser, PermissionsMixin):
             for g in groups:
                 organisations = organisations + list(Organisation.objects.filter(group=g))
         return organisations
+
+class IpikureSubscriber(models.Model):
+    user = models.ForeignKey(IUser, unique=True)
+    date_subscribed = models.DateTimeField(auto_now_add=True, verbose_name='prenumererar sedan datum')
+
+    class Meta:
+        verbose_name = "ipikureprenumerant"
+        verbose_name_plural = "ipikureprenumeranter"
+
+    def __str__(self):
+        return "{user}: {year}-{month}-{day}".format(user=self.user.username, year=self.date_subscribed.year, month=self.date_subscribed.month, day=self.date_subscribed.day)

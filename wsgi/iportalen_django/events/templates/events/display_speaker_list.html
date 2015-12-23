@@ -22,7 +22,7 @@
 {% include "scripts.html" %}
 <script>
     jQuery(document).ready(function(){
-        speaker_list_view("{% url "event speaker api" event.pk %}");
+        speaker_list_view("{% url "events:speaker api" event.pk %}");
     });
 </script>
 

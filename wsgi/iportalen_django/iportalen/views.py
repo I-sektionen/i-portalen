@@ -71,3 +71,32 @@ def display_news_feed(request):
         content = paginator.page(paginator.num_pages)
 
     return render(request, 'landing.html', {'content_feed_list': content})
+
+
+def display_sponsored_content(request):
+    content_feed_list = list(Article.objects.filter(
+        status=Article.APPROVED,
+        visible_from__lte=timezone.now(),
+        visible_to__gte=timezone.now(),
+        sponsored=True
+    ).order_by('-visible_from'))
+    content_feed_list += list(Event.objects.filter(
+        status=Event.APPROVED,
+        visible_from__lte=timezone.now(),
+        end__gte=timezone.now(),
+        sponsored=True
+    ).order_by('-visible_from'))
+
+    content_feed_list = sorted(content_feed_list, key=lambda contents: contents.visible_from, reverse=True)
+    paginator = Paginator(content_feed_list, 14)
+
+    page = request.GET.get('page')
+
+    try:
+        content = paginator.page(page)
+    except PageNotAnInteger:
+        content = paginator.page(1)
+    except EmptyPage:
+        content = paginator.page(paginator.num_pages)
+
+    return render(request, 'sponsored.html', {'content_feed_list': content})
