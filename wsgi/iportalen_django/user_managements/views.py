@@ -117,22 +117,16 @@ def become_member(request):
 
 @login_required()
 def my_page_view(request):
-    return render(request, "user_managements/mypage.html")
-
-
-@login_required()
-def change_user_info_view(request):
     user = request.user
     if request.method == 'POST':
-        form = ChangeUserInfoForm(request.POST, instance=user)
+        change_user_info_form = ChangeUserInfoForm(request.POST, instance=user)
 
-        if form.is_valid():
-            form.save()
+        if change_user_info_form.is_valid():
+            change_user_info_form.save()
         return redirect(reverse("my page"))
     else:
-        form = ChangeUserInfoForm(instance=user)
-        return render(request, "user_managements/user_info_form.html", {'form': form})
-
+        change_user_info_form = ChangeUserInfoForm(instance=user)
+        return render(request, "user_managements/user-profile.html", {'form': change_user_info_form})
 
 @login_required()
 def add_users_to_white_list(request):
