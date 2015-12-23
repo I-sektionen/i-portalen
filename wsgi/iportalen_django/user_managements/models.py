@@ -155,6 +155,9 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         if self.has_perm('courses.add_course'):
             menu_choices.append(("Administrera kursutvärderingar", reverse('course_evaluations:admin')))
 
+        if self.has_perm('user_managements.can_view_users'):
+            menu_choices.append(('Alla användare', reverse('all users')))
+
         return menu_choices
 
     def get_full_name(self):
