@@ -1,4 +1,12 @@
 {% extends "master.html" %}
+{% comment %}
+Detta är alltså ett påbörjat projekt att filtrera användare. Det visade sig inte helt nödvändigt.
+Det får ligga kvar tillsammans med sin tillhörande vy som visar på hur dynamiska sökfrågor kan göras
+med sk. Q-objekt. Framtida planerade implementationer med automatiska mail osv kommer antagligen
+att använda Q.
+
+    //Isac -2015
+{% endcomment %}
 
 {% block hero %}
 {% endblock %}
@@ -68,10 +76,4 @@
         </div>
     </div>
 {% endblock %}
-{% block after_scripts %}
-    <script>
-        jQuery(document).ready(function(){
-            search_users(); //search_users.js
-        });
-    </script>
-{% endblock %}
+
