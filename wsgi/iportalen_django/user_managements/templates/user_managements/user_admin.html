@@ -1,0 +1,9 @@
+{% extends "master.html" %}
+
+{% block content %}
+    <ul>
+{% for name, url in request.user.get_menu_choices %}
+    <li><a href="{{ url }}">{{ name }}</a></li>
+{% endfor %}
+    </ul>
+{% endblock %}
