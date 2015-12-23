@@ -90,7 +90,8 @@ class Event(models.Model):
         on_delete=models.SET_NULL)  # User with admin rights/creator.
     # The group which has admin rights. If left blank is it only the user who can admin.
     tags = models.ManyToManyField(
-        Tag, verbose_name='tag', blank=True)
+        Tag, verbose_name='tag', blank=True,
+        help_text="Håll ner Ctrl för att markera flera.")
 
     status = models.CharField(
         max_length=1, choices=STATUSES, default=DRAFT, blank=False, null=False)
@@ -103,7 +104,7 @@ class Event(models.Model):
         blank=True,
         default=None,
         verbose_name='arrangör',
-        help_text="Organisation(er) som arrangerar evenemanget. Medlemmar i dessa kan senare ändra eventet.")
+        help_text="Organisation(er) som arrangerar evenemanget. Medlemmar i dessa kan senare ändra eventet. Håll ner Ctrl för att markera flera.")
     sponsored = models.BooleanField(verbose_name='sponsrat', default=False, help_text="Kryssa i om innehållet är sponsrat")
     ###########################################################################
     # Meta data for model
