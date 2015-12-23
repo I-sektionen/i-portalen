@@ -11,12 +11,10 @@ class Organisation(models.Model):
     NOT_IN_MENU = "N"
     SEKTIONEN = "S"
     FORENINGAR = "F"
-    UTSKOTT = "U"
     ORGANISATION_TYPE_CHOICES = (
         (NOT_IN_MENU, "Inte i menyn"),
         (SEKTIONEN, "Sektionen"),
         (FORENINGAR, "Föreningar"),
-        (UTSKOTT, "Utskott"),
     )
 
     name = models.CharField(verbose_name='Namn',
@@ -49,6 +47,8 @@ class Organisation(models.Model):
                                          help_text="Under vilken menyrubrik ska organisationen ligga, "
                                                    "(Välj samma som hos föräldrar organisationen om en sådan är vald)",
                                          max_length=1,
+                                         null=True,
+                                         blank=False,
                                          choices=ORGANISATION_TYPE_CHOICES,
                                          default=NOT_IN_MENU)
     parent_organisation = models.ForeignKey('self',
