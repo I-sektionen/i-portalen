@@ -5,28 +5,25 @@
 {% block sponsors %}
 {% endblock %}
 {% block content %}
-    <div id="user-search">
-        <form action="{% url "filter users" %}" method="post">
-            {% csrf_token %}
-            {{ form }}
-        <button type="submit">Sök</button>
-        </form>
-
-        <div id="search-controls">
-            {{ select_user_fields_form }}
-        </div>
-
-        <div class="search-result">
-        {% if users %}
-            <table>
+    <p>Tabellen ser stökig ut men den går att kopiera ifrån.</p>
+    <p>Denna tabell innehåller alla användare. Denna tabell kan kopieras in i excel samt direkt in i mailchimp.
+    Kolumnen kön avser vilket kön användare angivit (m=man, w=kvinna, u=vill ej ange, o=annat eller ickebinär).
+    Startår avser året användaren började I. Teknisk- samt Masterprofil är de valda profilerna, None betyder att
+        ingen profil ännu är vald. Kolumnen medlem indikerar om användaren är medlem. 'True' betyder att användaren
+    aktivt är medlem. 'False' betyder att användaren aktivt inte är medlem. None indikerar att användaren ännu inte
+    valt att bli medlem (eller valt att inte bli medlem).
+    </p>
+    {% if users %}
+        <table>
             <thead>
                 <tr>
                     <th class="email">Mailadress </th>
                     <th class="first_name">Förnamn</th>
                     <th class="last_name">Efternamn</th>
                     <th>Kön</th>
-                    <th>Start år</th>
+                    <th>Startår</th>
                     <th>Nuvarande Åk</th>
+                    <th>Klass</th>
                     <th>Teknisk inriktning</th>
                     <th>Master profil</th>
                     <th>Medlem?</th>
@@ -38,40 +35,17 @@
                         <td>{{ user.email }}</td>
                         <td>{{ user.first_name|title }}</td>
                         <td>{{ user.last_name|title}}</td>
-                        <td>{{ user.gender }}</td>
+                        <td>{{ user.get_gender_display|title }}</td>
                         <td>{{ user.start_year }}</td>
                         <td>{{ user.current_year }}</td>
+                        <td>{{ user.get_klass_display }}</td>
                         <td>{{ user.bachelor_profile }}</td>
                         <td>{{ user.master_profile }}</td>
                         <td>{{ user.is_member }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
-            </table>
-            <table class="mail">
-                <thead>
-                <tr>
-                    <th>Mailadress</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    <td>{{ user.email }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            </table>
-        {% else %}
-            <h3>Du har inga träffar i den sökning.</h3>
-        {% endif %}
-        </div>
-    </div>
-{% endblock %}
-{% block after_scripts %}
-    <script>
-        jQuery(document).ready(function(){
-            search_users(); //search_users.js
-        });
-    </script>
+        </table>
+
+    {% endif %}
 {% endblock %}

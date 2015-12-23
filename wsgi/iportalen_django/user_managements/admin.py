@@ -30,6 +30,8 @@ class IUserAdmin(UserAdmin):
             'gender',
             'allergies',
             'start_year',
+            'current_year',
+            'klass',
             'bachelor_profile',
             'master_profile',
             'groups',

@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError, PermissionDenied
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required, permission_required
-from .forms import ChangeUserInfoForm, AddWhiteListForm, MembershipForm, SegmentUsersForm
+from .forms import ChangeUserInfoForm, AddWhiteListForm, MembershipForm, SegmentUsersForm, SelectUserFieldsForm
 from .models import IUser
 from django.core.urlresolvers import reverse
 from django.contrib import messages
@@ -335,6 +335,7 @@ def update_list_of_users_from_kobra(request):
 @permission_required('user_managements.can_view_users')
 def filter_users(request):
     users = None
+    select_user_fields_form = SelectUserFieldsForm()
     if request.method == 'POST':
         form = SegmentUsersForm(request.POST)
         if form.is_valid():
@@ -389,9 +390,10 @@ def filter_users(request):
                     temp_query |= item
                 query &= temp_query
 
+            #  Only active members:
+            query &= Q(is_active=True)
 
-
-            # The final query:
+            #  Final database query:
             users = IUser.objects.filter(query)  # Search result
         else:
             users = None  # Not valid form
@@ -400,5 +402,15 @@ def filter_users(request):
 
     return render(request, 'user_managements/search_users.html', {
         'form': form,
+        'users': users,
+        'select_user_fields_form': select_user_fields_form,
+    })
+
+
+@login_required()
+@permission_required('user_managements.can_view_users')
+def all_users(request):
+    users = IUser.objects.all()
+    return render(request, 'user_managements/all_users.html', {
         'users': users,
     })

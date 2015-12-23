@@ -2134,28 +2134,6 @@ div.booking-container .third-container .third .center {
   flex: 6;
 }
 
-div.search-result table {
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 65.88078%;
-}
-div.search-result table:last-child {
-  margin-right: 0;
-}
-div.search-result table tr {
-  width: 100%;
-}
-div.search-result table.mail {
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 31.76157%;
-}
-div.search-result table.mail:last-child {
-  margin-right: 0;
-}
-
 #master-container {
   position: relative;
   -webkit-transition: 0.5s ease-out;
