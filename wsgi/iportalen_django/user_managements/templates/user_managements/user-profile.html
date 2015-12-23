@@ -4,18 +4,6 @@
 
 {% block content %}
 
-
-    <!--
-
-    <div class="button-group">
-        <label>
-            <a class="button-group-item" href="{% url "change user info view" %}">Ändra uppgifter</a>
-        </label>
-        <label>
-            <a class="button-group-item" href="{% url "password_change" %}">Byt lösenord</a>
-        </label>
-    </div>
-
     <a href="{% url "logout_view" %}">Logga ut</a><!-- TODO move this to header -->
 
     <!--Tillfällig plats för nedanstående knappar (till ipikuré-->
@@ -92,20 +80,9 @@
             </div>
         </li>
         <li class="tab-header-and-content">
-            <a href="javascript:void(0)" class="is-active tab-link">Ändra lösenord</a>
+            <a href="javascript:void(0)" class="tab-link">Ändra lösenord</a>
             <div class="tab-content">
-                {% with u=request.user %}
-                    <h1>
-                        {{ u.first_name|default:"Du har inte angett någon information"|capfirst}}
-                        {{ u.last_name|default:"Du har inte angett någon information"|capfirst}}
-                    </h1>
-                    <h3>Liu-id: </h3>
-                    <p>{{ u.username}}</p>
-                    <h3>Adress:</h3>
-                    <p>{{ u.address|default:"Du har inte angett någon information"}} {{ u.zip_code|default:""}} {{ u.city|default:""}}</p>
-                    <h3>Anmälda allergier:</h3>
-                    <p> {{ u.allergies|default:"Du har inte angett någon information"}}</p>
-                {% endwith %}
+                <a class="button-group-item" href="{% url "password_change" %}">Byt lösenord</a>
             </div>
         </li>
     </ul>
