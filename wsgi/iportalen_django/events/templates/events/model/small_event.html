@@ -26,6 +26,9 @@
             <i class="fa fa-tags"></i>
             <span>{{ event.tags.all|safeseq|join:", " }}</span>
         {% endif %}
+        {% if event.sponsored  %}
+            <span>Sponsrat innehåll</span>
+        {% endif %}
     </p>
     <h2>{{ event.lead|truncatewords_html:50 }}</h2>
     <a href="{{ event.get_absolute_url }}">Läs mer</a>

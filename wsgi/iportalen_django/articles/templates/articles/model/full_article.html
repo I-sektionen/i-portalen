@@ -15,7 +15,9 @@
             <i class="fa fa-tags"></i>
             <span>{{ article.tags.all|safeseq|join:", " }}</span>
         {% endif %}
-
+        {% if article.sponsored  %}
+            <span>Sponsrat innehåll</span>
+        {% endif %}
     </p>
     {{ article.body|markdown }}
     {% if article.attachment %}

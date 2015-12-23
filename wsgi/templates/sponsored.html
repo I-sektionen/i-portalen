@@ -7,10 +7,10 @@
     {# gets all articles via template tag #}
     <section id="news-feed">
         <div id="content-select-nav">
-            <a href="{% url "news feed" %}" class="content-type-nav active">Allt</a>
+            <a href="{% url "news feed" %}" class="content-type-nav">Allt</a>
             <a href="{% url "articles:articles" %}" class="content-type-nav">Nyheter</a>
             <a href="{% url "events:calender" %}" class="content-type-nav">Event</a>
-            <a href="{% url "sponsored" %}" class="content-type-nav">Sponsrat</a>
+            <a href="{% url "sponsored" %}" class="content-type-nav active">Sponsrat</a>
         </div>
         {% for content in content_feed_list %}
             {% if content.type == "article" %}
