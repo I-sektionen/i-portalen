@@ -16,7 +16,10 @@ from .views import (
     update_list_of_users_from_kobra,
     admin_menu,
     subscribe_to_ipikure,
-    ipikure_subscribers)
+    ipikure_subscribers,
+    filter_users,
+    all_users,
+)
 
 urlpatterns = [
     url(r'^logout$', logout_view, name='logout_view'),
@@ -49,5 +52,6 @@ urlpatterns = [
         name="subscribe_to_ipikure"),
     url(r'^ipikure_subscribers$', view=ipikure_subscribers,
         name="ipikure_subscribers"),
-
+    url(r'search_users/', view=filter_users, name="filter users"),
+    url(r'all_users/', view=all_users, name="all users")
 ]
