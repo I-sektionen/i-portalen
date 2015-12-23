@@ -2,7 +2,6 @@ reversion
 Django>=1.9.0,<1.9.99
 dj-static
 mysqlclient
-django-reversion
 markdown
 django-storages-redux
 boto
