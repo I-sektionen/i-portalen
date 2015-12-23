@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.utils import timezone
 from bookings.exceptions import NoSlots, InvalidInput, MaxLength, MultipleBookings, TooShortNotice
 from utils.time import first_day_of_week, daterange, combine_date_and_time
-from .models import Booking, Bookable, Invoice, BookingSlot, PartialBooking
+from .models import Booking, Bookable, Invoice, BookingSlot, PartialBooking, FixedCostAmount, VariableCostAmount
 from .forms import BookingForm
 
 # from reportlab.pdfgen import canvas
@@ -27,26 +27,19 @@ def index(request):
     })
 
 
-def invoice_pdf(request, invoice_id):
-    return redirect('index')
-
-
-"""
-    invoice = get_object_or_404(Invoice, pk=invoice_id)
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'filename="' + invoice_id + '.pdf"'
-    p = canvas.Canvas(response)
-    p.drawCentredString(300, 750, "VIKTIG FAKTURA!")
-    p.drawString(100, 400, "Bokning: " + str(invoice.booking))
-    p.drawString(100, 350, "Datum: " + str(invoice.due))
-
-    p.drawString(100, 200, "Att betala: " + str(invoice.total_cost()))
-
-    p.showPage()
-    p.save()
-
-    return response
-"""
+def invoice(request, invoice_id):
+    inv = get_object_or_404(Invoice, pk=invoice_id)
+    booking = inv.booking
+    bookable = booking.bookable
+    fixed_costs = FixedCostAmount.objects.filter(invoice=inv)
+    variable_costs = VariableCostAmount.objects.filter(invoice=inv)
+    return render(request, 'bookings/invoice.html', {
+        'invoice': inv,
+        'booking': booking,
+        'bookable': bookable,
+        'fixed_costs': fixed_costs,
+        'variable_costs': variable_costs,
+    })
 
 
 def make_booking(request, bookable_id, weeks_forward=0):
