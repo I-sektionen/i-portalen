@@ -227,6 +227,7 @@ header.navigation {
     $submenu-arrow-width: 8px;
     $submenu-distance-from-item: 10em;
     $submenu-arrow-distance-from-box: 0em;
+    $tooltip-shadow: 0 2px 2px silver;
 
     @include media($horizontal-bar-mode) {
       position: absolute;
@@ -244,6 +245,7 @@ header.navigation {
       z-index: 10;
       left: -$navigation-submenu-padding;
       border-radius: 3px;
+      box-shadow: 2px 2px 8px silver;
       background: $white;
       display: flex;
 
@@ -262,6 +264,7 @@ header.navigation {
       content: '▲';
       font-size: 1.4em;
       text-align: center;
+      text-shadow: 1px -1px 1px silver;
     }
 
     }

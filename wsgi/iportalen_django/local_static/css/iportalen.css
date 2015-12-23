@@ -970,6 +970,7 @@ header.navigation ul.submenu {
     z-index: 10;
     left: -1em;
     border-radius: 3px;
+    box-shadow: 2px 2px 8px silver;
     background: white;
     display: flex;
   }
@@ -984,6 +985,7 @@ header.navigation ul.submenu {
     content: '▲';
     font-size: 1.4em;
     text-align: center;
+    text-shadow: 1px -1px 1px silver;
   }
 }
 @media screen and (min-width: 900px) {
