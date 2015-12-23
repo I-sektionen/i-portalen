@@ -654,7 +654,7 @@ picture {
 .button-group label {
   margin-bottom: 1em;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   .button-group label {
     float: left;
     margin-right: 1em;
@@ -815,7 +815,7 @@ header.navigation .navigation-menu-button {
   text-decoration: none;
   text-transform: uppercase;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation .navigation-menu-button {
     display: none;
   }
@@ -828,7 +828,7 @@ header.navigation nav {
   min-height: 60px;
   z-index: 9999999;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation nav {
     float: left;
     margin-left: 4em;
@@ -846,7 +846,7 @@ header.navigation ul.navigation-menu {
 header.navigation ul.navigation-menu.show {
   display: block;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation ul.navigation-menu {
     display: inline;
     margin: 0;
@@ -861,7 +861,7 @@ header.navigation ul li.nav-link {
   width: 100%;
   z-index: 9999;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation ul li.nav-link {
     background: transparent;
     display: inline;
@@ -874,7 +874,7 @@ header.navigation ul li.nav-link > a:first-child {
   font-size: 1.2em;
   font-weight: 600;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation ul li.nav-link > a:first-child {
     font-size: 0.8em;
     font-weight: 800;
@@ -886,7 +886,7 @@ header.navigation ul li.nav-link a {
   display: inline-block;
   text-decoration: none;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation ul li.nav-link a {
     padding-right: 1em;
   }
@@ -901,7 +901,7 @@ header.navigation .active-nav-item a {
 header.navigation li.more.nav-link {
   padding-right: 0;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation li.more.nav-link {
     padding-right: 1em;
   }
@@ -912,7 +912,7 @@ header.navigation li.more.nav-link a {
 header.navigation li.more.nav-link > a {
   padding-right: 0.6em;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation li.more.nav-link > a:after {
     position: absolute;
     top: auto;
@@ -934,7 +934,7 @@ header.navigation li.more > a {
   padding-right: 1.6em;
   position: relative;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation li.more > a {
     margin-right: 1em;
   }
@@ -943,7 +943,7 @@ header.navigation li.more:focus, header.navigation li.more:hover .submenu {
   opacity: 1;
   visibility: visible;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation li.more {
     padding-right: 0.8em;
     position: relative;
@@ -952,7 +952,7 @@ header.navigation li.more:focus, header.navigation li.more:hover .submenu {
 header.navigation ul.submenu {
   padding-left: 1em;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation ul.submenu {
     position: absolute;
     -webkit-transition: all 0.2s ease-in-out;
@@ -989,7 +989,7 @@ header.navigation ul.submenu {
     text-shadow: 1px -1px 1px silver;
   }
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation ul.submenu .submenu-column {
     text-align: center;
   }
@@ -998,7 +998,7 @@ header.navigation ul.submenu li {
   display: block;
   padding-right: 0;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation ul.submenu li {
     line-height: 46.15385px;
   }
@@ -1018,7 +1018,7 @@ header.navigation ul.submenu li a {
   font-size: 1em;
   font-weight: 400;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation ul.submenu li a {
     padding-left: 1em;
     text-align: center;
@@ -1032,7 +1032,7 @@ header.navigation .navigation-tools {
   display: block;
   height: 60px;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation .navigation-tools {
     background: transparent;
     clear: none;
@@ -1059,7 +1059,7 @@ header.navigation .navigation-tools .user-nav-tools {
   -ms-flex-pack: distribute;
   padding: 1em 0em;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation .navigation-tools .user-nav-tools {
     width: 20em;
   }
@@ -1070,7 +1070,7 @@ header.navigation .navigation-tools .user-nav-tools a {
   font-weight: bold;
   text-transform: uppercase;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation .navigation-tools .user-nav-tools a {
     color: #333;
     font-size: 0.5em;
@@ -1112,7 +1112,7 @@ header.navigation .navigation-tools .user-nav-tools li i {
   font-size: 3em;
   margin-bottom: 3px;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   header.navigation .navigation-tools .user-nav-tools li i {
     font-size: 2em;
   }
@@ -1183,7 +1183,7 @@ header.navigation .navigation-tools .user-nav-tools #header-login-button {
   margin-bottom: 0.5em;
   font-weight: 700;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   .hero .hero-inner .hero-copy h1 {
     font-size: 3.5em;
   }
@@ -1193,7 +1193,7 @@ header.navigation .navigation-tools .user-nav-tools #header-login-button {
   line-height: 1.5em;
   margin: 0 auto 3em auto;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   .hero .hero-inner .hero-copy p {
     font-size: 1.2em;
     max-width: 40%;
@@ -1347,7 +1347,7 @@ article.news-preview-organisation .article-lead {
 #event-create-form-main:last-child {
   margin-right: 0;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   #event-create-form-main {
     float: left;
     display: block;
@@ -1368,7 +1368,7 @@ article.news-preview-organisation .article-lead {
 #event-create-form-time-details:last-child {
   margin-right: 0;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   #event-create-form-time-details {
     float: left;
     display: block;
@@ -1500,7 +1500,7 @@ article.event-preview-organisation p {
   visibility: hidden;
   z-index: 99999999999;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   .modal .modal-fade-screen {
     padding-top: 10em;
   }
@@ -1571,7 +1571,7 @@ article.event-preview-organisation p {
     width: 60%;
   }
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   .modal .modal-inner {
     width: 50%;
   }
@@ -1776,7 +1776,7 @@ article.event-preview-organisation p {
   font-weight: bold;
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   #outer-content .outer-form-div {
     float: left;
     display: block;
@@ -2251,19 +2251,6 @@ div.booking-container .third-container .third .center {
   flex: 6;
 }
 
-#master-container {
-  position: relative;
-  -webkit-transition: 0.5s ease-out;
-  -moz-transition: 0.5s ease-out;
-  transition: 0.5s ease-out;
-  -webkit-transform: translateX(0px);
-  -moz-transform: translateX(0px);
-  -ms-transform: translateX(0px);
-  -o-transform: translateX(0px);
-  transform: translateX(0px);
-  z-index: 1;
-}
-
 #container {
   max-width: 1200px;
   margin-left: auto;
@@ -2274,62 +2261,58 @@ div.booking-container .third-container .third .center {
   content: "";
   display: table;
 }
-#container #content {
+
+#content {
+  width: 100%;
+  padding: 1em;
+}
+@media screen and (min-width: 1200px) {
+  #content {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 82.94039%;
+  }
+  #content:last-child {
+    margin-right: 0;
+  }
+}
+
+#sponsors {
   padding: 1em;
   float: left;
   display: block;
   margin-right: 2.35765%;
   width: 100%;
+  text-align: center;
 }
-#container #content:last-child {
+#sponsors:last-child {
   margin-right: 0;
 }
-@media screen and (min-width: 900px) {
-  #container #content {
+@media screen and (min-width: 1200px) {
+  #sponsors {
     float: left;
     display: block;
-    margin-right: 3.57866%;
-    width: 74.10533%;
+    margin-right: 2.35765%;
+    width: 14.70196%;
   }
-  #container #content:last-child {
+  #sponsors:last-child {
     margin-right: 0;
   }
 }
-#container #sponsors {
-  padding: 1em;
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 100%;
-}
-#container #sponsors:last-child {
-  margin-right: 0;
-}
-@media screen and (min-width: 900px) {
-  #container #sponsors {
-    float: left;
-    display: block;
-    margin-right: 3.57866%;
-    width: 22.316%;
-    text-align: center;
-  }
-  #container #sponsors:last-child {
-    margin-right: 0;
-  }
-}
-#container #sponsors .sponsor {
+#sponsors .sponsor {
   min-height: 60px;
   vertical-align: middle;
   margin: 10px;
   border: 1px solid #dfddde;
   text-align: center;
 }
-#container #sponsors img {
+#sponsors img {
   max-width: 100%;
   max-height: 60px;
   padding: 10px;
 }
-#container #sponsors h1 {
+#sponsors h1 {
   font-size: 1em;
   width: 100%;
   padding-bottom: 5px;
@@ -2359,7 +2342,7 @@ div.booking-container .third-container .third .center {
 #news-feed:last-child {
   margin-right: 0;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   #news-feed {
     float: left;
     display: block;
@@ -2380,7 +2363,7 @@ div.booking-container .third-container .third .center {
 #upcoming:last-child {
   margin-right: 0;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   #upcoming {
     float: left;
     display: block;
@@ -2401,7 +2384,7 @@ div.booking-container .third-container .third .center {
 #upcoming-calender:last-child {
   margin-right: 0;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   #upcoming-calender {
     float: left;
     display: block;
@@ -2448,7 +2431,7 @@ div.booking-container .third-container .third .center {
 #organisation-content #organisation-description:last-child {
   margin-right: 0;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   #organisation-content #organisation-description {
     float: left;
     display: block;
@@ -2468,7 +2451,7 @@ div.booking-container .third-container .third .center {
 #organisation-content #organisation-members:last-child {
   margin-right: 0;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   #organisation-content #organisation-members {
     float: left;
     display: block;
@@ -2489,7 +2472,7 @@ div.booking-container .third-container .third .center {
 #organisation-content #organisation-articles:last-child {
   margin-right: 0;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   #organisation-content #organisation-articles {
     float: left;
     display: block;
@@ -2509,7 +2492,7 @@ div.booking-container .third-container .third .center {
 #organisation-content #organisation-events:last-child {
   margin-right: 0;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   #organisation-content #organisation-events {
     float: left;
     display: block;
@@ -2530,7 +2513,7 @@ div.booking-container .third-container .third .center {
 #organisation-content #organisation-suborg:last-child {
   margin-right: 0;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   #organisation-content #organisation-suborg {
     float: left;
     display: block;
@@ -2552,7 +2535,7 @@ div.booking-container .third-container .third .center {
 #article-create-form:last-child {
   margin-right: 0;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   #article-create-form {
     float: left;
     display: block;
@@ -2566,7 +2549,7 @@ div.booking-container .third-container .third .center {
 #article-create-form #article-create-form-text textarea {
   height: 100px;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   #article-create-form #article-create-form-text {
     float: left;
     display: block;
@@ -2582,7 +2565,7 @@ div.booking-container .third-container .third .center {
   background: #f7f7f7;
   border-radius: 3px;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   #article-create-form #article-create-form-meta {
     float: left;
     display: block;
@@ -2726,7 +2709,7 @@ div.booking-container .third-container .third .center {
   font-weight: 800;
 }
 
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   #user-info-form-button {
     float: right;
   }
@@ -2752,7 +2735,7 @@ div.booking-container .third-container .third .center {
   -ms-flex-direction: column;
   text-align: left;
 }
-@media screen and (min-width: 900px) {
+@media screen and (min-width: 1200px) {
   .form-field-wrapper {
     -webkit-box-orient: horizontal;
     -moz-box-orient: horizontal;
