@@ -95,11 +95,14 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         if self.has_perm("organisations.add_organisation"):
             menu_choices.append(("Lägg till en organisation", reverse('organisations:create')))
 
+        if self.has_perm('courses.add_course'):
+            menu_choices.append(("Administrera kursutvärderingar", reverse('course_evaluations:admin')))
+
         return menu_choices
 
     def get_full_name(self):
         try:
-            return self.first_name + " " + self.last_name
+            return self.first_name.capitalize() + " " + self.last_name.capitalize()
         except:
             return self.username
 
@@ -129,3 +132,14 @@ class IUser(AbstractBaseUser, PermissionsMixin):
             for g in groups:
                 organisations = organisations + list(Organisation.objects.filter(group=g))
         return organisations
+
+class IpikureSubscriber(models.Model):
+    user = models.ForeignKey(IUser, unique=True)
+    date_subscribed = models.DateTimeField(auto_now_add=True, verbose_name='prenumererar sedan datum')
+
+    class Meta:
+        verbose_name = "ipikureprenumerant"
+        verbose_name_plural = "ipikureprenumeranter"
+
+    def __str__(self):
+        return "{user}: {year}-{month}-{day}".format(user=self.user.username, year=self.date_subscribed.year, month=self.date_subscribed.month, day=self.date_subscribed.day)

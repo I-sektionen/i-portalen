@@ -1,0 +1,18 @@
+{% extends "master.html" %}
+
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+    <div class="course-evaluation">
+    <a href="{% url 'course_evaluations:admin' %}"><button type="button">Tillbaka</button></a>
+    <hr>
+    <ul>
+    {% for year in years %}
+    <li><a href="{{ year.get_absolute_url }}">{{ year }}</a></li>
+    {% endfor %}
+    </ul>
+    <a href="{% url 'course_evaluations:create year' %}"><button type="button">Lägg till ett år</button></a>
+    <a title="Skapa ett nytt år genom att kopiera det senaste årets datum och kurser." href="{% url 'course_evaluations:copy year' %}"><button type="button">Kopiera senaste året</button></a>
+</div>
+{% endblock %}

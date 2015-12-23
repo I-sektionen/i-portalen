@@ -555,6 +555,10 @@ ol {
   margin: 0;
   padding: 0;
 }
+ul {
+  list-style-type: none;
+}
+
 dl {
   margin-bottom: 0.75em;
 }

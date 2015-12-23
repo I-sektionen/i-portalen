@@ -4034,6 +4034,25 @@ else
     }
 })();
 ;/**
+ * Created by jonathan on 2015-12-13.
+ */
+function cloneMore(selector, type) {
+    var newElement = $(selector).clone(true);
+    var total = $('#id_' + type + '-TOTAL_FORMS').val();
+    newElement.find(':input').each(function() {
+        var name = $(this).attr('name').replace('-' + (total-1) + '-','-' + total + '-');
+        var id = 'id_' + name;
+        $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+    });
+    newElement.find('label').each(function() {
+        var newFor = $(this).attr('for').replace('-' + (total-1) + '-','-' + total + '-');
+        $(this).attr('for', newFor);
+    });
+    total++;
+    $('#id_' + type + '-TOTAL_FORMS').val(total);
+    $(selector).after(newElement);
+}
+;/**
  * Created by isac on 2015-11-22.
  */
 function generate_booking_form(pk, weeks_forward){
@@ -4223,7 +4242,14 @@ function init_csrf() {
 $.datetimepicker.setLocale('sv');
 $('.datetimepicker').datetimepicker({
     format: 'Y-m-d H:i'
-});;/**
+});
+
+$.datetimepicker.setLocale('sv');
+$('.datepicker').datetimepicker({
+    timepicker:false,
+    format: 'Y-m-d'
+});
+;/**
  * Created by isac on 2015-11-01.
  */
 
@@ -4234,6 +4260,11 @@ $('.datetimepicker').datetimepicker({
 
 
 var MOBILE_BREAKPOINT = 900;;/**
+ * Created by jonathan on 2015-12-13.
+ */
+function goBack() {
+    window.history.back();
+};/**
  * Created by andreas on 09/11/15.
  */
 $(document).ready(function() {
@@ -4494,6 +4525,30 @@ var event_preview = function () {
 
 
 
+;/**
+ * Created by jonathan on 2015-12-18.
+ */
+//This function initiates the markdown engine. It is called on by event_preview below.
+function markdown_organisation_preview() {
+        var converter = Markdown.getSanitizingConverter();
+        converter.hooks.chain("preConversion", function (text) {
+            return text.replace(/[&<"'\/]/g, function (s) {
+                var entityMap = {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    '"': '&quot;',
+                    "'": '&#39;',
+                    "/": '&#x2F;'
+                };
+                return entityMap[s];
+            }).replace(/([#]{2,})/g, '#').replace(/([=]{3,})/g, '').replace(/([-]{3,})/g, '').replace(/([`])/g, '');
+        });
+        converter.hooks.chain("plainLinkText", function (url) {
+            return url.replace(/^https?:\/\//, "");
+        });
+        var editor = new Markdown.Editor(converter, "-body");
+        editor.run();
+    }
 ;/**
  * Created by jonathan on 2015-10-20.
  */
