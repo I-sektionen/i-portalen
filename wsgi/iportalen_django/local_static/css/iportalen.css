@@ -2725,4 +2725,67 @@ div.booking-container .third-container .third .center {
   font-weight: 800;
 }
 
+@media screen and (min-width: 900px) {
+  #user-info-form-adress-details {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 100%;
+  }
+  #user-info-form-adress-details:last-child {
+    margin-right: 0;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  #user-info-form-other-details {
+    float: left;
+    display: block;
+    margin-right: 2.35765%;
+    width: 31.76157%;
+  }
+  #user-info-form-other-details:last-child {
+    margin-right: 0;
+  }
+}
+
+.form-field-wrapper {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -moz-box-direction: normal;
+  box-direction: normal;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  flex-direction: row;
+  -ms-flex-direction: row;
+  text-align: left;
+}
+.form-field-wrapper label {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+.form-field-wrapper select, .form-field-wrapper input, .form-field-wrapper textarea {
+  -webkit-box-flex: 2;
+  -moz-box-flex: 2;
+  box-flex: 2;
+  -webkit-flex: 2;
+  -moz-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
+}
+
 /*# sourceMappingURL=iportalen.css.map */
