@@ -350,3 +350,6 @@ def ipikure_subscribers(request):
 
     return render(request, "user_managements/ipikure_subscribers.html",
                           {'subscribers_list': subscribers})
+@login_required()
+def admin_menu(request):
+    return render(request, "user_managements/user_admin.html")
