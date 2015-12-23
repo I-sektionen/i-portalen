@@ -64,7 +64,8 @@ class Article(models.Model):
     tags = models.ManyToManyField(
         Tag,
         verbose_name='tag',
-        blank=True)
+        blank=True,
+        help_text="Håll ner Ctrl för att markera flera.")
 
     attachment = models.FileField(
         verbose_name='Bifogad fil',
@@ -86,7 +87,7 @@ class Article(models.Model):
         Organisation,
         blank=False,
         verbose_name='organisationer',
-        help_text="Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln.")
+        help_text="Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln. Håll ner Ctrl för att markera flera.")
     sponsored = models.BooleanField(verbose_name='sponsrat', default=False, help_text="Kryssa i om innehållet är sponsrat")
     objects = ArticleManager()  # Manager
 
