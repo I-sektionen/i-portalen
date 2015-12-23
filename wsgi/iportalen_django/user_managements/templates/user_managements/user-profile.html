@@ -11,87 +11,89 @@
         <a href="{% url "ipikure_subscribers" %}"><button>Lista Ipikuréprenumeranter</button></a>
         <a href="{% url "subscribe_to_ipikure" %}"><button>Anmälan Ipikuré</button></a>
     {% endcomment %}
-    <ul class="accordion-tabs">
+    {% with u=request.user %}
+        <h1>
+            {{ u.first_name|default:"Du har inte angett någon information"|capfirst}}
+            {{ u.last_name|default:"Du har inte angett någon information"|capfirst}}
+        </h1>
+        <ul class="accordion-tabs">
         <li class="tab-header-and-content">
-            <a href="javascript:void(0)" class="is-active tab-link">Profil</a>
-            <div class="tab-content">
-                {% with u=request.user %}
-                    <h1>
-                        {{ u.first_name|default:"Du har inte angett någon information"|capfirst}}
-                        {{ u.last_name|default:"Du har inte angett någon information"|capfirst}}
-                    </h1>
-                    <h3>Liu-id: </h3>
-                    <p>{{ u.username}}</p>
-                    <h3>Adress:</h3>
-                    <p>{{ u.address|default:"Du har inte angett någon information"}} {{ u.zip_code|default:""}} {{ u.city|default:""}}</p>
-                    <h3>Anmälda allergier:</h3>
-                    <p> {{ u.allergies|default:"Du har inte angett någon information"}}</p>
-                {% endwith %}
+        <a href="javascript:void(0)" class="is-active tab-link">Uppgifter</a>
+        <div class="tab-content">
+
+
+        <h3>Liu-id: </h3>
+        <p>{{ u.username}}</p>
+        <h3>Adress:</h3>
+        <p>{{ u.address|default:"Du har inte angett någon information"}} {{ u.zip_code|default:""}} {{ u.city|default:""}}</p>
+        <h3>Anmälda allergier:</h3>
+        <p> {{ u.allergies|default:"Du har inte angett någon information"}}</p>
+    {% endwith %}
+</div>
+</li>
+<li class="tab-header-and-content">
+    <a href="javascript:void(0)" class="tab-link">Ändra uppgifter</a>
+    <div class="tab-content">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <div class="form-field-wrapper">
+                {{ form.start_year.label_tag }}
+                {{ form.start_year }}
+                {{ form.start_year.errors }}
+                {{ form.start_year.help_text }}
             </div>
-        </li>
-        <li class="tab-header-and-content">
-            <a href="javascript:void(0)" class="tab-link">Ändra uppgifter</a>
-            <div class="tab-content">
-                <form action="" method="post">
-                    {% csrf_token %}
-                    {{ form.non_field_errors }}
 
-                    <div class="form-field-wrapper">
-                        {{ form.start_year.label_tag }}
-                        {{ form.start_year }}
-                        {{ form.start_year.errors }}
-                        {{ form.start_year.help_text }}
-                    </div>
-
-                    <div class="form-field-wrapper">
-                        {{ form.expected_exam_year.errors }}
-                        {{ form.expected_exam_year.label_tag }}
-                        {{ form.expected_exam_year }}
-                        {{ form.expected_exam_year.help_text }}
-                    </div>
-
-
-
-                    <div class="form-field-wrapper">
-                        {{ form.address.errors }}
-                        {{ form.address.label_tag }}
-                        {{ form.address }}
-                        {{ form.address.help_text }}
-                    </div>
-                    <div class="form-field-wrapper">
-                        {{ form.zip_code.errors }}
-                        {{ form.zip_code.label_tag }}
-                        {{ form.zip_code }}
-                        {{ form.zip_code.help_text }}
-                    </div>
-                    <div class="form-field-wrapper">
-                        {{ form.city.errors }}
-                        {{ form.city.label_tag }}
-                        {{ form.city }}
-                        {{ form.city.help_text }}
-                    </div>
-                    <div class="form-field-wrapper">
-                        {{ form.gender.errors }}
-                        {{ form.gender.label_tag }}
-                        {{ form.gender }}
-                        {{ form.gender.help_text }}
-                    </div>
-                    <div class="form-field-wrapper">
-                        {{ form.allergies.errors }}
-                        {{ form.allergies.label_tag }}
-                        {{ form.allergies }}
-                        {{ form.allergies.help_text }}
-                    </div>
-                    <hr>
-                    <button id="user-info-form-button" class="action-button" type="submit"/>Spara uppgifter</button>
-                </form>
+            <div class="form-field-wrapper">
+                {{ form.expected_exam_year.errors }}
+                {{ form.expected_exam_year.label_tag }}
+                {{ form.expected_exam_year }}
+                {{ form.expected_exam_year.help_text }}
             </div>
-        </li>
-        <li class="tab-header-and-content">
-            <a href="javascript:void(0)" class="tab-link">Ändra lösenord</a>
-            <div class="tab-content">
-                <a class="button-group-item" id="user-info-form-href="{% url "password_change" %}">Byt lösenord</a>
+
+
+
+            <div class="form-field-wrapper">
+                {{ form.address.errors }}
+                {{ form.address.label_tag }}
+                {{ form.address }}
+                {{ form.address.help_text }}
             </div>
-        </li>
-    </ul>
+            <div class="form-field-wrapper">
+                {{ form.zip_code.errors }}
+                {{ form.zip_code.label_tag }}
+                {{ form.zip_code }}
+                {{ form.zip_code.help_text }}
+            </div>
+            <div class="form-field-wrapper">
+                {{ form.city.errors }}
+                {{ form.city.label_tag }}
+                {{ form.city }}
+                {{ form.city.help_text }}
+            </div>
+            <div class="form-field-wrapper">
+                {{ form.gender.errors }}
+                {{ form.gender.label_tag }}
+                {{ form.gender }}
+                {{ form.gender.help_text }}
+            </div>
+            <div class="form-field-wrapper">
+                {{ form.allergies.errors }}
+                {{ form.allergies.label_tag }}
+                {{ form.allergies }}
+                {{ form.allergies.help_text }}
+            </div>
+            <hr>
+            <button id="user-info-form-button" class="action-button" type="submit"/>Spara uppgifter</button>
+        </form>
+    </div>
+</li>
+<li class="tab-header-and-content">
+    <a href="javascript:void(0)" class="tab-link">Ändra lösenord</a>
+    <div class="tab-content">
+        <a class="button-group-item" id="user-info-form-href="{% url "password_change" %}">Byt lösenord</a>
+    </div>
+</li>
+</ul>
 {% endblock %}
