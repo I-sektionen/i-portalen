@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Bookable, Booking, BookingSlot, VariableCostAmount, Invoice, \
     VariableCostTemplate, FixedCostTemplate, PartialBooking, FixedCostAmount
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class BookingSlotInline(admin.TabularInline):
@@ -26,7 +27,18 @@ class InvoiceInline(admin.TabularInline):
     extra = 0
 
 
+def _get_invoice_status_display(obj):
+    try:
+        inv = Invoice.objects.get(booking=obj)
+        return inv.get_status_display()
+    except ObjectDoesNotExist:
+        return "Ej skapad."
+
+
 class BookingsAdmin(admin.ModelAdmin):
+    list_display = ('user', 'bookable', 'start_time', _get_invoice_status_display)
+    list_filter = ('bookable',)
+    search_fields = ('user', )
     inlines = [
         PartialBookingsInline,
         InvoiceInline
@@ -45,10 +57,7 @@ class FixedCostInline(admin.TabularInline):
 
 class UserInvoiceAdmin(admin.ModelAdmin):
     # fields = ('invoice_pdf_url', )
-
-    # invoice_pdf_url.allow_tags = True
-    # invoice_pdf_url.short_description = 'Länk till PDF fakturan.'
-
+    readonly_fields = ('ocr',)
     inlines = [
         VariableCostInline,
         FixedCostInline,

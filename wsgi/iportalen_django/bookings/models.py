@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from utils.time import has_passed, combine_date_and_time, now_plus_one_month
 
 
@@ -70,7 +70,7 @@ class PartialBooking(models.Model):
 
 
 class Invoice(models.Model):
-    NOT_CREATED = 'NC'
+    NOT_CREATED = 'NC'  # Used by the Booking model to indicated that this instance does not exist.
     CREATED = 'CR'
     SENT = 'SE'
     TERMINATED = 'TR'
@@ -87,9 +87,43 @@ class Invoice(models.Model):
 
     due = models.DateField(default=now_plus_one_month, verbose_name='förfallo dag')
     booking = models.ForeignKey("Booking", verbose_name='bokning')
+    ocr = models.CharField(max_length=11, verbose_name="OCR nummer", null=True, blank=True)
 
-    def get_absolute_url(self):
-        return reverse('bookings.views.invoice_pdf', args=[str(self.pk)])
+    def _calculate_ocr(self):
+        def digits_of(n):
+            return [int(d) for d in str(n)]
+
+        def check_sum(s):
+            digits = digits_of(num)
+            odd_digits = digits[-1::-2]
+            even_digits = digits[-2::-2]
+
+            checksum = 0
+            checksum += sum(odd_digits)
+            for d in even_digits:
+                checksum += sum(digits_of(d*2))
+            return checksum % 10
+
+        # Number based on primary key
+        num = str(self.pk)
+        num = "1337" + num
+        while len(num) < 9:
+            num += "0"
+        print(len(num))
+        num += "10"  # Should be 10 long now, eleven wih check number.
+        check_num = check_sum(num)
+        if check_num != 0:
+            num = num[:-1]
+            num += str(10-check_num)
+        self.ocr = num
+        self.save()
+
+
+
+    def save(self, *args, **kwargs):
+        super(Invoice, self).save(*args, **kwargs)
+        if self.ocr is None or len(self.ocr) == 0:
+            self._calculate_ocr()
 
     class Meta:
         verbose_name = 'faktura'
@@ -98,22 +132,25 @@ class Invoice(models.Model):
     def __str__(self):
         return 'Faktura för ' + str(self.booking)
 
-    def total_cost(self):
+    def get_absolute_url(self):
+        return reverse('bookings:invoice view', kwargs={'invoice_id': self.pk})
+
+    def _total_cost(self):
         fixed = FixedCostAmount.objects.filter(invoice__exact=self)
         variable = VariableCostAmount.objects.filter(invoice__exact=self)
         total = 0
         for f in fixed:
-            total += f.total
+            total += f.amount
         for v in variable:
-            total += v.total
+            total += v.amount
         return total
+    total = property(_total_cost)
 
 
 class FixedCostTemplate(models.Model):
     title = models.CharField(max_length=400, verbose_name='namn')
-    add_tax = models.BooleanField(default=True, verbose_name='Lägg till moms?')
-    tax = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, verbose_name='moms')
-    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='belopp')
+    tax = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, verbose_name='momssats')
+    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='belopp ink moms')
 
     def __str__(self):
         return self.title
@@ -129,14 +166,16 @@ class FixedCostAmount(models.Model):
 
     invoice = models.ForeignKey(Invoice)
 
-    @property
-    def total(self):
-        t = self.template
-        total = self.quantity * t.amount
-        if t.add_tax and (t.tax is not None):
-            return total * t.tax
-        else:
-            return total
+    def _calculate_total(self):
+        return self.quantity * self.template.amount
+
+    def _calculate_tax(self):
+        tot = self._calculate_total()
+        tax = self.template.tax
+        return round(tot - (tot / (1 + tax)), 2)
+
+    tax_amount = property(_calculate_tax)
+    amount = property(_calculate_total)
 
     def __str__(self):
         return self.template.title
@@ -145,7 +184,6 @@ class FixedCostAmount(models.Model):
 class VariableCostTemplate(models.Model):
     title = models.CharField(max_length=400)
     price = models.DecimalField(max_digits=9, decimal_places=2)
-    add_tax = models.BooleanField(default=True)
     tax = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     unit_name = models.CharField(max_length=30, default="st")
 
@@ -162,14 +200,24 @@ class VariableCostAmount(models.Model):
     template = models.ForeignKey(VariableCostTemplate)
     invoice = models.ForeignKey(Invoice)
 
-    @property
-    def total(self):
-        t = self.template
-        total = self.units * t.price
-        if t.add_tax and (t.tax is not None):
-            return total * t.tax
-        else:
-            return total
+    def _calculate_total(self):
+        return round(self.units * self.template.price, 2)
+
+    def _calculate_tax(self):
+        tot = self._calculate_total()
+        tax = self.template.tax
+        return round(tot - (tot / (1 + tax)), 2)
+
+    def _unit_type(self):
+        return self.template.unit_name
+
+    def _unit_price(self):
+        return self.template.price
+
+    tax_amount = property(_calculate_tax)
+    amount = property(_calculate_total)
+    unit_name = property(_unit_type)
+    unit_price = property(_unit_price)
 
     def __str__(self):
         return self.template.title
@@ -229,3 +277,8 @@ class Booking(models.Model):
 
         return {"start": combine_date_and_time(start_date, start_time),
                 "end": combine_date_and_time(end_date, end_time)}
+
+    def _start_time(self):
+        return self.get_time_of_booking()['start']
+
+    start_time = property(_start_time)
