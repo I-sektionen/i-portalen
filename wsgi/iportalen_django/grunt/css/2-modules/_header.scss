@@ -336,7 +336,7 @@ header.navigation {
         width: $user-nav-tools-horizontal-bar-mode-width;
       }
       @include display(flex);
-      @include justify-content(space-between);
+      @include justify-content(space-around);
       padding: $user-nav-tools-padding;
 
       a {
@@ -370,6 +370,15 @@ header.navigation {
           }
         }
       }
+
+      #header-login-button {
+
+        color: white;
+        max-width: 20em;
+        margin: 0 auto;
+
+      }
+
     }
   }
 }

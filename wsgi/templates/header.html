@@ -55,6 +55,8 @@
         </nav>
         <div class="navigation-tools">
             <ul class="user-nav-tools">
+            {% if request.user.is_authenticated %}
+
                 <li class=user-tools-button">
                     <a href="{% url 'events:registered on' %}"><i class="fa fa-calendar"></i><span>Anmälningar</span></a>
                 </li>
@@ -69,7 +71,17 @@
                 <li class=user-tools-button">
                     <a href="{% url 'user content' %}"><i class="fa fa-plus"></i><span>Innehåll</span></a>
                 </li>
+
+
+                {% else %}
+
+                <li class="user-tools-button">
+                    <a href="/user/login" id="header-login-button" class="action-button">Logga in</a>
+                </li>
+
+            {% endif %}
             </ul>
+
         </div>
     </div>
 </header>

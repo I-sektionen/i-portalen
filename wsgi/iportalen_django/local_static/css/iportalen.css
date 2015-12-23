@@ -1047,15 +1047,15 @@ header.navigation .navigation-tools .user-nav-tools {
   display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-  -moz-box-pack: justify;
-  box-pack: justify;
-  -webkit-justify-content: space-between;
-  -moz-justify-content: space-between;
-  -ms-justify-content: space-between;
-  -o-justify-content: space-between;
-  justify-content: space-between;
-  -ms-flex-pack: justify;
+  -webkit-box-pack: distribute;
+  -moz-box-pack: distribute;
+  box-pack: distribute;
+  -webkit-justify-content: space-around;
+  -moz-justify-content: space-around;
+  -ms-justify-content: space-around;
+  -o-justify-content: space-around;
+  justify-content: space-around;
+  -ms-flex-pack: distribute;
   padding: 1em 0em;
 }
 @media screen and (min-width: 900px) {
@@ -1115,6 +1115,11 @@ header.navigation .navigation-tools .user-nav-tools li i {
   header.navigation .navigation-tools .user-nav-tools li i {
     font-size: 2em;
   }
+}
+header.navigation .navigation-tools .user-nav-tools #header-login-button {
+  color: white;
+  max-width: 20em;
+  margin: 0 auto;
 }
 
 #sponsors .sponsor-placeholder {
