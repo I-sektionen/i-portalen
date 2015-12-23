@@ -15,6 +15,7 @@ from .views import (
     update_all_users_from_kobra,
     update_list_of_users_from_kobra,
     filter_users,
+    all_users,
 )
 
 urlpatterns = [
@@ -44,5 +45,6 @@ urlpatterns = [
     url(r'^update_list_of_users_from_kobra/$', view=update_list_of_users_from_kobra,
         name="update_list_of_users_from_kobra"),
     url(r'search_users/', view=filter_users, name="filter users"),
+    url(r'all_users/', view=all_users, name="all users")
 
 ]

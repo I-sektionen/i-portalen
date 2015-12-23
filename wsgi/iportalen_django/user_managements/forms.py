@@ -107,3 +107,21 @@ class SegmentUsersForm(forms.Form):
                                       choices=IUser.CLASSES,
                                       required=False)
 
+class SelectUserFieldsForm(forms.Form):
+    FIELDS = (
+        ('email', 'email'),
+        ('first_name', 'förnamn'),
+        ('last_name', 'efternamn'),
+        ('gender', 'kön'),
+        ('start_year', 'start år'),
+        ('current_year', 'nuvarande årskurs'),
+        ('bachelor_profile', 'teknisk inriktning'),
+        ('master_profile', 'master profil'),
+        ('city', 'stad'),
+        ('zip_code', 'postnummer'),
+        ('address', 'adress'),
+        ('allergies', 'allergier'),
+    )
+    selected_fields = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                                choices=FIELDS,
+                                                required=False)
