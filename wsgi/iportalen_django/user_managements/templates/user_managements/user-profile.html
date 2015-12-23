@@ -51,6 +51,7 @@
                     </div>
 
 
+
                     <div class="form-field-wrapper">
                         {{ form.address.errors }}
                         {{ form.address.label_tag }}
@@ -81,15 +82,15 @@
                         {{ form.allergies }}
                         {{ form.allergies.help_text }}
                     </div>
-
-                    <button class="action-button" type="submit"/>Spara uppgifter</button>
+                    <hr>
+                    <button id="user-info-form-button" class="action-button" type="submit"/>Spara uppgifter</button>
                 </form>
             </div>
         </li>
         <li class="tab-header-and-content">
             <a href="javascript:void(0)" class="tab-link">Ändra lösenord</a>
             <div class="tab-content">
-                <a class="button-group-item" href="{% url "password_change" %}">Byt lösenord</a>
+                <a class="button-group-item" id="user-info-form-href="{% url "password_change" %}">Byt lösenord</a>
             </div>
         </li>
     </ul>

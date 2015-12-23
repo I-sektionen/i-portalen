@@ -2726,26 +2726,8 @@ div.booking-container .third-container .third .center {
 }
 
 @media screen and (min-width: 900px) {
-  #user-info-form-adress-details {
-    float: left;
-    display: block;
-    margin-right: 2.35765%;
-    width: 100%;
-  }
-  #user-info-form-adress-details:last-child {
-    margin-right: 0;
-  }
-}
-
-@media screen and (min-width: 900px) {
-  #user-info-form-other-details {
-    float: left;
-    display: block;
-    margin-right: 2.35765%;
-    width: 31.76157%;
-  }
-  #user-info-form-other-details:last-child {
-    margin-right: 0;
+  #user-info-form-button {
+    float: right;
   }
 }
 
@@ -2757,17 +2739,31 @@ div.booking-container .third-container .third .center {
   display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -moz-box-orient: horizontal;
-  box-orient: horizontal;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  box-orient: vertical;
   -webkit-box-direction: normal;
   -moz-box-direction: normal;
   box-direction: normal;
-  -webkit-flex-direction: row;
-  -moz-flex-direction: row;
-  flex-direction: row;
-  -ms-flex-direction: row;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-direction: column;
   text-align: left;
+}
+@media screen and (min-width: 900px) {
+  .form-field-wrapper {
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -moz-box-direction: normal;
+    box-direction: normal;
+    -webkit-flex-direction: row;
+    -moz-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-direction: row;
+  }
 }
 .form-field-wrapper label {
   -webkit-box-flex: 1;
@@ -2779,13 +2775,16 @@ div.booking-container .third-container .third .center {
   flex: 1;
 }
 .form-field-wrapper select, .form-field-wrapper input, .form-field-wrapper textarea {
-  -webkit-box-flex: 2;
-  -moz-box-flex: 2;
-  box-flex: 2;
-  -webkit-flex: 2;
-  -moz-flex: 2;
-  -ms-flex: 2;
-  flex: 2;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+.form-field-wrapper textarea {
+  height: 70px;
 }
 
 /*# sourceMappingURL=iportalen.css.map */
