@@ -15,7 +15,8 @@ from .views import (
     update_all_users_from_kobra,
     update_list_of_users_from_kobra,
     admin_menu,
-)
+    subscribe_to_ipikure,
+    ipikure_subscribers)
 
 urlpatterns = [
     url(r'^logout$', logout_view, name='logout_view'),
@@ -43,5 +44,10 @@ urlpatterns = [
         name="password_change"),
     url(r'^password_change/done$', password_change_done, {"template_name":'user_managements/change_pw_done.html'},
         name="password_change_done"),
-    url(r'^admin', admin_menu, name='user content'),
+    url(r'^admin$', admin_menu, name="user content"),
+    url(r'^subscribe_to_ipikure$', view=subscribe_to_ipikure,
+        name="subscribe_to_ipikure"),
+    url(r'^ipikure_subscribers$', view=ipikure_subscribers,
+        name="ipikure_subscribers"),
+
 ]

@@ -1,0 +1,26 @@
+{% extends "master.html" %}
+
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+    <div class="course-evaluation">
+    <a href="{% url 'course_evaluations:admin year' period.get_year.year %}"><button>Tillbaka</button></a>
+    <hr>
+<a href="{% url 'course_evaluations:edit period' period.pk %}"><button>Ändra</button></a>
+    <a href="{% url 'course_evaluations:evaluations' period.pk %}"><button>Utvärderingar</button></a>
+
+    <table>
+    <tr><td><strong>Name</strong></td><td>{{ period.name }}</td></tr>
+    <tr><td><strong>Startdatum</strong></td><td>{{ period.start_date }}</td></tr>
+    <tr><td><strong>Slutdatum</strong></td><td>{{ period.end_date }}</td></tr>
+    <tr><td><strong>Kurser</strong></td><td><ul>
+        {% for c in period.courses.all %}
+            <li>{{ c }}</li>
+        {% empty %}
+            <li>Inga kurser är tillagda</li>
+        {% endfor %}
+    </ul></td></tr>
+    </table>
+</div>
+{% endblock %}

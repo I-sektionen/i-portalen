@@ -46,7 +46,7 @@
                             <li><a href="{{ bookable.get_absolute_url }}">{{ bookable.name|title }}</a></li>
                         {% endfor %}
                                     <li><a href="{% url "glasscubes storage" %}">Filarkiv</a></li>
-                                    <li><a href="{% url 'course_evaluations:evaluate_course' %}">Utvärdera en kurs</a></li>
+                                    <li><a href="{% url 'course_evaluations:evaluate course' %}">Utvärdera en kurs</a></li>
                                 </div>
                             </ul>
                         </li>
