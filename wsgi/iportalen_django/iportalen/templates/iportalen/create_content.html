@@ -3,7 +3,7 @@
 {% block content %}
 <div id="content">
     <h4>Skapa innehåll till i-portalen</h4>
-    <a href="{% url "create article" %}"><p>Skapa en artikel.</p></a>
-    <a href="{% url "create event" %}"><p>Skapa ett event.</p></a>
+    <a href="{% url "articles:create" %}"><p>Skapa en artikel.</p></a>
+    <a href="{% url "events:create" %}"><p>Skapa ett event.</p></a>
 </div>
 {% endblock %}

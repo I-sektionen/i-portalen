@@ -8,7 +8,7 @@ from utils.validators import liu_id_validator
 
 YEAR_CHOICES = []
 for r in range(1969, (timezone.now().year+10)):
-    YEAR_CHOICES.append((r,r))
+    YEAR_CHOICES.append((r, r))
 
 
 class BachelorProfile(models.Model):
@@ -39,6 +39,53 @@ class MasterProfile(models.Model):
 
 # Liuid as username and <liuid>@student.liu.se as email
 class IUser(AbstractBaseUser, PermissionsMixin):
+    MAN = 'm'
+    WOMEN = 'w'
+    OTHER = 'o'  # Other / non-binary
+    UNSPECIFIED = 'u'  # Don't want to specify
+    GENDER_OPTIONS = (
+        (MAN, 'man'),
+        (WOMEN, 'kvinna'),
+        (OTHER, 'Annat / Icke-binär'),
+        (UNSPECIFIED, 'Vill ej ange')
+    )
+
+    YEAR1 = '1'
+    YEAR2 = '2'
+    YEAR3 = '3'
+    YEAR4 = '4'
+    YEAR5 = '5'
+    PAUSE = 'p'
+    STUDY_YEARS = (
+        (YEAR1, 'åk 1'),
+        (YEAR2, 'åk 2'),
+        (YEAR3, 'åk 3'),
+        (YEAR4, 'åk 4'),
+        (YEAR5, 'åk 5'),
+        (PAUSE, 'uppehåll')
+    )
+
+    A_CLASS = 'a'
+    B_CLASS = 'b'
+    C_CLASS = 'c'
+    D_CLASS = 'd'
+    E_CLASS = 'e'
+    F_CLASS = 'f'
+    IA_CLASS = 'x'
+    IB_CLASS = 'y'
+    UNSPECIFIED_CLASS = 'u'
+    CLASSES = (
+        (UNSPECIFIED_CLASS, 'ej angivet'),
+        (A_CLASS, 'a-klassen'),
+        (B_CLASS, 'b-klassen'),
+        (C_CLASS, 'c-klassen'),
+        (D_CLASS, 'd-klassen'),
+        (E_CLASS, 'e-klassen'),
+        (F_CLASS, 'f-klassen'),
+        (IA_CLASS, 'ia-klassen'),
+        (IB_CLASS, 'ib-klassen'),
+    )
+
     # basic fields
     username = models.CharField(verbose_name='LiU-ID', unique=True, max_length=8, validators=[liu_id_validator])
     email = models.EmailField(verbose_name='Email')
@@ -53,11 +100,21 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     address = models.CharField(verbose_name='adress', max_length=255, null=True, blank=True)
     zip_code = models.CharField(verbose_name='postnummer', max_length=255, null=True, blank=True)
     city = models.CharField(verbose_name='ort', max_length=255, null=True, blank=True)
-    gender = models.CharField(verbose_name='kön', max_length=255, null=True, blank=True)
+    gender = models.CharField(verbose_name='kön', max_length=1, null=True, blank=False, choices=GENDER_OPTIONS)
     allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
     start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=timezone.now().year)
-    expected_exam_year = models.IntegerField(verbose_name='förväntat examensår', choices=YEAR_CHOICES,
-                                             default=timezone.now().year + 5)
+    current_year = models.CharField(verbose_name='nuvarande årskurs',
+                                    max_length=1,
+                                    choices=STUDY_YEARS,
+                                    default=YEAR1,
+                                    blank=False,
+                                    null=True)
+    klass = models.CharField(verbose_name="klass",
+                             max_length=1,
+                             choices=CLASSES,
+                             default=UNSPECIFIED_CLASS,
+                             blank=False,
+                             null=True)
     bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil',
                                          on_delete=models.SET_NULL)
     master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil',
@@ -74,14 +131,14 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     def get_menu_choices(self):
 
         menu_choices = [('Lägg upp innehåll', reverse('create content')),
-                        ('Min sida', reverse('mypage_view'))]  # List of extra menu choices.
+                        ('Min sida', reverse('my page'))]  # List of extra menu choices.
 
         if self.article_set.filter(visible_to__gte=timezone.now()):
-            menu_choices.append(('Mina Artiklar', reverse('articles by user')))
+            menu_choices.append(('Mina Artiklar', reverse('articles:by user')))
 
-        menu_choices.append(('Mina Event', reverse('events by user')))
+        menu_choices.append(('Mina Event', reverse('events:by user')))
 
-        menu_choices.append(('Mina Anmälningar', reverse('registered_on_events')))
+        menu_choices.append(('Mina Anmälningar', reverse('events:registered on')))
 
         if self.has_perm("articles.can_approve_article"):
             menu_choices.append(('Godkänn Innehåll', reverse('approve content')))  # With perm to edit articles.
@@ -93,13 +150,22 @@ class IUser(AbstractBaseUser, PermissionsMixin):
             menu_choices.append(("Lägg till Liu-idn i whitelist", reverse('add users to whitelist')))
 
         if self.has_perm("organisations.add_organisation"):
-            menu_choices.append(("Lägg till en organisation", reverse('add organisation')))
+            menu_choices.append(("Lägg till en organisation", reverse('organisations:create')))
+
+        if self.has_perm('courses.add_course'):
+            menu_choices.append(("Administrera kursutvärderingar", reverse('course_evaluations:admin')))
+
+        if self.has_perm('user_managements.can_view_users'):
+            menu_choices.append(('Alla användare', reverse('all users')))
+
+        if self.has_perm('user_managements.can_view_subscribers'):
+            menu_choices.append(('Lista Ipikuréprenumeranter', reverse('ipikure_subscribers')))
 
         return menu_choices
 
     def get_full_name(self):
         try:
-            return self.first_name + " " + self.last_name
+            return self.first_name.capitalize() + " " + self.last_name.capitalize()
         except:
             return self.username
 
@@ -121,6 +187,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = "användare"
         verbose_name_plural = "användare"
+        permissions = (('can_view_users', 'Can view users'),)
 
     def get_organisations(self):
         organisations = []
@@ -129,3 +196,15 @@ class IUser(AbstractBaseUser, PermissionsMixin):
             for g in groups:
                 organisations = organisations + list(Organisation.objects.filter(group=g))
         return organisations
+
+class IpikureSubscriber(models.Model):
+    user = models.ForeignKey(IUser, unique=True)
+    date_subscribed = models.DateTimeField(auto_now_add=True, verbose_name='prenumererar sedan datum')
+
+    class Meta:
+        verbose_name = "ipikureprenumerant"
+        verbose_name_plural = "ipikureprenumeranter"
+        permissions = (('can_view_subscribers', 'Can view subscribers'),)
+
+    def __str__(self):
+        return "{user}: {year}-{month}-{day}".format(user=self.user.username, year=self.date_subscribed.year, month=self.date_subscribed.month, day=self.date_subscribed.day)

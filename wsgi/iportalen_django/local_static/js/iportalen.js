@@ -4034,6 +4034,25 @@ else
     }
 })();
 ;/**
+ * Created by jonathan on 2015-12-13.
+ */
+function cloneMore(selector, type) {
+    var newElement = $(selector).clone(true);
+    var total = $('#id_' + type + '-TOTAL_FORMS').val();
+    newElement.find(':input').each(function() {
+        var name = $(this).attr('name').replace('-' + (total-1) + '-','-' + total + '-');
+        var id = 'id_' + name;
+        $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+    });
+    newElement.find('label').each(function() {
+        var newFor = $(this).attr('for').replace('-' + (total-1) + '-','-' + total + '-');
+        $(this).attr('for', newFor);
+    });
+    total++;
+    $('#id_' + type + '-TOTAL_FORMS').val(total);
+    $(selector).after(newElement);
+}
+;/**
  * Created by isac on 2015-11-22.
  */
 function generate_booking_form(pk, weeks_forward){
@@ -4223,7 +4242,14 @@ function init_csrf() {
 $.datetimepicker.setLocale('sv');
 $('.datetimepicker').datetimepicker({
     format: 'Y-m-d H:i'
-});;/**
+});
+
+$.datetimepicker.setLocale('sv');
+$('.datepicker').datetimepicker({
+    timepicker:false,
+    format: 'Y-m-d'
+});
+;/**
  * Created by isac on 2015-11-01.
  */
 
@@ -4234,6 +4260,11 @@ $('.datetimepicker').datetimepicker({
 
 
 var MOBILE_BREAKPOINT = 900;;/**
+ * Created by jonathan on 2015-12-13.
+ */
+function goBack() {
+    window.history.back();
+};/**
  * Created by andreas on 09/11/15.
  */
 $(document).ready(function() {
@@ -4270,34 +4301,18 @@ $(document).ready(function() {
   $(".modal-inner").on("click", function(e) {
     e.stopPropagation();
   });
-};;/*global $*/
-$(document).ready(function () {
-    'use strict';
-    var menuToggle = $('#menu-toggle').unbind();
-    var navigationMenu = $('#navigation-menu').removeClass('show');
-    var submenuWrapper = $('#submenu-wrapper').removeClass('show');
-    var userPanelCheckbox = $('#user-panel-checkbox');
+};;$(document).ready(function() {
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
 
-    if ($(window).width() < MOBILE_BREAKPOINT) {  //TODO: Breakout global vars.
-        $('li.more>a').click(function (e) {
-            e.preventDefault();
-        });
-        $('li.more').click(function (e) {
-            console.log("li.more");
-            $(this).children('.submenu-wrapper').slideToggle('fast');
-        })
-    }
-    menuToggle.on('click', function (event) {
-        event.preventDefault();
-        navigationMenu.slideToggle('fast');
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
     });
-
-    /**
-    $('#user-panel-toggle').click(function () {
-        console.log("hello")
-        userPanelCheckbox.prop("checked", !checkBoxes.prop("checked"));
-    })**/
-
+  });
 });
 ;$(document).ready(function () {
   $('.accordion-tabs').each(function(index) {
@@ -4510,6 +4525,30 @@ var event_preview = function () {
 
 
 
+;/**
+ * Created by jonathan on 2015-12-18.
+ */
+//This function initiates the markdown engine. It is called on by event_preview below.
+function markdown_organisation_preview() {
+        var converter = Markdown.getSanitizingConverter();
+        converter.hooks.chain("preConversion", function (text) {
+            return text.replace(/[&<"'\/]/g, function (s) {
+                var entityMap = {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    '"': '&quot;',
+                    "'": '&#39;',
+                    "/": '&#x2F;'
+                };
+                return entityMap[s];
+            }).replace(/([#]{2,})/g, '#').replace(/([=]{3,})/g, '').replace(/([-]{3,})/g, '').replace(/([`])/g, '');
+        });
+        converter.hooks.chain("plainLinkText", function (url) {
+            return url.replace(/^https?:\/\//, "");
+        });
+        var editor = new Markdown.Editor(converter, "-body");
+        editor.run();
+    }
 ;/**
  * Created by jonathan on 2015-10-20.
  */

@@ -3,7 +3,7 @@ import re
 
 
 def markdown_to_html(text):
-    text = re.sub(r'([#]{2,})', '#', text)
+    text = re.sub(r'([#]+)', '##', text)
     text = re.sub(r'([=]{3,})', '', text)
     text = re.sub(r'([-]{3,})', '', text)
     text = re.sub(r'([`])', '', text)

@@ -39,7 +39,7 @@
             <div class="third left">
 
                 {% if weeks_forward > 0 %}
-                <a href="{% url "make_booking_week" bookable_id weeks_forward|add:"-1"  %}"><button type="button">Bakåt</button></a>
+                <a href="{% url "bookings:make booking week" bookable_id weeks_forward|add:"-1"  %}"><button type="button">Bakåt</button></a>
                 {% endif %}
                 &nbsp;
             </div>
@@ -53,7 +53,7 @@
                 </form>
             </div>
             <div class="third">
-                <a class=" align-right" href="{% url "make_booking_week" bookable_id weeks_forward|add:"1"  %}"><button type="button">Frammåt</button></a>
+                <a class=" align-right" href="{% url "bookings:make booking week" bookable_id weeks_forward|add:"1"  %}"><button type="button">Frammåt</button></a>
             </div>
         </div>
     </div>

@@ -16,7 +16,7 @@ class Bookable(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('make_booking', args=[str(self.pk)])
+        return reverse('bookings:make booking', args=[str(self.pk)])
 
     class Meta:
         verbose_name = 'bokningsbart objekt'

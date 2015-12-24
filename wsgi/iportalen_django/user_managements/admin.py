@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Permission
 from .forms import CustomUserChangeForm, CustomUserCreationForm
-from .models import IUser, MasterProfile, BachelorProfile
+from .models import IUser, MasterProfile, BachelorProfile, IpikureSubscriber
 
 
 class IUserAdmin(UserAdmin):
@@ -30,7 +30,8 @@ class IUserAdmin(UserAdmin):
             'gender',
             'allergies',
             'start_year',
-            'expected_exam_year',
+            'current_year',
+            'klass',
             'bachelor_profile',
             'master_profile',
             'groups',
@@ -55,3 +56,4 @@ admin.site.register(IUser, IUserAdmin)
 admin.site.register(MasterProfile)
 admin.site.register(BachelorProfile)
 admin.site.register(Permission)
+admin.site.register(IpikureSubscriber)
