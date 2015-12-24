@@ -28,7 +28,7 @@
     <div id="organisation-admin-panel">
     {% can_edit_organisation request.user organisation as can_edit %}
         {% if can_edit %}
-            <a href="{% url "edit_organisation" organisation.name %}">
+            <a href="{% url "organisations:edit" organisation.name %}">
                 <button>Ändra info</button>
             </a>
         {% endif %}
@@ -102,16 +102,16 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Titel</th>
+                        <th colspan="2">Titel</th>
                         <th>Publicerad</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for article in articles %}
                     <tr>
-                        <td><a href="{{ article.get_absolute_url }}">{{ article.headline|truncatechars:18 }}</a></td>
+                        <td colspan="2"><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></td>
                         <td>{{ article.created|date:"Y-m-d" }}</td>
-                        <td></td>
+
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -125,16 +125,16 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Titel</th>
+                        <th colspan="2">Titel</th>
                         <th>Publicerad</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for event in events %}
                     <tr>
-                        <td><a href="{% url "event" event.pk %}">{{ article.headline }}</a></td>
+                        <td colspan="2"><a href="{% url "events:event" event.pk %}">{{ article.headline }}</a></td>
                         <td>{{ event.created|date:"Y-m-d" }}</td>
-                        <td></td>
+
                     </tr>
                 {% endfor %}
                 </tbody>

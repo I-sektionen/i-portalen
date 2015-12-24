@@ -3,8 +3,9 @@ ol {
   margin: 0;
   padding: 0;
 
+
   &%default-ul {
-    list-style-type: disc;
+    list-style-type: none;
     margin-bottom: $small-spacing;
     padding-left: $base-spacing;
   }
@@ -14,6 +15,10 @@ ol {
     margin-bottom: $small-spacing;
     padding-left: $base-spacing;
   }
+}
+
+ul {
+  list-style-type: none;
 }
 
 dl {

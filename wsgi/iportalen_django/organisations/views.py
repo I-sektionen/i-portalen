@@ -31,7 +31,7 @@ def edit_organisation(request, organisation_name):
         if form.is_valid():
             form.save()
 
-        return redirect(reverse("organisation", kwargs={'organisation_name': organisation_name}))
+        return redirect(reverse("organisations:organisation", kwargs={'organisation_name': organisation_name}))
     else:
         form = OrganisationForm(instance=my_organisation)
         return render(request, "organisations/organisation_form.html",
@@ -78,7 +78,7 @@ def edit_memebers(request, organisation_name):
                         org_post.user = entry['user']
                         org_post.save()
                         group.user_set.add(org_post.user)
-            return redirect("edit_organisation_members", organisation_name=my_organisation.name)
+            return redirect("organisations:edit organisation members", organisation_name=my_organisation.name)
         else:
             return render(request, "organisations/members.html", {
                         'organisation': my_organisation,
@@ -95,7 +95,7 @@ def edit_memebers(request, organisation_name):
 
 @login_required()
 def add_organisation(request):
-    if not request.user.has_perm('organisations.add_organisation'):
+    if not request.user.has_perm('organisations.add organisation'):
         return HttpResponseForbidden()
     if request.method == 'POST':
         form = AddOrganisationForm(request.POST)

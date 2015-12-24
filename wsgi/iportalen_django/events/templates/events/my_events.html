@@ -2,6 +2,9 @@
 {% load article_tags %}
 {% load iportalen_tags %}
 
+{% block hero %}
+{% endblock %}
+
 {% block content %}
         <h1>Arrangemang</h1>
         <table>
@@ -21,7 +24,7 @@
                     {% if event.replacing %}Ersätter: <a href="{{ event.replacing.get_absolute_url }}">{{ event.replacing.headline }}</a>{% endif %}
                     </td>
                     <td>{{ event.visible_from|date:"Y-m-d" }}</td>
-                    <td><a href="{% url "edit event" event.pk %}"><button>Ändra</button></a></td>
+                    <td><a href="{% url "events:edit" event.pk %}"><button>Ändra</button></a></td>
                     <td colspan="2">{{ event.user }}</td>
                     <td>
                         {% if event.status == "r" %}

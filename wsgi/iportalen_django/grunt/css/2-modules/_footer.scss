@@ -29,7 +29,7 @@
   }
 
   ul {
-    @include flex-basis(26em);
+    @include flex-basis(15em);
     @include flex-shrink(0);
     margin-bottom: $base-spacing * 2;
     padding: 0;
