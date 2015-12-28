@@ -198,7 +198,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         return organisations
 
 class IpikureSubscriber(models.Model):
-    user = models.ForeignKey(IUser, unique=True)
+    user = models.OneToOneField(IUser)
     date_subscribed = models.DateTimeField(auto_now_add=True, verbose_name='prenumererar sedan datum')
 
     class Meta:
