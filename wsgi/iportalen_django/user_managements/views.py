@@ -130,7 +130,8 @@ def change_user_info_view(request):
 
         if form.is_valid():
             form.save()
-        return redirect(reverse("my page"))
+            return redirect(reverse("my page"))
+        return render(request, "user_managements/user_info_form.html", {'form': form})
     else:
         form = ChangeUserInfoForm(instance=user)
         return render(request, "user_managements/user_info_form.html", {'form': form})
