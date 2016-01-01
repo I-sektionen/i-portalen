@@ -60,6 +60,13 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class ChangeUserInfoForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ChangeUserInfoForm, self).__init__(*args, **kwargs)
+
+        for key in self.fields:
+            self.fields[key].required = True
+        self.fields['allergies'].required = False
+
     class Meta:
         model = IUser
         fields = ('address', 'zip_code', 'city', 'gender', 'allergies', 'start_year')
