@@ -34,12 +34,12 @@
         {% endif %}
     </div>
     <div id="organisation-content">
-        <section id="organisation-description">
+        <article class="single-article" id="organisation-description">
             <h1>Om {{ organisation.name }}</h1>
-
-            {{ organisation.description|markdown }}
-
-        </section>
+            <p>
+                {{ organisation.description|markdown }}
+            </p>
+        </article>
 
             {% get_child_organisations organisation.pk as children %}
                 {% if children %}
@@ -132,7 +132,7 @@
                 <tbody>
                 {% for event in events %}
                     <tr>
-                        <td colspan="2"><a href="{% url "events:event" event.pk %}">{{ event.headline }}</a></td>
+                        <td colspan="2"><a href="{% url "events:event" event.pk %}">{{ article.headline }}</a></td>
                         <td>{{ event.created|date:"Y-m-d" }}</td>
 
                     </tr>
@@ -140,12 +140,6 @@
                 </tbody>
             </table>
         </section>
-        {% endif %}
-        {% if organisation.contact_info %}
-            <section id="organisation-contact-info">
-                <h1>Kontaktinfo</h1>
-                <p>{{ organisation.contact_info }}</p>
-            </section>
         {% endif %}
     </div>
 {% endblock %}
