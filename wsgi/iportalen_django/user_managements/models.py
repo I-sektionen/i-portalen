@@ -46,8 +46,8 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     GENDER_OPTIONS = (
         (MAN, 'man'),
         (WOMEN, 'kvinna'),
-        (OTHER, 'Annat / Icke-binär'),
-        (UNSPECIFIED, 'Vill ej ange')
+        (OTHER, 'annat / icke-binär'),
+        (UNSPECIFIED, 'vill ej ange')
     )
 
     YEAR1 = '1'
@@ -100,7 +100,8 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     address = models.CharField(verbose_name='adress', max_length=255, null=True, blank=True)
     zip_code = models.CharField(verbose_name='postnummer', max_length=255, null=True, blank=True)
     city = models.CharField(verbose_name='ort', max_length=255, null=True, blank=True)
-    gender = models.CharField(verbose_name='kön', max_length=1, null=True, blank=False, choices=GENDER_OPTIONS)
+    gender = models.CharField(verbose_name='kön',
+                              max_length=1, null=True, blank=True, choices=GENDER_OPTIONS, default=None)
     allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
     start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=timezone.now().year)
     current_year = models.CharField(verbose_name='nuvarande årskurs',
