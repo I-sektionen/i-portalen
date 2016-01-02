@@ -1,0 +1,20 @@
+{% extends "master.html" %}
+
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+    <div class="course-evaluation">
+    <a href="{% url "course_evaluations:choose year" %}"><button type="button">Tillbaka</button></a>
+        <hr>
+<form method="post" action="">
+    {% csrf_token %}
+    {{ form }}
+    <div id="article-create-form-buttons">
+        <button type="submit">Skapa år</button>
+
+
+    </div>
+</form>
+    </div>
+{% endblock %}

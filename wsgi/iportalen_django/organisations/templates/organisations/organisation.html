@@ -28,18 +28,20 @@
     <div id="organisation-admin-panel">
     {% can_edit_organisation request.user organisation as can_edit %}
         {% if can_edit %}
-            <a href="{% url "edit_organisation" organisation.name %}">
+            <a href="{% url "organisations:edit" organisation.name %}">
                 <button>Ändra info</button>
             </a>
         {% endif %}
     </div>
     <div id="organisation-content">
-        <article class="single-article" id="organisation-description">
-            <h1>Om {{ organisation.name }}</h1>
-            <p>
-                {{ organisation.description|markdown }}
-            </p>
-        </article>
+        <section id="organisation-description">
+            <h1 {% ifequal organisation.name|capfirst 'Webgroup' %}
+            title="Vi jobbar med kod, inte personer!"
+            {% endifequal %}>Om {{ organisation.name }}</h1>
+
+            {{ organisation.description|markdown }}
+
+        </section>
 
             {% get_child_organisations organisation.pk as children %}
                 {% if children %}
@@ -57,29 +59,37 @@
             <h1>Medlemmar</h1>
             <table>
                 <thead>
-                    <th>Namn</th>
-                    <th>Post</th>
-                    <th>Kontaktuppgifter</th>
+                    <tr>
+                        <th>Namn</th>
+                        <th>Post</th>
+                        <th>Kontaktuppgifter</th>
+                    </tr>
                 </thead>
-                <tbody>
+                <tbody>{% get_organisation_leader organisation as leader %}
                     <tr>
                         <td>
-                            {% if organisation.leader.first_name and organisation.leader.last_name %}
-                                {{ organisation.leader.first_name|capfirst }} {{ organisation.leader.last_name|capfirst }}
-                            {% endif %}
+                            {{ organisation.leader.first_name|capfirst }} {{ organisation.leader.last_name|capfirst }}
                         </td>
-                        <td>Ordförande</td>
-                        <td>{{ organisation.leader.email }}</td>
+                        <td>{{ leader.post }}</td>
+                        {% if leader.email %}
+                        <td>{{ leader.email|urlize }}</td>
+                        {% else %}
+                        <td>{{ organisation.leader.email|urlize }}</td>
+                        {% endif %}
                     </tr>
-                    {% for u in organisation.group.user_set.all %}
+                    {% for member in members %}
                         <tr>
-                            {% ifnotequal organisation.leader.pk u.pk %}
-                                {% if u.first_name and u.last_name %}
+                            {% ifnotequal organisation.leader.pk member.user.pk %}
+                                {% if member.user.first_name and member.user.last_name %}
                                     <td>
-                                        {{ u.first_name|capfirst }} {{ u.last_name|capfirst }}
+                                        {{ member.user.first_name|capfirst }} {{ member.user.last_name|capfirst }}
                                     </td>
-                                    <td>Övrig</td>
-                                    <td>{{ u.email }}</td>
+                                    <td>{{ member.post }}</td>
+                                    {% if member.email %}
+                                    <td>{{ member.email }}</td>
+                                    {% else %}
+                                    <td></td>
+                                    {% endif %}
                                 {% endif %}
                             {% endifnotequal %}
                         </tr>
@@ -93,15 +103,17 @@
             <h1>Artiklar</h1>
             <table>
                 <thead>
-                <th>Titel</th>
-                <th>Publicerad</th>
+                    <tr>
+                        <th colspan="2">Titel</th>
+                        <th>Publicerad</th>
+                    </tr>
                 </thead>
                 <tbody>
                 {% for article in articles %}
                     <tr>
-                        <td><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></td>
+                        <td colspan="2"><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></td>
                         <td>{{ article.created|date:"Y-m-d" }}</td>
-                        <td></td>
+
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -114,20 +126,28 @@
             <h1>Event</h1>
             <table>
                 <thead>
-                <th>Titel</th>
-                <th>Publicerad</th>
+                    <tr>
+                        <th colspan="2">Titel</th>
+                        <th>Publicerad</th>
+                    </tr>
                 </thead>
                 <tbody>
                 {% for event in events %}
                     <tr>
-                        <td><a href="{% url "event" event.pk %}">{{ article.headline }}</a></td>
+                        <td colspan="2"><a href="{% url "events:event" event.pk %}">{{ event.headline }}</a></td>
                         <td>{{ event.created|date:"Y-m-d" }}</td>
-                        <td></td>
+
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </section>
+        {% endif %}
+        {% if organisation.contact_info %}
+            <section id="organisation-contact-info">
+                <h1>Kontaktinfo</h1>
+                <p>{{ organisation.contact_info }}</p>
+            </section>
         {% endif %}
     </div>
 {% endblock %}

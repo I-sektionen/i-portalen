@@ -1,14 +1,16 @@
-from django.contrib.auth.models import Group
+from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django import forms
-from django.utils.datastructures import MultiValueDictKeyError
-from .models import Article, Tag
+from .models import Article
 
 
 class ArticleForm(forms.ModelForm):
+    draft = forms.BooleanField(label="Utkast", required=False, help_text="Sparar utan att publicera")
+
     class Meta:
         model = Article
-        fields = ('headline', 'lead', 'body', 'visible_from', 'visible_to', 'tags', 'draft', 'attachment', 'organisations')
+        fields = '__all__'
+        exclude = ['status', 'user', 'created', 'modified', 'replacing']
         error_messages = {
             'headline': {
                 'max_length': _("Titeln är för lång"),
@@ -18,8 +20,8 @@ class ArticleForm(forms.ModelForm):
             'body': forms.Textarea(attrs={'class': 'wmd-input', 'id': 'wmd-input-body'}),
         }
 
-    # This overrides the constructor, and adds the class datetimepicker.
     def __init__(self, *args, **kwargs):
+        """This overrides the constructor, and adds the class datetimepicker."""
         super(ArticleForm, self).__init__(*args, **kwargs)
         self.fields['visible_from'].widget.attrs['class'] = 'datetimepicker'
         self.fields['visible_to'].widget.attrs['class'] = 'datetimepicker'
@@ -28,4 +30,18 @@ class ArticleForm(forms.ModelForm):
         self.fields['body'].widget.attrs['placeholder'] = self.fields['body'].help_text
         self.fields['visible_to'].widget.attrs['placeholder'] = self.fields['visible_to'].help_text
         self.fields['visible_from'].widget.attrs['placeholder'] = self.fields['visible_from'].help_text
-        self.fields['draft'].widget.attrs['placeholder'] = self.fields['draft'].help_text
+
+    def clean(self):
+        super(ArticleForm, self).clean()
+        visible_to = self.cleaned_data.get("visible_to")
+        visible_from = self.cleaned_data.get("visible_from")
+        if visible_to:
+            if visible_from:
+                if visible_to < timezone.now():
+                    self.add_error('visible_to', "Datumet måste vara före dagens datum.")
+            if visible_to < visible_from:
+                self.add_error('visible_to', "Datumet måste vara före publiceringsdatumet.")
+
+
+class RejectionForm(forms.Form):
+    rejection_message = forms.CharField(label="avslags meddelande", widget=forms.Textarea())

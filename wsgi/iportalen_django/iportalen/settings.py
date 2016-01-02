@@ -46,14 +46,17 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'reversion',
+    'django.contrib.sites',
+    'iportalen',
+    'storages',
     'tags',
     'user_managements',
     'articles',
     'events',
     'organisations',
-    'iportalen',
-    'storages',
+    'bookings',
+    'django_extensions',
+    'course_evaluations'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -103,7 +106,7 @@ if ON_PASS:
         }
     }
 elif ON_JENKINS:
-     DATABASES = {
+    DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': os.environ['JENKINS_DB_NAME'],
@@ -197,3 +200,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'noreply@i-portalen.se'
 EMAIL_HOST_PASSWORD = '***REMOVED***'
+
+SITE_ID = 2

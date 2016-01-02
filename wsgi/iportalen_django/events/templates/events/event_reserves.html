@@ -21,6 +21,6 @@
         </table>
         {% event_can_administer event request.user as can_administer %}
         {% if can_administer %}
-            <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
+            <a href="{% url "events:administer" event.pk %}"><button type="button">Admin</button></a>
         {% endif %}
 {% endblock %}

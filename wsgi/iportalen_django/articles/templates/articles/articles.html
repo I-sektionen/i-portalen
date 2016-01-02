@@ -3,19 +3,15 @@
 {% load iportalen_tags %}
 
 {% block content %}
-{% for article in articles %}
-<article class="news-preview">
-    <div class="meta">
-        <span class="date">{{ article.created|date:"Y-m-d" }}</span>
-        <span class="author">{{ article.organisations.all|safeseq|join:", " }}</span>
-        {# Don't render tags for articles without tags #}
-        {% if article.tags.all  %}
-            <span class="tags">{{ article.tags.all|safeseq|join:", " }}</span>
-        {% endif %}
-    </div>
-    <h5>{{ article.headline }}</h5>
-    <p class="article-lead">{{ article.lead|truncatewords_html:50 }}</p>
-    <a href="{{ article.get_absolute_url }}"><button class="btn-read-more">Läs mer</button></a>
-</article>
-{% endfor %}
+    <section id="news-feed">
+        <div id="content-select-nav">
+            <a href="{% url "news feed" %}" class="content-type-nav">Allt</a>
+            <a href="{% url "articles:articles" %}" class="content-type-nav active">Nyheter</a>
+            <a href="{% url "events:calender" %}" class="content-type-nav">Event</a>
+            <a href="{% url "sponsored" %}" class="content-type-nav">Sponsrat</a>
+        </div>
+        {% for article in articles %}
+            {% include "articles/model/small_article.html" with article=article %}
+        {% endfor %}
+    </section>
 {% endblock %}

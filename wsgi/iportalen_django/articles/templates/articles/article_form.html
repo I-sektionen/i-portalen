@@ -3,17 +3,18 @@
 {% load tag_tags %}
 {% load staticfiles %}
 {% block content %}
+    <form action="" method="post" enctype="multipart/form-data">
     <ul class="accordion-tabs">
         <li class ="tab-header-and-content">
             <a href="javascript:void(0)" class="is-active tab-link">Skriv artikel</a>
             <div class="tab-content">
+                <section id="article-create-form-text">
+                    <h1>Skapa artikel</h1>
 
-                <h1>Skapa artikel</h1>
-                <form action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div id = article-create-large>
                         {{ form.non_field_errors }}
-                        <section id="article-create-form-text">
+
                             {{ form.headline.errors }}
                             {{ form.headline.label_tag }}
                             {{ form.headline }}
@@ -57,12 +58,15 @@
                         {{ form.visible_to.label_tag }}
                         {{ form.visible_to }}
 
-                        </section>
+                        {{ form.sponsored.errors }}
+                        {{ form.sponsored.label_tag }}
+                        {{ form.sponsored }}
+
                         <div id="article-create-form-buttons">
                             <button type="submit">Publicera artikeln</button>
                         </div>
                     </div>
-
+                </section>
             </div>
         </li>
         <li class ="tab-header-and-content">

@@ -1,0 +1,24 @@
+<article class="news-feed-content">
+    <div class="article-type-and-date">
+        <!-- <p class="type">Nyhet</p>-->
+        <i class="fa fa-newspaper-o large"></i>
+        <div class="article-preview-time-organisation">
+            <p class="article-preview-type">{{ article.organisations.all|safeseq|join:", " }}</p>
+            <p class="article-preview-type time-since">{{ article.visible_from|timesince}}</p>
+        </div>
+    </div>
+    <a href="{{ article.get_absolute_url }}"><h1>{{ article.headline }}</h1></a>
+
+    <p class="meta">
+        {% if article.tags.all  %}
+            <i class="fa fa-tags"></i>
+            <span>{{ article.tags.all|safeseq|join:", " }}</span>
+        {% endif %}
+        {% if article.sponsored  %}
+            <span>Sponsrat innehåll</span>
+        {% endif %}
+    </p>
+    <h2>{{ article.lead|truncatewords_html:50 }}</h2>
+    <a href="{{ article.get_absolute_url }}">Läs mer</a>
+    <hr>
+</article>

@@ -1,0 +1,24 @@
+{% extends "master.html" %}
+
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+    <div class="course-evaluation">
+<a href="{% url 'course_evaluations:admin period' period.pk %}"><button type="button">Tillbaka</button></a>
+    <hr>
+    <form action="" method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <strong>{{ field.label }}</strong>
+        {{ field }}
+        {{ field.error }}
+        {% endfor %}
+
+        <div id="article-create-form-buttons">
+            <button type="submit">Spara ändringar</button>
+
+        </div>
+    </form>
+    </div>
+{% endblock %}

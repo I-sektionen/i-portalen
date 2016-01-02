@@ -2,12 +2,13 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Permission
 from .forms import CustomUserChangeForm, CustomUserCreationForm
-from .models import IUser, MasterProfile, BachelorProfile
+from .models import IUser, MasterProfile, BachelorProfile, IpikureSubscriber
 
 
 class IUserAdmin(UserAdmin):
     def show_kobra_url(self, obj):
-        return '<a href="%s" target="_blank">Uppdatera från kobra</a>' % (obj.update_from_kobra_url)
+        return '<a href="{:}" target="_blank">Uppdatera från kobra</a>'.format(obj.update_from_kobra_url)
+
     show_kobra_url.allow_tags = True
 
     form = CustomUserChangeForm
@@ -29,7 +30,8 @@ class IUserAdmin(UserAdmin):
             'gender',
             'allergies',
             'start_year',
-            'expected_exam_year',
+            'current_year',
+            'klass',
             'bachelor_profile',
             'master_profile',
             'groups',
@@ -42,14 +44,16 @@ class IUserAdmin(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('username', 'password1', 'password2', 'is_staff', 'is_superuser')}
-        ),
+         ),
     )
 
     search_fields = ('username',)
     ordering = ('username',)
     filter_horizontal = ('groups', 'user_permissions',)
 
+
 admin.site.register(IUser, IUserAdmin)
 admin.site.register(MasterProfile)
 admin.site.register(BachelorProfile)
 admin.site.register(Permission)
+admin.site.register(IpikureSubscriber)

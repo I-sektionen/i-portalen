@@ -1,0 +1,79 @@
+{% extends "master.html" %}
+{% comment %}
+Detta är alltså ett påbörjat projekt att filtrera användare. Det visade sig inte helt nödvändigt.
+Det får ligga kvar tillsammans med sin tillhörande vy som visar på hur dynamiska sökfrågor kan göras
+med sk. Q-objekt. Framtida planerade implementationer med automatiska mail osv kommer antagligen
+att använda Q.
+
+    //Isac -2015
+{% endcomment %}
+
+{% block hero %}
+{% endblock %}
+{% block sponsors %}
+{% endblock %}
+{% block content %}
+    <div id="user-search">
+        <form action="{% url "filter users" %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+        <button type="submit">Sök</button>
+        </form>
+
+        <div id="search-controls">
+            {{ select_user_fields_form }}
+        </div>
+
+        <div class="search-result">
+        {% if users %}
+            <table>
+            <thead>
+                <tr>
+                    <th class="email">Mailadress </th>
+                    <th class="first_name">Förnamn</th>
+                    <th class="last_name">Efternamn</th>
+                    <th>Kön</th>
+                    <th>Start år</th>
+                    <th>Nuvarande Åk</th>
+                    <th>Teknisk inriktning</th>
+                    <th>Master profil</th>
+                    <th>Medlem?</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.first_name|title }}</td>
+                        <td>{{ user.last_name|title}}</td>
+                        <td>{{ user.gender }}</td>
+                        <td>{{ user.start_year }}</td>
+                        <td>{{ user.current_year }}</td>
+                        <td>{{ user.bachelor_profile }}</td>
+                        <td>{{ user.master_profile }}</td>
+                        <td>{{ user.is_member }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+            <table class="mail">
+                <thead>
+                <tr>
+                    <th>Mailadress</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.email }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        {% else %}
+            <h3>Du har inga träffar i den sökning.</h3>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}
+

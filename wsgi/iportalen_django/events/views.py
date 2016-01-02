@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
@@ -7,26 +8,20 @@ from django.utils import timezone
 from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
 import csv
-
 from utils.validators import liu_id_validator
-
-
-from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm
-from .models import Event, EntryAsPreRegistered, EntryAsReserve, SpeakerList
+from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm, RejectionForm
+from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticipant, SpeakerList
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
+
+
 # Create your views here.
 
 
 def view_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    can_administer = event.can_administer(request.user)
-    if event.status == Event.APPROVED or can_administer:
-        return render(request, "events/event.html", {
-            "event": event,
-            "can_administer": can_administer,
-            "registered": event.registered(request.user),
-        })
+    if event.status == Event.APPROVED or event.can_administer(request.user):
+        return render(request, "events/event.html", {"event": event})
     else:
         return HttpResponseForbidden()
 
@@ -39,8 +34,9 @@ def register_to_event(request, pk):
             event.register_user(request.user)
             messages.success(request, "Du är nu registrerad på eventet.")
         except CouldNotRegisterException as err:
-            messages.error(request, "Fel, kunde inte registrera dig på " + err.event.headline + " för att " + err.reason + ".")
-    return redirect("event", pk=pk)
+            messages.error(request,
+                           "Fel, kunde inte registrera dig på " + err.event.headline + " för att " + err.reason + ".")
+    return redirect("events:event", pk=pk)
 
 
 @login_required()
@@ -76,8 +72,9 @@ def register_as_reserve(request, pk):
     if request.method == "POST":
         event = get_object_or_404(Event, pk=pk)
         entry = event.register_reserve(request.user)
-        messages.success(request, "Du är nu anmäld som reserv på eventet, du har plats nr. " + str(entry.position()) + ".")
-    return redirect("event", pk=pk)
+        messages.success(request,
+                         "Du är nu anmäld som reserv på eventet, du har plats nr. " + str(entry.position()) + ".")
+    return redirect("events:event", pk=pk)
 
 
 @login_required()
@@ -101,6 +98,7 @@ def preregistrations_list(request, pk):
     else:
         return HttpResponseForbidden()  # Nope.
 
+
 @login_required()
 def participants_list(request, pk):
     event = get_object_or_404(Event, pk=pk)
@@ -111,6 +109,7 @@ def participants_list(request, pk):
     else:
         return HttpResponseForbidden()  # Nope.
 
+
 @login_required()
 def speech_nr_list(request, pk):
     event = get_object_or_404(Event, pk=pk)
@@ -120,6 +119,7 @@ def speech_nr_list(request, pk):
         })
     else:
         return HttpResponseForbidden()  # Nope.
+
 
 @login_required()
 def reserves_list(request, pk):
@@ -138,19 +138,16 @@ def reserves_list(request, pk):
 def check_in(request, pk):
     event = get_object_or_404(Event, pk=pk)
     can_administer = event.can_administer(request.user)
-    reserve = False
     if request.method == 'POST':
         form = CheckForm(request.POST)
         if form.is_valid():
             form_user = form.cleaned_data["user"]
-            is_liu_id = False
             try:
                 liu_id_validator(form_user)
                 is_liu_id = True
             except:
                 is_liu_id = False
 
-            event_user = None
             try:
                 if is_liu_id:
                     event_user = IUser.objects.get(username=form_user)
@@ -160,8 +157,8 @@ def check_in(request, pk):
                 messages.error(request, "Användaren finns inte i databasen")
                 form = CheckForm()
                 return render(request, 'events/event_check_in.html', {
-                'form': form, 'event': event, "can_administer": can_administer,
-            })
+                    'form': form, 'event': event, "can_administer": can_administer,
+                })
             if event_user in event.preregistrations or form.cleaned_data["force_check_in"] == True:
                 try:
                     event.check_in(event_user)
@@ -173,7 +170,8 @@ def check_in(request, pk):
                         if extra:
                             extra_str = "<br>Anmälde sig i tid för att " + event.extra_deadline_text + "."
                         else:
-                            extra_str = "<br><span class='errorlist'>Anmälde sig ej i tid för att " + event.extra_deadline_text + ".</span>"
+                            extra_str = "<br><span class='errorlist'>Anmälde sig ej i tid för att " + \
+                                        event.extra_deadline_text + ".</span>"
                     else:
                         extra_str = ""
                     messages.success(request, "{0} {1} checkades in med talarnummer: {2}{3}".format(
@@ -185,17 +183,22 @@ def check_in(request, pk):
                     form = CheckForm()
                     return render(request, 'events/event_check_in.html', {
                         'form': form, 'event': event, "can_administer": can_administer,
-                     })
+                    })
                 except:
-                    messages.error(request, "{0} {1} är redan incheckad".format(event_user.first_name.capitalize(), event_user.last_name.capitalize()))
+                    messages.error(request, "{0} {1} är redan incheckad".format(event_user.first_name.capitalize(),
+                                                                                event_user.last_name.capitalize()))
 
             else:
                 if event_user in event.reserves:
-                    messages.error(request, "Användaren {0} {1} är anmäld som reserv".format(event_user.first_name.capitalize(), event_user.last_name.capitalize()))
+                    messages.error(request,
+                                   "Användaren {0} {1} är anmäld som reserv".format(event_user.first_name.capitalize(),
+                                                                                    event_user.last_name.capitalize()))
                 else:
-                    messages.error(request, "Användare {0} {1} är inte anmäld på eventet".format(event_user.first_name.capitalize(), event_user.last_name.capitalize()))
+                    messages.error(request, "Användare {0} {1} är inte anmäld på eventet".format(
+                        event_user.first_name.capitalize(), event_user.last_name.capitalize()))
                 reserve = True
-                return render(request, 'events/event_check_in.html', {'form': form, 'event': event, 'reserve': reserve, "can_administer": can_administer,})
+                return render(request, 'events/event_check_in.html',
+                              {'form': form, 'event': event, 'reserve': reserve, "can_administer": can_administer, })
 
         else:
             return render(request, 'events/event_check_in.html', {
@@ -206,6 +209,7 @@ def check_in(request, pk):
     return render(request, 'events/event_check_in.html', {
         'form': form, 'event': event, "can_administer": can_administer,
     })
+
 
 @login_required()
 def all_unapproved_events(request):
@@ -221,25 +225,23 @@ def all_unapproved_events(request):
 def approve_event(request, event_id):
     event = Event.objects.get(pk=event_id)
     if event.approve(request.user):
-        return redirect(all_unapproved_events)
+        return redirect(reverse('events:unapproved'))
     else:
         raise PermissionDenied
 
 
 @login_required()
-def unapprove_event(request, event_id):
-    event = Event.objects.get(pk=event_id)
-    if event.reject(request.user):
-        # TODO: Ganska horribel lösning...
-        message = ("Eventet har gått avslagits, maila gärna <a href='mailto:" +
-                   event.user.email +
-                   "?Subject=Avslag%20publicering%20av%20event' target='_top'>" +
-                   event.user.email +
-                   "</a> med en förklaring till avslaget.<br>" +
-                   "<a href='/event/unapproved'>Tillbaka till listan över event att godkänna.</a>")
-        return render(request, 'articles/confirmation.html', {'message': message})
-    else:
-        raise PermissionDenied
+def unapprove_event(request, pk):
+    event = Event.objects.get(pk=pk)
+    form = RejectionForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            if event.reject(request.user, form.cleaned_data['rejection_message']):
+                messages.success(request, "Eventet har avslagits.")
+                return redirect('events:unapproved')
+            else:
+                raise PermissionDenied
+    return render(request, 'events/reject.html', {'form': form, 'event': event})
 
 
 @login_required()
@@ -257,6 +259,7 @@ def CSV_view_participants(request, pk):
         writer.writerow([user.username, user.first_name, user.last_name, user.email])
 
     return response
+
 
 @login_required()
 def CSV_view_preregistrations(request, pk):
@@ -283,8 +286,9 @@ def unregister(request, pk):
             event.deregister_user(request.user)
             messages.success(request, "Du är nu avregistrerad på eventet.")
         except CouldNotRegisterException as err:
-            messages.error(request, "Fel, kunde inte avregistrera dig på " + err.event.headline + " för att " + err.reason + ".")
-    return redirect("event", pk=pk)
+            messages.error(request,
+                           "Fel, kunde inte avregistrera dig på " + err.event.headline + " för att " + err.reason + ".")
+    return redirect("events:event", pk=pk)
 
 
 def event_calender(request):
@@ -323,8 +327,11 @@ def create_or_modify_event(request, pk=None):
             links = ""
             for d in duplicates:
                 links += "<a href='{0}'>{1}</a><br>".format(d.get_absolute_url(), d.headline)
-            messages.error(request, "Det finns redan en ändrad version av det här arrangemanget! "
-                                    "Är du säker på att du vill ändra den här?<br>Följande ändringar är redan föreslagna: <br> {:}".format(links), extra_tags='safe')
+            messages.error(request,
+                           "Det finns redan en ändrad version av det här arrangemanget! "
+                           "Är du säker på att du vill ändra den här?<br>"
+                           "Följande ändringar är redan föreslagna: <br> {:}".format(links),
+                           extra_tags='safe')
         event = get_object_or_404(Event, pk=pk)
         if not event.can_administer(request.user):
             return HttpResponseForbidden()
@@ -335,7 +342,7 @@ def create_or_modify_event(request, pk=None):
         if form.is_valid():
             event = form.save(commit=False)
 
-            if form.cleaned_data['draft'] == True:
+            if form.cleaned_data['draft']:
                 draft = True
             else:
                 draft = False
@@ -354,7 +361,7 @@ def create_or_modify_event(request, pk=None):
                 messages.success(request, "Dina ändringar har sparats i ett utkast.")
             elif event.status == Event.BEING_REVIEWED:
                 messages.success(request, "Dina ändringar har skickats för granskning.")
-            return redirect('events by user')
+            return redirect('events:by user')
         else:
             messages.error(request, "Det uppstod ett fel, se detaljer nedan.")
             return render(request, 'events/create_event.html', {
@@ -401,14 +408,14 @@ def speaker_list(request, pk):
             else:
                 return JsonResponse({"status": "Ange ett korrekt kommando."})
     else:
-        return render(request, 'events/speaker_list.html', {'event': Event.objects.get(pk=pk), 'pk': pk})
+        return JsonResponse({})
 
 
 @login_required()
 def speaker_list_display(request, pk):
     event = get_object_or_404(Event, pk=pk)
     return render(request, 'events/display_speaker_list.html', {
-        'speaker_list': event.get_speaker_queue(), 'event':event
+        'speaker_list': event.get_speaker_queue(), 'event': event
     })
 
 
