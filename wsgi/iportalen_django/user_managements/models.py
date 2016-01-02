@@ -127,43 +127,6 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
-    # This is where the menu options for a specific user is determined.
-    @property
-    def get_menu_choices(self):
-
-        menu_choices = [('Lägg upp innehåll', reverse('create content')),
-                        ('Min sida', reverse('my page'))]  # List of extra menu choices.
-
-        if self.article_set.filter(visible_to__gte=timezone.now()):
-            menu_choices.append(('Mina Artiklar', reverse('articles:by user')))
-
-        menu_choices.append(('Mina Event', reverse('events:by user')))
-
-        menu_choices.append(('Mina Anmälningar', reverse('events:registered on')))
-
-        if self.has_perm("articles.can_approve_article"):
-            menu_choices.append(('Godkänn Innehåll', reverse('approve content')))  # With perm to edit articles.
-
-        if self.is_staff:
-            menu_choices.append(('Admin', '/admin'))  # Staff users who can access Admin page.
-
-        if self.has_perm("user_managements.add_iuser"):
-            menu_choices.append(("Lägg till Liu-idn i whitelist", reverse('add users to whitelist')))
-
-        if self.has_perm("organisations.add_organisation"):
-            menu_choices.append(("Lägg till en organisation", reverse('organisations:create')))
-
-        if self.has_perm('courses.add_course'):
-            menu_choices.append(("Administrera kursutvärderingar", reverse('course_evaluations:admin')))
-
-        if self.has_perm('user_managements.can_view_users'):
-            menu_choices.append(('Alla användare', reverse('all users')))
-
-        if self.has_perm('user_managements.can_view_subscribers'):
-            menu_choices.append(('Lista Ipikuréprenumeranter', reverse('ipikure_subscribers')))
-
-        return menu_choices
-
     def get_full_name(self):
         try:
             return self.first_name.capitalize() + " " + self.last_name.capitalize()

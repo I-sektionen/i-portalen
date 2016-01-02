@@ -1,0 +1,10 @@
+{% if menu_list %}
+<div class="sub-menu">
+<h2>{{ menu_name }}</h2>
+<ul>
+{% for name, url in menu_list %}
+    <li><a href="{{ url }}">{{ name }}</a></li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}

@@ -1,11 +1,33 @@
 {% extends "master.html" %}
+{% load article_tags %}
+{% load booking_tags %}
+{% load course_evaluation_tags %}
+{% load event_tags %}
+{% load iportalen_tags %}
+{% load organisation_tags %}
+{% load tag_tags %}
+{% load user_management_tags %}
 
 {% block hero %}
 {% endblock %}
 {% block content %}
-    <ul>
-{% for name, url in request.user.get_menu_choices %}
-    <li><a href="{{ url }}">{{ name }}</a></li>
-{% endfor %}
-    </ul>
+    <div id="admin-menu">
+        {% get_menu_choices_article request.user as article %}
+        {% get_menu_choices_bookings request.user as booking %}
+        {% get_menu_choices_course_evaluation request.user as course_eval %}
+        {% get_menu_choices_event request.user as event %}
+        {% get_menu_choices_iportalen request.user as iportalen %}
+        {% get_menu_choices_organisation request.user as organisation %}
+        {% get_menu_choices_tag request.user as tag %}
+        {% get_menu_choices_user request.user as user %}
+
+        {% include "user_managements/menu_box.html" with menu_name="Artiklar" menu_list=article %}
+        {% include "user_managements/menu_box.html" with menu_name="Bokningar" menu_list=booking %}
+        {% include "user_managements/menu_box.html" with menu_name="Kursutvärderingar" menu_list=course_eval %}
+        {% include "user_managements/menu_box.html" with menu_name="Event" menu_list=event %}
+        {% include "user_managements/menu_box.html" with menu_name="I-Portalen" menu_list=iportalen %}
+        {% include "user_managements/menu_box.html" with menu_name="Organisationer" menu_list=organisation %}
+        {% include "user_managements/menu_box.html" with menu_name="Taggar" menu_list=tag %}
+        {% include "user_managements/menu_box.html" with menu_name="Användare" menu_list=user %}
+    </div>
 {% endblock %}
