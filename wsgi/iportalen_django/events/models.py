@@ -310,7 +310,7 @@ class Event(models.Model):
         return False
 
     def reserve_nr(self, user):
-        return self.reserves_object().get(user=user).position()
+        return self.reserves_object().get(userREJE=user).position()
 
     def check_in(self, user):
         if user in self.participants:

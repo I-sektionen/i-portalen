@@ -23,7 +23,7 @@
                     <td colspan="2">{{ article.organisations.all|safeseq|join:", " }}</td>
                     <td>
                         {% if article.status == "r" %}
-                            Avslaget
+                            <span class="rejected">Avslaget:<br>{{ article.rejection_message }}</span>
                         {% elif article.status == "a" %}
                             Godkännt
                         {% elif article.status == "b" %}
