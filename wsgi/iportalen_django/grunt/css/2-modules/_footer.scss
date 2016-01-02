@@ -29,7 +29,7 @@
   }
 
   ul {
-    @include flex-basis(13em);
+    @include flex-basis(15em);
     @include flex-shrink(0);
     margin-bottom: $base-spacing * 2;
     padding: 0;
@@ -71,4 +71,21 @@
     max-width: 35em;
     text-align: center;
   }
+
+  a.magic > span {
+    content: 'ADD';
+    style: none;
+    color: rgba(51, 51, 51, 0.4);
+  }
+
+  a.magic:hover > span {
+    display: none;
+  }
+
+  a.magic:hover:before {
+    content: 'fulkod';
+    color: rgba(51, 51, 51, 0.4); 
+  }
+
 }
+

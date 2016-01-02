@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.db import migrations, models
 import datetime
 import utils.time
@@ -8,7 +7,6 @@ import utils.validators
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('articles', '0009_article_tags'),
     ]
@@ -32,16 +30,20 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='article',
             name='lead',
-            field=models.TextField(validators=[utils.validators.less_than_160_characters_validator], help_text='Ingressen är den text som syns i nyhetsflödet. Max 160 tecken.', verbose_name='ingress'),
+            field=models.TextField(validators=[utils.validators.less_than_160_characters_validator],
+                                   help_text='Ingressen är den text som syns i nyhetsflödet. Max 160 tecken.',
+                                   verbose_name='ingress'),
         ),
         migrations.AlterField(
             model_name='article',
             name='visible_from',
-            field=models.DateTimeField(help_text='Publiceringsdatum', verbose_name='publicering', default=datetime.datetime.now),
+            field=models.DateTimeField(help_text='Publiceringsdatum', verbose_name='publicering',
+                                       default=datetime.datetime.now),
         ),
         migrations.AlterField(
             model_name='article',
             name='visible_to',
-            field=models.DateTimeField(help_text='Avpubliceringsdatum', verbose_name='avpublicering', default=utils.time.now_plus_one_month),
+            field=models.DateTimeField(help_text='Avpubliceringsdatum', verbose_name='avpublicering',
+                                       default=utils.time.now_plus_one_month),
         ),
     ]

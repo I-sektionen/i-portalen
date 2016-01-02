@@ -1,0 +1,36 @@
+<article class="news-feed-content">
+    <div class="article-type-and-date">
+        <!-- <p class="type">Nyhet</p>-->
+        <i class="fa fa-calendar large"></i>
+        <div class="article-preview-time-organisation">
+            <p class="article-preview-type">{{ event.organisations.all|safeseq|join:", " }}</p>
+            <p class="article-preview-type time-since">{{ event.visible_from|timesince}}</p>
+        </div>
+    </div>
+    <a href="{{ event.get_absolute_url }}"><h1>{{ event.headline }}</h1></a>
+    <p class="meta">
+        <i class="fa fa-calendar"></i>
+        <span>{{ event.start|date:"d N Y" }}</span>
+        <i class="fa fa-clock-o"></i>
+        <span>{{ event.start|time:"H:i" }}</span>
+        <i class="fa fa-map-marker"></i>
+        <span>{{ event.location }}</span>
+        {% if event.enable_registration %}
+            <i class="fa fa-users"></i>
+            <span>{{ event.number_of_preregistrations }} ({{ event.registration_limit }})</span>
+            <span title="Tid innan anmälan stänger"><i class="fa fa-exclamation-circle"></i>
+            <span>{% if event.can_deregister %}{{ event.entry_deadline|timeuntil }}{% else %}Anmälan är stängd{% endif %}</span></span>
+        {% endif %}
+
+        {% if event.tags.all  %}
+            <i class="fa fa-tags"></i>
+            <span>{{ event.tags.all|safeseq|join:", " }}</span>
+        {% endif %}
+        {% if event.sponsored  %}
+            <span>Sponsrat innehåll</span>
+        {% endif %}
+    </p>
+    <h2>{{ event.lead|truncatewords_html:50 }}</h2>
+    <a href="{{ event.get_absolute_url }}">Läs mer</a>
+    <hr>
+</article>

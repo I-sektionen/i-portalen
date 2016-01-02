@@ -4034,6 +4034,169 @@ else
     }
 })();
 ;/**
+ * Created by jonathan on 2015-12-13.
+ */
+function cloneMore(selector, type) {
+    var newElement = $(selector).clone(true);
+    var total = $('#id_' + type + '-TOTAL_FORMS').val();
+    newElement.find(':input').each(function() {
+        var name = $(this).attr('name').replace('-' + (total-1) + '-','-' + total + '-');
+        var id = 'id_' + name;
+        $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+    });
+    newElement.find('label').each(function() {
+        var newFor = $(this).attr('for').replace('-' + (total-1) + '-','-' + total + '-');
+        $(this).attr('for', newFor);
+    });
+    total++;
+    $('#id_' + type + '-TOTAL_FORMS').val(total);
+    $(selector).after(newElement);
+}
+;/**
+ * Created by isac on 2015-11-22.
+ */
+function generate_booking_form(pk, weeks_forward){
+    console.log(weeks_forward);
+    jQuery.get('booking/book/'+pk+"/api/"+weeks_forward+"/" , function( data ){
+        var $element = jQuery(".booking");
+        $element.data("max_number_of_slots_in_booking", data.bookable.max_number_of_slots_in_booking);
+        var bookings = data.bookings;
+        var bookable = data.bookable;
+        var user = data.user;
+        var $days = jQuery("#days");
+        //Each day
+        var year = null;
+        var year_str = null;
+        jQuery.each( bookings, function(index, value){
+            var s = "<div class=\"single_day\">";
+            var d = value.date;
+            var month = d.month;
+            if (month <10){
+                month = "0"+month;
+            }
+            var day = d.day;
+            if (day <10){
+                day = "0"+day;
+            }
+            if (year == null){
+                year = d.year;
+                year_str = d.year;
+            }
+            if (year != d.year){
+                year = d.year;
+                year_str = year_str + " - " + d.year;
+            }
+            s = s + "<p>" + d.day + "/" + d.month;
+            //Each slot:
+            jQuery.each( value.slots, function( index, value2 ){
+                s = s + "<div data-start=\""+d.year + "" + month + "" + day+"_"+value2.start_time + "\" " +
+                     "data-end=\""+d.year + "" + month + "" + day+"_"+value2.end_time + "\" class=\"slot";
+                if(value2.available){
+                    if(value2.blocked){
+                        s = s + " blocked\">";
+                    } else {
+                        s = s + " available\" ";
+                        if (user.nr_of_active_bookings<bookable.max_number_of_bookings){
+                            s = s + "onclick=\"select_booking_slot(this)\"";
+                        }
+                            s = s + ">";
+                    }
+                } else {
+                    if(value2.blocked){
+                        s = s + " blocked\">";
+                    } else {
+                        s = s + " unavailable\">";
+                    }
+                }
+                var start_time = value2.start_time.split(':');
+                var end_time = value2.end_time.split(':');
+                s = s + "<p>" + start_time[0] + ":" + start_time[1] + "</p>";
+                s = s + "<p>" + end_time[0] + ":" + end_time[1] + "</p>";
+                s = s + "</div>";
+            });
+             // Write values to child!
+
+            $days.append(s);
+        });
+        $('#year').append("<h2>"+year_str+"</h2>");
+    });
+    $("#id_end").attr("hidden","");
+    $("#id_start").attr("hidden","");
+}
+
+function select_booking_slot(element){
+    var max_number_of_slots_in_booking = jQuery(".booking").data("max_number_of_slots_in_booking");
+    var $el = $(element);
+    var $container = jQuery("#days");
+    var first_click = null;
+    var last_click = null;
+    var it = 0;
+    $container.find(".slot").each(function(i) {
+        var $tmp = $($container.find(".slot")[i]);
+        if ($tmp.data('clicked') == true){
+            if (first_click == null){
+                first_click = i;
+                it++;
+            } else {
+                last_click = i;
+                it++;
+            }
+        }
+    });
+
+    var j = $container.find(".slot").index($el);
+    if (first_click==null && last_click==null){
+        $el.data('clicked', true);
+        $el.addClass("choosen");
+    }
+    else if (first_click!=null && last_click==null){
+        if (max_number_of_slots_in_booking!=1 && (j==first_click+1 || j==first_click-1)){
+            $el.data('clicked', true);
+            $el.addClass("choosen");
+        } else if (j==first_click) {
+            $el.data('clicked', false);
+            $el.removeClass("choosen");
+        } else if(max_number_of_slots_in_booking!=1){
+            console.log("max nr of slots");
+        } else {
+            console.log("måste sitta ihop.");
+        }
+    }
+    else {
+        if (j==first_click-1 && it<max_number_of_slots_in_booking){
+            $el.data('clicked', true);
+            $el.addClass("choosen");
+        } else if (j==last_click+1 && it<max_number_of_slots_in_booking){
+            $el.data('clicked', true);
+            $el.addClass("choosen");
+        } else if (j==first_click || j==last_click) {
+            $el.data('clicked', false);
+            $el.removeClass("choosen");
+        } else if(it>=max_number_of_slots_in_booking){
+             console.log("max nr of slots");
+        } else {
+            console.log("måste sitta ihop.");
+        }
+    }
+    first_click = null;
+    $container.find(".slot").each(function(i) {
+        var $tmp = $($container.find(".slot")[i]);
+        if ($tmp.data('clicked') == true){
+            if (first_click == null){
+                first_click = i;
+            } else {
+                last_click = i;
+            }
+        }
+    });
+    $("#id_start").val($($container.find(".slot")[first_click]).data('start'));
+    if (last_click==null){
+        $("#id_end").val($($container.find(".slot")[first_click]).data('end'));
+    } else {
+        $("#id_end").val($($container.find(".slot")[last_click]).data('end'));
+    }
+
+};/**
  * Created by isac on 2015-10-08.
  */
 function closeMessage(element){
@@ -4079,7 +4242,14 @@ function init_csrf() {
 $.datetimepicker.setLocale('sv');
 $('.datetimepicker').datetimepicker({
     format: 'Y-m-d H:i'
-});;/**
+});
+
+$.datetimepicker.setLocale('sv');
+$('.datepicker').datetimepicker({
+    timepicker:false,
+    format: 'Y-m-d'
+});
+;/**
  * Created by isac on 2015-11-01.
  */
 
@@ -4090,6 +4260,28 @@ $('.datetimepicker').datetimepicker({
 
 
 var MOBILE_BREAKPOINT = 900;;/**
+ * Created by jonathan on 2015-12-13.
+ */
+function goBack() {
+    window.history.back();
+};/**
+ * Created by andreas on 09/11/15.
+ */
+$(document).ready(function() {
+  var menuToggle = $('#js-centered-navigation-mobile-menu').unbind();
+  $('#js-centered-navigation-menu').removeClass("show");
+
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-centered-navigation-menu').slideToggle(function(){
+      if($('#js-centered-navigation-menu').is(':hidden')) {
+        $('#js-centered-navigation-menu').removeAttr('style');
+      }
+    });
+  });
+});
+
+;/**
  * Created by MagnusForzelius on 2015-10-31.
  */
 
@@ -4109,34 +4301,18 @@ var MOBILE_BREAKPOINT = 900;;/**
   $(".modal-inner").on("click", function(e) {
     e.stopPropagation();
   });
-};;/*global $*/
-$(document).ready(function () {
-    'use strict';
-    var menuToggle = $('#menu-toggle').unbind();
-    var navigationMenu = $('#navigation-menu').removeClass('show');
-    var submenuWrapper = $('#submenu-wrapper').removeClass('show');
-    var userPanelCheckbox = $('#user-panel-checkbox');
+};;$(document).ready(function() {
+  var menuToggle = $('#js-mobile-menu').unbind();
+  $('#js-navigation-menu').removeClass("show");
 
-    if ($(window).width() < MOBILE_BREAKPOINT) {  //TODO: Breakout global vars.
-        $('li.more>a').click(function (e) {
-            e.preventDefault();
-        });
-        $('li.more').click(function (e) {
-            console.log("li.more");
-            $(this).children('.submenu-wrapper').slideToggle('fast');
-        })
-    }
-    menuToggle.on('click', function (event) {
-        event.preventDefault();
-        navigationMenu.slideToggle('fast');
+  menuToggle.on('click', function(e) {
+    e.preventDefault();
+    $('#js-navigation-menu').slideToggle(function(){
+      if($('#js-navigation-menu').is(':hidden')) {
+        $('#js-navigation-menu').removeAttr('style');
+      }
     });
-
-    /**
-    $('#user-panel-toggle').click(function () {
-        console.log("hello")
-        userPanelCheckbox.prop("checked", !checkBoxes.prop("checked"));
-    })**/
-
+  });
 });
 ;$(document).ready(function () {
   $('.accordion-tabs').each(function(index) {
@@ -4349,6 +4525,30 @@ var event_preview = function () {
 
 
 
+;/**
+ * Created by jonathan on 2015-12-18.
+ */
+//This function initiates the markdown engine. It is called on by event_preview below.
+function markdown_organisation_preview() {
+        var converter = Markdown.getSanitizingConverter();
+        converter.hooks.chain("preConversion", function (text) {
+            return text.replace(/[&<"'\/]/g, function (s) {
+                var entityMap = {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    '"': '&quot;',
+                    "'": '&#39;',
+                    "/": '&#x2F;'
+                };
+                return entityMap[s];
+            }).replace(/([#]{2,})/g, '#').replace(/([=]{3,})/g, '').replace(/([-]{3,})/g, '').replace(/([`])/g, '');
+        });
+        converter.hooks.chain("plainLinkText", function (url) {
+            return url.replace(/^https?:\/\//, "");
+        });
+        var editor = new Markdown.Editor(converter, "-body");
+        editor.run();
+    }
 ;/**
  * Created by jonathan on 2015-10-20.
  */

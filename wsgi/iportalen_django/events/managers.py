@@ -1,8 +1,8 @@
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 
-class SpeakerListManager(models.Manager):
 
+class SpeakerListManager(models.Manager):
     def get_first(self, event):
         try:
             return event.speakerlist_set.get(first=True, event=event)

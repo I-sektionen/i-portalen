@@ -19,9 +19,28 @@
                 {% endfor %}
             </tbody>
         </table>
-    <a href="{% url "event_participants_download" event.pk %}"><button type="button">Ladda ner deltagare</button></a>
+    <a href="{% url "events:participants download" event.pk %}"><button type="button">Ladda ner deltagare</button></a>
     {% event_can_administer event request.user as can_administer %}
     {% if can_administer %}
-        <a href="{% url "administer_event" event.pk %}"><button type="button">Admin</button></a>
+        <a href="{% url "events:administer" event.pk %}"><button type="button">Admin</button></a>
     {% endif %}
+    <br>
+    <h1>No Shows</h1>
+    <table>
+            <thead>
+                <tr>
+                    <th>Liu-id</th><th>Förnamn</th><th>Efternamn</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in event.no_show %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.first_name|capfirst }}</td>
+                        <td>{{ user.last_name|capfirst }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
 {% endblock %}

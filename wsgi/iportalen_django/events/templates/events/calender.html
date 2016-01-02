@@ -4,24 +4,16 @@
 {% include "header.html" %}
 
 {% block content %}
-    <section id="upcoming-calender">
-        <h1>Kommande event</h1>
+    <section id="news-feed">
+        <div id="content-select-nav">
+            <a href="{% url "news feed" %}" class="content-type-nav">Allt</a>
+            <a href="{% url "articles:articles" %}" class="content-type-nav">Nyheter</a>
+            <a href="{% url "events:calender" %}" class="content-type-nav active">Event</a>
+            <a href="{% url "sponsored" %}" class="content-type-nav">Sponsrat</a>
+        </div>
         {% get_all_events as events %}
         {% for event in events %}
-            <article class="event-preview">
-                <div class="meta">
-                    <span class="date">{{ event.start|date:"d N Y" }}</span>
-                    <span class="time">{{ event.start|time:"H:i" }}</span>
-                    <span class="location">{{ event.location }}</span>
-                </div>
-                <h4>{{ event.headline }}</h4>
-                <p>{{ event.lead }}</p>
-                <a href="{% url "event" event.pk %}">Läs mer</a>
-                <!--
-                {% if event.enable_registration %}
-                    <a href="{% url "event" event.pk %}"><button>Anmäl</button></a>
-                {% endif %}-->
-            </article>
+            {% include "events/model/small_event.html" with event=event %}
         {% endfor %}
     </section>
 {% endblock %}
