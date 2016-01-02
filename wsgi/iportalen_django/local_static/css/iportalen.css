@@ -2258,6 +2258,44 @@ div.booking-container .third-container .third .center {
   flex: 6;
 }
 
+#admin-menu {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2em;
+}
+#admin-menu::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+#admin-menu h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+#admin-menu .sub-menu {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+  margin-bottom: 1.5em;
+}
+#admin-menu .sub-menu:last-child {
+  margin-right: 0;
+}
+@media screen and (min-width: 900px) {
+  #admin-menu .sub-menu {
+    float: left;
+    display: block;
+    margin-right: 3.57866%;
+    width: 48.21067%;
+    margin-right: 0;
+  }
+  #admin-menu .sub-menu:last-child {
+    margin-right: 0;
+  }
+}
+
 #master-container {
   position: relative;
   -webkit-transition: 0.5s ease-out;
