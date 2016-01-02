@@ -596,6 +596,10 @@ th {
   vertical-align: middle;
 }
 
+.auto-width {
+  width: auto;
+}
+
 body {
   color: #333;
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
@@ -1335,6 +1339,10 @@ article.news-preview-organisation p {
 article.news-preview-organisation .article-lead {
   font-size: 14px;
   font-style: italic;
+}
+
+.rejected {
+  color: #e33c3c;
 }
 
 #event-create-form-main {
