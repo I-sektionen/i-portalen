@@ -27,7 +27,7 @@ class Organisation(models.Model):
                                    help_text="Beskrivning av organisationen",
                                    null=True,
                                    blank=True)
-    contact_info = models.TextField(verbose_name='Kontaktinfo',
+    contact_info = models.EmailField(verbose_name='Mejlkontakt',
                                      help_text="Kontaktinformation för organisationen",
                                      null=True,
                                      blank=True)

@@ -2499,7 +2499,6 @@ div.booking-container .third-container .third .center {
     display: block;
     margin-right: 3.57866%;
     width: 48.21067%;
-    margin-right: 0;
   }
   #organisation-content #organisation-description:last-child {
     margin-right: 0;
@@ -2541,7 +2540,6 @@ div.booking-container .third-container .third .center {
     display: block;
     margin-right: 3.57866%;
     width: 48.21067%;
-    margin-right: 0;
   }
   #organisation-content #organisation-articles:last-child {
     margin-right: 0;
@@ -2586,27 +2584,6 @@ div.booking-container .third-container .third .center {
     margin-right: 0;
   }
   #organisation-content #organisation-suborg:last-child {
-    margin-right: 0;
-  }
-}
-#organisation-content #organisation-contact-info {
-  float: left;
-  display: block;
-  margin-right: 2.35765%;
-  width: 100%;
-}
-#organisation-content #organisation-contact-info:last-child {
-  margin-right: 0;
-}
-@media screen and (min-width: 900px) {
-  #organisation-content #organisation-contact-info {
-    float: left;
-    display: block;
-    margin-right: 3.57866%;
-    width: 48.21067%;
-    margin-right: 0;
-  }
-  #organisation-content #organisation-contact-info:last-child {
     margin-right: 0;
   }
 }
