@@ -86,3 +86,7 @@ class ImportEntriesForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(ImportEntriesForm, self).__init__(*args, **kwargs)
         self.fields['users'].label = "Lista med Liu-id:n att lägga till:"
+
+
+class RejectionForm(forms.Form):
+    rejection_message = forms.CharField(label="avslags meddelande", widget=forms.Textarea())

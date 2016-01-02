@@ -28,7 +28,7 @@
                     <td colspan="2">{{ event.user }}</td>
                     <td>
                         {% if event.status == "r" %}
-                            Avslaget
+                            <span class="rejected">Avslaget:<br>{{ event.rejection_message }}</span>
                         {% elif event.status == "a" %}
                             Godkännt
                         {% elif event.status == "b" %}

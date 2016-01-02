@@ -116,7 +116,7 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         """Get url of object"""
-        return "/articles/%i/" % self.id
+        return "/article/%i/" % self.id
 
     ###########################################################################
     # Properties reachable in template

@@ -1,0 +1,10 @@
+{% extends "master.html" %}
+{% block content %}
+    {% include "articles/model/full_article.html" with article=article %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <br>
+        <input type="submit" class="button" value="Avslå">
+    </form>
+{% endblock %}
