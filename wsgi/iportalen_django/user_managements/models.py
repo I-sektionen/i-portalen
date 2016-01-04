@@ -44,10 +44,10 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     OTHER = 'o'  # Other / non-binary
     UNSPECIFIED = 'u'  # Don't want to specify
     GENDER_OPTIONS = (
-        (MAN, 'man'),
-        (WOMEN, 'kvinna'),
-        (OTHER, 'annat / icke-binär'),
-        (UNSPECIFIED, 'vill ej ange')
+        (MAN, 'Man'),
+        (WOMEN, 'Kvinna'),
+        (OTHER, 'Annat / icke-binär'),
+        (UNSPECIFIED, 'Vill ej ange')
     )
 
     YEAR1 = '1'
