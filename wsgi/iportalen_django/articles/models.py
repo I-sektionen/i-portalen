@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.db import models, transaction
 from django.utils import timezone
@@ -189,6 +190,15 @@ class Article(models.Model):
         if not user.has_perm('articles.can_approve_article'):
             return False
         if self.status == BEING_REVIEWED:
+            if msg:
+                send_mail(
+                    "Din artikel har blivit avslagen.",
+                    "",
+                    settings.EMAIL_HOST_USER,
+                    [self.user.email, ],
+                    fail_silently=False,
+                    html_message="<p>Din artikel {head} har blivit avslagen med motiveringen:</p><p>{msg}".format(
+                        head=self.headline, msg=msg))
             self.rejection_message = msg
             self.status = REJECTED
             self.save()
