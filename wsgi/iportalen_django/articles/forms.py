@@ -44,4 +44,4 @@ class ArticleForm(forms.ModelForm):
 
 
 class RejectionForm(forms.Form):
-    rejection_message = forms.CharField(label="avslags meddelande", widget=forms.Textarea())
+    rejection_message = forms.CharField(label="Avslagsmeddelande", widget=forms.Textarea())
