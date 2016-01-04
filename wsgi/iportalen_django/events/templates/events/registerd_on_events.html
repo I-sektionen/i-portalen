@@ -7,7 +7,7 @@
             <p>Du är reserv till följande arrangemang:</p>
             <ul>
                 {% for e in reserve_events %}
-                    <li><a href="{{ e.event.get_absolute_url }}">{{ e.event }}</a></li>
+                    <li><a href="{{ e.event.get_absolute_url }}">{{ e.event }} {{ e.event.start|date:"Y-m-d" }} {{ e.event.start|time:"H:i" }}</a></li>
                 {% endfor %}
             </ul>
         {% endif %}
@@ -15,7 +15,7 @@
             <p>Du är anmäld till följande arrangemang:</p>
             <ul>
                 {% for e in preregistrations_events %}
-                    <li><a href="{{ e.event.get_absolute_url }}">{{ e.event }}</a></li>
+                    <li><a href="{{ e.event.get_absolute_url }}">{{ e.event }} {{ e.event.start|date:"Y-m-d" }} {{ e.event.start|time:"H:i" }}</a></li>
                 {% endfor %}
             </ul>
         {% endif %}
