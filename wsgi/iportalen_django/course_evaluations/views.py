@@ -67,17 +67,17 @@ def evaluate_course(request):
 
 
 @login_required
-@permission_required('courses.add_course')
-@permission_required('courses.change_course')
-@permission_required('courses.delete_course')
+@permission_required('course_evaluations.add_course')
+@permission_required('course_evaluations.change_course')
+@permission_required('course_evaluations.delete_course')
 def admin(request):
     return render(request, "course_evaluations/admin/index.html",)
 
 
 @login_required
-@permission_required('courses.add_course')
-@permission_required('courses.change_course')
-@permission_required('courses.delete_course')
+@permission_required('course_evaluations.add_course')
+@permission_required('course_evaluations.change_course')
+@permission_required('course_evaluations.delete_course')
 def admin_year(request, year):
     year = Year.objects.get(year=year)
     courses = Course.objects.all()
@@ -90,9 +90,9 @@ def admin_year(request, year):
     return render(request, "course_evaluations/admin/year.html", {"year": year, "courses": courses})
 
 @login_required
-@permission_required('courses.add_course')
-@permission_required('courses.change_course')
-@permission_required('courses.delete_course')
+@permission_required('course_evaluations.add_course')
+@permission_required('course_evaluations.change_course')
+@permission_required('course_evaluations.delete_course')
 def create_or_modify_rewards(request):
     rewards = Reward.objects.all()
     RewardFormSet = modelformset_factory(Reward, fields="__all__", max_num=1000, extra=5, can_delete=False)
@@ -117,9 +117,9 @@ def create_or_modify_rewards(request):
 
 
 @login_required
-@permission_required('courses.add_course')
-@permission_required('courses.change_course')
-@permission_required('courses.delete_course')
+@permission_required('course_evaluations.add_course')
+@permission_required('course_evaluations.change_course')
+@permission_required('course_evaluations.delete_course')
 def choose_year(request):
     years = Year.objects.all()
     return render(request, "course_evaluations/admin/choose_year.html", {"years": years})
@@ -127,9 +127,9 @@ def choose_year(request):
 
 @login_required
 @transaction.atomic
-@permission_required('courses.add_course')
-@permission_required('courses.change_course')
-@permission_required('courses.delete_course')
+@permission_required('course_evaluations.add_course')
+@permission_required('course_evaluations.change_course')
+@permission_required('course_evaluations.delete_course')
 def copy_last_year(request):
     year = Year.objects.copy_last_year()
     year.save()
@@ -138,9 +138,9 @@ def copy_last_year(request):
 
 @login_required
 @transaction.atomic
-@permission_required('courses.add_course')
-@permission_required('courses.change_course')
-@permission_required('courses.delete_course')
+@permission_required('course_evaluations.add_course')
+@permission_required('course_evaluations.change_course')
+@permission_required('course_evaluations.delete_course')
 def create_year(request):
     form = YearForm(request.POST or None)
     if request.POST:
@@ -185,9 +185,9 @@ def create_year(request):
 
 @login_required
 @transaction.atomic
-@permission_required('courses.add_course')
-@permission_required('courses.change_course')
-@permission_required('courses.delete_course')
+@permission_required('course_evaluations.add_course')
+@permission_required('course_evaluations.change_course')
+@permission_required('course_evaluations.delete_course')
 def admin_period(request, pk):
     period = Period.objects.get(pk=pk)
     return render(request, "course_evaluations/admin/period.html", {"period": period})
@@ -195,9 +195,9 @@ def admin_period(request, pk):
 
 @login_required
 @transaction.atomic
-@permission_required('courses.add_course')
-@permission_required('courses.change_course')
-@permission_required('courses.delete_course')
+@permission_required('course_evaluations.add_course')
+@permission_required('course_evaluations.change_course')
+@permission_required('course_evaluations.delete_course')
 def edit_period(request, pk):
     period = Period.objects.get(pk=pk)
     form = PeriodForm(request.POST or None, instance=period)
@@ -207,7 +207,11 @@ def edit_period(request, pk):
 
     return render(request, "course_evaluations/admin/edit_period.html", {'period': period, "form": form})
 
-
+@login_required
+@transaction.atomic
+@permission_required('course_evaluations.add_course')
+@permission_required('course_evaluations.change_course')
+@permission_required('course_evaluations.delete_course')
 def evaluations(request, pk):
     period = Period.objects.get(pk=pk)
     if request.POST:
@@ -228,9 +232,9 @@ def evaluations(request, pk):
 
 @login_required
 @transaction.atomic
-@permission_required('courses.add_course')
-@permission_required('courses.change_course')
-@permission_required('courses.delete_course')
+@permission_required('course_evaluations.add_course')
+@permission_required('course_evaluations.change_course')
+@permission_required('course_evaluations.delete_course')
 def create_courses(request):
     courses = Course.objects.all()
     CourseFormSet = formset_factory(CourseForm, max_num=1000, extra=10, can_delete=False)

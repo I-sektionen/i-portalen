@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.db import models, transaction
 from django.utils import timezone
@@ -86,10 +87,14 @@ class Article(models.Model):
         on_delete=models.SET_NULL)
     organisations = models.ManyToManyField(
         Organisation,
-        blank=False,
+        blank=True,
         verbose_name='organisationer',
-        help_text="Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln. Håll ner Ctrl för att markera flera.")
-    sponsored = models.BooleanField(verbose_name='sponsrat', default=False, help_text="Kryssa i om innehållet är sponsrat")
+        help_text="Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln."
+                  " Håll ner Ctrl för att markera flera.")
+    sponsored = models.BooleanField(
+        verbose_name='sponsrat',
+        default=False,
+        help_text="Kryssa i om innehållet är sponsrat")
     objects = ArticleManager()  # Manager
 
     ###########################################################################
@@ -185,6 +190,15 @@ class Article(models.Model):
         if not user.has_perm('articles.can_approve_article'):
             return False
         if self.status == BEING_REVIEWED:
+            if msg:
+                send_mail(
+                    "Din artikel har blivit avslagen.",
+                    "",
+                    settings.EMAIL_HOST_USER,
+                    [self.user.email, ],
+                    fail_silently=False,
+                    html_message="<p>Din artikel {head} har blivit avslagen med motiveringen:</p><p>{msg}".format(
+                        head=self.headline, msg=msg))
             self.rejection_message = msg
             self.status = REJECTED
             self.save()
