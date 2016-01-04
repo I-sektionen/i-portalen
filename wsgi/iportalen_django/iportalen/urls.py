@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^student', RedirectView.as_view(pattern_name='front page', permanent=True)),  # Om någon har sparat /student som favorit skickar vi dem till startsidan
     url(r'^course_evaluation/', include(course_urls, namespace="course_evaluations")),
     url(r'^file_storage/', view=glasscubes_link, name="glasscubes storage"),
+    url('^faq/', include('faq.urls', namespace="faq"))
 ]
 if not settings.ON_PASS:
     urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
