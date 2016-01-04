@@ -83,6 +83,13 @@ class Organisation(models.Model):
             return True
         return False
 
+    def user_in_organisation(self, user):
+        try:
+            self.organisationpost_set.get(user=user)
+            return True
+        except:
+            return False
+
 
 class OrganisationPost(models.Model):
     post = models.CharField(max_length=40,
