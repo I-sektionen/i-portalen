@@ -127,6 +127,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
+    @property
     def get_full_name(self):
         try:
             return self.first_name.capitalize() + " " + self.last_name.capitalize()
@@ -160,6 +161,8 @@ class IUser(AbstractBaseUser, PermissionsMixin):
             for g in groups:
                 organisations = organisations + list(Organisation.objects.filter(group=g))
         return organisations
+    organisations = property(get_organisations)
+
 
 class IpikureSubscriber(models.Model):
     user = models.OneToOneField(IUser)

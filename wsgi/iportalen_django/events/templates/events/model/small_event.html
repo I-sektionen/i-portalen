@@ -3,7 +3,11 @@
         <!-- <p class="type">Nyhet</p>-->
         <i class="fa fa-calendar large"></i>
         <div class="article-preview-time-organisation">
+            {% if event.organisations.all %}
             <p class="article-preview-type">{{ event.organisations.all|safeseq|join:", " }}</p>
+            {% else %}
+            <p class="article-preview-type">{{ event.user.get_full_name }}</p>
+            {% endif %}
             <p class="article-preview-type time-since">{{ event.visible_from|timesince}}</p>
         </div>
     </div>
