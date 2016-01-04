@@ -88,8 +88,12 @@ class Article(models.Model):
         Organisation,
         blank=False,
         verbose_name='organisationer',
-        help_text="Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln. Håll ner Ctrl för att markera flera.")
-    sponsored = models.BooleanField(verbose_name='sponsrat', default=False, help_text="Kryssa i om innehållet är sponsrat")
+        help_text="Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln."
+                  " Håll ner Ctrl för att markera flera.")
+    sponsored = models.BooleanField(
+        verbose_name='sponsrat',
+        default=False,
+        help_text="Kryssa i om innehållet är sponsrat")
     objects = ArticleManager()  # Manager
 
     ###########################################################################
