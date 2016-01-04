@@ -42,6 +42,21 @@ class Topic(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        # Create a unique slug, if needed.
+        if not self.slug:
+            suffix = 0
+            potential = base = slugify(self.name[:90])
+            while not self.slug:
+                if suffix:
+                    potential = "%s-%s" % (base, suffix)
+                if not Topic.objects.filter(slug=potential).exists():
+                    self.slug = potential
+                # We hit a conflicting slug; increment the suffix and try again.
+                suffix += 1
+
+        super(Topic, self).save(*args, **kwargs)
+
 
 class Question(models.Model):
     HEADER = 2
@@ -65,7 +80,7 @@ class Question(models.Model):
     
     protected = models.BooleanField(_('is protected'), default=False,
         help_text=_("Set true if this question is only visible by authenticated users."))
-        
+
     sort_order = models.IntegerField(_('sort order'), default=0,
         help_text=_('The order you would like the question to be displayed.'))
 

@@ -44,10 +44,10 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     OTHER = 'o'  # Other / non-binary
     UNSPECIFIED = 'u'  # Don't want to specify
     GENDER_OPTIONS = (
-        (MAN, 'man'),
-        (WOMEN, 'kvinna'),
-        (OTHER, 'annat / icke-binär'),
-        (UNSPECIFIED, 'vill ej ange')
+        (MAN, 'Man'),
+        (WOMEN, 'Kvinna'),
+        (OTHER, 'Annat / icke-binär'),
+        (UNSPECIFIED, 'Vill ej ange')
     )
 
     YEAR1 = '1'
@@ -127,6 +127,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
+    @property
     def get_full_name(self):
         try:
             return self.first_name.capitalize() + " " + self.last_name.capitalize()
@@ -160,6 +161,8 @@ class IUser(AbstractBaseUser, PermissionsMixin):
             for g in groups:
                 organisations = organisations + list(Organisation.objects.filter(group=g))
         return organisations
+    organisations = property(get_organisations)
+
 
 class IpikureSubscriber(models.Model):
     user = models.OneToOneField(IUser)
