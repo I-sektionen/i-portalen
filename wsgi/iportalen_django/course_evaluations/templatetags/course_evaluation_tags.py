@@ -6,7 +6,7 @@ from django.template.loader_tags import register
 def get_menu_choices_course_evaluation(user):
     menu_choices = []
 
-    if user.has_perm('courses.add_course'):
+    if user.has_perm('course_evaluations.add_course'):
         menu_choices.append(("Administrera kursutvärderingar", reverse('course_evaluations:admin')))
 
     return menu_choices
