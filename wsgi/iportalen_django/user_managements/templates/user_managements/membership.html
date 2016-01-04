@@ -17,8 +17,10 @@
         <form action="{% url "become member" %}" method="post">
             {% csrf_token %}
             {{ form }}
-            <input type="submit" name="member" value="Jag vill bli medlem." />
-            <input type="submit" name="not_member" value="Jag vill INTE bli medlem." />
+            <div class="button-group">
+            <button class="action-button" type="submit" name="member">Jag vill bli medlem.</button>
+            <button class="button" type="submit" name="not_member">Jag vill INTE bli medlem.</button>
+                </div>
         </form>
     </div>
 {% endblock %}

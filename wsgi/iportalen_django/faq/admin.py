@@ -12,7 +12,7 @@ class FAQAdmin(admin.ModelAdmin):
 
 
 class TopicAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug':('name',)}
+    #prepopulated_fields = {'slug':('name',)}
 
     def get_queryset(self, request):
         qs = super(TopicAdmin, self).get_queryset(request)
@@ -28,6 +28,11 @@ class TopicAdmin(admin.ModelAdmin):
         if db_field.name == "faq":
             kwargs["queryset"] = FAQ.objects.filter(organisations__in=request.user.get_organisations())
         return super(TopicAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def get_form(self, request, obj=None, **kwargs):
+        self.exclude = ("slug",)
+        form = super(TopicAdmin, self).get_form(request, obj, **kwargs)
+        return form
 
 
 class QuestionAdmin(admin.ModelAdmin):
