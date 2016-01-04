@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Permission
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import IUser, MasterProfile, BachelorProfile, IpikureSubscriber
-
+from utils.admin import HiddenModelAdmin
 
 class IUserAdmin(UserAdmin):
     def show_kobra_url(self, obj):
