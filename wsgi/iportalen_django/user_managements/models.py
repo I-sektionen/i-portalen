@@ -165,7 +165,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
 
 class IpikureSubscriber(models.Model):
-    user = models.OneToOneField(IUser)
+    user = models.OneToOneField(IUser, null=True, blank=True)
     date_subscribed = models.DateTimeField(auto_now_add=True, verbose_name='prenumererar sedan datum')
 
     class Meta:
