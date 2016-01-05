@@ -338,14 +338,11 @@ def subscribe_to_ipikure(request):
     try:
         subscriber = IpikureSubscriber.objects.get(user=request.user)
         subscriber.date_subscribed = timezone.now()
-        messages.info(request, "Du prenumererar redan på Ipikuré")
+        messages.info(request, "Du har nu uppdaterat din prenumeration av Ipikuré")
     except IpikureSubscriber.DoesNotExist:
         IpikureSubscriber.objects.create(user=request.user)
         messages.info(request, "Du prenumererar nu på Ipikuré")
-    #FIXA SÅ ATT EN ADMIN KAN HITTA LISTA MED ADRESSER PÅ ALLA PRENUMERANTER, kolla om inloggad prenumererat senaste året
-    #och visa knapp därefter om inte prenumererat
-
-    return render(request, "user_managements/subscribe_to_ipikure.html")
+    return redirect(reverse("my page"))
 
 @login_required()
 def ipikure_subscribers(request):

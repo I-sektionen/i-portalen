@@ -11,13 +11,17 @@
     <h4>Liu-id: {{ u.username}}</h4>
     <p>Adress: {{ u.address|default:"Du har inte angett någon information"}} {{ u.zip_code|default:""}} {{ u.city|default:""}}</p>
     <p>Allergier: {{ u.allergies|default:"Du har inte angett någon information"}}</p>
-
+        {% if u.ipikuresubscriber %}
+        <p>Du prenumererar på ipikure sedan {{ u.ipikuresubscriber.date_subscribed|date:"Y-m-d" }} glöm inte att uppdatera din prenumeration efter sommaruppehållet. <a href="{% url "subscribe_to_ipikure" %}">Uppdatera prenumerationen på ipikuré</a></p>
+        {% else %}
+        <p>Du prenumererar inte på ipikure. <a href="{% url "subscribe_to_ipikure" %}">Anmälan Ipikuré</a></p>
+        {% endif %}
     {% endwith %}
 
 
     <a href="{% url "change user info view" %}"><button class="action-button">Ändra uppgifter</button></a>
     <a href="{% url "password_change" %}"><button  class="action-button">Byt lösenord</button></a>
-    <a href="{% url "logout" %}"><button>Logga ut</button></a>
+    <a href="{% url "logout_view" %}"><button>Logga ut</button></a>
 
 
 {% endblock %}
