@@ -123,6 +123,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     rfid_number = models.CharField(verbose_name='rfid', max_length=255, null=True, blank=True)
     is_member = models.NullBooleanField(verbose_name="Är medlem?", blank=True, null=True, default=None)
 
+    must_edit = models.BooleanField(verbose_name="Måste uppdatera info", default=True)
     objects = IUserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
