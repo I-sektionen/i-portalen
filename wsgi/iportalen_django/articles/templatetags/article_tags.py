@@ -54,12 +54,10 @@ def get_organisation_articles(organisation_pk):
 
 @register.assignment_tag
 def get_menu_choices_article(user):
-    print(user)
     menu_choices = []
     if user.article_set.filter(visible_to__gte=timezone.now()):
         menu_choices.append(('Mina Artiklar', reverse('articles:by user')))
     menu_choices.append(('Skapa en artikel', reverse('articles:create')))
     if user.has_perm("articles.can_approve_article"):
         menu_choices.append(('Godkänn Artiklar', reverse('articles:unapproved')))  # With perm to edit articles.
-    print(menu_choices)
     return menu_choices
