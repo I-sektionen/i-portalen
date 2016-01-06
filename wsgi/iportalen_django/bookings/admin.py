@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Bookable, Booking, BookingSlot, VariableCostAmount, Invoice, \
     VariableCostTemplate, FixedCostTemplate, PartialBooking, FixedCostAmount
+from utils.admin import iportalen_admin_site
 
 
 class BookingSlotInline(admin.TabularInline):
@@ -55,10 +56,10 @@ class UserInvoiceAdmin(admin.ModelAdmin):
     ]
 
 
-admin.site.register(Bookable, BookableAdmin)
-admin.site.register(Booking, BookingsAdmin)
+iportalen_admin_site.register(Bookable, BookableAdmin)
+iportalen_admin_site.register(Booking, BookingsAdmin)
 
-admin.site.register(Invoice, UserInvoiceAdmin)
+iportalen_admin_site.register(Invoice, UserInvoiceAdmin)
 
-admin.site.register(VariableCostTemplate)
-admin.site.register(FixedCostTemplate)
+iportalen_admin_site.register(VariableCostTemplate)
+iportalen_admin_site.register(FixedCostTemplate)
