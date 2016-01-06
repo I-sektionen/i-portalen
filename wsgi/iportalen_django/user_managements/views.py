@@ -65,6 +65,9 @@ def login(request):
                     form = MembershipForm(initial={"user": user.username})
                     return render(request, "user_managements/membership.html", {"form": form})
                 elif user.is_member is True:
+                    if user.must_edit:
+                        form = ChangeUserInfoForm(instance=user)
+                        return render(request, "user_managements/force_user_form.html", {"form": form})
                     auth_login(request, user)
                     try:
                         return redirect(request.GET['next'])
@@ -90,9 +93,13 @@ def become_member(request):
                 return render(request, "user_managements/membership.html", {"form": form})
             user.is_member = True
             user.save()
-            auth_login(request, user)
             messages.info(request,
-                          "Tack för att du vill vara medlem i sektionen. Du kan nu utnyttja sektionens tjänster.")
+                          "Tack för att du vill vara medlem i sektionen.")
+            if user.must_edit:
+                form = ChangeUserInfoForm(instance=user)
+                return render(request, "user_managements/force_user_form.html", {"form": form})
+            auth_login(request, user)
+
             return redirect("/")
         else:
             messages.error(request, "Fel Liu-id eller lösenord.")
@@ -113,6 +120,33 @@ def become_member(request):
         else:
             messages.error(request, "Fel Liu-id eller lösenord.")
             return render(request, "user_managements/membership.html", {"form": form})
+    else:
+        return redirect(reverse("login_view"))
+
+
+def force_change_user_info_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username.lower(), password=password)
+        if user is None:
+            messages.error(request, "Fel Liu-id eller lösenord.")
+            form = ChangeUserInfoForm(request.POST)
+            return render(request, "user_managements/force_user_form.html", {"form": form})
+        form = ChangeUserInfoForm(request.POST, instance=user)
+
+        if form.is_valid():
+            form.save()
+
+            user.must_edit = False
+            user.save()
+            auth_login(request, user)
+            messages.info(request,
+                          "Tack! Nu kan du utnyttja sektionens tjänster.")
+            return redirect("/")
+        else:
+            messages.error(request, "Fel Liu-id eller lösenord.")
+            return render(request, "user_managements/force_user_form.html", {"form": form})
     else:
         return redirect(reverse("login_view"))
 

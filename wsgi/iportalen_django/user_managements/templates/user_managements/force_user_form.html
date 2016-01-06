@@ -1,0 +1,27 @@
+{% extends "master.html" %}
+
+{% block navbar %}
+{% endblock %}
+{% block hero %}
+{% endblock %}
+{% block sponsors %}
+{% endblock %}
+{% block footer %}
+{% endblock %}
+
+{% block content %}
+    <div id="membership">
+        <h1>Ange uppgifter</h1>
+        <p>Innan du kan gå vidare så behöver du fylla i lite fler uppgifter:</p>
+        <form action="{% url "force user info" %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+             <input class="username-holder" type="text" name="username" placeholder="Liu-id">
+            <input class="password-holder" type="password" name="password" placeholder="Lösenord">
+            <div class="button-group">
+            <button class="action-button" type="submit">Spara och logga in</button>
+                </div>
+        </form>
+    </div>
+{% endblock %}
+
