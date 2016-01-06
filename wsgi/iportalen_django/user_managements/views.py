@@ -374,6 +374,7 @@ def subscribe_to_ipikure(request):
     try:
         subscriber = IpikureSubscriber.objects.get(user=request.user)
         subscriber.date_subscribed = timezone.now()
+        subscriber.save()
         messages.info(request, "Du har nu uppdaterat din prenumeration av Ipikuré")
     except IpikureSubscriber.DoesNotExist:
         IpikureSubscriber.objects.create(user=request.user)
