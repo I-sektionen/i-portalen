@@ -1,5 +1,6 @@
 from django.conf.urls import include, url
 from django.contrib import admin
+from utils.admin import iportalen_admin_site
 from django.views.generic import TemplateView, RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -15,7 +16,8 @@ from course_evaluations import urls as course_urls
 
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(iportalen_admin_site.urls)),
+    url(r'^admin2/', include(admin.site.urls)),  # Old Admin site
     url(r'^$', view=display_news_feed, name="news feed"),
     url(r'^sponsored/$', view=display_sponsored_content, name="sponsored"),
     url(r'^article/', include(article_urls, namespace="articles")),
@@ -27,7 +29,7 @@ urlpatterns = [
     url(r'^student', RedirectView.as_view(pattern_name='front page', permanent=True)),  # Om någon har sparat /student som favorit skickar vi dem till startsidan
     url(r'^course_evaluation/', include(course_urls, namespace="course_evaluations")),
     url(r'^file_storage/', view=glasscubes_link, name="glasscubes storage"),
-    url('^faq/', include('faq.urls', namespace="faq"))
+    url(r'^faq/', include('faq.urls', namespace="faq"))
 ]
 if not settings.ON_PASS:
     urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
