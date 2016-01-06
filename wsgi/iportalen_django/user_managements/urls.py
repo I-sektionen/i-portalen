@@ -19,6 +19,7 @@ from .views import (
     ipikure_subscribers,
     filter_users,
     all_users,
+    force_change_user_info_view
 )
 
 urlpatterns = [
@@ -29,6 +30,7 @@ urlpatterns = [
     url(r'^change_user_info$', change_user_info_view, name='change user info view'),
     url(r'^add_users_to_whitelist$', view=add_users_to_white_list, name='add users to whitelist'),
     url(r'^become_member$', view=become_member, name="become member"),
+    url(r'^force_user_info', view=force_change_user_info_view, name="force user info"),
     url(r'^kobra/(?P<liu_id>[a-z]{4,5}\d{3})/$', view=update_user_from_kobra, name="update user from kobra"),
     url(r'^update_all_users_from_kobra/$', view=update_all_users_from_kobra, name="update all users from kobra"),
     url(r'^update_list_of_users_from_kobra/$', view=update_list_of_users_from_kobra,
