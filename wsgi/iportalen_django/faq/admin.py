@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Question, Topic, FAQ
-
+from utils.admin import iportalen_admin_site
 
 class FAQAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
@@ -77,6 +77,6 @@ class QuestionAdmin(admin.ModelAdmin):
             kwargs["queryset"] = Topic.objects.filter(faq__organisations__in=request.user.get_organisations())
         return super(QuestionAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
         
-admin.site.register(Question, QuestionAdmin)
-admin.site.register(Topic, TopicAdmin)
-admin.site.register(FAQ, FAQAdmin)
+iportalen_admin_site.register(Question, QuestionAdmin)
+iportalen_admin_site.register(Topic, TopicAdmin)
+iportalen_admin_site.register(FAQ, FAQAdmin)

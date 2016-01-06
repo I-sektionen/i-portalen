@@ -45,7 +45,7 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomUserChangeForm(UserChangeForm):
     password = ReadOnlyPasswordHashField(
         label="Lösenord",
-        help_text="Ändra lösenordet med <a href=\'password/\'> det här formuläret</a>."
+        help_text="Ändra lösenordet med <a href=\"../password/\"> det här formuläret</a>."
     )
 
     class Meta(UserChangeForm.Meta):
