@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Permission
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import IUser, MasterProfile, BachelorProfile, IpikureSubscriber
-from utils.admin import HiddenModelAdmin
+from utils.admin import HiddenModelAdmin, iportalen_admin_site
 
 class IUserAdmin(UserAdmin):
     def show_kobra_url(self, obj):
@@ -52,8 +52,8 @@ class IUserAdmin(UserAdmin):
     filter_horizontal = ('groups', 'user_permissions',)
 
 
-admin.site.register(IUser, IUserAdmin)
-admin.site.register(MasterProfile)
-admin.site.register(BachelorProfile)
-admin.site.register(Permission)
-admin.site.register(IpikureSubscriber)
+iportalen_admin_site.register(IUser, IUserAdmin)
+iportalen_admin_site.register(MasterProfile)
+iportalen_admin_site.register(BachelorProfile)
+iportalen_admin_site.register(Permission)
+iportalen_admin_site.register(IpikureSubscriber)
