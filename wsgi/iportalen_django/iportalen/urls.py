@@ -17,7 +17,6 @@ from course_evaluations import urls as course_urls
 
 urlpatterns = [
     url(r'^admin/', include(iportalen_admin_site.urls)),
-    url(r'^admin2/', include(admin.site.urls)),  # Old Admin site
     url(r'^$', view=display_news_feed, name="news feed"),
     url(r'^sponsored/$', view=display_sponsored_content, name="sponsored"),
     url(r'^article/', include(article_urls, namespace="articles")),
