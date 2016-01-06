@@ -195,8 +195,6 @@ class Event(models.Model):
             preregistered_list.append(p.user)
         for p in participants:
             participant_list.append(p.user)
-        print(preregistered_list)
-        print(participant_list)
         no_show = set(preregistered_list).difference(set(participant_list))
         return no_show
 
