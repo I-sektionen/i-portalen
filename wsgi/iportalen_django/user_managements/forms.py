@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm, ReadOnlyPasswordHashField
 from django import forms
-from .models import IUser
+from .models import IUser, BachelorProfile, MasterProfile
 from utils.validators import liu_id_validator
 
 __author__ = 'jonathan'
@@ -45,7 +45,7 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomUserChangeForm(UserChangeForm):
     password = ReadOnlyPasswordHashField(
         label="Lösenord",
-        help_text="Ändra lösenordet med <a href=\'password/\'> det här formuläret</a>."
+        help_text="Ändra lösenordet med <a href=\"../password/\"> det här formuläret</a>."
     )
 
     class Meta(UserChangeForm.Meta):
@@ -60,9 +60,19 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class ChangeUserInfoForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ChangeUserInfoForm, self).__init__(*args, **kwargs)
+
+        for key in self.fields:
+            self.fields[key].required = True
+        self.fields['allergies'].required = False
+        self.fields['bachelor_profile'].required = False
+        self.fields['master_profile'].required = False
+
     class Meta:
         model = IUser
-        fields = ('address', 'zip_code', 'city', 'gender', 'allergies', 'start_year', 'expected_exam_year')
+        fields = ('address', 'zip_code', 'city', 'gender', 'allergies',
+                  'start_year', 'klass', 'current_year', 'bachelor_profile', 'master_profile',)
 
 
 class AddWhiteListForm(forms.Form):
@@ -80,3 +90,48 @@ class AddWhiteListForm(forms.Form):
 class MembershipForm(forms.Form):
     user = forms.CharField(label="Liu-id", validators=[liu_id_validator, ])
     password = forms.CharField(label='Lösenord', widget=forms.PasswordInput)
+
+
+class SegmentUsersForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(SegmentUsersForm, self).__init__(*args, **kwargs)
+        self.fields['bachelor_profile'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                                                    required=False,
+                                                                    choices=[(o.pk, o.name) for o in BachelorProfile.objects.all()])
+
+        self.fields['master_profile'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                                                  required=False,
+                                                                  choices=[(o.pk, o.name) for o in MasterProfile.objects.all()])
+
+    gender = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                       choices=IUser.GENDER_OPTIONS,
+                                       required=False)
+    start_year = forms.IntegerField(min_value=1969,
+                                    max_value=2500,
+                                    required=False)
+    current_year = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                             choices=IUser.STUDY_YEARS,
+                                             required=False)
+
+    klass = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                      choices=IUser.CLASSES,
+                                      required=False)
+
+class SelectUserFieldsForm(forms.Form):
+    FIELDS = (
+        ('email', 'email'),
+        ('first_name', 'förnamn'),
+        ('last_name', 'efternamn'),
+        ('gender', 'kön'),
+        ('start_year', 'start år'),
+        ('current_year', 'nuvarande årskurs'),
+        ('bachelor_profile', 'teknisk inriktning'),
+        ('master_profile', 'master profil'),
+        ('city', 'stad'),
+        ('zip_code', 'postnummer'),
+        ('address', 'adress'),
+        ('allergies', 'allergier'),
+    )
+    selected_fields = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                                choices=FIELDS,
+                                                required=False)

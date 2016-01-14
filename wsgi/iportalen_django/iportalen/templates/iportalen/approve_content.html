@@ -1,9 +1,0 @@
-{% extends "master.html" %}
-
-{% block content %}
-<div id="content">
-    <h4>Godkänn innehåll till i-portalen</h4>
-    <a href="{% url "articles:unapproved" %}"><p>Godkänn artiklar.</p></a>
-    <a href="{% url "events:unapproved" %}"><p>Godkänn event.</p></a>
-</div>
-{% endblock %}

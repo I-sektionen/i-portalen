@@ -10,6 +10,8 @@ class EventTests(TestCase):
         booker = IUser.objects.create_user(username="testa123")
         random_guy = IUser.objects.create_user(username="testa321")
         creator_pall = IUser.objects.create_user(username="liuid123")
+        booker.gender = IUser.MAN
+        booker.save()
         booker.full_clean()
 
         bookable = Bookable.objects.create(name="bil", max_number_of_bookings=2, max_number_of_slots_in_booking=10)

@@ -1,0 +1,14 @@
+{% extends "master.html" %}
+
+{% block content %}
+<h1>Ämnen</h1>
+    {% for faq in faqs %}
+        <h2>{{ faq.name }}</h2>
+    <ul>
+      {% for topic in faq.topics.all %}
+        <li><a href="{{ topic.get_absolute_url }}">{{ topic }}</a></li>
+      {% endfor %}
+    </ul>
+        <br>
+    {% endfor %}
+{% endblock %}
