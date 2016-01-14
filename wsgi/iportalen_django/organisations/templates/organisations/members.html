@@ -11,7 +11,7 @@
         Klicka till sist på "Spara ändringar" för att se till att dina ändringar just sparas.</p>
         <form method="post" action="">
         <button type="submit">Spara ändringar</button>
-            <table>
+            <table id="form-table">
             <thead>
                 <tr>
                     <th>Användare</th><th>Post</th><th>Email</th><th>Radera?</th>
@@ -32,8 +32,16 @@
                 {{ form.id }}
             {% endfor %}
             </table>
-
+            <button type="button" id="add_more">Lägg till fler fält</button>
         </form>
     </div>
 
+{% endblock %}
+
+{% block after_scripts %}
+<script>
+    $('#add_more').click(function() {
+        cloneMore('#form-table tr:last', 'form');
+    });
+</script>
 {% endblock %}

@@ -4,7 +4,27 @@
 
 {% block content %}
 {% for article in articles %}
+    <div class="event-to-approve">
     {% include "articles/model/full_article.html" with article=article %}
+        <p>
+            Artikeln skapades av: {{ article.user.first_name }} {{ article.user.last_name }} ({{ article.user }})
+            {% if article.organisations.all %}
+                med:
+                {% for org in article.organisations.all %}
+                    {% if org in request.user.organisations %}
+                        {{ org }},
+                    {% else %}
+                        {{ org }} (ej medlem),
+                    {% endif %}
+                {% endfor %}
+                som ägare.
+            {% else %}
+                åt sig själv.
+            {% endif %}
+        </p>
+
+    </div>
+
     <a href="{% url "articles:approve" article.pk %}"><button class="btn-read-more">Godkänn</button></a>
     <a href="{% url "articles:unapproves" article.pk %}"><button class="btn-read-more">Avslå</button></a>
     <a href="{% url "articles:edit" article.pk %}"><button class="btn-read-more">Gör ändringar</button></a>

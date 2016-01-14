@@ -310,7 +310,7 @@ class Event(models.Model):
         return False
 
     def reserve_nr(self, user):
-        return self.reserves_object().get(user=user).position()
+        return self.reserves_object().get(userREJE=user).position()
 
     def check_in(self, user):
         if user in self.participants:
@@ -368,6 +368,15 @@ class Event(models.Model):
         if not user.has_perm('events.can_approve_event'):
             return False
         if self.status == Event.BEING_REVIEWED:
+            if msg:
+                send_mail(
+                    "Ditt event har blivit avslaget.",
+                    "",
+                    settings.EMAIL_HOST_USER,
+                    [self.user.email, ],
+                    fail_silently=False,
+                    html_message="<p>Ditt event {head} har blivit avslaget med motiveringen:</p><p>{msg}</p>".format(
+                        head=self.headline, msg=msg))
             self.rejection_message = msg
             self.status = Event.REJECTED
             self.save()

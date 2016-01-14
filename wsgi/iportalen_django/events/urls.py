@@ -45,7 +45,7 @@ urlpatterns = [
     url(r'(?P<pk>[0-9]+)/administer/event_check_in/$', view=check_in, name="check in"),
     url(r'^unapproved/$', view=all_unapproved_events, name='unapproved'),
     url(r'^(?P<event_id>[0-9]+)/approve$', view=approve_event, name='approve'),
-    url(r'^(?P<event_id>[0-9]+)/unapprove$', view=unapprove_event, name='unapprove'),
+    url(r'^(?P<pk>[0-9]+)/unapprove$', view=unapprove_event, name='unapprove'),
     url(r'^calender/$', view=event_calender, name='calender'),
     url(r'^user_entries/$', view=registered_on_events, name='registered on'),
     url(r'^my_events/$', view=events_by_user, name='by user'),

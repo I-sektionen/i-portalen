@@ -11,7 +11,7 @@
         <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu"><i class="fa fa-bars"></i></a>
         <nav role="navigation">
             <ul id="js-navigation-menu" class="navigation-menu show">
-                <li class="nav-link"><a href="javascript:void(0)">Kalender</a></li>
+                <li class="nav-link"><a href="{% url 'events:calender' %}">Kalender</a></li>
                 <li class="nav-link more"><a href="javascript:void(0)">Sektionen</a>
                     <ul class="submenu">
                         <div class="submenu-column">
@@ -43,10 +43,15 @@
                             <ul class="submenu">
                                 <div class="submenu-column">
                                     {% for bookable in bookables %}
-                            <li><a href="{{ bookable.get_absolute_url }}">{{ bookable.name|title }}</a></li>
-                        {% endfor %}
-                                    <li><a href="{% url "glasscubes storage" %}">Filarkiv</a></li>
+                                        <li><a href="{{ bookable.get_absolute_url }}">{{ bookable.name|title }}</a></li>
+                                    {% endfor %}
+                                    <li><a href="{% url "glasscubes storage" %}">Filarkiv (extern länk)</a></li>
                                     <li><a href="{% url 'course_evaluations:evaluate course' %}">Utvärdera en kurs</a></li>
+                                    <li><a href="http://shop.i-portalen.se">I-butiken (extern länk)</a></li>
+                                    <li><a href="http://ipikure.se">ipikuré (extern länk)</a></li>
+                                    <li><a href="{% url "faq:faq_topic_list" %}">FAQs</a></li>
+
+
                                 </div>
                             </ul>
                         </li>

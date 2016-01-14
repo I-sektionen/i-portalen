@@ -56,7 +56,8 @@ INSTALLED_APPS = (
     'organisations',
     'bookings',
     'django_extensions',
-    'course_evaluations'
+    'course_evaluations',
+    'faq'
 )
 
 MIDDLEWARE_CLASSES = (

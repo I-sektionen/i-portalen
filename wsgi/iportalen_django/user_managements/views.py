@@ -1,11 +1,12 @@
 from django.core.exceptions import ValidationError, PermissionDenied
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
-from django.contrib.auth.decorators import login_required
-from .forms import ChangeUserInfoForm, AddWhiteListForm, MembershipForm
+from django.contrib.auth.decorators import login_required, permission_required
+from .forms import ChangeUserInfoForm, AddWhiteListForm, MembershipForm, MembershipForm, SegmentUsersForm, SelectUserFieldsForm
 from .models import IUser, IpikureSubscriber
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.db.models import Q
 from django.utils import timezone
 from utils.text import random_string_generator
 from django.contrib.auth.views import (
@@ -15,6 +16,7 @@ from django.contrib.auth.views import (
 from utils.kobra import get_user_by_liu_id, LiuGetterError, LiuNotFoundError
 import re
 import time
+import operator
 
 
 def logout_view(request):
@@ -63,6 +65,9 @@ def login(request):
                     form = MembershipForm(initial={"user": user.username})
                     return render(request, "user_managements/membership.html", {"form": form})
                 elif user.is_member is True:
+                    if user.must_edit:
+                        form = ChangeUserInfoForm(instance=user)
+                        return render(request, "user_managements/force_user_form.html", {"form": form})
                     auth_login(request, user)
                     try:
                         return redirect(request.GET['next'])
@@ -88,9 +93,13 @@ def become_member(request):
                 return render(request, "user_managements/membership.html", {"form": form})
             user.is_member = True
             user.save()
-            auth_login(request, user)
             messages.info(request,
-                          "Tack för att du vill vara medlem i sektionen. Du kan nu utnyttja sektionens tjänster.")
+                          "Tack för att du vill vara medlem i sektionen.")
+            if user.must_edit:
+                form = ChangeUserInfoForm(instance=user)
+                return render(request, "user_managements/force_user_form.html", {"form": form})
+            auth_login(request, user)
+
             return redirect("/")
         else:
             messages.error(request, "Fel Liu-id eller lösenord.")
@@ -111,6 +120,33 @@ def become_member(request):
         else:
             messages.error(request, "Fel Liu-id eller lösenord.")
             return render(request, "user_managements/membership.html", {"form": form})
+    else:
+        return redirect(reverse("login_view"))
+
+
+def force_change_user_info_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username.lower(), password=password)
+        if user is None:
+            messages.error(request, "Fel Liu-id eller lösenord.")
+            form = ChangeUserInfoForm(request.POST)
+            return render(request, "user_managements/force_user_form.html", {"form": form})
+        form = ChangeUserInfoForm(request.POST, instance=user)
+
+        if form.is_valid():
+            form.save()
+
+            user.must_edit = False
+            user.save()
+            auth_login(request, user)
+            messages.info(request,
+                          "Tack! Nu kan du utnyttja sektionens tjänster.")
+            return redirect("/")
+        else:
+            messages.error(request, "Fel Liu-id eller lösenord.")
+            return render(request, "user_managements/force_user_form.html", {"form": form})
     else:
         return redirect(reverse("login_view"))
 
@@ -326,17 +362,17 @@ def update_list_of_users_from_kobra(request):
 @login_required()
 def subscribe_to_ipikure(request):
     # return password_reset_done(request, template_name='user_managements/reset/pw_res_done.html')
+    if not (request.user.address and request.user.zip_code and request.user.city):
+        messages.error(request, "Du måste ange din adress för att kunna prenumerera på ipikuré")
+        return redirect(reverse("my page"))
     try:
         subscriber = IpikureSubscriber.objects.get(user=request.user)
         subscriber.date_subscribed = timezone.now()
-        messages.info(request, "Du prenumererar redan på Ipikuré")
+        messages.info(request, "Du har nu uppdaterat din prenumeration av Ipikuré")
     except IpikureSubscriber.DoesNotExist:
         IpikureSubscriber.objects.create(user=request.user)
         messages.info(request, "Du prenumererar nu på Ipikuré")
-    #FIXA SÅ ATT EN ADMIN KAN HITTA LISTA MED ADRESSER PÅ ALLA PRENUMERANTER, kolla om inloggad prenumererat senaste året
-    #och visa knapp därefter om inte prenumererat
-
-    return render(request, "user_managements/subscribe_to_ipikure.html")
+    return redirect(reverse("my page"))
 
 @login_required()
 def ipikure_subscribers(request):
@@ -347,3 +383,87 @@ def ipikure_subscribers(request):
 @login_required()
 def admin_menu(request):
     return render(request, "user_managements/user_admin.html")
+
+@login_required()
+@permission_required('user_managements.can_view_users')
+def filter_users(request):
+    users = None
+    select_user_fields_form = SelectUserFieldsForm()
+    if request.method == 'POST':
+        form = SegmentUsersForm(request.POST)
+        if form.is_valid():
+            query = Q()
+            # Gender:
+            gender = form.cleaned_data['gender']
+            if gender:
+                queries = [Q(gender=x) for x in gender]
+                temp_query = queries.pop()
+                for item in queries:
+                    temp_query |= item
+                query &= temp_query
+
+            # Start year:
+            start_year = form.cleaned_data['start_year']
+            if start_year:
+                query &= Q(start_year__exact=start_year)
+
+            # Bachelor:
+            bachelor_profile = form.cleaned_data['bachelor_profile']
+            if bachelor_profile:
+                queries = [Q(bachelor_profile=x) for x in bachelor_profile]
+                temp_query = queries.pop()
+                for item in queries:
+                    temp_query |= item
+                query &= temp_query
+
+            # Master:
+            master_profile = form.cleaned_data['master_profile']
+            if master_profile:
+                queries = [Q(master_profile=x) for x in master_profile]
+                temp_query = queries.pop()
+                for item in queries:
+                    temp_query |= item
+                query &= temp_query
+
+            # current year:
+            current_year = form.cleaned_data['current_year']
+            if current_year:
+                queries = [Q(current_year=x) for x in current_year]
+                temp_query = queries.pop()
+                for item in queries:
+                    temp_query |= item
+                query &= temp_query
+
+            # class letter:
+            klass = form.cleaned_data['klass']
+            if klass:
+                queries = [Q(klass=x) for x in klass]
+                temp_query = queries.pop()
+                for item in queries:
+                    temp_query |= item
+                query &= temp_query
+
+            #  Only active members:
+            query &= Q(is_active=True)
+
+            #  Final database query:
+            users = IUser.objects.filter(query)  # Search result
+        else:
+            users = None  # Not valid form
+    else:
+        form = SegmentUsersForm()  # First time
+
+    return render(request, 'user_managements/search_users.html', {
+        'form': form,
+        'users': users,
+        'select_user_fields_form': select_user_fields_form,
+    })
+
+
+@login_required()
+@permission_required('user_managements.can_view_users')
+def all_users(request):
+    users = IUser.objects.all()
+    return render(request, 'user_managements/all_users.html', {
+        'users': users,
+    })
