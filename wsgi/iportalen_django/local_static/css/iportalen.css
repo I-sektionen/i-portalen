@@ -596,6 +596,10 @@ th {
   vertical-align: middle;
 }
 
+.auto-width {
+  width: auto;
+}
+
 body {
   color: #333;
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
@@ -710,10 +714,10 @@ picture {
   flex-wrap: wrap;
 }
 .footer ul {
-  -webkit-flex-basis: 26em;
-  -moz-flex-basis: 26em;
-  flex-basis: 26em;
-  -ms-flex-preferred-size: 26em;
+  -webkit-flex-basis: 15em;
+  -moz-flex-basis: 15em;
+  flex-basis: 15em;
+  -ms-flex-preferred-size: 15em;
   -webkit-flex-shrink: 0;
   -moz-flex-shrink: 0;
   flex-shrink: 0;
@@ -1336,6 +1340,10 @@ article.news-preview-organisation p {
 article.news-preview-organisation .article-lead {
   font-size: 14px;
   font-style: italic;
+}
+
+.rejected {
+  color: #e33c3c;
 }
 
 #event-create-form-main {
@@ -2251,6 +2259,44 @@ div.booking-container .third-container .third .center {
   flex: 6;
 }
 
+#admin-menu {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2em;
+}
+#admin-menu::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+#admin-menu h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+#admin-menu .sub-menu {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+  margin-bottom: 1.5em;
+}
+#admin-menu .sub-menu:last-child {
+  margin-right: 0;
+}
+@media screen and (min-width: 1200px) {
+  #admin-menu .sub-menu {
+    float: left;
+    display: block;
+    margin-right: 3.57866%;
+    width: 48.21067%;
+    margin-right: 0;
+  }
+  #admin-menu .sub-menu:last-child {
+    margin-right: 0;
+  }
+}
+
 #container {
   max-width: 1200px;
   margin-left: auto;
@@ -2437,6 +2483,7 @@ div.booking-container .third-container .third .center {
     display: block;
     margin-right: 3.57866%;
     width: 48.21067%;
+    margin-right: 0;
   }
   #organisation-content #organisation-description:last-child {
     margin-right: 0;
@@ -2478,6 +2525,7 @@ div.booking-container .third-container .third .center {
     display: block;
     margin-right: 3.57866%;
     width: 48.21067%;
+    margin-right: 0;
   }
   #organisation-content #organisation-articles:last-child {
     margin-right: 0;
@@ -2522,6 +2570,27 @@ div.booking-container .third-container .third .center {
     margin-right: 0;
   }
   #organisation-content #organisation-suborg:last-child {
+    margin-right: 0;
+  }
+}
+#organisation-content #organisation-contact-info {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+}
+#organisation-content #organisation-contact-info:last-child {
+  margin-right: 0;
+}
+@media screen and (min-width: 1200px) {
+  #organisation-content #organisation-contact-info {
+    float: left;
+    display: block;
+    margin-right: 3.57866%;
+    width: 48.21067%;
+    margin-right: 0;
+  }
+  #organisation-content #organisation-contact-info:last-child {
     margin-right: 0;
   }
 }
