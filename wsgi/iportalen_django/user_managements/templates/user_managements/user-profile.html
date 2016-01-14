@@ -3,9 +3,6 @@
 {% endblock %}
 
 {% block content %}
-
-    <a href="{% url "logout_view" %}">Logga ut</a><!-- TODO move this to header -->
-
     <!--Tillfällig plats för nedanstående knappar (till ipikuré-->
     {% comment %}
         <a href="{% url "ipikure_subscribers" %}"><button>Lista Ipikuréprenumeranter</button></a>
@@ -13,12 +10,11 @@
     {% endcomment %}
     {% with u=request.user %}
         <h1>
-            {{ u.first_name|default:"Du har inte angett någon information"|capfirst}}
-            {{ u.last_name|default:"Du har inte angett någon information"|capfirst}}
+            Profil
         </h1>
         <ul class="accordion-tabs">
         <li class="tab-header-and-content">
-        <a href="javascript:void(0)" class="is-active tab-link">Uppgifter</a>
+        <a href="javascript:void(0)" class="is-active tab-link">Info</a>
         <div class="tab-content">
 
 
