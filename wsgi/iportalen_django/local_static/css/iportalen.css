@@ -777,7 +777,7 @@ header.navigation {
   min-height: 60px;
   width: 100%;
   z-index: 999;
-  box-shadow: 2px 2px 8px silver;
+  box-shadow: 1px 1px 5px silver;
   /*
   * The submenu is the item showed on hover
   */
@@ -959,9 +959,9 @@ header.navigation ul.submenu {
 @media screen and (min-width: 1200px) {
   header.navigation ul.submenu {
     position: absolute;
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    transition: all 0.2s ease-in;
     background: #fff;
     border-radius: 3px;
     font-size: 0.9em;
@@ -975,7 +975,7 @@ header.navigation ul.submenu {
     z-index: 10;
     left: -1em;
     border-radius: 3px;
-    box-shadow: 2px 2px 8px silver;
+    box-shadow: 2px 2px 8px #919191;
     background: white;
     display: flex;
   }
@@ -1120,11 +1120,6 @@ header.navigation .navigation-tools .user-nav-tools li i {
   header.navigation .navigation-tools .user-nav-tools li i {
     font-size: 2em;
   }
-}
-header.navigation .navigation-tools .user-nav-tools #header-login-button {
-  color: white;
-  max-width: 20em;
-  margin: 0 auto;
 }
 
 #sponsors .sponsor-placeholder {

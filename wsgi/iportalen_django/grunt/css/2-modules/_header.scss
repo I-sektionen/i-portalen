@@ -29,7 +29,7 @@ header.navigation {
   min-height: $navigation-height;
   width: 100%;
   z-index: 999;
-  box-shadow: 2px 2px 8px silver;
+  box-shadow: 1px 1px 5px silver;
 
   .navigation-wrapper {
     @include clearfix;
@@ -228,11 +228,11 @@ header.navigation {
     $submenu-arrow-width: 8px;
     $submenu-distance-from-item: 10em;
     $submenu-arrow-distance-from-box: 0em;
-    $tooltip-shadow: 0 2px 2px silver;
+    $tooltip-shadow: 0 2px 2px $dark-gray;
 
     @include media($horizontal-bar-mode) {
       position: absolute;
-      @include transition (all 0.2s ease-in-out);
+      @include transition (all 0.2s ease-in);
       background: #fff;
       border-radius: $base-border-radius;
       font-size: 0.9em; // Make sure you use -webkit-backface-visibility: hidden; on the body element to prevent 1px nudging bugs.
@@ -246,7 +246,7 @@ header.navigation {
       z-index: 10;
       left: -$navigation-submenu-padding;
       border-radius: 3px;
-      box-shadow: 2px 2px 8px silver;
+      box-shadow: 2px 2px 8px darken($light-gray, 40%);
       background: $white;
       display: flex;
 
@@ -371,15 +371,6 @@ header.navigation {
           }
         }
       }
-
-      #header-login-button {
-
-        color: white;
-        max-width: 20em;
-        margin: 0 auto;
-
-      }
-
     }
   }
 }
