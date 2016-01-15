@@ -11,7 +11,6 @@
     {% block head %} {% endblock %}
 </head>
 <body>
-<div id="master-container">
     {% block navbar %}
     {% include "header.html" %}
     {% endblock %}
@@ -60,7 +59,6 @@
     {% block footer %}
     {% include "footer.html" %}
     {% endblock %}
-</div>
 
 {% include "scripts.html" %}
 {% block after_scripts %}{% endblock %}
