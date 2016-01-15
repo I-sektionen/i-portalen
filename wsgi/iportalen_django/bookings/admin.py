@@ -1,7 +1,8 @@
 from django.contrib import admin
 from .models import Bookable, Booking, BookingSlot, VariableCostAmount, Invoice, \
     VariableCostTemplate, FixedCostTemplate, PartialBooking, FixedCostAmount
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.core.urlresolvers import reverse
 from utils.admin import iportalen_admin_site
 
 
@@ -31,11 +32,31 @@ class InvoiceInline(admin.TabularInline):
     readonly_fields = ('ocr', 'due', 'status')
 
 
+def _get_invoice_status_display(obj):
+    try:
+        inv = Invoice.objects.get(booking=obj)
+        return inv.get_status_display()
+    except MultipleObjectsReturned:
+        return "Flera fakturor existerar"
+    except ObjectDoesNotExist:
+        return "Ej skapad."
 
 
 class BookingsAdmin(admin.ModelAdmin):
-    list_display = ('user', 'bookable', 'start_time', '_invoice_status')
-    list_filter = ('bookable', '_invoice_status')
+    list_display = ('user', 'bookable', 'start_time', _get_invoice_status_display,)
+    readonly_fields = ('create_invoice_url', _get_invoice_status_display)
+
+    def create_invoice_url(self, obj):
+        s = reverse("bookings:create custom invoice", args=[obj.pk])
+        return "<a href=\"%s\">Skapa/Se befintlig</a>" % (s,)
+
+
+    create_invoice_url.allow_tags = True
+    create_invoice_url.short_description = "Länk till faktura"
+
+    _get_invoice_status_display.short_description = "Status på faktura"
+
+    list_filter = ('bookable', )
     search_fields = ('user', )
     inlines = [
         PartialBookingsInline,
@@ -54,12 +75,26 @@ class FixedCostInline(admin.TabularInline):
 
 
 class UserInvoiceAdmin(admin.ModelAdmin):
-    # fields = ('invoice_pdf_url', )
-    readonly_fields = ('ocr',)
+    readonly_fields = ('ocr', 'send_invoice_email')
+    #fields = ('status', 'due', 'booking')
+
+    def send_invoice_email(self, obj):
+        try:
+            s = reverse("bookings:send invoice email", args=[obj.pk])
+            return "<a href=\"%s\">Skicka email till användare</a>" % (s,)
+        except:
+            return "Ej tillgängligt"
+    send_invoice_email.short_description = "Skicka faktura"
+    send_invoice_email.allow_tags = True
+
     inlines = [
         VariableCostInline,
         FixedCostInline,
     ]
+
+    search_fields = ('ocr',)
+    list_filter = ('status', )
+    list_display = ('ocr', 'due', 'status')
 
 
 iportalen_admin_site.register(Bookable, BookableAdmin)

@@ -119,14 +119,6 @@ class Invoice(models.Model):
         self.ocr = num
         self.save()
 
-    @property
-    def _invoice_status(self):
-        try:
-            inv = Invoice.objects.get(booking=self)
-            return inv.get_status_display()
-        except ObjectDoesNotExist:
-            return "Ej skapad."
-
     def save(self, *args, **kwargs):
         super(Invoice, self).save(*args, **kwargs)
         if self.ocr is None or len(self.ocr) == 0:
@@ -137,7 +129,7 @@ class Invoice(models.Model):
         verbose_name_plural = 'fakturor'
 
     def __str__(self):
-        return 'Faktura för ' + str(self.booking)
+        return 'Faktura'
 
     def get_absolute_url(self):
         return reverse('bookings:invoice view', kwargs={'invoice_id': self.pk})
@@ -242,14 +234,15 @@ class Booking(models.Model):
     objects = BookingManager()
 
     class Meta:
-        permissions = (("unlimited_num_of_bookings", "Unlimited number of bookings"),)
+        permissions = (("unlimited_num_of_bookings", "Unlimited number of bookings"),
+                       ("manage_bookings", "Manage bookings"))
         verbose_name = 'bokning'
         verbose_name_plural = 'bokningar'
 
     def __str__(self):
         td = self.get_time_of_booking()
-        return self.bookable.name + " bokad " + str(td["start"].time()) + " " + str(td["start"].date()) + " - " + \
-            str(td["end"].time()) + " " + str(td["end"].date()) + ", av dig"
+        return self.bookable.name + " bokad från: " + str(td["start"].strftime("%H:%M %d-%b")) + " till: " + \
+            str(td["end"].strftime("%H:%M %d-%b"))
 
     def _can_be_unbooked(self):
         time = self.get_time_of_booking()
