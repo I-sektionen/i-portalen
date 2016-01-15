@@ -21,10 +21,10 @@ ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
 ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 
 if ON_PASS:
-    ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS = ['i-portalen.se']
     DEBUG = False
 elif ON_JENKINS:
-    ALLOWED_HOSTS = ['*']  # TODO: Should only allow localhost, and what about production?
+    ALLOWED_HOSTS = ['*']
     DEBUG = False
 else:
     ALLOWED_HOSTS = ['*']
