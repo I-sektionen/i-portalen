@@ -3,11 +3,6 @@
 {% endblock %}
 
 {% block content %}
-    <!--Tillfällig plats för nedanstående knappar (till ipikuré-->
-    {% comment %}
-        <a href="{% url "ipikure_subscribers" %}"><button>Lista Ipikuréprenumeranter</button></a>
-        <a href="{% url "subscribe_to_ipikure" %}"><button>Anmälan Ipikuré</button></a>
-    {% endcomment %}
     {% with u=request.user %}
         <h1>
             Profil
@@ -24,6 +19,11 @@
         <p>{{ u.address|default:"Du har inte angett någon information"}} {{ u.zip_code|default:""}} {{ u.city|default:""}}</p>
         <h3>Anmälda allergier:</h3>
         <p> {{ u.allergies|default:"Du har inte angett någon information"}}</p>
+        {% if u.ipikuresubscriber %}
+        <p>Du prenumererar på ipikure sedan {{ u.ipikuresubscriber.date_subscribed|date:"Y-m-d" }} glöm inte att uppdatera din prenumeration efter sommaruppehållet. <a href="{% url "subscribe_to_ipikure" %}">Uppdatera prenumerationen på ipikuré</a></p>
+        {% else %}
+        <p>Du prenumererar inte på ipikure. <a href="{% url "subscribe_to_ipikure" %}">Anmälan Ipikuré</a></p>
+        {% endif %}
     {% endwith %}
 </div>
 </li>
@@ -33,53 +33,14 @@
         <form action="" method="post">
             {% csrf_token %}
             {{ form.non_field_errors }}
-
+            {% for field in form %}
             <div class="form-field-wrapper">
-                {{ form.start_year.label_tag }}
-                {{ form.start_year }}
-                {{ form.start_year.errors }}
-                {{ form.start_year.help_text }}
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+                {{ field.help_text }}
             </div>
-
-            <div class="form-field-wrapper">
-                {{ form.expected_exam_year.errors }}
-                {{ form.expected_exam_year.label_tag }}
-                {{ form.expected_exam_year }}
-                {{ form.expected_exam_year.help_text }}
-            </div>
-
-
-
-            <div class="form-field-wrapper">
-                {{ form.address.errors }}
-                {{ form.address.label_tag }}
-                {{ form.address }}
-                {{ form.address.help_text }}
-            </div>
-            <div class="form-field-wrapper">
-                {{ form.zip_code.errors }}
-                {{ form.zip_code.label_tag }}
-                {{ form.zip_code }}
-                {{ form.zip_code.help_text }}
-            </div>
-            <div class="form-field-wrapper">
-                {{ form.city.errors }}
-                {{ form.city.label_tag }}
-                {{ form.city }}
-                {{ form.city.help_text }}
-            </div>
-            <div class="form-field-wrapper">
-                {{ form.gender.errors }}
-                {{ form.gender.label_tag }}
-                {{ form.gender }}
-                {{ form.gender.help_text }}
-            </div>
-            <div class="form-field-wrapper">
-                {{ form.allergies.errors }}
-                {{ form.allergies.label_tag }}
-                {{ form.allergies }}
-                {{ form.allergies.help_text }}
-            </div>
+            {% endfor %}
             <hr>
             <button id="user-info-form-button" class="action-button" type="submit"/>Spara uppgifter</button>
         </form>
