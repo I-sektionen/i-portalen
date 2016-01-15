@@ -21,10 +21,10 @@ ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
 ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 
 if ON_PASS:
-    ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS = ['i-portalen.se']
     DEBUG = False
 elif ON_JENKINS:
-    ALLOWED_HOSTS = ['*']  # TODO: Should only allow localhost, and what about production?
+    ALLOWED_HOSTS = ['*']
     DEBUG = False
 else:
     ALLOWED_HOSTS = ['*']
@@ -35,10 +35,12 @@ else:
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '^+^i^1i94%j-hi+107xw(vf^mz4hg--#w0mw93+kc#&4vc=#=@'  # TODO: Make use of os.envion on openshift.
+if not ON_PASS:
+    SECRET_KEY = '^+^i^1i94%j-hi+107xw(vf^mz4hg--#w0mw93+kc#&4vc=#=@'  # TODO: Make use of os.envion on openshift.
+else:
+    SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -166,24 +168,14 @@ if ON_PASS:
     STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, "../static/"))
     MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
 
-    AWS_ACCESS_KEY_ID = 'AKIAJSDYCW44P4UNOZQQ'
-    AWS_SECRET_ACCESS_KEY = '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'
-
-    # Check if we are on the development instance:
-    try:
-        os.environ.get('DEVELOPMENT_ENVIRONMENT')
-        AWS_STORAGE_BUCKET_NAME = 'iportalen-development'
-    except KeyError:
-        # This mean we are on the production server. The DEVELOPMENT_ENVIRONMENT variable is set in
-        # .openshift/action_hooks/build.sh
-        AWS_STORAGE_BUCKET_NAME = 'iportalen-us'
-        pass
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
     S3_URL = 'https://{0}.s3.amazonaws.com/'.format(AWS_STORAGE_BUCKET_NAME)
     STATIC_URL = os.environ.get('STATIC_URL', S3_URL + 'static/')
 
     DEFAULT_FILE_STORAGE = 'iportalen.storage.MediaRootS3BotoStorage'
-
     STATICFILES_STORAGE = 'iportalen.storage.StaticRootS3BotoStorage'
 
     MEDIA_URL = os.environ.get('MEDIA_URL', S3_URL + 'client/')
