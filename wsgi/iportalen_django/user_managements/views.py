@@ -322,7 +322,6 @@ def update_all_users_from_kobra(request):
             errors += (user.username + " kan inte ansluta till kobra.\n")
         except LiuGetterError:
             errors += (user.username + " fel i anslutingen till kobra.\n")
-    print(errors)
     return render(request, "user_managements/kobra.html")
 
 
@@ -375,6 +374,7 @@ def subscribe_to_ipikure(request):
     try:
         subscriber = IpikureSubscriber.objects.get(user=request.user)
         subscriber.date_subscribed = timezone.now()
+        subscriber.save()
         messages.info(request, "Du har nu uppdaterat din prenumeration av Ipikuré")
     except IpikureSubscriber.DoesNotExist:
         IpikureSubscriber.objects.create(user=request.user)

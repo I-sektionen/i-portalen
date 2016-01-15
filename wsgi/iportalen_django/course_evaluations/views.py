@@ -245,7 +245,6 @@ def create_courses(request):
             for entry in formset.cleaned_data:
                 if not entry == {}:
                     c = Course.objects.create(code=entry['code'], name=entry['name'])
-                    print(c)
             formset = CourseFormSet()
             return render(request, "course_evaluations/admin/add_courses.html", {"formset": formset, "courses": courses})
         else:
