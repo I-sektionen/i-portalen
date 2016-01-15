@@ -2386,6 +2386,13 @@ div.booking-container .third-container .third .center {
   border-bottom: 1px solid #dfddde;
 }
 
+.alertWrp {
+  background-color: lightgoldenrodyellow;
+}
+.alertWrp p {
+  text-align: center;
+}
+
 #news-feed {
   float: left;
   display: block;
