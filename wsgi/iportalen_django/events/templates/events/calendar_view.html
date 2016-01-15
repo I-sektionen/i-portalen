@@ -1,0 +1,25 @@
+{% extends "master.html" %}
+
+{% block content %}
+    <h1>Event</h1>
+    <table class="tables">
+        <thead>
+            <tr>
+                <th>Namn</th>
+                <th>Plats</th>
+                <th>Tid</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.headline }}</td>
+                    <td>{{ event.location }}</td>
+                    <td>{{ event.start }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}
