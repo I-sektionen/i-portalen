@@ -1,0 +1,57 @@
+{% extends "master.html" %}
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+    {% with u=request.user %}
+        <h1>
+            Profil
+        </h1>
+        <ul class="accordion-tabs">
+        <li class="tab-header-and-content">
+        <a href="javascript:void(0)" class="is-active tab-link">Info</a>
+        <div class="tab-content">
+
+
+        <h3>Liu-id: </h3>
+        <p>{{ u.username}}</p>
+        <h3>Adress:</h3>
+        <p>{{ u.address|default:"Du har inte angett någon information"}} {{ u.zip_code|default:""}} {{ u.city|default:""}}</p>
+        <h3>Anmälda allergier:</h3>
+        <p> {{ u.allergies|default:"Du har inte angett någon information"}}</p>
+        <h3>ipikuré:</h3>
+        {% if u.ipikuresubscriber %}
+        <p>Du prenumererar på ipikure sedan {{ u.ipikuresubscriber.date_subscribed|date:"Y-m-d" }} glöm inte att uppdatera din prenumeration efter sommaruppehållet. <a href="{% url "subscribe_to_ipikure" %}">Uppdatera prenumerationen på ipikuré</a></p>
+        {% else %}
+        <p>Du prenumererar inte på ipikure. <a href="{% url "subscribe_to_ipikure" %}">Anmälan Ipikuré</a></p>
+        {% endif %}
+    {% endwith %}
+</div>
+</li>
+<li class="tab-header-and-content">
+    <a href="javascript:void(0)" class="tab-link">Ändra uppgifter</a>
+    <div class="tab-content">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for field in form %}
+            <div class="form-field-wrapper">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+                {{ field.help_text }}
+            </div>
+            {% endfor %}
+            <hr>
+            <button id="user-info-form-button" class="action-button" type="submit"/>Spara uppgifter</button>
+        </form>
+    </div>
+</li>
+<li class="tab-header-and-content">
+    <a href="javascript:void(0)" class="tab-link">Ändra lösenord</a>
+    <div class="tab-content">
+        <a class="button-group-item" id="user-info-form" href="{% url "password_change" %}">Byt lösenord</a>
+    </div>
+</li>
+</ul>
+{% endblock %}
