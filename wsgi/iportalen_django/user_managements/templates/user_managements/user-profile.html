@@ -19,6 +19,7 @@
         <p>{{ u.address|default:"Du har inte angett någon information"}} {{ u.zip_code|default:""}} {{ u.city|default:""}}</p>
         <h3>Anmälda allergier:</h3>
         <p> {{ u.allergies|default:"Du har inte angett någon information"}}</p>
+        <h3>ipikuré:</h3>
         {% if u.ipikuresubscriber %}
         <p>Du prenumererar på ipikure sedan {{ u.ipikuresubscriber.date_subscribed|date:"Y-m-d" }} glöm inte att uppdatera din prenumeration efter sommaruppehållet. <a href="{% url "subscribe_to_ipikure" %}">Uppdatera prenumerationen på ipikuré</a></p>
         {% else %}
