@@ -45,10 +45,10 @@
                                     {% for bookable in bookables %}
                                         <li><a href="{{ bookable.get_absolute_url }}">{{ bookable.name|title }}</a></li>
                                     {% endfor %}
-                                    <li><a href="{% url "glasscubes storage" %}">Filarkiv (extern länk)</a></li>
+                                    <li><a href="{% url "glasscubes storage" %}">Filarkiv <i class="fa fa-external-link"></i></a></li>
                                     <li><a href="{% url 'course_evaluations:evaluate course' %}">Utvärdera en kurs</a></li>
-                                    <li><a href="http://shop.i-portalen.se">I-butiken (extern länk)</a></li>
-                                    <li><a href="http://ipikure.se">ipikuré (extern länk)</a></li>
+                                    <li><a href="http://shop.i-portalen.se">I-butiken <i class="fa fa-external-link"></i></a></li>
+                                    <li><a href="http://ipikure.se">ipikuré <i class="fa fa-external-link"></i></a></li>
                                     <li><a href="{% url "faq:faq_topic_list" %}">FAQs</a></li>
 
 
@@ -63,25 +63,27 @@
             {% if request.user.is_authenticated %}
 
                 <li class=user-tools-button">
-                    <a href="{% url 'events:registered on' %}"><i class="fa fa-calendar"></i><span>Anmälningar</span></a>
+                    <a href="{% url 'events:registered on' %}"><i class="fa fa-calendar"></i><span>Mina event</span></a>
                 </li>
+
                 <li class=user-tools-button">
                     <a href="{% url 'bookings:my bookings' %}">
                         <i class="fa fa-calendar-check-o"></i><span>Bokningar</span>
                     </a>
                 </li>
+
                 <li class=user-tools-button">
                     <a href="{% url 'my page' %}"><i class="fa fa-user"></i><span>Konto</span></a>
                 </li>
                 <li class=user-tools-button">
                     <a href="{% url 'user content' %}"><i class="fa fa-plus"></i><span>Innehåll</span></a>
                 </li>
-
-
-                {% else %}
-
                 <li class="user-tools-button">
-                    <a href="/user/login" id="header-login-button" class="action-button">Logga in</a>
+                    <a href="{% url "logout_view" %}"><i class="fa fa-sign-out"></i><span>Logga ut</span></a>
+                </li>
+                {% else %}
+                <li class="user-tools-button">
+                    <a href="/user/login"><i class="fa fa-sign-in"></i><span>Logga in</span></a>
                 </li>
 
             {% endif %}
