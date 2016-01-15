@@ -49,10 +49,7 @@
     {% endblock %}
     </div>
     <div class="alertWrp" style="display: block;">
-       <div class="inner">
           <p>På i-portalen.se använder vi kakor (cookies) för att webbplatsen ska fungera på ett bra sätt för dig.</p><p>Genom att surfa vidare godkänner du att vi använder kakor. <a href="{% url 'cookies' %}">Vad är kakor?</a> <a href="#" id="cookieClose">Jag förstår</a></p>
-          <div class="clearFloat"></div>
-       </div>
     </div>
 
 
@@ -67,17 +64,8 @@
         shuffle_sponsors();
         sliding_panel();
         modal();
-    if(Cookies.get('SKVCookieAlert')){
-          jQuery('.alertWrp').hide();
-       }else{
-          jQuery('.alertWrp').fadeIn('slow');
-       }
+        cookiemonster();
     });
-    jQuery('#cookieClose').click(function(){
-       jQuery('.alertWrp').fadeOut('slow');
-        Cookies.set('SKVCookieAlert', 'agree', { expires: 300, path: '/' });
-    });
-
 </script>
 
 </body>
