@@ -153,23 +153,16 @@ def force_change_user_info_view(request):
 
 @login_required()
 def my_page_view(request):
-    return render(request, "user_managements/mypage.html")
-
-
-@login_required()
-def change_user_info_view(request):
     user = request.user
     if request.method == 'POST':
-        form = ChangeUserInfoForm(request.POST, instance=user)
+        change_user_info_form = ChangeUserInfoForm(request.POST, instance=user)
 
-        if form.is_valid():
-            form.save()
-            return redirect(reverse("my page"))
-        return render(request, "user_managements/user_info_form.html", {'form': form})
+        if change_user_info_form.is_valid():
+            change_user_info_form.save()
+        return redirect(reverse("my page"))
     else:
-        form = ChangeUserInfoForm(instance=user)
-        return render(request, "user_managements/user_info_form.html", {'form': form})
-
+        change_user_info_form = ChangeUserInfoForm(instance=user)
+        return render(request, "user_managements/user-profile.html", {'form': change_user_info_form})
 
 @login_required()
 def add_users_to_white_list(request):
@@ -322,7 +315,6 @@ def update_all_users_from_kobra(request):
             errors += (user.username + " kan inte ansluta till kobra.\n")
         except LiuGetterError:
             errors += (user.username + " fel i anslutingen till kobra.\n")
-    print(errors)
     return render(request, "user_managements/kobra.html")
 
 
@@ -375,6 +367,7 @@ def subscribe_to_ipikure(request):
     try:
         subscriber = IpikureSubscriber.objects.get(user=request.user)
         subscriber.date_subscribed = timezone.now()
+        subscriber.save()
         messages.info(request, "Du har nu uppdaterat din prenumeration av Ipikuré")
     except IpikureSubscriber.DoesNotExist:
         IpikureSubscriber.objects.create(user=request.user)

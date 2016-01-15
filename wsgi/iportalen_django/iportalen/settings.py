@@ -166,24 +166,14 @@ if ON_PASS:
     STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, "../static/"))
     MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
 
-    AWS_ACCESS_KEY_ID = 'AKIAJSDYCW44P4UNOZQQ'
-    AWS_SECRET_ACCESS_KEY = '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'
-
-    # Check if we are on the development instance:
-    try:
-        os.environ.get('DEVELOPMENT_ENVIRONMENT')
-        AWS_STORAGE_BUCKET_NAME = 'iportalen-development'
-    except KeyError:
-        # This mean we are on the production server. The DEVELOPMENT_ENVIRONMENT variable is set in
-        # .openshift/action_hooks/build.sh
-        AWS_STORAGE_BUCKET_NAME = 'iportalen-us'
-        pass
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
     S3_URL = 'https://{0}.s3.amazonaws.com/'.format(AWS_STORAGE_BUCKET_NAME)
     STATIC_URL = os.environ.get('STATIC_URL', S3_URL + 'static/')
 
     DEFAULT_FILE_STORAGE = 'iportalen.storage.MediaRootS3BotoStorage'
-
     STATICFILES_STORAGE = 'iportalen.storage.StaticRootS3BotoStorage'
 
     MEDIA_URL = os.environ.get('MEDIA_URL', S3_URL + 'client/')
