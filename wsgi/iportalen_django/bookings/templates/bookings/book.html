@@ -1,26 +1,13 @@
 {% extends "master.html" %}
+{% load iportalen_tags %}
 {% block hero %}{% endblock %}
 {% block title %}Gör en bokning{% endblock %}
 {% block content %}
     <div class="booking-container">
-        {% comment %}
-            jQuery script   - Fetches todays date
-                            - Fetches this week, and next.
-                            - Fetches slots
-                            - Renders html elements.
-                            - UI to select start and end.
-                            - Connect to form for start and end.
 
-                            - Next step: max slots, validation and so on.
-
-            Django views:   - Todays date
-                            - Days in week, given date.
-                            - Slots, given bookable. Availability and so on.
-
-
-        {% endcomment %}
         <div class="booking">
-        <div><h1>{{ bookable.name|capfirst }}</h1></div>
+        <h1>{{ bookable.name|capfirst }}</h1>
+        <div class="info">{{ bookable.info|markdown }}</div>
                 <div id="year"></div>
                 <div id="days">
                     <div class="single_day"><p><strong>Måndag</strong></p></div>
@@ -35,6 +22,7 @@
             This is where the booking form is rendered by the script booking.js
         {% endcomment %}
         </div>
+
         <div class="button-group third-container">
             <div class="third left">
 

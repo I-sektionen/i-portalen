@@ -17,9 +17,9 @@ from .forms import BookingForm
 - Remove booking
 """
 
-
+@login_required()
 def index(request):
-    bookings = Booking.objects.all()
+    bookings = Booking.objects.filter(user=request.user)
     bookables = Bookable.objects.all()
     return render(request, "bookings/my_bookings.html", {
         "bookings": bookings,
@@ -41,7 +41,7 @@ def invoice(request, invoice_id):
         'variable_costs': variable_costs,
     })
 
-
+@login_required()
 def make_booking(request, bookable_id, weeks_forward=0):
     weeks_forward = int(weeks_forward)
     today = timezone.datetime.today() + timezone.timedelta(weeks=weeks_forward)
@@ -115,7 +115,7 @@ def make_booking(request, bookable_id, weeks_forward=0):
                                                start_slot=start_slot,
                                                end_slot=end_slot,
                                                user=request.user)
-                messages.success(request, "YAY")
+                messages.success(request, "Du har bokat {bookable}.".format(bookable=bookable))
                 return redirect("bookings:make booking", bookable_id=bookable_id)
             except NoSlots as e:
                 messages.error(request, e.reason)

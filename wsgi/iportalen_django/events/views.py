@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
@@ -8,7 +9,7 @@ from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
 import csv
 from utils.validators import liu_id_validator
-from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm
+from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm, RejectionForm
 from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticipant, SpeakerList
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
@@ -224,25 +225,23 @@ def all_unapproved_events(request):
 def approve_event(request, event_id):
     event = Event.objects.get(pk=event_id)
     if event.approve(request.user):
-        return redirect(all_unapproved_events)
+        return redirect(reverse('events:unapproved'))
     else:
         raise PermissionDenied
 
 
 @login_required()
-def unapprove_event(request, event_id):
-    event = Event.objects.get(pk=event_id)
-    if event.reject(request.user):
-        # TODO: Ganska horribel lösning...
-        message = ("Eventet har gått avslagits, maila gärna <a href='mailto:" +
-                   event.user.email +
-                   "?Subject=Avslag%20publicering%20av%20event' target='_top'>" +
-                   event.user.email +
-                   "</a> med en förklaring till avslaget.<br>" +
-                   "<a href='/event/unapproved'>Tillbaka till listan över event att godkänna.</a>")
-        return render(request, 'articles/confirmation.html', {'message': message})
-    else:
-        raise PermissionDenied
+def unapprove_event(request, pk):
+    event = Event.objects.get(pk=pk)
+    form = RejectionForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            if event.reject(request.user, form.cleaned_data['rejection_message']):
+                messages.success(request, "Eventet har avslagits.")
+                return redirect('events:unapproved')
+            else:
+                raise PermissionDenied
+    return render(request, 'events/reject.html', {'form': form, 'event': event})
 
 
 @login_required()

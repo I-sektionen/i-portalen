@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db import transaction
 from .models import Article
-from .forms import ArticleForm
+from .forms import ArticleForm, RejectionForm
 from tags.models import Tag
 
 
@@ -99,19 +99,17 @@ def approve_article(request, pk):
 
 
 @login_required()
-def unapprove_article(request, event_id):
-    article = Article.objects.get(pk=event_id)
-    if article.reject(request.user):
-        # TODO: Ganska horribel lösning...
-        message = ("Eventet har gått avslagits, maila gärna <a href='mailto:" +
-                   article.user.email +
-                   "?Subject=Avslag%20publicering%20av%20event' target='_top'>" +
-                   article.user.email +
-                   "</a> med en förklaring till avslaget.<br>" +
-                   "<a href='/event/unapproved'>Tillbaka till listan över event att godkänna.</a>")
-        return render(request, 'articles/confirmation.html', {'message': message})
-    else:
-        raise PermissionDenied
+def unapprove_article(request, pk):
+    article = Article.objects.get(pk=pk)
+    form = RejectionForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            if article.reject(request.user, form.cleaned_data['rejection_message']):
+                messages.success(request, "Artikeln har avslagits.")
+                return redirect('articles:unapproved')
+            else:
+                raise PermissionDenied
+    return render(request, 'articles/reject.html', {'form': form, 'article': article})
 
 
 def articles_by_tag(request, tag_name):

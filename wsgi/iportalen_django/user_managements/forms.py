@@ -45,7 +45,7 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomUserChangeForm(UserChangeForm):
     password = ReadOnlyPasswordHashField(
         label="Lösenord",
-        help_text="Ändra lösenordet med <a href=\'password/\'> det här formuläret</a>."
+        help_text="Ändra lösenordet med <a href=\"../password/\"> det här formuläret</a>."
     )
 
     class Meta(UserChangeForm.Meta):
@@ -60,9 +60,19 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class ChangeUserInfoForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ChangeUserInfoForm, self).__init__(*args, **kwargs)
+
+        for key in self.fields:
+            self.fields[key].required = True
+        self.fields['allergies'].required = False
+        self.fields['bachelor_profile'].required = False
+        self.fields['master_profile'].required = False
+
     class Meta:
         model = IUser
-        fields = ('address', 'zip_code', 'city', 'gender', 'allergies', 'start_year')
+        fields = ('address', 'zip_code', 'city', 'gender', 'allergies',
+                  'start_year', 'klass', 'current_year', 'bachelor_profile', 'master_profile',)
 
 
 class AddWhiteListForm(forms.Form):

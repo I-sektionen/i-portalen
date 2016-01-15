@@ -41,3 +41,7 @@ class ArticleForm(forms.ModelForm):
                     self.add_error('visible_to', "Datumet måste vara före dagens datum.")
             if visible_to < visible_from:
                 self.add_error('visible_to', "Datumet måste vara före publiceringsdatumet.")
+
+
+class RejectionForm(forms.Form):
+    rejection_message = forms.CharField(label="Avslagsmeddelande", widget=forms.Textarea())
