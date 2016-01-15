@@ -119,7 +119,13 @@ class Invoice(models.Model):
         self.ocr = num
         self.save()
 
-
+    @property
+    def _invoice_status(self):
+        try:
+            inv = Invoice.objects.get(booking=self)
+            return inv.get_status_display()
+        except ObjectDoesNotExist:
+            return "Ej skapad."
 
     def save(self, *args, **kwargs):
         super(Invoice, self).save(*args, **kwargs)

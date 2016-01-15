@@ -26,19 +26,16 @@ class InvoiceInline(admin.TabularInline):
     model = Invoice
     show_change_link = True
     extra = 0
+    max_num = 0  # So we don't show the 'add another' link.
+    can_delete = False
+    readonly_fields = ('ocr', 'due', 'status')
 
 
-def _get_invoice_status_display(obj):
-    try:
-        inv = Invoice.objects.get(booking=obj)
-        return inv.get_status_display()
-    except ObjectDoesNotExist:
-        return "Ej skapad."
 
 
 class BookingsAdmin(admin.ModelAdmin):
-    list_display = ('user', 'bookable', 'start_time', _get_invoice_status_display)
-    list_filter = ('bookable',)
+    list_display = ('user', 'bookable', 'start_time', '_invoice_status')
+    list_filter = ('bookable', '_invoice_status')
     search_fields = ('user', )
     inlines = [
         PartialBookingsInline,
