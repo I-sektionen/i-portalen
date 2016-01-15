@@ -122,7 +122,7 @@ def make_booking(request, bookable_id, weeks_forward=0):
                                                start_slot=start_slot,
                                                end_slot=end_slot,
                                                user=request.user)
-                messages.success(request, "YAY")
+                messages.success(request, "Du har bokat {bookable}.".format(bookable=bookable))
                 return redirect("bookings:make booking", bookable_id=bookable_id)
             except NoSlots as e:
                 messages.error(request, e.reason)
