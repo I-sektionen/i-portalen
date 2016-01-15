@@ -8,10 +8,15 @@
     {% include "events/model/full_event.html" with pk=event.pk preview=True %}
         <p>
             Eventet skapades av: {{ event.user.first_name }} {{ event.user.last_name }} ({{ event.user }})
-            {% if event.organisations %}
+            {% if event.organisations.all %}
                 med:
                 {% for org in event.organisations.all %}
-                 {{ org }}
+                    {% if org in request.user.organisations %}
+                        {{ org }},
+                    {% else %}
+                        {{ org }} (ej medlem),
+                    {% endif %}
+
                 {% endfor %}
                 som ägare.
             {% else %}
@@ -27,6 +32,7 @@
     </div>
     <a href="{% url "events:approve" event.pk %}"><button class="btn-read-more">Godkänn</button></a>
     <a href="{% url "events:unapprove" event.pk %}"><button class="btn-read-more">Avslå</button></a>
+    <a href="{% url "events:edit" event.pk %}"><button class="btn-read-more">Gör ändringar</button></a>
 {% empty %}
     <p>Inga event väntar på att godkännas, bra jobbat! :)</p>
 {% endfor %}

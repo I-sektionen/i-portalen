@@ -6,57 +6,7 @@
     <div>
         <form action="" method="post">
             {% csrf_token %}
-            {{ form.non_field_errors }}
-
-
-            {{ form.address.errors }}
-            {{ form.address.label_tag }}
-            {{ form.address }}
-            {{ form.address.help_text }}
-            <br>
-            <br>
-
-            {{ form.zip_code.errors }}
-            {{ form.zip_code.label_tag }}
-            {{ form.zip_code }}
-            {{ form.zip_code.help_text }}
-            <br>
-            <br>
-
-            {{ form.city.errors }}
-            {{ form.city.label_tag }}
-            {{ form.city }}
-            {{ form.city.help_text }}
-            <br>
-            <br>
-
-            {{ form.gender.errors }}
-            {{ form.gender.label_tag }}
-            {{ form.gender }}
-            {{ form.gender.help_text }}
-            <br>
-            <br>
-
-
-            {{ form.allergies.errors }}
-            {{ form.allergies.label_tag }}
-            {{ form.allergies }}
-            {{ form.allergies.help_text }}
-            <br>
-            <br>
-
-
-            {{ form.start_year.errors }}
-            {{ form.start_year.label_tag }}
-            {{ form.start_year }}
-            {{ form.start_year.help_text }}
-            <br>
-            <br>
-
-            {{ form.expected_exam_year.errors }}
-            {{ form.expected_exam_year.label_tag }}
-            {{ form.expected_exam_year }}
-            {{ form.expected_exam_year.help_text }}
+            {{ form }}
             <br>
             <br>
 

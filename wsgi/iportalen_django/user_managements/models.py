@@ -44,9 +44,9 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     OTHER = 'o'  # Other / non-binary
     UNSPECIFIED = 'u'  # Don't want to specify
     GENDER_OPTIONS = (
-        (MAN, 'man'),
-        (WOMEN, 'kvinna'),
-        (OTHER, 'Annat / Icke-binär'),
+        (MAN, 'Man'),
+        (WOMEN, 'Kvinna'),
+        (OTHER, 'Annat / icke-binär'),
         (UNSPECIFIED, 'Vill ej ange')
     )
 
@@ -100,7 +100,8 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     address = models.CharField(verbose_name='adress', max_length=255, null=True, blank=True)
     zip_code = models.CharField(verbose_name='postnummer', max_length=255, null=True, blank=True)
     city = models.CharField(verbose_name='ort', max_length=255, null=True, blank=True)
-    gender = models.CharField(verbose_name='kön', max_length=1, null=True, blank=False, choices=GENDER_OPTIONS)
+    gender = models.CharField(verbose_name='kön',
+                              max_length=1, null=True, blank=True, choices=GENDER_OPTIONS, default=None)
     allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
     start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=timezone.now().year)
     current_year = models.CharField(verbose_name='nuvarande årskurs',
@@ -122,44 +123,12 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     rfid_number = models.CharField(verbose_name='rfid', max_length=255, null=True, blank=True)
     is_member = models.NullBooleanField(verbose_name="Är medlem?", blank=True, null=True, default=None)
 
+    must_edit = models.BooleanField(verbose_name="Måste uppdatera info", default=True)
     objects = IUserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
-    # This is where the menu options for a specific user is determined.
     @property
-    def get_menu_choices(self):
-
-        menu_choices = [('Lägg upp innehåll', reverse('create content')),
-                        ('Min sida', reverse('my page'))]  # List of extra menu choices.
-
-        if self.article_set.filter(visible_to__gte=timezone.now()):
-            menu_choices.append(('Mina Artiklar', reverse('articles:by user')))
-
-        menu_choices.append(('Mina Event', reverse('events:by user')))
-
-        menu_choices.append(('Mina Anmälningar', reverse('events:registered on')))
-
-        if self.has_perm("articles.can_approve_article"):
-            menu_choices.append(('Godkänn Innehåll', reverse('approve content')))  # With perm to edit articles.
-
-        if self.is_staff:
-            menu_choices.append(('Admin', '/admin'))  # Staff users who can access Admin page.
-
-        if self.has_perm("user_managements.add_iuser"):
-            menu_choices.append(("Lägg till Liu-idn i whitelist", reverse('add users to whitelist')))
-
-        if self.has_perm("organisations.add_organisation"):
-            menu_choices.append(("Lägg till en organisation", reverse('organisations:create')))
-
-        if self.has_perm('courses.add_course'):
-            menu_choices.append(("Administrera kursutvärderingar", reverse('course_evaluations:admin')))
-
-        if self.has_perm('user_managements.can_view_users'):
-            menu_choices.append(('Alla användare', reverse('all users')))
-
-        return menu_choices
-
     def get_full_name(self):
         try:
             return self.first_name.capitalize() + " " + self.last_name.capitalize()
@@ -193,14 +162,17 @@ class IUser(AbstractBaseUser, PermissionsMixin):
             for g in groups:
                 organisations = organisations + list(Organisation.objects.filter(group=g))
         return organisations
+    organisations = property(get_organisations)
+
 
 class IpikureSubscriber(models.Model):
-    user = models.ForeignKey(IUser, unique=True)
+    user = models.OneToOneField(IUser, null=True, blank=True)
     date_subscribed = models.DateTimeField(auto_now_add=True, verbose_name='prenumererar sedan datum')
 
     class Meta:
         verbose_name = "ipikureprenumerant"
         verbose_name_plural = "ipikureprenumeranter"
+        permissions = (('can_view_subscribers', 'Can view subscribers'),)
 
     def __str__(self):
         return "{user}: {year}-{month}-{day}".format(user=self.user.username, year=self.date_subscribed.year, month=self.date_subscribed.month, day=self.date_subscribed.day)

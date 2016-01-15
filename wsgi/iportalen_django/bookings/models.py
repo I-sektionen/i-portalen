@@ -11,6 +11,7 @@ class Bookable(models.Model):
     max_number_of_bookings = models.IntegerField(default=1)  # Maximum number of simultaneous bookings.
     max_number_of_slots_in_booking = models.IntegerField(default=1)  # Max length of booking
     hours_before_booking = models.IntegerField(default=24)  # must book at least this many hours befor booking starts.
+    info = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name

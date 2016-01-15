@@ -27,7 +27,7 @@ class Organisation(models.Model):
                                    help_text="Beskrivning av organisationen",
                                    null=True,
                                    blank=True)
-    contact_info = models.EmailField(verbose_name='Mejlkontakt',
+    contact_info = models.TextField(verbose_name='Kontaktinfo',
                                      help_text="Kontaktinformation för organisationen",
                                      null=True,
                                      blank=True)
@@ -82,6 +82,13 @@ class Organisation(models.Model):
         elif user.has_perm("organisations.change_organisation"):
             return True
         return False
+
+    def user_in_organisation(self, user):
+        try:
+            self.organisationpost_set.get(user=user)
+            return True
+        except:
+            return False
 
 
 class OrganisationPost(models.Model):

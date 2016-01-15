@@ -4,7 +4,11 @@
         <!-- <p class="type">Nyhet</p>-->
         <i class="fa fa-newspaper-o large"></i>
         <div class="article-preview-time-organisation">
+            {% if article.organisations.all %}
             <p class="article-preview-type">{{ article.organisations.all|safeseq|join:", " }}</p>
+            {% else %}
+            <p class="article-preview-type">{{ article.user.get_full_name }}</p>
+            {% endif %}
             <p class="article-preview-type time-since">{{ article.visible_from|timesince}}</p>
         </div>
     </div>
