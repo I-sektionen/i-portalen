@@ -36,7 +36,7 @@ else:
 
 # SECURITY WARNING: keep the secret key used in production secret!
 if not ON_PASS:
-    SECRET_KEY = '^+^i^1i94%j-hi+107xw(vf^mz4hg--#w0mw93+kc#&4vc=#=@'  # TODO: Make use of os.envion on openshift.
+    SECRET_KEY = '^+^i^1i94%j-hi+107xw(vf^mz4hg--#w0mw93+kc#&4vc=#=@'
 else:
     SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 

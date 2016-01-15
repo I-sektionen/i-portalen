@@ -1,35 +1,38 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ValidationError
+from django.contrib.auth.decorators import login_required, permission_required
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.core.urlresolvers import reverse
+from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.utils import timezone
 from bookings.exceptions import NoSlots, InvalidInput, MaxLength, MultipleBookings, TooShortNotice
 from utils.time import first_day_of_week, daterange, combine_date_and_time
 from .models import Booking, Bookable, Invoice, BookingSlot, PartialBooking, FixedCostAmount, VariableCostAmount
 from .forms import BookingForm
 
-# from reportlab.pdfgen import canvas
-"""
-- See my bookings
-- Make new booking
-- Edit booking
-- Remove booking
-"""
 
 @login_required()
 def index(request):
     bookings = Booking.objects.filter(user=request.user)
     bookables = Bookable.objects.all()
+    invoices = Invoice.objects.filter(booking__user=request.user, status=Invoice.SENT)
     return render(request, "bookings/my_bookings.html", {
         "bookings": bookings,
         "bookables": bookables,
+        "invoices": invoices,
     })
 
 
+@login_required()
 def invoice(request, invoice_id):
     inv = get_object_or_404(Invoice, pk=invoice_id)
     booking = inv.booking
+
+    #  Must be have permission or be correct user.
+    if not (request.user.has_perm("Booking.manage_bookings") or booking.user == request.user):
+        return HttpResponseForbidden
+
     bookable = booking.bookable
     fixed_costs = FixedCostAmount.objects.filter(invoice=inv)
     variable_costs = VariableCostAmount.objects.filter(invoice=inv)
@@ -40,6 +43,7 @@ def invoice(request, invoice_id):
         'fixed_costs': fixed_costs,
         'variable_costs': variable_costs,
     })
+
 
 @login_required()
 def make_booking(request, bookable_id, weeks_forward=0):
@@ -225,3 +229,32 @@ def api_view(request, bookable_id, weeks_forward=0):
         'bookings': bookings_list,
     }
     return JsonResponse(data)
+
+
+@permission_required('Booking.can_manage')
+def create_invoice(request, booking_pk):
+    booking = get_object_or_404(Booking, pk=booking_pk)
+    q = Invoice.objects.filter(booking=booking)
+    if not q.exists():
+        i = Invoice(status=Invoice.CREATED,
+                    booking=booking,
+                    )
+        i.save()
+    else:
+        i = q[0]  # take the first one.
+    return redirect(reverse("admin:bookings_invoice_change", args=[i.pk]))
+
+
+@permission_required('Booking.can_manage')
+def send_invoice_email(request, invoice_pk):
+    i = get_object_or_404(Invoice, pk=invoice_pk)
+    subject = "Faktura för %s" % (i.booking.bookable, )
+    msg = "En ny faktura finns nu tillgänglig åt dig på i-portalen.se. Du behöver logga in på ditt konto för att ta del av fakturan, klicka på bokningar upp till höger för att se dina fakturor."
+    frm = "bokning@i-portalen.se"  # Todo: Is this reasonable?
+    to = i.booking.user.email
+    send_mail(subject, msg, frm, [to])
+    if i.status == Invoice.CREATED:
+        i.status = Invoice.SENT
+        i.save()
+    messages.success(request, "Ett email har skickats till användaren om fakturan, denna faktura har markerats som skickad.")
+    return redirect(reverse("admin:bookings_invoice_change", args=[i.pk]))
