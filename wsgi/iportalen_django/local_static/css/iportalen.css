@@ -1428,6 +1428,16 @@ div#events-to-approve .event-to-approve:last-child {
   margin-right: 0;
 }
 
+div#events-to-approve-options {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+}
+div#events-to-approve-options:last-child {
+  margin-right: 0;
+}
+
 article.event-preview-organisation {
   padding: 0px 15px 0px 15px;
   margin-bottom: 0em;
@@ -2168,6 +2178,11 @@ article.news-feed-content p.author {
   background-color: #f2f0f1;
 }
 
+div.booking-container div.booking .info ul {
+  list-style-type: disc;
+  padding-bottom: 0.5em;
+  list-style-position: inside;
+}
 div.booking-container div.booking div#days {
   display: -webkit-box;
   display: -moz-box;
