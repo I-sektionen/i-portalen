@@ -339,9 +339,9 @@ def create_or_modify_event(request, pk=None):
         event = get_object_or_404(Event, pk=pk)
         if not event.can_administer(request.user):
             return HttpResponseForbidden()
-        form = EventForm(request.POST or None, instance=event)
+        form = EventForm(request.POST or None, request.FILES or None, instance=event)
     else:  # new event.
-        form = EventForm(request.POST or None)
+        form = EventForm(request.POST or None, request.FILES or None)
     if request.method == 'POST':
         if form.is_valid():
             event = form.save(commit=False)
@@ -374,6 +374,16 @@ def create_or_modify_event(request, pk=None):
     return render(request, 'events/create_event.html', {
         'form': form,
     })
+
+
+@login_required()
+def file_download(request, pk):
+    event = Event.objects.get(pk=pk)
+    event_filename = event.attachment
+    response = HttpResponse(event_filename)
+    response['Content-Disposition'] = 'attachment; filename="{filename}"'.format(filename=event.filename)
+
+    return response
 
 
 @login_required()

@@ -76,7 +76,10 @@
                             <div id="wmd-button-bar-body"></div>
                             {{ form.body }}
                         </div>
-
+                        {{ form.attachment.errors }}
+                        {{ form.attachment.label_tag }}
+                        {{ form.attachment }}
+                        <p>{{ form.attachment.help_text }}</p>
                     </div>
 
 
