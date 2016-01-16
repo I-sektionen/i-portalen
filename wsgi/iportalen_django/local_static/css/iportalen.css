@@ -991,6 +991,7 @@ header.navigation ul.submenu {
     font-size: 1.4em;
     text-align: center;
     text-shadow: 1px -1px 1px silver;
+    height: 1.4em;
   }
 }
 @media screen and (min-width: 1200px) {
