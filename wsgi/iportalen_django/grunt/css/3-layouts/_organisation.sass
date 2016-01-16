@@ -43,3 +43,34 @@
     +media($large-screen-up)
       +span-columns(4 of 8)
       +omega()
+
+#organisation-hero
+  .hero
+    background-attachment: scroll
+    background-size: contain
+    height: 150px
+    background-color: white
+    +media($large-screen)
+      height: 250px
+
+    .no-img
+      text-align: center
+      height: 150px
+      background-color: $dark-gray
+      vertical-align: middle
+      +media($large-screen)
+        height: 250px
+      .placeholder
+        +position(absolute)
+        top: 50%
+        left: 50%
+        +transform(translate(-50%,-50%))
+        h1
+          color: white
+          font-size: 1.6em
+          margin-bottom: 0.5em
+          font-weight: 700
+
+          @include media($large-screen)
+            font-size: 3.5em
+

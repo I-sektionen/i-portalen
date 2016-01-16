@@ -1,4 +1,6 @@
 {% extends "master.html" %}
+{% block hero %}
+{% endblock %}
 {% block content %}
 <h2>Skapa nytt lösenord</h2>
     {% if liu_id %}
@@ -8,6 +10,6 @@
 <form action="{% url 'password_reset' %}" method="post">
     {% csrf_token %}
     <input {% if liu_id %}value="{{ liu_id }}@student.liu.se" {% endif %} type="email" class="form-control" placeholder="LIU-mailadress" name="email" id="id_email" required autofocus>
-    <button type="submit" class="btn btn-lg btn-primary">Bekräfta</button>
+    <button type="submit" class="action-button">Bekräfta</button>
 </form>
 {% endblock %}
