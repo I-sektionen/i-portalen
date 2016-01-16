@@ -294,6 +294,10 @@ def unregister(request, pk):
 def event_calender(request):
     return render(request, "events/calender.html")
 
+def event_calender_view(request):
+    events = Event.objects.all().order_by('start')
+    return render(request, "events/calendar_view.html",
+                          {'events': events})
 
 @login_required()
 def registered_on_events(request):
