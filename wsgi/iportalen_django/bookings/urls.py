@@ -7,7 +7,9 @@ urlpatterns = [
     url(r'book/(?P<bookable_id>[0-9]+)/api/$', views.api_view, name="api booking"),
     url(r'book/(?P<bookable_id>[0-9]+)/api/(?P<weeks_forward>[0-9]+)/$', views.api_view,
         name="api booking week_forward"),
-    url(r'^invoice/(?P<invoice_id>[0-9]+)', views.invoice_pdf, name="invoice pdf"),
+    url(r'^invoice/create_custom/(?P<booking_pk>[0-9]+)$', views.create_invoice, name="create custom invoice"),
+    url(r'^invoice/(?P<invoice_id>[0-9]+)/$', views.invoice, name="invoice view"),
+    url(r'^invoice/(?P<invoice_pk>[0-9]+)/email/$', views.send_invoice_email, name="send invoice email"),
     url(r'^(?P<bookable_id>[0-9]+)/delete$', views.remove_booking, name="remove booking"),
     url(r'^$', views.index, name="my bookings"),
 ]

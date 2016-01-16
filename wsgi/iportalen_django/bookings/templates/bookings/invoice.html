@@ -1,0 +1,34 @@
+{% extends "master.html" %}
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+    <h1>Faktura</h1>
+    <p>Avser en bokning av {{ bookable }}.</p>
+    <p>Mottagare: {{ booking.user }}</p>
+
+    <h2>Specifikation: </h2>
+    <table>
+    <thead>
+        <tr>
+            <th>Post</th><th>Antal</th><th>Styckpris</th><th>Totalt</th><th>Varav moms</th>
+        </tr>
+    </thead>
+        <tbody>
+        {% for fixed in fixed_costs %}
+        <tr>
+            <td>{{ fixed }}</td><td>-</td><td>-</td><td>{{ fixed.amount }} kr</td><td>{{ fixed.tax_amount }} kr</td>
+        </tr>
+        {% endfor %}
+        {% for variab in variable_costs %}
+        <tr>
+            <td>{{ variab }}</td><td>{{ variab.units }} {{ variab.unit_name }}</td><td>{{ variab.unit_price }} kr</td>
+            <td>{{ variab.amount }} kr</td><td>{{ variab.tax_amount }} kr</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h3>Att betala: {{ invoice.total }}</h3>
+    <p>Detta ska inbetalas till postgiro: XXX-XXX innan den {{ invoice.due }}</p>
+{% endblock %}
+
