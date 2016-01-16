@@ -10,7 +10,7 @@ from utils.validators import less_than_160_characters_validator
 from organisations.models import Organisation
 from tags.models import Tag
 from .exceptions import CouldNotRegisterException
-from .managers import SpeakerListManager
+from .managers import SpeakerListManager, EventManager
 
 
 # A user can register and deregister
@@ -115,6 +115,8 @@ class Event(models.Model):
         verbose_name='arrangör',
         help_text="Organisation(er) som arrangerar evenemanget. Medlemmar i dessa kan senare ändra eventet. Håll ner Ctrl för att markera flera.")
     sponsored = models.BooleanField(verbose_name='sponsrat', default=False, help_text="Kryssa i om innehållet är sponsrat")
+
+    objects = EventManager()
     ###########################################################################
     # Meta data for model
     ###########################################################################

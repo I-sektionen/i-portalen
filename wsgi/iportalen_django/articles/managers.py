@@ -5,6 +5,13 @@ from articles.models import APPROVED, BEING_REVIEWED, DRAFT, REJECTED
 
 class ArticleManager(models.Manager):
 
+    def published(self):
+        return self.filter(
+            status=APPROVED,
+            visible_from__lte=timezone.now(),
+            visible_to__gte=timezone.now()
+            ).order_by('-visible_from')
+
     def get_user_articles(self, user):
         """Get article's writen by a user"""
         approved_articles = user.article_set.filter(status=APPROVED, visible_to__gte=timezone.now())
