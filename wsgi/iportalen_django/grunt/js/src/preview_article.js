@@ -55,7 +55,6 @@ var article_preview = function () {
     var from = $("#id_visible_from");
     var tags = $("#id_tags");
     var sponsor = $("#id_sponsored");
-    //TODO: Ladda ned fil
 
     //This is the elements where the results are printed to.
     var headline_preview = $(".headline_preview");
