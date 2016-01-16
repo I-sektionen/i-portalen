@@ -7,11 +7,7 @@ from events.models import Event
 
 @register.assignment_tag
 def get_all_events():
-    events = Event.objects.filter(
-        status=Event.APPROVED,
-        visible_from__lte=timezone.now(),
-        end__gte=timezone.now()
-    ).order_by('-start')
+    events = Event.objects.published()
     return events
 
 
