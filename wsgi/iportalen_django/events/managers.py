@@ -1,5 +1,15 @@
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
+
+
+class EventManager(models.Manager):
+    def published(self):
+        return self.filter(
+                status=self.model.APPROVED,
+                visible_from__lte=timezone.now(),
+                end__gte=timezone.now()
+                ).order_by('-start')
 
 
 class SpeakerListManager(models.Manager):
