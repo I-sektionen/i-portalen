@@ -26,9 +26,9 @@ def create_or_modify_article(request, pk=None):
         article = get_object_or_404(Article, pk=pk)
         if not article.can_administer(request.user):
             return HttpResponseForbidden()
-        form = ArticleForm(request.POST or None, instance=article)
+        form = ArticleForm(request.POST or None, request.FILES or None, instance=article)
     else:  # new article.
-        form = ArticleForm(request.POST or None)
+        form = ArticleForm(request.POST or None, request.FILES or None)
     if request.method == 'POST':
         if form.is_valid():
             article = form.save(commit=False)
@@ -144,6 +144,6 @@ def article_file_download(request, pk):
     article = Article.objects.get(pk=pk)
     article_filename = article.attachment
     response = HttpResponse(article_filename)
-    response['Content-Disposition'] = 'attachment; filename="article_file.pdf"'
+    response['Content-Disposition'] = 'attachment; filename="{filename}"'.format(filename=article.filename)
 
     return response

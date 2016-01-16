@@ -1428,13 +1428,13 @@ div#events-to-approve .event-to-approve:last-child {
   margin-right: 0;
 }
 
-div#events-to-approve-options {
+div.events-to-approve-options {
   float: left;
   display: block;
   margin-right: 2.35765%;
   width: 100%;
 }
-div#events-to-approve-options:last-child {
+div.events-to-approve-options:last-child {
   margin-right: 0;
 }
 
