@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from django.contrib.auth.views import password_change, password_change_done
+from django.views.generic import TemplateView
 from .views import (
     logout_view,
     login,
@@ -53,5 +54,7 @@ urlpatterns = [
     url(r'^ipikure_subscribers$', view=ipikure_subscribers,
         name="ipikure_subscribers"),
     url(r'search_users/', view=filter_users, name="filter users"),
-    url(r'all_users/', view=all_users, name="all users")
+    url(r'all_users/', view=all_users, name="all users"),
+    url(r'pul/$', view=TemplateView.as_view(template_name="user_managements/pul.html"), name="pul"),
+    url(r'cookies/$', view=TemplateView.as_view(template_name="user_managements/cookies.html"), name="cookies")
 ]
