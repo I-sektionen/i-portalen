@@ -4531,7 +4531,7 @@ catch(err) {
 });
 
 
-function markdown_event_preview() {
+function markdown_article_preview() {
         var converter = Markdown.getSanitizingConverter();
         converter.hooks.chain("preConversion", function (text) {
             return text.replace(/[&<"'\/]/g, function (s) {
@@ -4558,17 +4558,16 @@ function markdown_event_preview() {
  */
 var article_preview = function () {
     //Start the engines. Listens to the body and outputs.
-    console.log("Call on meeeee");
-    markdown_event_preview();
-    console.log("Call on me");
+    markdown_article_preview();
 
     //These are the elements that is being listened to.
     var listened_to = [];
     var headline = $("#id_headline");
     var lead = $("#id_lead");
-    var author = $("#id_author");
+    var organisation = $("#id_organisations");
     var from = $("#id_visible_from");
     var tags = $("#id_tags");
+    var sponsor = $("#id_sponsored");
 
     //This is the elements where the results are printed to.
     var headline_preview = $(".headline_preview");
@@ -4576,17 +4575,18 @@ var article_preview = function () {
     var author_preview = $(".author_preview");
     var from_preview_date = $(".date_preview");
     var tags_preview = $(".tags_preview");
+    var sponsor_preview = $(".sponsor_preview");
 
     listened_to.push(
                     [headline, headline_preview],
                     [lead, lead_preview],
-                    [author, author_preview],
+                    [organisation, author_preview],
                     [from, from_preview_date],
-                    [tags, tags_preview]
+                    [tags, tags_preview],
+                    [sponsor, sponsor_preview]
     );
 
     var render = function (){
-        console.log("Bamm.");
         jQuery.each(listened_to, function(index, element){
             var txt;
 
@@ -4597,18 +4597,36 @@ var article_preview = function () {
                     var date = d[0];
                     element[1].text(date);
                 }
-            } else if(element[0].is(tags)){
+            } else if(element[0].is(tags)) {
                 var selected_tags = tags.children().filter(":selected");
                 var tag_string = "";
-                jQuery.each(selected_tags, function(index, ele){
+                jQuery.each(selected_tags, function (index, ele) {
                     tag_string = tag_string + ele.innerHTML + ", ";
                 });
-                if(tag_string != ""){
-                    tag_string = tag_string.substring(0, tag_string.length-2)
+                if (tag_string != "") {
+                    tag_string = tag_string.substring(0, tag_string.length - 2)
                 }
                 element[1].text(tag_string);
-
-            } else {
+            } else if(element[0].is(sponsor)) {
+                if(sponsor.prop('checked')){
+                    sponsor_preview.text("Sponsrat innehåll");
+                } else {
+                    sponsor_preview.text("");
+                }
+            } else if(element[0].is(organisation)) {
+                var selected_org = organisation.children().filter(":selected");
+                var org_string = "";
+                jQuery.each(selected_org, function(index, ele){
+                    org_string = ele.innerHTML;
+                });
+                if(org_string == ""){
+                    author_preview.text("Ditt namn");
+                } else {
+                    author_preview.text(org_string);
+                }
+            }
+            else
+            {
                 txt = element[0].val();
                 element[1].text(txt);
             }
@@ -4649,9 +4667,7 @@ function markdown_event_preview() {
  */
 var event_preview = function () {
     //Start the engines. Listens to the body and outputs.
-    console.log("Call on meeeee");
     markdown_event_preview();
-    console.log("Call on me");
 
     //These are the elements that is being listened to.
     var listened_to = [];
@@ -4662,16 +4678,26 @@ var event_preview = function () {
     var end = $("#id_end");
     var enable_registration = $("#id_enable_registration");
     var free_places = $("#id_registration_limit");
+    var organisation = $("#id_organisations");
+    var tags = $("#id_tags");
+    var sponsor = $("#id_sponsored");
+    var extra_registration = $("#id_extra_deadline_text");
+    var extra_registration_date = $("#id_extra_deadline");
 
     //This is the elements where the results are printed to.
-    var lead_preview = $("#lead_preview");
+    var lead_preview = $(".lead_preview");
     var headline_preview = $(".headline_preview");
     var place_preview = $(".place_preview");
     var start_preview_date = $(".start_preview_date");
     var start_preview_time = $(".start_preview_time");
     var end_preview = $("#id_end_preview");
     var enable_registration_preview = $(".enable_registration_preview");
-    var free_places_preview = $("#id_registration_limit_preview");
+    var free_places_preview = $(".registration_limit_preview");
+    var author_preview = $(".author_preview");
+    var tags_preview = $(".tags_preview");
+    var sponsor_preview = $(".sponsor_preview");
+    var extra_registration_preview = $(".extra_registration_preview");
+
 
     listened_to.push([headline, headline_preview],
                     [lead, lead_preview],
@@ -4679,11 +4705,14 @@ var event_preview = function () {
                     [start, [start_preview_time, start_preview_date]],
                     [end, end_preview],
                     [enable_registration, enable_registration_preview],
-                    [free_places, free_places_preview]
+                    [free_places, free_places_preview],
+                    [organisation, author_preview],
+                    [tags, tags_preview],
+                    [sponsor, sponsor_preview],
+                    [extra_registration, extra_registration_preview]
     );
     enable_registration_preview.hide();
     var render = function (){
-        console.log("Bamm.");
         jQuery.each(listened_to, function(index, element){
             var txt;
 
@@ -4698,14 +4727,54 @@ var event_preview = function () {
                 }
 
                 //Special case of
-            } else if(element[0].is(enable_registration)){
-                if(element[0].is(":checked")){
-                  element[1].show();
-                  console.log("1");
-              } else {
-                  element[1].hide();
-                  console.log("0");
-              }
+            } else if(element[0].is(enable_registration)) {
+                if (element[0].is(":checked")) {
+                    element[1].show();
+                } else {
+                    element[1].hide();
+                }
+            } else if(element[0].is(organisation)) {
+                var selected_org = organisation.children().filter(":selected");
+                var org_string = "";
+                jQuery.each(selected_org, function (index, ele) {
+                    org_string = ele.innerHTML;
+                });
+                if (org_string == "") {
+                    author_preview.text("Ditt namn");
+                } else {
+                    author_preview.text(org_string);
+                }
+            } else if(element[0].is(tags)) {
+                var selected_tags = tags.children().filter(":selected");
+                var tag_string = "";
+                jQuery.each(selected_tags, function (index, ele) {
+                    tag_string = tag_string + ele.innerHTML + ", ";
+                });
+                if (tag_string != "") {
+                    tag_string = tag_string.substring(0, tag_string.length - 2)
+                }
+                element[1].text(tag_string);
+            } else if(element[0].is(sponsor)) {
+                if(sponsor.prop('checked')){
+                    sponsor_preview.text("Sponsrat innehåll");
+                } else {
+                    sponsor_preview.text("");
+                }
+            } else if(element[0].is(extra_registration)) {
+                txt = element[0].val();
+                var tmp = "";
+
+                if (txt == ""){
+                    element[1].text("");
+                } else {
+                    txt = "Anmälningsstop för att " + txt;
+                    if (extra_registration_date.val() != ""){
+                       txt = txt + " " + extra_registration_date.val();
+                    } else {
+                        txt = txt + "(Datum ej angivet)"
+                    }
+                    element[1].text(txt);
+                }
             } else {
                 txt = element[0].val();
                 element[1].text(txt);
