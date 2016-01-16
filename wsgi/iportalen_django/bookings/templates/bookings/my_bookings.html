@@ -5,6 +5,13 @@
 {% block content %}
     <h1>Bokningar</h1>
     <p>Här kan du administera dina aktuella bokningar samt göra nya.</p>
+    {% if invoices %}
+        <h2>Dina obetalda fakturor:</h2>
+        {% for invoice in invoices %}
+            <a href="{% url "bookings:invoice view" invoice.pk %}"><p>{{ invoice }}</p></a>
+        {% endfor %}
+    {% endif %}
+
     {% if bookings %}
         <h2>Dina tidigare bokningar:</h2>
         {% for booking in bookings %}
