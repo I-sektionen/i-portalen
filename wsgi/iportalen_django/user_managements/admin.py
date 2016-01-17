@@ -37,7 +37,7 @@ class IUserAdmin(UserAdmin):
             'groups',
             'rfid_number',
         )}),
-        ('Permissions', {'fields': ('is_active', 'is_superuser', 'is_staff', 'is_member')}),
+        ('Permissions', {'fields': ('is_active', 'is_superuser', 'is_staff', 'is_member', 'must_edit')}),
     )
 
     add_fieldsets = (
