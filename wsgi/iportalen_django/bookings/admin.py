@@ -43,6 +43,10 @@ def _get_invoice_status_display(obj):
 
 
 class BookingsAdmin(admin.ModelAdmin):
+
+    def has_add_permission(self, request):
+        return False
+
     list_display = ('user', 'bookable', 'start_time', _get_invoice_status_display,)
     readonly_fields = ('create_invoice_url', _get_invoice_status_display)
 
