@@ -49,14 +49,6 @@
 
 {% block after_scripts %}
  <script>
-  /*
-     $(function() {
-    $( ".datepicker" ).datepicker({
-      changeMonth: true,
-      changeYear: true
-    });
-  });
-  */
   jQuery(document).ready(function(){
                 generate_booking_form({{ bookable_id }}, {{ weeks_forward }})
         });
