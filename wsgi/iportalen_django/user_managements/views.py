@@ -154,19 +154,17 @@ def force_change_user_info_view(request):
 @login_required()
 def my_page_view(request):
     user = request.user
-    is_active = 'default'
     if request.method == 'POST':
         change_user_info_form = ChangeUserInfoForm(request.POST, instance=user)
-        is_active = 'form'
         if change_user_info_form.is_valid():
-            is_active = 'default'
             change_user_info_form.save()
         return render(request, "user_managements/user-profile.html",
-                      {'form': change_user_info_form, 'is_active': is_active})
+                      {'form': change_user_info_form, 'tab2': "is-active"})
     else:
         change_user_info_form = ChangeUserInfoForm(instance=user)
         return render(request, "user_managements/user-profile.html",
-                      {'form': change_user_info_form, 'is_active': is_active})
+                      {'form': change_user_info_form, 'tab1': "is-active"})
+
 
 @login_required()
 def add_users_to_white_list(request):
