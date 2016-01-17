@@ -9,10 +9,8 @@
         </h1>
         <ul class="accordion-tabs">
         <li class="tab-header-and-content">
-        <a href="javascript:void(0)" class="tab-link {% if is_active == "form" %}{% else %}is-active{% endif %}" >Info</a>
-        <div class="tab-content {% if is_active == "form" %}{% else %}is-open{% endif %}"
-             {% if is_active == "form" %}style="display: none;"{% else %}style="display: block;"{% endif %}>
-
+        <a href="javascript:void(0)" class="tab-link {{ tab1 }}" >Info</a>
+        <div class="tab-content">
 
         <h3>Liu-id: </h3>
         <p>{{ u.username}}</p>
@@ -30,8 +28,8 @@
 </div>
 </li>
 <li class="tab-header-and-content">
-    <a href="javascript:void(0)" class="{% if is_active == "form" %}is-active{% endif %} tab-link">Ändra uppgifter</a>
-    <div class="tab-content  {% if is_active == "form" %}is-open{% else %}{% endif %}" {% if is_active == "form" %}style="display: block;"{% else %}style="display: none;"{% endif %}>
+    <a href="javascript:void(0)" class="tab-link {{ tab2 }}">Ändra uppgifter</a>
+    <div class="tab-content">
         <form action="" method="post" autocomplete="on">
             {% csrf_token %}
             {{ form.non_field_errors }}
@@ -50,7 +48,7 @@
     </div>
 </li>
 <li class="tab-header-and-content">
-    <a href="javascript:void(0)" class="tab-link">Ändra lösenord</a>
+    <a href="javascript:void(0)" class="tab-link {{ tab3 }}">Ändra lösenord</a>
     <div class="tab-content">
         <a class="button-group-item" id="user-info-form" href="{% url "password_change" %}">Byt lösenord</a>
     </div>
