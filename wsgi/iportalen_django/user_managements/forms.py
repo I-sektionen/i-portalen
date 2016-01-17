@@ -66,8 +66,6 @@ class ChangeUserInfoForm(forms.ModelForm):
         for key in self.fields:
             self.fields[key].required = True
         self.fields['allergies'].required = False
-        self.fields['bachelor_profile'].required = False
-        self.fields['master_profile'].required = False
         self.fields['address'].widget.attrs['autocomplete'] = 'address'
         self.fields['zip_code'].widget.attrs['autocomplete'] = 'zip'
         self.fields['city'].widget.attrs['autocomplete'] = 'city'
