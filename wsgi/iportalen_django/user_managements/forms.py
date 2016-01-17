@@ -45,7 +45,7 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomUserChangeForm(UserChangeForm):
     password = ReadOnlyPasswordHashField(
         label="Lösenord",
-        help_text="Ändra lösenordet med <a href=\"../password/\"> det här formuläret</a>."
+        help_text="Ändra lösenordet med <a href=\'password/\'> det här formuläret</a>."
     )
 
     class Meta(UserChangeForm.Meta):
@@ -66,6 +66,7 @@ class ChangeUserInfoForm(forms.ModelForm):
         for key in self.fields:
             self.fields[key].required = True
         self.fields['allergies'].required = False
+        self.fields['phone'].required = False
         self.fields['address'].widget.attrs['autocomplete'] = 'address'
         self.fields['zip_code'].widget.attrs['autocomplete'] = 'zip'
         self.fields['city'].widget.attrs['autocomplete'] = 'city'
@@ -73,7 +74,7 @@ class ChangeUserInfoForm(forms.ModelForm):
     class Meta:
         model = IUser
         fields = ('address', 'zip_code', 'city', 'gender', 'allergies',
-                  'start_year', 'klass', 'current_year', 'bachelor_profile', 'master_profile',)
+                  'start_year', 'klass', 'current_year', 'bachelor_profile', 'master_profile', 'phone',)
 
 
 
