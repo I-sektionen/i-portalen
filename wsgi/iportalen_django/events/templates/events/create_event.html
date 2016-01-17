@@ -39,7 +39,7 @@
                             {{ form.registration_limit }}
                         </div>
                         <div>
-                            {{ form.deregister_delta.label_tag }}
+                            {{ form.deregister_delta.label_tag }} <em>{{ form.deregister_delta.help_text }}</em>
                             {{ form.deregister_delta.errors }}
                             {{ form.deregister_delta }}
                         </div>
@@ -76,7 +76,10 @@
                             <div id="wmd-button-bar-body"></div>
                             {{ form.body }}
                         </div>
-
+                        {{ form.attachment.errors }}
+                        {{ form.attachment.label_tag }}
+                        {{ form.attachment }}
+                        <p>{{ form.attachment.help_text }}</p>
                     </div>
 
 
@@ -117,40 +120,81 @@
         <li class ="tab-header-and-content">
             <a href="javascript:void(0)" class="tab-link">Förhandsvisning</a>
             <div class="tab-content">
-                <div id="news-feed-article-preview">
-                <article class="event-preview">
-                    <h4 class="headline_preview"></h4>
-                    <div class="meta">
-                        <p class="meta-content start_preview_date"></p>
-                        <p class="meta-content id_start_preview_time"></p>
+                <h4>Förhandsvisning kompakt format:</h4>
+                <hr>
+                <article class="news-feed-content">
+                    <div class="article-type-and-date">
+                        <i class="fa fa-calendar large"></i>
+                        <div class="article-preview-time-organisation">
+                            <p class="article-preview-type author_preview"></p>
+                            <p class="article-preview-type time-since">34 minuter sedan</p>
+                        </div>
                     </div>
-                    <a href="#"><button>Läs mer</button></a>
-                    <a href="#"><button class="enable_registration_preview">Anmäl</button></a>
-                </article>
-                </div>
-                <div id="single-article-preview">
-                    <h1>Enskilt event</h1>
-                    <article class="single-article">
-                        <p class="type">Event</p>
-                        <h1 class="headline_preview"></h1>
-                        <h2 id="lead_preview"></h2>
-                        <p class="date">
+                    <h1 class="headline_preview"></h1>
+                        <p class="meta">
                             <i class="fa fa-calendar"></i>
-                            <span class="meta-content start_preview_date"></span>
+                            <span class="start_preview_date"></span>
 
                             <i class="fa fa-clock-o"></i>
-                            <span class="meta-content start_preview_time"></span>
+                            <span class="start_preview_time"></span>
 
-                            <i class="fa fa-map-o"></i>
-                            <span class="meta-content place_preview"></span>
+                            <i class="fa fa-map-marker"></i>
+                            <span class="place_preview"></span>
+
+                            <i class="fa fa-users"></i>
+                            <span class="registration_limit_preview"></span>
+
+                            <span title="Tid innan anmälan stänger">
+                                <i class="fa fa-exclamation-circle"></i>
+                                <span>(Här visas tid kvar)</span>
+                            </span>
+                            <i class="fa fa-tags"></i>
+                            <span class="tags_preview"></span>
+                            <span class="sponsor_preview"></span>
                         </p>
-                        <p></p>
-                        <p class="wmd-panel wmd-preview" id="wmd-preview-body"></p>
-                        <a href="#"><button class="enable_registration_preview">Anmäl mig</button></a>
-                        <hr>
-                        <p class="author "></p>
-                    </article>
-                </div>
+                    <h2 class="lead_preview"></h2>
+                </article>
+                <hr>
+                <h4>Förhandsvisning av fullt event</h4>
+                <hr>
+                    <article class="news-feed-content">
+                    <div class="article-type-and-date">
+                        <i class="fa fa-calendar large"></i>
+                        <div class="article-preview-time-organisation">
+                            <p class="article-preview-type author_preview"></p>
+                            <p class="article-preview-type time-since">34 minuter sedan</p>
+                        </div>
+                    </div>
+                    <h1 class="headline_preview"></h1>
+                        <p class="meta">
+                            <i class="fa fa-calendar"></i>
+                            <span class="start_preview_date"></span>
+
+                            <i class="fa fa-clock-o"></i>
+                            <span class="start_preview_time"></span>
+
+                            <i class="fa fa-map-marker"></i>
+                            <span class="place_preview"></span>
+
+                            <i class="fa fa-users"></i>
+                            <span class="registration_limit_preview"></span>
+
+                            <span title="Tid innan anmälan stänger">
+                                <i class="fa fa-exclamation-circle"></i>
+                                <span>(Här visas tid kvar)</span>
+                            </span>
+                            <i class="fa fa-tags"></i>
+                            <span class="tags_preview"></span>
+                            <span class="sponsor_preview"></span>
+                        </p>
+                    <h2 class="lead_preview"></h2>
+                    <p class="wmd-panel wmd-preview" id="wmd-preview-body"></p>
+                </article>
+                <p class="registration_stop"></p>
+                <p class="extra_registration_preview"></p>
+                <a href="#"><button class="enable_registration_preview">Anmäl mig</button></a>
+                <hr>
+
             </div>
         </li>
     </ul>

@@ -15,6 +15,7 @@ from .views import (
     CSV_view_preregistrations,
     unregister,
     event_calender,
+    event_calender_view,
     reserves_list,
     registered_on_events,
     events_by_user,
@@ -23,6 +24,7 @@ from .views import (
     speaker_list_display,
     administer_speaker_list,
     import_registrations,
+    file_download
 )
 
 urlpatterns = [
@@ -46,10 +48,12 @@ urlpatterns = [
     url(r'^unapproved/$', view=all_unapproved_events, name='unapproved'),
     url(r'^(?P<event_id>[0-9]+)/approve$', view=approve_event, name='approve'),
     url(r'^(?P<pk>[0-9]+)/unapprove$', view=unapprove_event, name='unapprove'),
-    url(r'^calender/$', view=event_calender, name='calender'),
+    url(r'^calendar/$', view=event_calender, name='calender'),
+    url(r'^calendar_view/$', view=event_calender_view, name='calender_view'),
     url(r'^user_entries/$', view=registered_on_events, name='registered on'),
     url(r'^my_events/$', view=events_by_user, name='by user'),
     url(r'(?P<pk>[0-9]+)/administer/speaker/$', view=administer_speaker_list, name="administer speaker list"),
     url(r'(?P<pk>[0-9]+)/administer/speaker/display/$', view=speaker_list_display, name="speaker display"),
     url(r'(?P<pk>[0-9]+)/administer/speaker/api/$', view=speaker_list, name="speaker api"),
+    url(r'^(?P<pk>[0-9]+)/download/$', view=file_download, name='download'),
 ]

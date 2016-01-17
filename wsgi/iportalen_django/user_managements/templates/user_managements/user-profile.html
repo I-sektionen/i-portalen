@@ -31,7 +31,7 @@
 <li class="tab-header-and-content">
     <a href="javascript:void(0)" class="tab-link">Ändra uppgifter</a>
     <div class="tab-content">
-        <form action="" method="post">
+        <form action="" method="post" autocomplete="on">
             {% csrf_token %}
             {{ form.non_field_errors }}
             {% for field in form %}

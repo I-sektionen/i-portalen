@@ -2,39 +2,41 @@
 {% load iportalen_tags %}
 
 {% block content %}
-<div id="events-to-approve">
-{% for event in events %}
-    <div class="event-to-approve">
-    {% include "events/model/full_event.html" with pk=event.pk preview=True %}
-        <p>
-            Eventet skapades av: {{ event.user.first_name }} {{ event.user.last_name }} ({{ event.user }})
-            {% if event.organisations.all %}
-                med:
-                {% for org in event.organisations.all %}
-                    {% if org in request.user.organisations %}
-                        {{ org }},
+    <div id="events-to-approve">
+        {% for event in events %}
+            <div class="event-to-approve">
+                {% include "events/model/full_event.html" with pk=event.pk preview=True %}
+                <p>
+                    Eventet skapades av: {{ event.user.first_name }} {{ event.user.last_name }} ({{ event.user }})
+                    {% if event.organisations.all %}
+                        med:
+                        {% for org in event.organisations.all %}
+                            {% if org in request.user.organisations %}
+                                {{ org }},
+                            {% else %}
+                                {{ org }} (ej medlem),
+                            {% endif %}
+
+                        {% endfor %}
+                        som ägare.
                     {% else %}
-                        {{ org }} (ej medlem),
+                        åt sig själv.
                     {% endif %}
+                </p>
+                <p>
+                    {% if event.enable_registration %} Anmälan kommer att vara möjlig.
+                    {% else %} Anmälan kommer EJ att vara möjlig.
+                    {% endif %}
+                </p>
 
-                {% endfor %}
-                som ägare.
-            {% else %}
-                åt sig själv.
-            {% endif %}
-        </p>
-        <p>
-            {% if event.enable_registration %} Anmälan kommer att vara möjlig.
-            {% else %} Anmälan kommer EJ att vara möjlig.
-            {% endif %}
-        </p>
-
+            </div>
+            <div class="events-to-approve-options">
+                <a href="{% url "events:approve" event.pk %}"><button class="btn-read-more">Godkänn</button></a>
+                <a href="{% url "events:unapprove" event.pk %}"><button class="btn-read-more">Avslå</button></a>
+                <a href="{% url "events:edit" event.pk %}"><button class="btn-read-more">Gör ändringar</button></a>
+            </div>
+            {% empty %}
+            <p>Inga event väntar på att godkännas, bra jobbat! :)</p>
+        {% endfor %}
     </div>
-    <a href="{% url "events:approve" event.pk %}"><button class="btn-read-more">Godkänn</button></a>
-    <a href="{% url "events:unapprove" event.pk %}"><button class="btn-read-more">Avslå</button></a>
-    <a href="{% url "events:edit" event.pk %}"><button class="btn-read-more">Gör ändringar</button></a>
-{% empty %}
-    <p>Inga event väntar på att godkännas, bra jobbat! :)</p>
-{% endfor %}
-</div>
 {% endblock %}

@@ -1,0 +1,27 @@
+{% extends "master.html" %}
+
+{% block content %}
+    <h1>Kalender</h1>
+    <table class="tables">
+        <thead>
+            <tr>
+                <th>Tid</th>
+                <th>Namn</th>
+                <th>Plats</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.start }}</td>
+                    <td><a href="{{ event.get_absolute_url }}">{{ event.headline }}</a></td>
+                    <td>{{ event.location }}</td>
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}
