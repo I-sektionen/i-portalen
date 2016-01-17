@@ -51,9 +51,14 @@
                         <div class="submenu-column">
                             {% for bookable in bookables %}
                                 <li><a href="{{ bookable.get_absolute_url }}">{{ bookable.name|title }}</a></li>
+                                {% cycle 'False' 'False' 'False' 'False' 'True' as new_col silent %}
+                                {% if new_col == 'True' %}
+                                    </div>
+                                    <div class="submenu-column">
+                                {% endif %}
                             {% endfor %}
 
-
+                            <li><a href="http://old.i-portalen.se">Gamla i-portalen <i class="fa fa-external-link"></i></a></li>
                         </div>
                     </ul>
                 </li>
