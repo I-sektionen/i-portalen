@@ -2488,7 +2488,7 @@ div.booking-container .third-container .third .center {
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 48.21067%;
+    width: 100%;
     margin-right: 0;
   }
   #organisation-content #organisation-description:last-child {
@@ -2509,7 +2509,7 @@ div.booking-container .third-container .third .center {
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 48.21067%;
+    width: 100%;
     margin-right: 0;
   }
   #organisation-content #organisation-members:last-child {
@@ -2530,7 +2530,7 @@ div.booking-container .third-container .third .center {
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 48.21067%;
+    width: 100%;
     margin-right: 0;
   }
   #organisation-content #organisation-articles:last-child {
@@ -2551,7 +2551,7 @@ div.booking-container .third-container .third .center {
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 48.21067%;
+    width: 100%;
     margin-right: 0;
   }
   #organisation-content #organisation-events:last-child {
@@ -2572,7 +2572,7 @@ div.booking-container .third-container .third .center {
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 48.21067%;
+    width: 100%;
     margin-right: 0;
   }
   #organisation-content #organisation-suborg:last-child {
@@ -2593,7 +2593,7 @@ div.booking-container .third-container .third .center {
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 48.21067%;
+    width: 100%;
     margin-right: 0;
   }
   #organisation-content #organisation-contact-info:last-child {
@@ -2606,6 +2606,11 @@ div.booking-container .third-container .third .center {
   background-size: contain;
   height: 150px;
   background-color: white;
+  position: relative;
+  background-position: top;
+  background-repeat: no-repeat;
+  padding-bottom: 3em;
+  border-radius: 3px;
 }
 @media screen and (min-width: 1200px) {
   #organisation-hero .hero {
