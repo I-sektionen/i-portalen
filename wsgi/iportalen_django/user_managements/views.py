@@ -44,7 +44,7 @@ def login(request):
                 return redirect("password_reset", liu_id=username)
             else:
                 # the authentication system was unable to verify the username and password
-                messages.error(request, "Fel Liu-id eller lösenord.")
+                messages.error(request, "Fel Liu-id eller lösenord. Om felet kvarstår kontakta medlem@i-portalen.se")
             return render(request, "user_managements/login.html")
 
         # The user has the right password.
@@ -76,7 +76,7 @@ def login(request):
 
         # The password is valid, but the account has been disabled! (Användaren Klickade ev: "vill INTE bli medlem")
         messages.error(request, "Lösenordet är korrekt, men kontot är avstängt! "
-                                "Om detta inte bör vara fallet var god kontakta info@isektionen.se")
+                                "Om detta inte bör vara fallet var god kontakta medlem@i-portalen.se")
         return render(request, "user_managements/login.html")
     else:
         # Did not try to login.
@@ -115,7 +115,7 @@ def become_member(request):
             user.is_member = False
             user.save()
             messages.info(request, "Vad tråkigt att du inte vill vara medlem i sektionen. "
-                                   "Om du ångrar dig kan du kontakta Info@isektionen.se")
+                                   "Om du ångrar dig kan du kontakta info@isektionen.se")
             return redirect("/")
         else:
             messages.error(request, "Fel Liu-id eller lösenord.")
