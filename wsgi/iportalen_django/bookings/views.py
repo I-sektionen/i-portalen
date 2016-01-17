@@ -30,7 +30,7 @@ def invoice(request, invoice_id):
     booking = inv.booking
 
     #  Must be have permission or be correct user.
-    if not (request.user.has_perm("Booking.manage_bookings") or booking.user == request.user):
+    if not (request.user.has_perm("bookings.manage_bookings") or booking.user == request.user):
         return HttpResponseForbidden
 
     bookable = booking.bookable
@@ -231,7 +231,7 @@ def api_view(request, bookable_id, weeks_forward=0):
     return JsonResponse(data)
 
 
-@permission_required('Booking.can_manage')
+@permission_required('bookings.manage_bookings')
 def create_invoice(request, booking_pk):
     booking = get_object_or_404(Booking, pk=booking_pk)
     q = Invoice.objects.filter(booking=booking)
@@ -245,7 +245,7 @@ def create_invoice(request, booking_pk):
     return redirect(reverse("admin:bookings_invoice_change", args=[i.pk]))
 
 
-@permission_required('Booking.can_manage')
+@permission_required('bookings.manage_bookings')
 def send_invoice_email(request, invoice_pk):
     i = get_object_or_404(Invoice, pk=invoice_pk)
     subject = "Faktura för %s" % (i.booking.bookable, )
