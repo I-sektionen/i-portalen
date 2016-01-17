@@ -2,8 +2,9 @@
 {% block hero %}{% endblock %}
 {% block content %}
     <h2>Kontaktuppgifter</h2>
-    <p>{{ user.first_name|title }} {{ user.last_name|title }}</p>
-    <p>{{ user.email }}</p>
+    <p>Namn: {{ user.first_name|title }} {{ user.last_name|title }}</p>
+    <p>E-post: {{ user.email }}</p>
+    <p>Telefon: {{ user.phone|default:"Ej angivet" }}</p>
     
     <p></p>
 
