@@ -9,9 +9,8 @@
         </h1>
         <ul class="accordion-tabs">
         <li class="tab-header-and-content">
-        <a href="javascript:void(0)" class="is-active tab-link">Info</a>
+        <a href="javascript:void(0)" class="tab-link {{ tab1 }}" >Info</a>
         <div class="tab-content">
-
 
         <h3>Liu-id: </h3>
         <p>{{ u.username}}</p>
@@ -29,7 +28,7 @@
 </div>
 </li>
 <li class="tab-header-and-content">
-    <a href="javascript:void(0)" class="tab-link">Ändra uppgifter</a>
+    <a href="javascript:void(0)" class="tab-link {{ tab2 }}">Ändra uppgifter</a>
     <div class="tab-content">
         <form action="" method="post" autocomplete="on">
             {% csrf_token %}
@@ -37,9 +36,10 @@
             {% for field in form %}
             <div class="form-field-wrapper">
                 {{ field.label_tag }}
-                {{ field }}
                 {{ field.errors }}
                 {{ field.help_text }}
+                {{ field }}
+
             </div>
             {% endfor %}
             <hr>
@@ -48,7 +48,7 @@
     </div>
 </li>
 <li class="tab-header-and-content">
-    <a href="javascript:void(0)" class="tab-link">Ändra lösenord</a>
+    <a href="javascript:void(0)" class="tab-link {{ tab3 }}">Ändra lösenord</a>
     <div class="tab-content">
         <a class="button-group-item" id="user-info-form" href="{% url "password_change" %}">Byt lösenord</a>
     </div>

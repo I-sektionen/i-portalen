@@ -19,13 +19,15 @@ from .views import (
     ipikure_subscribers,
     filter_users,
     all_users,
-    force_change_user_info_view
+    force_change_user_info_view,
+    profile_page
 )
 
 urlpatterns = [
     url(r'^logout$', logout_view, name='logout_view'),
     url(r'^login$', login, name='login_view'),
     url(r'^$', my_page_view, name='my page'),
+    url(r'^(?P<liu_id>[a-z]{4,5}\d{3})/$', profile_page, name="profile page"),
     url(r'^my_page$', my_page_view, name='my page'),
     url(r'^add_users_to_whitelist$', view=add_users_to_white_list, name='add users to whitelist'),
     url(r'^become_member$', view=become_member, name="become member"),
