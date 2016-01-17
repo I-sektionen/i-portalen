@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Used to determined if being run on Openshift, Jenkins or local. Determines DB-connection settings.
@@ -24,7 +23,7 @@ if ON_PASS:
     ALLOWED_HOSTS = ['*']
     DEBUG = False
 elif ON_JENKINS:
-    ALLOWED_HOSTS = ['*']  # TODO: Should only allow localhost, and what about production?
+    ALLOWED_HOSTS = ['*']
     DEBUG = False
 else:
     ALLOWED_HOSTS = ['*']
@@ -35,10 +34,12 @@ else:
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '^+^i^1i94%j-hi+107xw(vf^mz4hg--#w0mw93+kc#&4vc=#=@'  # TODO: Make use of os.envion on openshift.
+if not ON_PASS:
+    SECRET_KEY = '^+^i^1i94%j-hi+107xw(vf^mz4hg--#w0mw93+kc#&4vc=#=@'
+else:
+    SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -57,7 +58,8 @@ INSTALLED_APPS = (
     'bookings',
     'django_extensions',
     'course_evaluations',
-    'faq'
+    'faq',
+    'django.contrib.sitemaps'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -193,3 +195,54 @@ EMAIL_HOST_USER = 'noreply@i-portalen.se'
 EMAIL_HOST_PASSWORD = 't7pEPRaR3sTe'
 
 SITE_ID = 2
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django': {
+            'level': 'ERROR',
+            'handlers': ['console']
+        },
+        'django.request': {
+            'level': 'ERROR',
+            'handlers': ['console']
+        },
+        'django.template': {
+            'level': 'ERROR',
+            'handlers': ['console']
+        },
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['console']
+        },
+        'root': {
+            'level': 'ERROR',
+            'handlers': ['console']
+        },
+        'core.handlers': {
+            'level': 'ERROR',
+            'handlers': ['console']
+        },
+    },
+}

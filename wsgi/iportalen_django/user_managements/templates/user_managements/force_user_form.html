@@ -13,6 +13,7 @@
     <div id="membership">
         <h1>Ange uppgifter</h1>
         <p>Innan du kan gå vidare så behöver du fylla i lite fler uppgifter:</p>
+        <p><em>Vi samlar in addressuppgifterna för att kunna dela ut ipikuré. Övriga uppgifter används för att underlätta sektionens arbete och ge dig som användare en bättre upplevelse.</em></p>
         <form action="{% url "force user info" %}" method="post">
             {% csrf_token %}
             {{ form }}

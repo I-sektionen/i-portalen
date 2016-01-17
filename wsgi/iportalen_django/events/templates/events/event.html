@@ -1,6 +1,13 @@
 {% extends "master.html" %}
 {% load iportalen_tags %}
+{% block page_subtitle %}{{ event.headline }}{% endblock %}
+{% block head %}
+    <meta property="og:url"                content="{{ event.get_absolute_url }}" />
+    <meta property="og:type"               content="article" />
+    <meta property="og:title"              content="{{ event.headline }}" />
+    <meta property="og:description"        content="{{ event.lead }}" />
 
+{% endblock %}
 {% block hero %}
 {% endblock %}
 

@@ -1,3 +1,4 @@
+import os
 from django.contrib.sites.models import Site
 from django.db import models, transaction
 from django.conf import settings
@@ -9,7 +10,7 @@ from utils.validators import less_than_160_characters_validator
 from organisations.models import Organisation
 from tags.models import Tag
 from .exceptions import CouldNotRegisterException
-from .managers import SpeakerListManager
+from .managers import SpeakerListManager, EventManager
 
 
 # A user can register and deregister
@@ -96,6 +97,14 @@ class Event(models.Model):
     status = models.CharField(
         max_length=1, choices=STATUSES, default=DRAFT, blank=False, null=False)
     rejection_message = models.TextField(blank=True, null=True)
+
+    attachment = models.FileField(
+        verbose_name='Bifogad fil',
+        help_text="Bifogad fil för event",
+        upload_to="event_attachments",
+        null=True,
+        blank=True)
+
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
     replacing = models.ForeignKey('self', null=True, blank=True, default=None, on_delete=models.SET_NULL)
@@ -106,6 +115,8 @@ class Event(models.Model):
         verbose_name='arrangör',
         help_text="Organisation(er) som arrangerar evenemanget. Medlemmar i dessa kan senare ändra eventet. Håll ner Ctrl för att markera flera.")
     sponsored = models.BooleanField(verbose_name='sponsrat', default=False, help_text="Kryssa i om innehållet är sponsrat")
+
+    objects = EventManager()
     ###########################################################################
     # Meta data for model
     ###########################################################################
@@ -142,6 +153,10 @@ class Event(models.Model):
         return "event"
 
     type = property(_type)
+
+    @property
+    def filename(self):
+        return os.path.basename(self.attachment.name)
 
     @property
     def preregistrations(self):

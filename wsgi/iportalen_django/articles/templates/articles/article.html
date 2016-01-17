@@ -5,7 +5,13 @@
 -->
 {% extends "master.html" %}
 {% load staticfiles %}
-
+{% block page_subtitle %}{{ article.headline }}{% endblock %}
+{% block head %}
+    <meta property="og:url"                content="{{ article.get_absolute_url }}" />
+    <meta property="og:type"               content="article" />
+    <meta property="og:title"              content="{{ article.headline }}" />
+    <meta property="og:description"        content="{{ article.lead }}" />
+{% endblock %}
 {% block hero %}
 {% endblock %}
 
