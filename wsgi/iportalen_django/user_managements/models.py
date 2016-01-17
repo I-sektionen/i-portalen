@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from .managers import IUserManager
 from django.utils import timezone
 from organisations.models import Organisation
-from utils.validators import liu_id_validator
+from utils.validators import liu_id_validator, validate_year
 
 YEAR_CHOICES = []
 for r in range(1969, (timezone.now().year+10)):
@@ -103,7 +103,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(verbose_name='kön',
                               max_length=1, null=True, blank=True, choices=GENDER_OPTIONS, default=None)
     allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
-    start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=timezone.now().year)
+    start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=timezone.now().year, validators=[validate_year])
     current_year = models.CharField(verbose_name='nuvarande årskurs',
                                     max_length=1,
                                     choices=STUDY_YEARS,
@@ -117,13 +117,18 @@ class IUser(AbstractBaseUser, PermissionsMixin):
                              blank=False,
                              null=True)
     bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil',
-                                         on_delete=models.SET_NULL)
+                                         on_delete=models.SET_NULL,
+                                         help_text="Välj Ej valt om du inte har valt kandidatprofil.")
     master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil',
-                                       on_delete=models.SET_NULL)
+                                       on_delete=models.SET_NULL,
+                                       help_text="Välj Ej valt om du inte har valt kandidatprofil.")
     rfid_number = models.CharField(verbose_name='rfid', max_length=255, null=True, blank=True)
     is_member = models.NullBooleanField(verbose_name="Är medlem?", blank=True, null=True, default=None)
 
     must_edit = models.BooleanField(verbose_name="Måste uppdatera info", default=True)
+
+    phone = models.CharField(verbose_name='Telefon', max_length=255, null=True, blank=True)
+
     objects = IUserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
