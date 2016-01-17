@@ -1,5 +1,5 @@
 from django.core.exceptions import ValidationError, PermissionDenied
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from .forms import ChangeUserInfoForm, AddWhiteListForm, MembershipForm, MembershipForm, SegmentUsersForm, SelectUserFieldsForm
@@ -44,7 +44,7 @@ def login(request):
                 return redirect("password_reset", liu_id=username)
             else:
                 # the authentication system was unable to verify the username and password
-                messages.error(request, "Fel Liu-id eller lösenord.")
+                messages.error(request, "Fel Liu-id eller lösenord. Om felet kvarstår kontakta medlem@i-portalen.se")
             return render(request, "user_managements/login.html")
 
         # The user has the right password.
@@ -76,7 +76,7 @@ def login(request):
 
         # The password is valid, but the account has been disabled! (Användaren Klickade ev: "vill INTE bli medlem")
         messages.error(request, "Lösenordet är korrekt, men kontot är avstängt! "
-                                "Om detta inte bör vara fallet var god kontakta info@isektionen.se")
+                                "Om detta inte bör vara fallet var god kontakta medlem@i-portalen.se")
         return render(request, "user_managements/login.html")
     else:
         # Did not try to login.
@@ -115,7 +115,7 @@ def become_member(request):
             user.is_member = False
             user.save()
             messages.info(request, "Vad tråkigt att du inte vill vara medlem i sektionen. "
-                                   "Om du ångrar dig kan du kontakta Info@isektionen.se")
+                                   "Om du ångrar dig kan du kontakta info@isektionen.se")
             return redirect("/")
         else:
             messages.error(request, "Fel Liu-id eller lösenord.")
@@ -156,13 +156,15 @@ def my_page_view(request):
     user = request.user
     if request.method == 'POST':
         change_user_info_form = ChangeUserInfoForm(request.POST, instance=user)
-
         if change_user_info_form.is_valid():
             change_user_info_form.save()
-        return redirect(reverse("my page"))
+        return render(request, "user_managements/user-profile.html",
+                      {'form': change_user_info_form, 'tab2': "is-active"})
     else:
         change_user_info_form = ChangeUserInfoForm(instance=user)
-        return render(request, "user_managements/user-profile.html", {'form': change_user_info_form})
+        return render(request, "user_managements/user-profile.html",
+                      {'form': change_user_info_form, 'tab1': "is-active"})
+
 
 @login_required()
 def add_users_to_white_list(request):
@@ -466,4 +468,13 @@ def all_users(request):
     users = IUser.objects.all()
     return render(request, 'user_managements/all_users.html', {
         'users': users,
+    })
+
+
+@login_required()
+def profile_page(request, liu_id):
+    print(liu_id)
+    u = get_object_or_404(IUser, username=liu_id)
+    return render(request, 'user_managements/profile_page.html',{
+        'user': u,
     })

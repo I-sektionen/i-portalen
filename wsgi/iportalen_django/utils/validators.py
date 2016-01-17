@@ -1,5 +1,6 @@
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 from .text import count_words, count_characters
 
 liu_id_validator = RegexValidator(r'^[a-z]{4,5}\d{3}$',
@@ -16,3 +17,8 @@ def less_than_200_words_validator(value):
 def less_than_160_characters_validator(value):
     if count_characters(value) > 160:
         raise ValidationError('För många tecken.')
+
+
+def validate_year(value):
+    if value > timezone.now().year:
+        raise ValidationError('LÖGNARE!!')
