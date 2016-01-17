@@ -7,7 +7,11 @@
 
         <div class="booking">
         <h1>{{ bookable.name|capfirst }}</h1>
-        <div class="info">{{ bookable.info|markdown }}</div>
+        <p>Välkommen till boknings sidan för {{ bookable.name }}! Nedan ser du tillgängliga block som går att boka. </p>
+        <p><i style="color: green" class="fa fa-square"></i> = Bokningsbart</p>
+    <p><i style="color: red" class="fa fa-square"></i> = Bokat</P>
+    <p><i style="color: gray" class="fa fa-square"></i> = EJ bokningsbart</P>
+<p>För att markera de block du vill boka klicka du på det. Du kan endast boka block i följd</p>
                 <div id="year"></div>
                 <div id="days">
                     <div class="single_day"><p><strong>Måndag</strong></p></div>
@@ -27,7 +31,7 @@
             <div class="third left">
 
                 {% if weeks_forward > 0 %}
-                <a href="{% url "bookings:make booking week" bookable_id weeks_forward|add:"-1"  %}"><button type="button">Bakåt</button></a>
+                <a href="{% url "bookings:make booking week" bookable_id weeks_forward|add:"-1"  %}"><button type="button">Föregående vecka</button></a>
                 {% endif %}
                 &nbsp;
             </div>
@@ -37,13 +41,15 @@
                     {% for field in form %}
                         {{ field }}
                     {% endfor %}
-                <button class="" type="submit">Boka</button>
+                <button class="action-button" type="submit">Boka</button>
                 </form>
             </div>
             <div class="third">
-                <a class=" align-right" href="{% url "bookings:make booking week" bookable_id weeks_forward|add:"1"  %}"><button type="button">Frammåt</button></a>
+                <a class=" align-right" href="{% url "bookings:make booking week" bookable_id weeks_forward|add:"1"  %}"><button type="button">Nästa vecka</button></a>
             </div>
         </div>
+    <br>
+    <div class="info">{{ bookable.info|markdown }}</div>
     </div>
 {% endblock %}
 
