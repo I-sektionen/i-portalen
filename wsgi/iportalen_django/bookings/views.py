@@ -176,7 +176,8 @@ def api_view(request, bookable_id, weeks_forward=0):
         if active:
             nr_of_active_bookings += 1
 
-    user_dict = {"nr_of_active_bookings": nr_of_active_bookings}
+    user_dict = {"nr_of_active_bookings": nr_of_active_bookings,
+                 "username": user.username}
 
     bookable_dict = {
         'name': bookable.name,

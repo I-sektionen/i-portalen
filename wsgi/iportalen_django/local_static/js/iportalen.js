@@ -4105,7 +4105,8 @@ function generate_booking_form(pk, weeks_forward){
                     if(value2.blocked){
                         s = s + " blocked\">";
                     } else {
-                        s = s + " unavailable\">";
+                        s = s + " unavailable\"> <a href=\"/user/";
+                        s = s + data.user.username + "\">"+data.user.username+"</a>";
                     }
                 }
                 var start_time = value2.start_time.split(':');
