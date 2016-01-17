@@ -9,8 +9,9 @@
         </h1>
         <ul class="accordion-tabs">
         <li class="tab-header-and-content">
-        <a href="javascript:void(0)" class="is-active tab-link">Info</a>
-        <div class="tab-content">
+        <a href="javascript:void(0)" class="tab-link {% if is_active == "form" %}{% else %}is-active{% endif %}" >Info</a>
+        <div class="tab-content {% if is_active == "form" %}{% else %}is-open{% endif %}"
+             {% if is_active == "form" %}style="display: none;"{% else %}style="display: block;"{% endif %}>
 
 
         <h3>Liu-id: </h3>
@@ -29,17 +30,18 @@
 </div>
 </li>
 <li class="tab-header-and-content">
-    <a href="javascript:void(0)" class="tab-link">Ändra uppgifter</a>
-    <div class="tab-content">
+    <a href="javascript:void(0)" class="{% if is_active == "form" %}is-active{% endif %} tab-link">Ändra uppgifter</a>
+    <div class="tab-content  {% if is_active == "form" %}is-open{% else %}{% endif %}" {% if is_active == "form" %}style="display: block;"{% else %}style="display: none;"{% endif %}>
         <form action="" method="post" autocomplete="on">
             {% csrf_token %}
             {{ form.non_field_errors }}
             {% for field in form %}
             <div class="form-field-wrapper">
                 {{ field.label_tag }}
-                {{ field }}
                 {{ field.errors }}
                 {{ field.help_text }}
+                {{ field }}
+
             </div>
             {% endfor %}
             <hr>
