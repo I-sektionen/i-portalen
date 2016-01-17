@@ -17,7 +17,7 @@
         <tbody>
         {% for fixed in fixed_costs %}
         <tr>
-            <td>{{ fixed }}</td><td>-</td><td>-</td><td>{{ fixed.amount }} kr</td><td>{{ fixed.tax_amount }} kr</td>
+            <td>{{ fixed }}</td><td>{{ fixed.quantity }}</td><td>{{ fixed.template.amount }}</td><td>{{ fixed.amount }} kr</td><td>{{ fixed.tax_amount }} kr</td>
         </tr>
         {% endfor %}
         {% for variab in variable_costs %}
