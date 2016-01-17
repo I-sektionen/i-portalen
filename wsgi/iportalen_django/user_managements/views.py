@@ -1,5 +1,5 @@
 from django.core.exceptions import ValidationError, PermissionDenied
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from .forms import ChangeUserInfoForm, AddWhiteListForm, MembershipForm, MembershipForm, SegmentUsersForm, SelectUserFieldsForm
@@ -470,4 +470,13 @@ def all_users(request):
     users = IUser.objects.all()
     return render(request, 'user_managements/all_users.html', {
         'users': users,
+    })
+
+
+@login_required()
+def profile_page(request, liu_id):
+    print(liu_id)
+    u = get_object_or_404(IUser, username=liu_id)
+    return render(request, 'user_managements/profile_page.html',{
+        'user': u,
     })

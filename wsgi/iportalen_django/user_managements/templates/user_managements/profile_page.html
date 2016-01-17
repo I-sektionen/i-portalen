@@ -1,0 +1,10 @@
+{% extends "master.html" %}
+{% block hero %}{% endblock %}
+{% block content %}
+    <h2>Kontaktuppgifter</h2>
+    <p>{{ user.first_name|title }} {{ user.last_name|title }}</p>
+    <p>{{ user.email }}</p>
+    
+    <p></p>
+
+{% endblock %}
