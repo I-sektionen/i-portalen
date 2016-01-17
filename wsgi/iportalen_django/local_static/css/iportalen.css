@@ -1130,78 +1130,54 @@ header.navigation .navigation-tools .user-nav-tools li i {
   border: 1px solid black;
 }
 
-.hero {
+.top-hero, .hero-top {
+  min-height: 50vh;
   position: relative;
-  background-color: #333;
-  background-position: top;
-  background-repeat: no-repeat;
-  background-size: cover;
-  padding-bottom: 3em;
-  background-attachment: fixed;
-  border-radius: 3px;
 }
-.hero .hero-overlay {
+.top-hero .hero-content, .hero-top .hero-content {
+  padding: 2em;
+  text-align: center;
+  width: 60%;
   position: absolute;
-  background: -webkit-linear-gradient(10deg, black, gray), no-repeat gray scroll;
-  background: linear-gradient(10deg, black, gray), no-repeat gray scroll;
-  z-index: 0;
-  top: 0;
-  height: 100%;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   width: 100%;
-  opacity: 0.6;
-}
-.hero .hero-logo img {
-  height: 4em;
-  margin-bottom: 1em;
-}
-.hero .hero-inner {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  margin: auto;
-  padding: 3.5em;
-  text-align: center;
-  z-index: 2;
-  position: relative;
-}
-.hero .hero-inner::after {
-  clear: both;
-  content: "";
-  display: table;
-}
-.hero .hero-inner::after {
-  clear: both;
-  content: "";
-  display: table;
-}
-.hero .hero-inner .hero-copy {
-  text-align: center;
-}
-.hero .hero-inner .hero-copy h1 {
-  color: white;
-  font-size: 1.6em;
-  margin-bottom: 0.5em;
-  font-weight: 700;
 }
 @media screen and (min-width: 1200px) {
-  .hero .hero-inner .hero-copy h1 {
-    font-size: 3.5em;
+  .top-hero .hero-content, .hero-top .hero-content {
+    width: auto;
   }
 }
-.hero .hero-inner .hero-copy p {
-  color: white;
-  line-height: 1.5em;
-  margin: 0 auto 3em auto;
+.top-hero .hero-heading, .hero-top .hero-heading {
+  color: #f7f7f7;
+  font-size: 2em;
+  text-transform: uppercase;
+  margin-bottom: 0;
 }
 @media screen and (min-width: 1200px) {
-  .hero .hero-inner .hero-copy p {
-    font-size: 1.2em;
-    max-width: 40%;
+  .top-hero .hero-heading, .hero-top .hero-heading {
+    font-size: 3em;
   }
 }
-
-.not-fixed {
-  background-attachment: scroll;
+.top-hero .hero-divider, .hero-top .hero-divider {
+  border: none;
+  background-color: #f7f7f7;
+  height: 5px;
+  margin: 5px;
+}
+.top-hero .hero-text, .hero-top .hero-text {
+  font-size: 1.5em;
+  color: #f7f7f7;
+}
+@media screen and (min-width: 1200px) {
+  .top-hero .hero-text, .hero-top .hero-text {
+    text-align: justify;
+  }
 }
 
 #article-create-form-text p, #article-create-small p {
@@ -2383,6 +2359,18 @@ div.booking-container .third-container .third .center {
   text-align: center;
 }
 
+.hero-top {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://iportalen-us.s3.amazonaws.com/static/iportalen/HERO.jpg");
+  background-position: center center;
+  background-attachment: scroll;
+  background-size: cover;
+}
+@media screen and (min-width: 1200px) {
+  .hero-top {
+    background-attachment: fixed;
+  }
+}
+
 #news-feed {
   float: left;
   display: block;
@@ -2500,7 +2488,7 @@ div.booking-container .third-container .third .center {
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 48.21067%;
+    width: 100%;
     margin-right: 0;
   }
   #organisation-content #organisation-description:last-child {
@@ -2521,7 +2509,7 @@ div.booking-container .third-container .third .center {
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 48.21067%;
+    width: 100%;
     margin-right: 0;
   }
   #organisation-content #organisation-members:last-child {
@@ -2542,7 +2530,7 @@ div.booking-container .third-container .third .center {
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 48.21067%;
+    width: 100%;
     margin-right: 0;
   }
   #organisation-content #organisation-articles:last-child {
@@ -2563,7 +2551,7 @@ div.booking-container .third-container .third .center {
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 48.21067%;
+    width: 100%;
     margin-right: 0;
   }
   #organisation-content #organisation-events:last-child {
@@ -2584,7 +2572,7 @@ div.booking-container .third-container .third .center {
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 48.21067%;
+    width: 100%;
     margin-right: 0;
   }
   #organisation-content #organisation-suborg:last-child {
@@ -2605,7 +2593,7 @@ div.booking-container .third-container .third .center {
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 48.21067%;
+    width: 100%;
     margin-right: 0;
   }
   #organisation-content #organisation-contact-info:last-child {
@@ -2618,6 +2606,11 @@ div.booking-container .third-container .third .center {
   background-size: contain;
   height: 150px;
   background-color: white;
+  position: relative;
+  background-position: top;
+  background-repeat: no-repeat;
+  padding-bottom: 3em;
+  border-radius: 3px;
 }
 @media screen and (min-width: 1200px) {
   #organisation-hero .hero {

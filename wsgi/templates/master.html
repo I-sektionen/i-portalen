@@ -36,18 +36,15 @@
     {% endif %}
 {% block hero %}
     {% load static from staticfiles %}
-    <div class="hero" style="background-image:url({% static 'iportalen/HERO.jpg' %})">
+    <section class="hero-top">
+        <div class="hero-content">
+            <h1 class="hero-heading">NYA I-PORTALEN ÄR HÄR</h1>
+            <hr class="hero-divider">
+            <p class="hero-text">Nu är den nya I-portalen lanserad med helt ny design och funktionalitet som ska göra det enklare och roligare att engagera sig i sektionslivet
+            </p>
+        </div>
+    </section>
 
-	<div class="hero-inner">
-		<div class="hero-copy">
-			<h1>Testa nya i-portalen idag</h1>
-			<p>Klicka på 'Logga in' och 'Glömt lösenord' för att återställa ditt lösenord och logga in! Har du åsikter?
-            Skicka dessa till webgroup@isektionen.se</p>
-		</div>
-	</div>
-    <div class="hero-overlay">
-    </div>
-</div>
 {% endblock %}
     <div id="container">
         <div id="content">
