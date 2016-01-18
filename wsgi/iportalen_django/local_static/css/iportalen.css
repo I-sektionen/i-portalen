@@ -1131,8 +1131,14 @@ header.navigation .navigation-tools .user-nav-tools li i {
 }
 
 .top-hero, .hero-top {
+  display: none;
   min-height: 50vh;
   position: relative;
+}
+@media screen and (min-width: 1200px) {
+  .top-hero, .hero-top {
+    display: block;
+  }
 }
 .top-hero .hero-content, .hero-top .hero-content {
   padding: 2em;
@@ -2384,9 +2390,13 @@ div.booking-container .third-container .third .center {
   text-transform: uppercase;
   color: #ababab;
   padding: 0.2em;
-  margin-right: 2em;
   margin-bottom: 2em;
   font-weight: bold;
+}
+@media screen and (min-width: 1200px) {
+  #news-feed a.content-type-nav {
+    margin-right: 2em;
+  }
 }
 #news-feed .active {
   border-bottom: 2px solid #f9d026;
