@@ -1131,8 +1131,14 @@ header.navigation .navigation-tools .user-nav-tools li i {
 }
 
 .top-hero, .hero-top {
+  display: none;
   min-height: 50vh;
   position: relative;
+}
+@media screen and (min-width: 1200px) {
+  .top-hero, .hero-top {
+    display: block;
+  }
 }
 .top-hero .hero-content, .hero-top .hero-content {
   padding: 2em;
