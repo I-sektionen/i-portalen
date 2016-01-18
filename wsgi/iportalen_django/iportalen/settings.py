@@ -39,6 +39,20 @@ if not ON_PASS:
 else:
     SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
+if ON_PASS:
+    ssl = False
+    try:
+        s = os.environ.get('SSL_ENABLED')
+        if s == "TRUE":
+            ssl = True
+    except:
+        pass
+    if ssl:
+        SECURE_SSL_REDIRECT = True
+        SESSION_COOKIE_SECURE = True
+        CSRF_COOKIE_SECURE = True
+
+
 # Application definition
 INSTALLED_APPS = (
     'django.contrib.admin',
