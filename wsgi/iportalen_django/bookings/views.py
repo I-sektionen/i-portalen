@@ -176,8 +176,7 @@ def api_view(request, bookable_id, weeks_forward=0):
         if active:
             nr_of_active_bookings += 1
 
-    user_dict = {"nr_of_active_bookings": nr_of_active_bookings,
-                 "username": user.username}
+    user_dict = {"nr_of_active_bookings": nr_of_active_bookings}
 
     bookable_dict = {
         'name': bookable.name,
@@ -198,9 +197,10 @@ def api_view(request, bookable_id, weeks_forward=0):
         cnt += 1
         for slot in slots:
             booked = True
+            u = None
             if partial_bookings.filter(date=single_date, slot=slot).exists():
                 booked = False
-
+                u = partial_bookings.get(date=single_date, slot=slot).booking.user.username
             blocked = (combine_date_and_time(single_date, slot.start_time) - timezone.timedelta(
                 hours=bookable.hours_before_booking)) < timezone.now()
 
@@ -208,7 +208,8 @@ def api_view(request, bookable_id, weeks_forward=0):
                 'start_time': slot.start_time,
                 'end_time': slot.end_time,
                 'available': booked,
-                'blocked': blocked
+                'blocked': blocked,
+                'user': u,
             }
             slot_array.append(tmp)
 
