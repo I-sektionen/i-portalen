@@ -42,8 +42,8 @@ else:
 if ON_PASS:
     ssl = False
     try:
-        s = os.environ.get('SSL_ENABLED')
-        if s == "TRUE":
+        s = str(os.environ.get('SSL_ENABLED'))
+        if s == str("TRUE"):
             ssl = True
     except:
         pass
