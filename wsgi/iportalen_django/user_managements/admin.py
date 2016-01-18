@@ -1,6 +1,6 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import Permission
+from django.contrib.auth.admin import UserAdmin, GroupAdmin
+from django.contrib.auth.models import Permission, Group
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import IUser, MasterProfile, BachelorProfile, IpikureSubscriber
 from utils.admin import HiddenModelAdmin, iportalen_admin_site
@@ -52,6 +52,17 @@ class IUserAdmin(UserAdmin):
     filter_horizontal = ('groups', 'user_permissions',)
 
 
+class UserInline(admin.TabularInline):
+    model = Group.user.through
+    extra = 0
+
+
+class CustomGroup(GroupAdmin):
+    inlines = [UserInline]
+
+
+iportalen_admin_site.unregister(Group)
+iportalen_admin_site.register(Group, GroupAdmin)
 iportalen_admin_site.register(IUser, IUserAdmin)
 iportalen_admin_site.register(MasterProfile)
 iportalen_admin_site.register(BachelorProfile)
