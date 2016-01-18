@@ -19,7 +19,7 @@
             {% endif %}
             <button type="submit">Checka in</button>
             {% if can_administer %}
-                <a href="{% url "events:administer" event.pk %}"><button type="button">Admin</button></a>
+                <a href="{% url "events:administer event" event.pk %}"><button type="button">Admin</button></a>
             {% endif %}
         </form>
 {% endblock %}
