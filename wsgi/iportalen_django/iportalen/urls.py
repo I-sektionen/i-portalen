@@ -41,7 +41,7 @@ urlpatterns = [
     url(r'^faq/', include('faq.urls', namespace="faq")),
     url(r'^robots.txt$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
-        name='django.contrib.sitemaps.views.sitemap')
+        name='django.contrib.sitemaps.views.sitemap'),
     url(r'.well-known/acme-challenge/o1RETI1T86n55DRPYdvyBNK5C5mzfvWk33Mhz5CyT_8', TemplateView.as_view(template_name='acme.txt', content_type='text/plain'))
 ]
 if not settings.ON_PASS:
