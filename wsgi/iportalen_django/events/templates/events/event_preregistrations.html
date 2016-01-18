@@ -22,6 +22,6 @@
         <a href="{% url "events:preregistrations download" event.pk %}"><button type="button">Ladda ner föranmälda</button></a>
         {% event_can_administer event request.user as can_administer %}
         {% if can_administer %}
-            <a href="{% url "events:administer" event.pk %}"><button type="button">Admin</button></a>
+            <a href="{% url "events:administer event" event.pk %}"><button type="button">Admin</button></a>
         {% endif %}
 {% endblock %}
