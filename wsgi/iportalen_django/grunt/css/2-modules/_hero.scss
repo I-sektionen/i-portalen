@@ -8,8 +8,15 @@ $hero-divider-height: 5px;
 $hero-text-color: $light-gray;
 
 .top-hero {
+  display: none;
   min-height: 50vh;
   @include position(relative);
+
+  @include media($large-screen) {
+
+    display: block;
+
+  }
 
   .hero-content {
     padding: 2em;
