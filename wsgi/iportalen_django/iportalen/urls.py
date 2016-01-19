@@ -42,7 +42,9 @@ urlpatterns = [
     url(r'^robots.txt$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap'),
-    url(r'.well-known/acme-challenge/o1RETI1T86n55DRPYdvyBNK5C5mzfvWk33Mhz5CyT_8', TemplateView.as_view(template_name='acme.txt', content_type='text/plain'))
+    url(r'.well-known/acme-challenge/o1RETI1T86n55DRPYdvyBNK5C5mzfvWk33Mhz5CyT_8', TemplateView.as_view(template_name='acme.txt', content_type='text/plain')),
+    url(r'pul/$', view=TemplateView.as_view(template_name="pul.html"), name="pul"),
+    url(r'cookies/$', view=TemplateView.as_view(template_name="cookies.html"), name="cookies")
 ]
 if not settings.ON_PASS:
     urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
