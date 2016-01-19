@@ -26,6 +26,9 @@
             <a href="{% url "organisations:edit" organisation.name %}">
                 <button>Ändra info</button>
             </a>
+            <a href="{% url "organisations:edit organisation members" organisation.name %}">
+                <button>Hantera medlemmar</button>
+            </a>
         {% endif %}
     </div>
     <div id="organisation-content">
