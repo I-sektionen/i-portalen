@@ -10,7 +10,7 @@ from .forms import OrganisationForm, AddOrganisationForm, OrganisationPostForm
 
 def organisation(request, organisation_name):
     org = get_object_or_404(Organisation, name=organisation_name)
-    members = OrganisationPost.objects.filter(org=org)
+    members = OrganisationPost.objects.filter(org=org).order_by('user__first_name')
     return render(request, "organisations/organisation.html", {
         'organisation': org,
         'members': members
