@@ -28,7 +28,7 @@ sitemaps = {
 urlpatterns = [
     url(r'^admin/', include(iportalen_admin_site.urls)),
     url(r'^$', view=display_news_feed, name="news feed"),
-    url(r'^sponsored/$', view=display_sponsored_content, name="sponsored"),
+    url(r'^naringsliv/$', view=display_sponsored_content, name="sponsored"),
     url(r'^article/', include(article_urls, namespace="articles")),
     url(r'^user/', include(user_urls)),
     url(r'^event/', include(event_urls, namespace="events")),
