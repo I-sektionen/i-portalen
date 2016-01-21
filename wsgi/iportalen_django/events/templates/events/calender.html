@@ -9,7 +9,7 @@
             <a href="{% url "news feed" %}" class="content-type-nav">Allt</a>
             <a href="{% url "articles:articles" %}" class="content-type-nav">Nyheter</a>
             <a href="{% url "events:calender" %}" class="content-type-nav active">Event</a>
-            <a href="{% url "sponsored" %}" class="content-type-nav">Sponsrat</a>
+            <a href="{% url "sponsored" %}" class="content-type-nav">Näringsliv</a>
         </div>
         {% get_all_events as events %}
         {% for event in events %}

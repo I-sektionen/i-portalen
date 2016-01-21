@@ -52,9 +52,11 @@ function generate_booking_form(pk, weeks_forward){
                         s = s + " blocked\">";
                     } else {
                         s = s + " unavailable\">";
-                        // Gör om, gör rätt.
-                    //<a href=\"/user/";
-                    //    s = s + data.user.username + "\">"+data.user.username+"</a>";
+                    }
+                    var temp_user = value2.user;
+                    if(temp_user != undefined){
+                        s = s + "<a href=\"/user/";
+                        s = s + temp_user + "\">"+temp_user+"</a>";
                     }
                 }
                 var start_time = value2.start_time.split(':');

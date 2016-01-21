@@ -44,10 +44,16 @@ def _get_invoice_status_display(obj):
 
 class BookingsAdmin(admin.ModelAdmin):
 
+    def link_to_user(self, obj):
+        return "<a href={url} target='_blank'>{name}, {phone}</a>".format(
+            url=obj.user.get_absolute_url(), name=obj.user.get_full_name, phone=obj.user.phone)
+    link_to_user.allow_tags = True
+    link_to_user.short_description = "Länk till användaren"
+
     def has_add_permission(self, request):
         return False
 
-    list_display = ('user', 'bookable', 'start_time', _get_invoice_status_display,)
+    list_display = ('user', 'link_to_user', 'bookable', 'start_time', _get_invoice_status_display,)
     readonly_fields = ('create_invoice_url', _get_invoice_status_display)
 
     def create_invoice_url(self, obj):

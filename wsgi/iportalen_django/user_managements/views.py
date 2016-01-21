@@ -473,7 +473,6 @@ def all_users(request):
 
 @login_required()
 def profile_page(request, liu_id):
-    print(liu_id)
     u = get_object_or_404(IUser, username=liu_id)
     return render(request, 'user_managements/profile_page.html',{
         'user': u,
