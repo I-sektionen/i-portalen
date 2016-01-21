@@ -103,6 +103,14 @@ def make_booking(request, bookable_id, weeks_forward=0):
 
     if request.method == "POST":
         if form.is_valid():
+            if bookable.require_phone and not request.user.phone:
+                messages.error(request, "Du måste ange ditt telefonnummer för att kunna göra en bokning.")
+                return render(request, "bookings/book.html", {
+                    "form": form,
+                    "bookable_id": bookable_id,
+                    "bookable": bookable,
+                    "weeks_forward": weeks_forward,
+                })
             start_str = form.cleaned_data['start']
             end_str = form.cleaned_data['end']
             start_list = start_str.split("_")
