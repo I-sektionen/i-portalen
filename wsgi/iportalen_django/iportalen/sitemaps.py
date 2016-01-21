@@ -1,8 +1,10 @@
 from django.contrib import sitemaps
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 
 from events.models import Event
 from articles.models import Article
+from organisations.models import Organisation
 
 
 class StaticViewSitemapLow(sitemaps.Sitemap):
@@ -14,6 +16,7 @@ class StaticViewSitemapLow(sitemaps.Sitemap):
 
     def location(self, obj):
         return reverse(obj)
+
 
 class StaticViewSitemapHigh(sitemaps.Sitemap):
     priority = 0.9
@@ -46,3 +49,12 @@ class ArticleSitemap(sitemaps.Sitemap):
 
     def lastmod(self, obj):
         return obj.modified
+
+
+class OrganisationSitemap(sitemaps.Sitemap):
+    priority = 0.5
+    changefreq = 'monthly'
+
+    def items(self):
+        return Organisation.objects.filter(Q(organisation_type=Organisation.SEKTIONEN) |
+                                           Q(organisation_type=Organisation.FORENINGAR))
