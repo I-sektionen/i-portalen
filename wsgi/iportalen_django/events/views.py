@@ -377,7 +377,6 @@ def create_or_modify_event(request, pk=None):
     })
 
 
-@login_required()
 def file_download(request, pk):
     event = Event.objects.get(pk=pk)
     event_filename = event.attachment

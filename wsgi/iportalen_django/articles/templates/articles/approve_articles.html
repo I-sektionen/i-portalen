@@ -11,7 +11,7 @@
             {% if article.organisations.all %}
                 med:
                 {% for org in article.organisations.all %}
-                    {% if org in request.user.organisations %}
+                    {% if org in article.user.organisations %}
                         {{ org }},
                     {% else %}
                         {{ org }} (ej medlem),
