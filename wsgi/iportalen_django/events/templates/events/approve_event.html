@@ -11,7 +11,7 @@
                     {% if event.organisations.all %}
                         med:
                         {% for org in event.organisations.all %}
-                            {% if org in request.user.organisations %}
+                            {% if org in event.user.organisations %}
                                 {{ org }},
                             {% else %}
                                 {{ org }} (ej medlem),
