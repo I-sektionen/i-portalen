@@ -4106,9 +4106,11 @@ function generate_booking_form(pk, weeks_forward){
                         s = s + " blocked\">";
                     } else {
                         s = s + " unavailable\">";
-                        // Gör om, gör rätt.
-                    //<a href=\"/user/";
-                    //    s = s + data.user.username + "\">"+data.user.username+"</a>";
+                    }
+                    var temp_user = value2.user;
+                    if(temp_user != undefined){
+                        s = s + "<a href=\"/user/";
+                        s = s + temp_user + "\">"+temp_user+"</a>";
                     }
                 }
                 var start_time = value2.start_time.split(':');
@@ -4794,6 +4796,18 @@ function markdown_organisation_preview() {
         editor.run();
     }
 ;/**
+ * Created by jonathan on 2016-01-21.
+ */
+function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+};/**
  * Created by jonathan on 2015-10-20.
  */
     var shuffle_sponsors = function () {

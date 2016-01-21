@@ -140,6 +140,10 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         except:
             return self.username
 
+    def get_absolute_url(self):
+        """Get url of object"""
+        return "/user/%s/" % self.username
+
     def get_short_name(self):
         return self.username
 

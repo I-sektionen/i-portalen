@@ -87,22 +87,30 @@ def make_booking(request, bookable_id, weeks_forward=0):
     user = request.user
     nr_of_active_bookings = 0
     now = timezone.now()
-    for b in Booking.objects.filter(user=user):
+    for bookings_by_user in Booking.objects.filter(user=user):
         active = False
-        for p in b.bookings.all():
-            if p.date > now.date():
+        for booking_by_user in bookings_by_user.bookings.all():
+            if booking_by_user.date > now.date():
                 active = True
-            elif p.date == now.date():
-                if p.slot.end_time > now.time():
+            elif booking_by_user.date == now.date():
+                if booking_by_user.slot.end_time > now.time():
                     active = True
         if active:
             nr_of_active_bookings += 1
     if bookable.max_number_of_bookings <= nr_of_active_bookings:
         messages.warning(request,
-                         "Du har redan bokat {:} det maximala antalet gånger i rad som du får".format(bookable.name))
+                         "Du har nu bokat {:} det maximala antalet gånger i rad som du får. Avboka eller vänta tills din bokning är över för att göra flera.".format(bookable.name))
 
     if request.method == "POST":
         if form.is_valid():
+            if bookable.require_phone and not request.user.phone:
+                messages.error(request, "Du måste ange ditt telefonnummer för att kunna göra en bokning. Klicka på \"konto\" för att ange detta i din profil.")
+                return render(request, "bookings/book.html", {
+                    "form": form,
+                    "bookable_id": bookable_id,
+                    "bookable": bookable,
+                    "weeks_forward": weeks_forward,
+                })
             start_str = form.cleaned_data['start']
             end_str = form.cleaned_data['end']
             start_list = start_str.split("_")
@@ -176,8 +184,7 @@ def api_view(request, bookable_id, weeks_forward=0):
         if active:
             nr_of_active_bookings += 1
 
-    user_dict = {"nr_of_active_bookings": nr_of_active_bookings,
-                 "username": user.username}
+    user_dict = {"nr_of_active_bookings": nr_of_active_bookings}
 
     bookable_dict = {
         'name': bookable.name,
@@ -198,9 +205,10 @@ def api_view(request, bookable_id, weeks_forward=0):
         cnt += 1
         for slot in slots:
             booked = True
+            u = None
             if partial_bookings.filter(date=single_date, slot=slot).exists():
                 booked = False
-
+                u = partial_bookings.get(date=single_date, slot=slot).booking.user.username
             blocked = (combine_date_and_time(single_date, slot.start_time) - timezone.timedelta(
                 hours=bookable.hours_before_booking)) < timezone.now()
 
@@ -208,7 +216,8 @@ def api_view(request, bookable_id, weeks_forward=0):
                 'start_time': slot.start_time,
                 'end_time': slot.end_time,
                 'available': booked,
-                'blocked': blocked
+                'blocked': blocked,
+                'user': u,
             }
             slot_array.append(tmp)
 
