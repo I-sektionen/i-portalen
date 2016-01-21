@@ -12,6 +12,7 @@ class Bookable(models.Model):
     max_number_of_slots_in_booking = models.IntegerField(default=1)  # Max length of booking
     hours_before_booking = models.IntegerField(default=24)  # must book at least this many hours befor booking starts.
     info = models.TextField(null=True, blank=True)
+    require_phone = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -87,8 +88,10 @@ class Invoice(models.Model):
                               default=CREATED)
 
     due = models.DateField(default=now_plus_one_month, verbose_name='förfallo dag')
+
     booking = models.ForeignKey("Booking", verbose_name='bokning')
     ocr = models.CharField(max_length=11, verbose_name="OCR nummer", null=True, blank=True)
+    issuing_date = models.DateField(auto_now_add=True, null=True, blank=False, verbose_name='fakturerings datum')
 
     def _calculate_ocr(self):
         def digits_of(n):
@@ -282,3 +285,8 @@ class Booking(models.Model):
         return self.get_time_of_booking()['start']
 
     start_time = property(_start_time)
+
+    def _end_time(self):
+        return self.get_time_of_booking()['end']
+
+    end_time = property(_end_time)
