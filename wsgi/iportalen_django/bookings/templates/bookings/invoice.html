@@ -3,10 +3,26 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Faktura</h1>
-    <p>Avser en bokning av {{ bookable }}.</p>
-    <p>Mottagare: {{ booking.user }}</p>
+<div id="printableArea">
+    <table class="invoice">
+    <tr><td><h1>Faktura</h1></td><td><img src="https://s3.eu-central-1.amazonaws.com/isektionen-bildbank/mailfooter/isektionen_logo.png" alt="I-sektionen logga" height="100px"></td>
+        </tr>
+    </table>
+    <br>
+    <table class="invoice">
+        <tr><th>Avser en bokning av {{ bookable }} under tiden:</th><td>{{ booking.start_time|date:"Y-m-d H:i" }} - {{ booking.end_time|date:"Y-m-d H:i" }}</td></tr>
+        <tr><th>Mottagare:</th><td> {{ booking.user.get_full_name }}</td></tr>
+        <tr><th>Epost:</th><td> {{ booking.user.email }}</td></tr>
+        <tr class="blank_row"><td colspan="2"></td></tr>
+        <tr class="blank_row"><td colspan="2"></td></tr>
+        <tr><th>Faktureringsdatum:</th><td> {{ invoice.issuing_date|date:"Y m d" }}</td></tr>
+        <tr><th>Förfallodag:</th><td> {{ invoice.due|date:"Y m d" }}</td></tr>
+        <tr><th>Fakturanr:</th><td> {{ invoice.pk }}</td></tr>
+        <tr class="blank_row"><td colspan="2"></td></tr>
+        <tr><th>OCR:</th><td> {{ invoice.ocr }}</td></tr>
+    </table>
 
+    <br>
     <h2>Specifikation: </h2>
     <table>
     <thead>
@@ -28,7 +44,12 @@
         {% endfor %}
         </tbody>
     </table>
-    <h3>Att betala: {{ invoice.total }}</h3>
-    <p>Detta ska inbetalas till postgiro: XXX-XXX innan den {{ invoice.due }}</p>
+    <h3>Att betala: {{ invoice.total }} SEK</h3>
+    <br>
+    <br>
+    <p>Detta ska inbetalas till Bankgiro: 5840-0136 innan den {{ invoice.due|date:"Y-m-d" }}</p>
+    <p>Ange OCR: {{ invoice.ocr }}</p>
+    </div>
+    <input type="button" class="action-button" onclick="printDiv('printableArea')" value="Skriv ut fakturan" />
 {% endblock %}
 
