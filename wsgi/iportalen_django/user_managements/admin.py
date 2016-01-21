@@ -1,21 +1,12 @@
 from django.contrib import admin
+from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from django.contrib.auth.models import Permission, Group
 from django.utils.safestring import mark_safe
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import IUser, MasterProfile, BachelorProfile, IpikureSubscriber
 from utils.admin import HiddenModelAdmin, iportalen_admin_site
-
-
-def roles(self):
-    #short_name = unicode # function to get group name
-    short_name = lambda x: x[:1].upper()  # first letter of a group
-    p = sorted([u"<a title='%s'>%s</a>" % (x, short_name(x)) for x in self.groups.all()])
-    if self.user_permissions.count(): p += ['+']
-    value = ', '.join(p)
-    return mark_safe("<nobr>%s</nobr>" % value)
-roles.allow_tags = True
-roles.short_description = u'Groups'
+from django.db import models
 
 
 def adm(self):
@@ -39,6 +30,7 @@ persons.allow_tags = True
 class CustomGroup(GroupAdmin):
     list_display = ['name', persons]
     list_display_links = ['name']
+    formfield_overrides = {models.ManyToManyField: {'widget': FilteredSelectMultiple("Rättigheter", is_stacked=False)}, }
 
 
 class IUserAdmin(UserAdmin):
