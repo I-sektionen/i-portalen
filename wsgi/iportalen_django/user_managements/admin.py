@@ -2,29 +2,26 @@ from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from django.contrib.auth.models import Permission, Group
-from django.utils.safestring import mark_safe
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import IUser, MasterProfile, BachelorProfile, IpikureSubscriber
-from utils.admin import HiddenModelAdmin, iportalen_admin_site
+from utils.admin import iportalen_admin_site
 from django.db import models
-
-
-def adm(self):
-    return self.is_superuser
-adm.boolean = True
-adm.admin_order_field = 'is_superuser'
-
-
-def staff(self):
-    return self.is_staff
-staff.boolean = True
-staff.admin_order_field = 'is_staff'
-
-
 from django.core.urlresolvers import reverse
+
+
 def persons(self):
     return ', '.join(['<a href="{url}">{name}</a>'.format(url=reverse('admin:user_managements_iuser_change', args=(x.pk,)), name=x.username) for x in self.user_set.all().order_by('username')])
 persons.allow_tags = True
+
+
+def groups(self):
+    return ', '.join(['<a href="{url}">{name}</a>'.format(url=reverse('admin:auth_group_change', args=(x.pk,)), name=x.name) for x in self.group_set.all().order_by('name')])
+groups.allow_tags = True
+
+
+class CustomPermission(admin.ModelAdmin):
+    list_display = ['name', groups]
+    list_display_links = ['name']
 
 
 class CustomGroup(GroupAdmin):
@@ -85,5 +82,5 @@ iportalen_admin_site.register(Group, CustomGroup)
 iportalen_admin_site.register(IUser, IUserAdmin)
 iportalen_admin_site.register(MasterProfile)
 iportalen_admin_site.register(BachelorProfile)
-iportalen_admin_site.register(Permission)
+iportalen_admin_site.register(Permission, CustomPermission)
 iportalen_admin_site.register(IpikureSubscriber)
