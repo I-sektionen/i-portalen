@@ -24,7 +24,8 @@ from .views import (
     speaker_list_display,
     administer_speaker_list,
     import_registrations,
-    file_download
+    file_download,
+    calendar_feed
 )
 
 urlpatterns = [
@@ -56,4 +57,5 @@ urlpatterns = [
     url(r'(?P<pk>[0-9]+)/administer/speaker/display/$', view=speaker_list_display, name="speaker display"),
     url(r'(?P<pk>[0-9]+)/administer/speaker/api/$', view=speaker_list, name="speaker api"),
     url(r'^(?P<pk>[0-9]+)/download/$', view=file_download, name='download'),
+    url(r'^feed/$', view=calendar_feed, name='calendar feed')
 ]

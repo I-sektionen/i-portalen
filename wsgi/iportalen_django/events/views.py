@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
 from django.core.exceptions import PermissionDenied
@@ -13,6 +13,7 @@ from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm, Rejecti
 from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticipant, SpeakerList
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
+from .feed import generate_feed
 
 
 # Create your views here.
@@ -439,3 +440,7 @@ def administer_speaker_list(request, pk):
     return render(request, 'events/administer_speaker_list.html', {
         'event': event
     })
+
+
+def calendar_feed(request):
+    return render_to_response('events/feed.ics', content_type='text/calendar')
