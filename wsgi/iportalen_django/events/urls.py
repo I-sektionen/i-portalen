@@ -57,5 +57,6 @@ urlpatterns = [
     url(r'(?P<pk>[0-9]+)/administer/speaker/display/$', view=speaker_list_display, name="speaker display"),
     url(r'(?P<pk>[0-9]+)/administer/speaker/api/$', view=speaker_list, name="speaker api"),
     url(r'^(?P<pk>[0-9]+)/download/$', view=file_download, name='download'),
-    url(r'^feed/$', view=calendar_feed, name='calendar feed')
+    url(r'^feed/$', view=calendar_feed, name='calendar feed'),
+    url(r'^feed/feed.ics$', view=calendar_feed, name='calendar feed')
 ]
