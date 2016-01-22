@@ -9,7 +9,7 @@ def all_calendar_events():
 
 @register.simple_tag()
 def print_event(event):
-    t_format = "%Y%m%dT%H%M%SZ+0100"
+    t_format = "%Y%m%dT%H%M%S"
 
 
     s = "BEGIN:VEVENT\n\
