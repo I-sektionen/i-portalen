@@ -443,4 +443,7 @@ def administer_speaker_list(request, pk):
 
 
 def calendar_feed(request):
-    return render_to_response('events/feed.ics', content_type='text/calendar')
+    response = render(request, template_name='events/feed.ics', content_type='text/calendar; charset=UTF-8')
+    response['Filename'] = 'feed.ics'
+    response['Content-Disposition'] = 'attachment; filename=filename.ics'
+    return response
