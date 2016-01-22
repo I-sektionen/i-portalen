@@ -18,9 +18,11 @@ DTEND:{end}\n\
 SUMMARY:{summary}\n\
 LOCATION:{location}\n\
 DESCRIPTION:{desc}\n\
+UID: {uid}\n\
 END:VEVENT\n".format(start=event.start.strftime(t_format),
-                      end=event.end.strftime(t_format),
-                      summary=event.headline,
-                      location=event.location,
-                      desc=event.lead)
+                     end=event.end.strftime(t_format),
+                     summary=event.headline,
+                     location=event.location,
+                     desc=event.lead,
+                     uid="IPORTALEN_DJANGO_1337" + event.pk)  # Unique identifier
     return s
