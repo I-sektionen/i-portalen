@@ -24,5 +24,5 @@ END:VEVENT\n".format(start=event.start.strftime(t_format),
                      summary=event.headline,
                      location=event.location,
                      desc=event.lead,
-                     uid="IPORTALEN_DJANGO_1337" + event.pk)  # Unique identifier
+                     uid="IPORTALEN_DJANGO_1337" + str(event.pk))  # Unique identifier
     return s
