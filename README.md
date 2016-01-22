@@ -9,4 +9,5 @@
 
 - [Gamla I-portalen](http://i-portalen.se)
 - [Development I-portalen](http://development.i-portalen.se)
-- [Master I-portalen](http://master.i-portalen.se)
+- [I-portalen](https://www.i-portalen.se)
+- [Användar manual I-portalen](http://i-sektionen.github.io/i-portalen/index.html)
