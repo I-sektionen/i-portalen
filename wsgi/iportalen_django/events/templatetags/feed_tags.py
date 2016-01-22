@@ -18,7 +18,7 @@ DTEND:{end}\n\
 SUMMARY:{summary}\n\
 LOCATION:{location}\n\
 DESCRIPTION:{desc}\n\
-END:VEVENT".format(start=event.start.strftime(t_format),
+END:VEVENT\n".format(start=event.start.strftime(t_format),
                       end=event.end.strftime(t_format),
                       summary=event.headline,
                       location=event.location,
