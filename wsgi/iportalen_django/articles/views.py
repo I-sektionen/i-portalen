@@ -139,7 +139,6 @@ def delete_article(request, pk):
     raise PermissionDenied
 
 
-@login_required()
 def article_file_download(request, pk):
     article = Article.objects.get(pk=pk)
     article_filename = article.attachment

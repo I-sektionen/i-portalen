@@ -1,9 +1,34 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import Permission
+from django.contrib.admin.widgets import FilteredSelectMultiple
+from django.contrib.auth.admin import UserAdmin, GroupAdmin
+from django.contrib.auth.models import Permission, Group
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import IUser, MasterProfile, BachelorProfile, IpikureSubscriber
-from utils.admin import HiddenModelAdmin, iportalen_admin_site
+from utils.admin import iportalen_admin_site
+from django.db import models
+from django.core.urlresolvers import reverse
+
+
+def persons(self):
+    return ', '.join(['<a href="{url}">{name}</a>'.format(url=reverse('admin:user_managements_iuser_change', args=(x.pk,)), name=x.username) for x in self.user_set.all().order_by('username')])
+persons.allow_tags = True
+
+
+def groups(self):
+    return ', '.join(['<a href="{url}">{name}</a>'.format(url=reverse('admin:auth_group_change', args=(x.pk,)), name=x.name) for x in self.group_set.all().order_by('name')])
+groups.allow_tags = True
+
+
+class CustomPermission(admin.ModelAdmin):
+    list_display = ['name', groups]
+    list_display_links = ['name']
+
+
+class CustomGroup(GroupAdmin):
+    list_display = ['name', persons]
+    list_display_links = ['name']
+    formfield_overrides = {models.ManyToManyField: {'widget': FilteredSelectMultiple("Rättigheter", is_stacked=False)}, }
+
 
 class IUserAdmin(UserAdmin):
     def show_kobra_url(self, obj):
@@ -15,7 +40,7 @@ class IUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
 
     list_display = ('username', 'email', 'is_staff', 'is_superuser', "show_kobra_url")
-    list_filter = ('is_superuser',)
+    list_filter = ('groups', 'is_staff', 'is_superuser', 'is_active')
 
     fieldsets = (
         (None, {'fields': (
@@ -52,8 +77,10 @@ class IUserAdmin(UserAdmin):
     filter_horizontal = ('groups', 'user_permissions',)
 
 
+iportalen_admin_site.unregister(Group)
+iportalen_admin_site.register(Group, CustomGroup)
 iportalen_admin_site.register(IUser, IUserAdmin)
 iportalen_admin_site.register(MasterProfile)
 iportalen_admin_site.register(BachelorProfile)
-iportalen_admin_site.register(Permission)
+iportalen_admin_site.register(Permission, CustomPermission)
 iportalen_admin_site.register(IpikureSubscriber)
