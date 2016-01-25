@@ -5,16 +5,17 @@
         <table>
             <thead>
                 <tr>
-                    <th>Liu-id</th><th>Förnamn</th><th>Efternamn</th><th>Tid</th>
+                    <th>Liu-id</th><th>Förnamn</th><th>Efternamn</th><th>Tid</th><th>Allergier</th>
                 </tr>
             </thead>
             <tbody>
-                {% for entry in event.preregistrations %}
+                {% for entry in event.entryaspreregistered_set.all %}
                     <tr>
-                        <td>{{ entry.username }}</td>
-                        <td>{{ entry.first_name }}</td>
-                        <td>{{ entry.last_name }}</td>
-                        <td>{{ entry.timestamp }}</td>
+                        <td>{{ entry.user.username }}</td>
+                        <td>{{ entry.user.first_name|capfirst }}</td>
+                        <td>{{ entry.user.last_name|capfirst }}</td>
+                        <td>{{ entry.timestamp|date:'Y-m-d h:i' }}</td>
+                        <td>{{ entry.user.allergies }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
