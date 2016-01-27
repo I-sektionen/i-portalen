@@ -31,17 +31,7 @@ def get_menu_choices_iportalen(self):
 
 @register.assignment_tag
 def get_sponsored_content():
-    content_feed_list = list(Article.objects.filter(
-        status=Article.APPROVED,
-        visible_from__lte=timezone.now(),
-        visible_to__gte=timezone.now(),
-        sponsored=True
-    ).order_by('-visible_from'))
-    content_feed_list += list(Event.objects.filter(
-        status=Event.APPROVED,
-        visible_from__lte=timezone.now(),
-        end__gte=timezone.now(),
-        sponsored=True
-    ).order_by('-visible_from'))
+    content_feed_list = list(Article.objects.published().filter(sponsored=True).order_by('-visible_from'))
+    content_feed_list += list(Event.objects.published().filter(sponsored=True).order_by('-visible_from'))
 
-    return sorted(content_feed_list, key=lambda contents: contents.visible_from, reverse=True)
+    return sorted(content_feed_list, key=lambda contents: contents.visible_from, reverse=False)
