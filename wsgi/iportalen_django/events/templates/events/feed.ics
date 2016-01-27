@@ -1,8 +1,8 @@
 {% load feed_tags %}BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Isektionen\\\, //Isektonen//EN
+PRODID:-//Isektionen{% if liu_user %}-{{liu_user}}{% endif %}\\\, //Isektionen{% if liu_user %}-{{liu_user}}{% endif %}//EN
 X-WR-CALNAME:I-sektionen
 X-WR-CALDESC:En kalender för isektionen
 X-PUBLISHED-TTL:PT20M
 CALSCALE:GREGORIAN
-{% all_calendar_events as events %}{% for event in events %}{% print_event event %}{% endfor %}END:VCALENDAR
+{% for event in events %}{% print_event event %}{% endfor %}END:VCALENDAR

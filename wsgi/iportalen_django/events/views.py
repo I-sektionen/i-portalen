@@ -443,7 +443,23 @@ def administer_speaker_list(request, pk):
 
 
 def calendar_feed(request):
-    response = render(request, template_name='events/feed.ics', content_type='text/calendar; charset=UTF-8')
+    events = Event.objects.all()
+    response = render(request,
+                      template_name='events/feed.ics',
+                      context={'events': events},
+                      content_type='text/calendar; charset=UTF-8')
     response['Filename'] = 'feed.ics'
-    response['Content-Disposition'] = 'attachment; filename=filename.ics'
+    response['Content-Disposition'] = 'attachment; filename=feed.ics'
+    return response
+
+
+def personal_calendar_feed(request, liu_id):
+    u = get_object_or_404(IUser, username=liu_id)
+    events = Event.objects.events_by_user(u)
+    response = render(request,
+                      template_name='events/feed.ics',
+                      context={'liu_user': u},
+                      content_type='text/calendar; charset=UTF-8')
+    response['Filename'] = 'feed.ics'
+    response['Content-Disposition'] = 'attachment; filename=feed.ics'
     return response
