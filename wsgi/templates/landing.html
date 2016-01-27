@@ -14,15 +14,18 @@
         </div>
 {% load iportalen_tags %}
 {% get_sponsored_content as sponsored_content %}
-    <div class="sponsored_feed_container">
-        <div class="sponsored_feed_headline">Näringsliv:</div>
-        <div id="sponsored_feed_content">
-            <ul>
-                {% for c in sponsored_content %}
-                    <li><a href="{{ c.get_absolute_url }}">{{ c.headline }}</a></li>
-                {% endfor %}
-            </ul>
+    <div class="sponsored_container">
+        <div class="sponsored_feed_container">
+            <div class="sponsored_feed_headline"><strong>NÄRINGSLIV:</strong></div>
+            <div id="sponsored_feed_content">
+                <ul>
+                    {% for c in sponsored_content %}
+                        <li><strong><a href="{{ c.get_absolute_url }}">{{ c.headline }}</a></strong></li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
+        <hr>
     </div>
         {% for content in content_feed_list %}
             {% if content.type == "article" %}
