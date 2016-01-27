@@ -1,6 +1,6 @@
 {% load feed_tags %}BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Isektionen\\\, //Isektionen//EN
+PRODID:-//Isektionen{% if liu_user %}-{{liu_user}}{% endif %}\\\, //Isektionen{% if liu_user %}-{{liu_user}}{% endif %}//EN
 X-WR-CALNAME:I-sektionen
 X-WR-CALDESC:En kalender för isektionen
 X-PUBLISHED-TTL:PT20M

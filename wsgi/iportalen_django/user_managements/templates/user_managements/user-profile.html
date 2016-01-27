@@ -59,8 +59,7 @@
         <p>Länkarna nedan kan användas av ett externt kalenderprogram för att prenumerera på
             sektiones evenemang. Länken <b>alla event</b> leder till en kalender-feed som visar all sektionens
             publicerade event. Den undre länken <b>dina event</b> ger en anpassad feed där bara event som du är
-            anmäld till visas. Båda kalendrarna kan prenumereras på och updaterar sig själva. En eller båda länkarna
-            kopieras in i ditt kale.</p>
+            anmäld till visas. Båda kalendrarna kan prenumereras på och updaterar sig själva. </p>
         <p><b>Alla event: </b><code>www.i-portalen.se{% url "events:calendar feed" %}</code></p>
         <p><b>Dina event: </b><code>www.i-portalen.se{% url "events:personal calendar feed" request.user.username %}</code></p>
         <p>En eller båda länkarna ovan kopieras in i ditt kalenderprogram. I Google Calendar tillexempel väljs
