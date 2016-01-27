@@ -16,7 +16,7 @@
 {% get_sponsored_content as sponsored_content %}
     <div class="sponsored_container">
         <div class="sponsored_feed_container">
-            <div class="sponsored_feed_headline"><strong>NÄRINGSLIV:</strong></div>
+            <div class="sponsored_feed_headline"><a href="{% url "sponsored" %}" class="content-type-nav">Näringsliv</a></div>
             <div id="sponsored_feed_content">
                 <ul>
                     {% for c in sponsored_content %}
