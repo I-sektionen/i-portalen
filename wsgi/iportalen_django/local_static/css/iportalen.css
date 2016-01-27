@@ -2487,9 +2487,6 @@ div.booking-container .third-container .third .center {
   border-top: none;
   margin: 1.5em 0;
 }
-.sponsored_container .sponsored_feed_headline {
-  color: #999;
-}
 @media screen and (min-width: 1200px) {
   .sponsored_container .sponsored_feed_headline {
     float: left;
