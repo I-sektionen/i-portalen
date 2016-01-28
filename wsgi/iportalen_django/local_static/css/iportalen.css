@@ -2470,10 +2470,6 @@ div.booking-container .third-container .third .center {
   }
 }
 
-.sponsored_feed_container {
-  border-left: solid 3px #2D701E;
-  padding-left: 10px;
-}
 .sponsored_feed_container::after {
   clear: both;
   content: "";
@@ -2492,7 +2488,7 @@ div.booking-container .third-container .third .center {
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 18.4318%;
+    width: 28.78967%;
     margin-right: 0;
   }
   .sponsored_container .sponsored_feed_headline:last-child {
@@ -2504,7 +2500,7 @@ div.booking-container .third-container .third .center {
     float: left;
     display: block;
     margin-right: 3.57866%;
-    width: 77.98953%;
+    width: 67.63167%;
   }
   .sponsored_container #sponsored_feed_content:last-child {
     margin-right: 0;
