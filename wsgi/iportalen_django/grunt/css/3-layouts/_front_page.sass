@@ -30,3 +30,23 @@
   +span-columns(12)
   +media($large-screen-up)
     +span-columns(8)
+
+.sponsored_feed_container
+  @include clearfix
+
+.sponsored_container
+  hr
+    border-bottom: 1px solid darken($light-gray, 20%)
+    border-left: none
+    border-right: none
+    border-top: none
+    margin: $base-spacing 0
+
+  .sponsored_feed_headline
+    +media($large-screen-up)
+      +span-columns(2.5 of 8)
+      +omega()
+
+  #sponsored_feed_content
+    +media($large-screen-up)
+      +span-columns(5.5 of 8)
