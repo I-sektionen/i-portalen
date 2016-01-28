@@ -2495,12 +2495,16 @@ div.booking-container .third-container .third .center {
     margin-right: 0;
   }
 }
+.sponsored_container #sponsored_feed_content {
+  padding-left: 0.2em;
+}
 @media screen and (min-width: 1200px) {
   .sponsored_container #sponsored_feed_content {
     float: left;
     display: block;
     margin-right: 3.57866%;
     width: 67.63167%;
+    margin-right: 0;
   }
   .sponsored_container #sponsored_feed_content:last-child {
     margin-right: 0;
