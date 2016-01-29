@@ -15,12 +15,13 @@ class StaticViewSitemapLow(sitemaps.Sitemap):
     def location(self, obj):
         return reverse(obj)
 
+
 class StaticViewSitemapHigh(sitemaps.Sitemap):
     priority = 0.9
     changefreq = 'daily'
 
     def items(self):
-        return ['news feed', 'events:calender']  # Add static url names here (that should be indexed by search engines)!
+        return ['news feed', 'events:calender']  # Add static url names here (that should be indexed by search engines)
 
     def location(self, obj):
         return reverse(obj)

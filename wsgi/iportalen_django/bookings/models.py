@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.core.exceptions import ValidationError
 from utils.time import has_passed, combine_date_and_time, now_plus_one_month
 
 
@@ -227,7 +227,7 @@ class VariableCostAmount(models.Model):
 
 # This has to be here. Sorry! (PartialBooking is not loaded when this import occurs otherwise.)
 # TODO: Refactor this model file inte several parts.
-from .managers import BookingManager
+from .managers import BookingManager  # TODO: Look for better solution
 
 
 class Booking(models.Model):

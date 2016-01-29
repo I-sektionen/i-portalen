@@ -3,9 +3,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
-from django.forms import modelformset_factory, formset_factory
+from django.forms import modelformset_factory
 from .models import Organisation, OrganisationPost
-from .forms import OrganisationForm, AddOrganisationForm, OrganisationPostForm
+from .forms import OrganisationForm, AddOrganisationForm
 
 
 def organisation(request, organisation_name):
@@ -46,10 +46,6 @@ def edit_memebers(request, organisation_name):
     if not my_organisation.can_edit(request.user):
         return HttpResponseForbidden()
 
-    #OrgPostFormSet = formset_factory(OrganisationPostForm,
-     #                                can_delete=True,
-      #                               extra=5,
-       #                              max_num=100)
     OrgPostFormSet = modelformset_factory(OrganisationPost,
                                           fields=('post', 'user', 'email'),
                                           max_num=100,
@@ -85,7 +81,6 @@ def edit_memebers(request, organisation_name):
                         'formset': formset,
                         })
 
-    org_posts_values = OrganisationPost.objects.filter(org=my_organisation)
     formset = OrgPostFormSet(queryset=OrganisationPost.objects.filter(org=my_organisation))
     return render(request, "organisations/members.html", {
                         'organisation': my_organisation,

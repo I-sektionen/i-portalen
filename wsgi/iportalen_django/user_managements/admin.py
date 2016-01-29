@@ -10,12 +10,18 @@ from django.core.urlresolvers import reverse
 
 
 def persons(self):
-    return ', '.join(['<a href="{url}">{name}</a>'.format(url=reverse('admin:user_managements_iuser_change', args=(x.pk,)), name=x.username) for x in self.user_set.all().order_by('username')])
+    return ', '.join(['<a href="{url}">{name}</a>'.format(
+        url=reverse('admin:user_managements_iuser_change', args=(x.pk,)),
+        name=x.username) for x in self.user_set.all().order_by('username')])
+
 persons.allow_tags = True
 
 
 def groups(self):
-    return ', '.join(['<a href="{url}">{name}</a>'.format(url=reverse('admin:auth_group_change', args=(x.pk,)), name=x.name) for x in self.group_set.all().order_by('name')])
+    return ', '.join(['<a href="{url}">{name}</a>'.format(
+        url=reverse('admin:auth_group_change', args=(x.pk,)),
+        name=x.name) for x in self.group_set.all().order_by('name')])
+
 groups.allow_tags = True
 
 
