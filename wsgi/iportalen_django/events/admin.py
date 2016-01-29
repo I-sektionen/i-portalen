@@ -1,4 +1,3 @@
-from django.contrib import admin
 from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticipant
 from utils.admin import iportalen_admin_site
 

@@ -1,12 +1,9 @@
 from django.conf.urls import include, url
-from django.contrib import admin
 from utils.admin import iportalen_admin_site
 from django.views.generic import TemplateView, RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
 from django.contrib.sitemaps.views import sitemap
-
 
 from .views import placeholder, display_news_feed, glasscubes_link, display_sponsored_content
 
@@ -35,14 +32,18 @@ urlpatterns = [
     url(r'^organisations/', include(org_urls, namespace="organisations")),
     url(r'^booking/', include(booking_urls, namespace="bookings")),
     url(r'^placeholder/', view=placeholder, name="placeholder"),
-    url(r'^student', RedirectView.as_view(pattern_name='front page', permanent=True)),  # Om någon har sparat /student som favorit skickar vi dem till startsidan
+
+    # Om någon har sparat /student som favorit skickar vi dem till startsidan
+    url(r'^student', RedirectView.as_view(pattern_name='front page', permanent=True)),
+
     url(r'^course_evaluation/', include(course_urls, namespace="course_evaluations")),
     url(r'^file_storage/', view=glasscubes_link, name="glasscubes storage"),
     url(r'^faq/', include('faq.urls', namespace="faq")),
     url(r'^robots.txt$', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap'),
-    url(r'.well-known/acme-challenge/o1RETI1T86n55DRPYdvyBNK5C5mzfvWk33Mhz5CyT_8', TemplateView.as_view(template_name='acme.txt', content_type='text/plain')),
+    url(r'.well-known/acme-challenge/o1RETI1T86n55DRPYdvyBNK5C5mzfvWk33Mhz5CyT_8',
+        TemplateView.as_view(template_name='acme.txt', content_type='text/plain')),
     url(r'pul/$', view=TemplateView.as_view(template_name="pul.html"), name="pul"),
     url(r'cookies/$', view=TemplateView.as_view(template_name="cookies.html"), name="cookies")
 ]

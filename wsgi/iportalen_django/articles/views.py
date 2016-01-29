@@ -11,7 +11,7 @@ from tags.models import Tag
 
 
 @login_required()
-def create_or_modify_article(request, pk=None):
+def create_or_modify_article(request, pk=None):  # TODO: Reduce complexity
     if pk:  # if pk is set we modify an existing article.
         duplicates = Article.objects.filter(replacing_id=pk)
         if duplicates:

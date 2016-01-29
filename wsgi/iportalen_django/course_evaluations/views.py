@@ -6,10 +6,11 @@ from django.db import transaction
 from django.forms import modelformset_factory, formset_factory
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from course_evaluations.forms import EvaluationForm, PeriodForm, YearForm, CourseForm, RewardForm
+from course_evaluations.forms import EvaluationForm, PeriodForm, YearForm, CourseForm
 from .models import Period, Course, Evaluation, Reward, Year, CourseEvaluationSettings
 from utils.markdown import markdown_to_html
 from django.conf import settings as django_settings
+
 
 @login_required
 def evaluate_course(request):
@@ -88,6 +89,7 @@ def admin_year(request, year):
         year.ht2.update_courses_from_list(request.POST.getlist('courses_ht2'))
 
     return render(request, "course_evaluations/admin/year.html", {"year": year, "courses": courses})
+
 
 @login_required
 @permission_required('course_evaluations.add_course')
@@ -207,6 +209,7 @@ def edit_period(request, pk):
 
     return render(request, "course_evaluations/admin/edit_period.html", {'period': period, "form": form})
 
+
 @login_required
 @transaction.atomic
 @permission_required('course_evaluations.add_course')
@@ -244,7 +247,7 @@ def create_courses(request):
         if formset.is_valid():
             for entry in formset.cleaned_data:
                 if not entry == {}:
-                    c = Course.objects.create(code=entry['code'], name=entry['name'])
+                    Course.objects.create(code=entry['code'], name=entry['name'])
             formset = CourseFormSet()
             return render(request, "course_evaluations/admin/add_courses.html", {"formset": formset, "courses": courses})
         else:

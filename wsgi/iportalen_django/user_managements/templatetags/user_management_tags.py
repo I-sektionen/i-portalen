@@ -28,6 +28,7 @@ def get_master_profiles():
     profiles = MasterProfile.objects.all().order_by('name')
     return profiles
 
+
 @register.assignment_tag
 def get_menu_choices_user(user):
     menu_choices = []
@@ -40,6 +41,5 @@ def get_menu_choices_user(user):
 
     if user.has_perm('user_managements.can_view_subscribers'):
         menu_choices.append(('Lista Ipikuréprenumeranter', reverse('ipikure_subscribers')))
-
 
     return menu_choices

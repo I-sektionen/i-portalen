@@ -1,6 +1,15 @@
 from django.contrib import admin
-from .models import Bookable, Booking, BookingSlot, VariableCostAmount, Invoice, \
-    VariableCostTemplate, FixedCostTemplate, PartialBooking, FixedCostAmount
+from .models import (
+    Bookable,
+    Booking,
+    BookingSlot,
+    VariableCostAmount,
+    Invoice,
+    VariableCostTemplate,
+    FixedCostTemplate,
+    PartialBooking,
+    FixedCostAmount
+)
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.urlresolvers import reverse
 from utils.admin import iportalen_admin_site
@@ -60,7 +69,6 @@ class BookingsAdmin(admin.ModelAdmin):
         s = reverse("bookings:create custom invoice", args=[obj.pk])
         return "<a href=\"%s\">Skapa/Se befintlig</a>" % (s,)
 
-
     create_invoice_url.allow_tags = True
     create_invoice_url.short_description = "Länk till faktura"
 
@@ -86,7 +94,7 @@ class FixedCostInline(admin.TabularInline):
 
 class UserInvoiceAdmin(admin.ModelAdmin):
     readonly_fields = ('ocr', 'send_invoice_email')
-    #fields = ('status', 'due', 'booking')
+    # fields = ('status', 'due', 'booking')
 
     def send_invoice_email(self, obj):
         try:

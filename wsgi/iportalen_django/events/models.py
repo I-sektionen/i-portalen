@@ -3,7 +3,6 @@ from django.contrib.sites.models import Site
 from django.db import models, transaction
 from django.conf import settings
 from django.utils import timezone
-from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
 from utils.validators import less_than_160_characters_validator
@@ -117,9 +116,11 @@ class Event(models.Model):
     sponsored = models.BooleanField(verbose_name='sponsrat', default=False, help_text="Kryssa i om innehållet är sponsrat")
 
     objects = EventManager()
+
     ###########################################################################
     # Meta data for model
     ###########################################################################
+
     class Meta:
         verbose_name = "Arrangemang"
         verbose_name_plural = "Arrangemang"
@@ -204,8 +205,8 @@ class Event(models.Model):
     def no_show(self):
         preregistered = EntryAsPreRegistered.objects.filter(event=self)
         participants = EntryAsParticipant.objects.filter(event=self)
-        preregistered_list=[]
-        participant_list=[]
+        preregistered_list = []
+        participant_list = []
         for p in preregistered:
             preregistered_list.append(p.user)
         for p in participants:
@@ -347,7 +348,7 @@ class Event(models.Model):
             return True
         return False
 
-    def get_new_status(self, draft):
+    def get_new_status(self, draft):  # TODO: Reduce complexity
         try:
             s_db = Event.objects.get(pk=self.pk)
             if s_db.status == Event.DRAFT:

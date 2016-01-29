@@ -20,14 +20,15 @@ class CourseEvaluationSettings(models.Model):
                                                                            "{period} = namnet på perioden, "
                                                                            "{year} = Året, "
                                                                            "{course} = Kursens kod och namn")
-    mail_to_organisation = models.TextField(null=True, blank=False,
+    mail_to_organisation = models.TextField(null=True,
+                                            blank=False,
                                             help_text="Följande variabler finns att tillgå: "
-                                                       "{user} = Registrerade användarens fullständiga namn, "
-                                                       "{user_email} = Registrerade användarens epost, "
-                                                       "{period} = namnet på perioden, "
-                                                       "{year} = Året, "
-                                                       "{course} = Kursens kod och namn, "
-                                                       "{reward} = Den valda belöningen")
+                                                      "{user} = Registrerade användarens fullständiga namn, "
+                                                      "{user_email} = Registrerade användarens epost, "
+                                                      "{period} = namnet på perioden, "
+                                                      "{year} = Året, "
+                                                      "{course} = Kursens kod och namn, "
+                                                      "{reward} = Den valda belöningen")
     mail_addresses_to_organisation = models.TextField(null=True, blank=False, help_text="En adress per rad.")
     contact_email = models.EmailField(null=True, blank=False)
 
@@ -39,7 +40,7 @@ class CourseEvaluationSettings(models.Model):
 class Year(models.Model):
     YEAR_CHOICES = []
     for r in range(2014, (timezone.now().year+50)):
-        YEAR_CHOICES.append((r,r))
+        YEAR_CHOICES.append((r, r))
     year = models.IntegerField(verbose_name="år", unique=True, choices=YEAR_CHOICES,
                                default=timezone.now().year)
     vt1 = models.ForeignKey("Period", verbose_name="VT1", related_name="vt1", )
@@ -47,7 +48,7 @@ class Year(models.Model):
     ht1 = models.ForeignKey("Period", verbose_name="HT1", related_name="ht1")
     ht2 = models.ForeignKey("Period", verbose_name="HT2", related_name="ht2")
     objects = YearManager()
-    
+
     class Meta:
         verbose_name = 'år'
         verbose_name_plural = 'år'
@@ -100,6 +101,7 @@ class Course(models.Model):
 class Reward(models.Model):
     name = models.CharField(verbose_name='namn', max_length=255, unique=True)
     active = models.BooleanField(verbose_name='aktiv', default=False)
+
     class Meta:
         verbose_name = 'belöning'
         verbose_name_plural = 'belöningar'

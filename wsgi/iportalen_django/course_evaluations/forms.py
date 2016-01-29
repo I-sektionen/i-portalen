@@ -42,7 +42,7 @@ class YearForm(forms.Form):
 
     def clean(self):
         super(YearForm, self).clean()
-        year = self.cleaned_data.get("year")
+        # year = self.cleaned_data.get("year")  # TODO: make a check that the correct year is choosen
         vt1_start = self.cleaned_data.get("vt1_start")
         vt2_start = self.cleaned_data.get("vt2_start")
         vt2_end = self.cleaned_data.get("vt2_end")
@@ -67,10 +67,15 @@ class EvaluationForm(forms.ModelForm):
         model = Evaluation
         fields = ['course', 'reward']
 
-    def __init__(self, *args, period, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(EvaluationForm, self).__init__(*args, **kwargs)
-        self.fields['course'].choices = [(None, "---------")] + [(a.pk, str(a)) for a in period.get_free_courses()]
-        self.fields['reward'].choices = [(None, "---------")] + [(a.pk, str(a)) for a in Reward.objects.filter(active=True)]
+        self.fields['reward'].choices = [(None, "---------")] + [
+            (a.pk, str(a)) for a in Reward.objects.filter(active=True)]
+        try:
+            self.fields['course'].choices = [(None, "---------")] + [
+                (a.pk, str(a)) for a in kwargs.get('period').get_free_courses()]
+        except:
+            pass
 
 
 class CourseForm(forms.ModelForm):
