@@ -1,22 +1,17 @@
 from django.core.urlresolvers import reverse
-from django.shortcuts import render, get_object_or_404, redirect, render_to_response
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.contrib import messages
 from django.utils import timezone
 from django.db import transaction
-from django.core.exceptions import ObjectDoesNotExist
 import csv
 from utils.validators import liu_id_validator
 from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm, RejectionForm
 from .models import Event, EntryAsPreRegistered, EntryAsReserve
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
-from .feed import generate_feed
-
-
-# Create your views here.
 
 
 def view_event(request, pk):

@@ -8,9 +8,6 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return "/articles/tag/%s/" % self.name
-
     class Meta:
         verbose_name = "tagg"
         verbose_name_plural = "taggar"

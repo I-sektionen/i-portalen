@@ -7,28 +7,20 @@ from tags.models import Tag
 from utils.validators import less_than_160_characters_validator
 from utils import time
 from organisations.models import Organisation
-
-# Internal:
-DRAFT = 'd'
-BEING_REVIEWED = 'b'
-REJECTED = 'r'
-APPROVED = 'a'
-STATUSES = (
-    (DRAFT, 'utkast'),
-    (BEING_REVIEWED, 'väntar på godkännande'),
-    (REJECTED, 'Avslaget'),
-    (APPROVED, 'Godkännt')
-)
-
-from .managers import ArticleManager  # TODO: Look for better solution
+from .managers import ArticleManager
 
 
 class Article(models.Model):
-    DRAFT = DRAFT
-    BEING_REVIEWED = BEING_REVIEWED
-    REJECTED = REJECTED
-    APPROVED = APPROVED
-    STATUSES = STATUSES
+    DRAFT = 'd'
+    BEING_REVIEWED = 'b'
+    REJECTED = 'r'
+    APPROVED = 'a'
+    STATUSES = (
+        (DRAFT, 'utkast'),
+        (BEING_REVIEWED, 'väntar på godkännande'),
+        (REJECTED, 'Avslaget'),
+        (APPROVED, 'Godkännt')
+    )
     headline = models.CharField(
         verbose_name='rubrik',
         max_length=255,
@@ -158,37 +150,37 @@ class Article(models.Model):
     def get_new_status(self, draft):  # TODO: Reduce complexity
         try:
             s_db = Article.objects.get(pk=self.pk)
-            if s_db.status == DRAFT:
+            if s_db.status == self.DRAFT:
                 if draft:
-                    return {"new": False, "status": DRAFT}
+                    return {"new": False, "status": self.DRAFT}
                 else:
-                    return {"new": False, "status": BEING_REVIEWED}
-            elif s_db.status == BEING_REVIEWED:
+                    return {"new": False, "status": self.BEING_REVIEWED}
+            elif s_db.status == self.BEING_REVIEWED:
                 if draft:
-                    return {"new": False, "status": DRAFT}
+                    return {"new": False, "status": self.DRAFT}
                 else:
-                    return {"new": False, "status": BEING_REVIEWED}
-            elif s_db.status == APPROVED:
+                    return {"new": False, "status": self.BEING_REVIEWED}
+            elif s_db.status == self.APPROVED:
                 if draft:
-                    return {"new": True, "status": DRAFT}
+                    return {"new": True, "status": self.DRAFT}
                 else:
-                    return {"new": True, "status": BEING_REVIEWED}
-            elif s_db.status == REJECTED:
+                    return {"new": True, "status": self.BEING_REVIEWED}
+            elif s_db.status == self.REJECTED:
                 if draft:
-                    return {"new": False, "status": DRAFT}
+                    return {"new": False, "status": self.DRAFT}
                 else:
-                    return {"new": False, "status": BEING_REVIEWED}
+                    return {"new": False, "status": self.BEING_REVIEWED}
         except:
             if draft:
-                return {"new": False, "status": DRAFT}
+                return {"new": False, "status": self.DRAFT}
             else:
-                return {"new": False, "status": BEING_REVIEWED}
+                return {"new": False, "status": self.BEING_REVIEWED}
 
     # Rejects an event from being published, attaches message if present.
     def reject(self, user, msg=None):
         if not user.has_perm('articles.can_approve_article'):
             return False
-        if self.status == BEING_REVIEWED:
+        if self.status == self.BEING_REVIEWED:
             if msg:
                 send_mail(
                     "Din artikel har blivit avslagen.",
@@ -199,7 +191,7 @@ class Article(models.Model):
                     html_message="<p>Din artikel {head} har blivit avslagen med motiveringen:</p><p>{msg}".format(
                         head=self.headline, msg=msg))
             self.rejection_message = msg
-            self.status = REJECTED
+            self.status = self.REJECTED
             self.save()
             return True
         return False
@@ -207,8 +199,8 @@ class Article(models.Model):
     # Approves the event.
     @transaction.atomic
     def approve(self, user):
-        if self.status == BEING_REVIEWED and user.has_perm('articles.can_approve_article'):
-            self.status = APPROVED
+        if self.status == self.BEING_REVIEWED and user.has_perm('articles.can_approve_article'):
+            self.status = self.APPROVED
             self.save()
             if self.replacing:
 

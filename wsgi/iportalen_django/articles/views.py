@@ -73,9 +73,7 @@ def single_article(request, pk):
 
 
 def all_articles(request):
-    articles = Article.objects.filter(status=Article.APPROVED,
-                                      visible_from__lte=timezone.now(),
-                                      visible_to__gte=timezone.now())
+    articles = Article.objects.published()
     return render(request, 'articles/articles.html', {'articles': articles})
 
 

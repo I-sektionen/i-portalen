@@ -29,7 +29,6 @@ def _make_call_to_kobra(payload):
     # Don't contact me when this breaks just rewrite it!
     # How it works:
     # It uses a flask server with some more permissions on another server to execute the request.
-    # The flask server reverse checks the ip of iportalen-webgroup.rhcloud.com and only allows calls from that ip
     # Best regards Jonathan, Webmaster 2015-2016
     ##############################################################################
     # import requests
