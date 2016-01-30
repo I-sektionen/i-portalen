@@ -84,6 +84,7 @@ def upload_attachments(request, article_pk):
                         else:
                             attachment = OtherAttachment(article=article)
                         attachment.file = entry['file']
+                        attachment.file_name = entry['file'].name
                         attachment.display_name = entry['display_name']
                         attachment.save()
             messages.success(request, 'Dina bilagor har sparats.')
@@ -100,11 +101,19 @@ def upload_attachments(request, article_pk):
                         })
 
 
+def download_attachment(request, pk):
+    attachment = OtherAttachment.objects.get(pk=pk)
+    response = HttpResponse(attachment.file)
+    response['Content-Disposition'] = 'attachment; filename="{filename}"'.format(filename=attachment.file_name)
+    return response
+
+
 def single_article(request, pk):
     article = Article.objects.get(pk=pk)
     if article.status == Article.APPROVED:
-        return render(request, 'articles/article.html', {'article': article})
-    elif request.user == article.user:
+        attachments = article.otherattachment_set
+        return render(request, 'articles/article.html', {'article': article, 'attachments': attachments})
+    elif request.user == article.user:  # TODO: Should this maybe be more defined? (Superusers and certain permissions?)
         return render(request, 'articles/article.html', {'article': article})
     raise PermissionDenied
 
