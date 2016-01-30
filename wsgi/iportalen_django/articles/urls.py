@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^my_articles/$', views.articles_by_user, name='by user'),
     url(r'^(?P<pk>[0-9]+)/delete/$', views.delete_article, name='delete'),
     url(r'^(?P<pk>[0-9]+)/download/$', views.article_file_download, name='download'),
+    url(r'^(?P<article_pk>[0-9]+)/attachments/$', views.upload_attachments, name='manage attachments')
 
 ]

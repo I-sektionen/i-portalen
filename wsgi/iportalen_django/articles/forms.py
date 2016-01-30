@@ -1,7 +1,7 @@
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django import forms
-from .models import Article
+from .models import Article, OtherAttachment
 
 
 class ArticleForm(forms.ModelForm):
@@ -45,3 +45,8 @@ class ArticleForm(forms.ModelForm):
 
 class RejectionForm(forms.Form):
     rejection_message = forms.CharField(label="Avslagsmeddelande", widget=forms.Textarea())
+
+
+class AttachmentForm(forms.ModelForm):
+    model = OtherAttachment
+    fields = ('file',)

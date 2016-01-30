@@ -1,0 +1,28 @@
+{% extends "master.html" %}
+{% block hero %}{% endblock %}
+{% block content %}
+    <div>
+        <form method="post" action="" enctype="multipart/form-data">
+            <table>
+            <thead>
+            <tr>
+                <th>Fil</th><th>Radera?</th>
+            </tr>
+            </thead>
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    {% csrf_token %}
+                    <tr>
+                        <td>{{ form.file }}</td>
+                        {% if formset.can_delete %}
+                            <td>{{ form.DELETE }}</td>
+                        {% endif %}
+                    </tr>
+                    {{ form.id }}
+                {% endfor %}
+            </table>
+        <button type="submit">Spara</button>
+        </form>
+    <a href="{% url 'articles:by user' %}"><button>Gå vidare</button></a>
+    </div>
+{% endblock %}
