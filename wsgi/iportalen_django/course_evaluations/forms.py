@@ -2,12 +2,6 @@ from .models import Reward, Period, Evaluation, Course, Year
 from django import forms
 
 
-class RewardForm(forms.ModelForm):
-    class Meta:
-        model = Reward
-        fields = '__all__'
-
-
 class PeriodForm(forms.ModelForm):
     class Meta:
         model = Period

@@ -242,7 +242,6 @@ def reset_confirm(request, uidb64=None, token=None):
 
 
 def reset_done(request):
-    # return password_reset_done(request, template_name='user_managements/reset/pw_res_done.html')
     messages.info(request, "Ett mail kommer inom kort skickas till mailadressen som angavs. "
                            "I den finns en länk för att skapa ett nytt lösenord. "
                            "Om det inte kommer något mail, vänligen kontakta info@isektionen.se")
@@ -362,7 +361,6 @@ def update_list_of_users_from_kobra(request):  # TODO: Reduce complexity
 
 @login_required()
 def subscribe_to_ipikure(request):
-    # return password_reset_done(request, template_name='user_managements/reset/pw_res_done.html')
     if not (request.user.address and request.user.zip_code and request.user.city):
         messages.error(request, "Du måste ange din adress för att kunna prenumerera på ipikuré")
         return redirect(reverse("my page"))
