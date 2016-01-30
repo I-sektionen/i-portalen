@@ -20,7 +20,7 @@
             <div id="sponsored_feed_content">
                 <ul>
                     {% for c in sponsored_content %}
-                        <li><strong><a href="{{ c.get_absolute_url }}">{{ c.headline }}</a></strong></li>
+                        <li><strong><a href="{{ c.get_absolute_url }}">{{ c.headline|truncatechars:62 }}</a></strong></li>
                     {% endfor %}
                 </ul>
             </div>
