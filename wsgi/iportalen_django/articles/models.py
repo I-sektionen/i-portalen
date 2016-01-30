@@ -69,8 +69,8 @@ class Article(models.Model):
         blank=True,
         help_text="Håll ner Ctrl för att markera flera.")
 
-    attachment = models.FileField(
-        verbose_name='Bifogad fil',
+    attachment = models.FileField(  # This field should be removed. It is saved by legacy reasons.
+        verbose_name='Bifogad fil', # TODO: When no articles uses this field, remove it. (Tricky to migrate)
         help_text="Bifogad fil för artikel",
         upload_to="article_attachments",
         null=True,
@@ -230,3 +230,48 @@ class Article(models.Model):
                 self.replacing.save()
             return True
         return False
+
+###########################################################################
+# Attachment Models
+###########################################################################
+
+
+class ImageAttachment(models.Model):
+    """Used to handle image attachments to be shown in the article"""
+    img = models.FileField(
+        upload_to='article_images',
+        null=False,
+        blank=False,
+        verbose_name='artikelbild'
+    )
+    article = models.ForeignKey(Article)
+
+
+class ThumbnailAttachment(models.Model):
+    """An automaticly generated thumbnail, called by save() in ImageAttachment"""
+    thumb = models.FileField(
+        upload_to='article_thumbs',
+        null=False,
+        blank=False,
+        verbose_name='thumbnail'
+    )
+
+
+def _file_path(instance, filename):
+    return os.path.join(
+        'article_attachments', str(instance.article.pk), filename
+    )
+
+
+class OtherAttachment(models.Model):
+    """"Regular attachments such as pdf:s and it's like."""
+
+    file = models.FileField(
+        upload_to=_file_path,
+        null=False,
+        blank=True,
+        verbose_name='artikelbilaga',
+    )
+    article = models.ForeignKey(Article)
+
+

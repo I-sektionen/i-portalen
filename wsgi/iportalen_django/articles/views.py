@@ -5,7 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db import transaction
-from .models import Article
+from django.forms import modelformset_factory
+from .models import Article, OtherAttachment
 from .forms import ArticleForm, RejectionForm
 from tags.models import Tag
 
@@ -52,7 +53,7 @@ def create_or_modify_article(request, pk=None):
                 messages.success(request, "Dina ändringar har sparats i ett utkast.")
             elif article.status == Article.BEING_REVIEWED:
                 messages.success(request, "Dina ändringar har skickats för granskning.")
-            return redirect('articles:by user')
+            return redirect('articles:manage attachments', article_pk=article.pk)
         else:
             messages.error(request, "Det uppstod ett fel, se detaljer nedan.")
             return render(request, 'articles/article_form.html', {
@@ -61,6 +62,42 @@ def create_or_modify_article(request, pk=None):
     return render(request, 'articles/article_form.html', {
         'form': form,
     })
+
+
+def upload_attachments(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    AttachmentFormset = modelformset_factory(OtherAttachment,
+                                              fields=('file',),
+                                              max_num=30,
+                                              extra=3,
+                                              can_delete=True)
+    if request.method == 'POST':
+        formset = AttachmentFormset(request.POST, request.FILES, queryset=OtherAttachment.objects.filter(article=article))
+        if formset.is_valid():
+            for entry in formset.cleaned_data:
+                if not entry == {}:
+                    if entry['DELETE']:
+                        entry['id'].delete()  # TODO: Remove the clear option from html-widget.
+                    else:
+                        if entry['id']:
+                            attachment = entry['id']
+                        else:
+                            attachment = OtherAttachment(article=article)
+                        attachment.file = entry['file']
+                        attachment.save()
+                        messages.success(request, 'Dina bilagor har sparats.')
+                        # if article.upload_images render something else.
+                return redirect('articles:manage attachments', article_pk=article.pk)
+        else:
+            return render(request, "articles/attachments.html", {
+                        'article': article,
+                        'formset': formset,
+                        })
+    formset = AttachmentFormset(queryset=OtherAttachment.objects.filter(article=article))
+    return render(request, "articles/attachments.html", {
+                        'article': article,
+                        'formset': formset,
+                        })
 
 
 def single_article(request, pk):
