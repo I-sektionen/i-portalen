@@ -67,7 +67,7 @@ def create_or_modify_article(request, pk=None):
 def upload_attachments(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     AttachmentFormset = modelformset_factory(OtherAttachment,
-                                              fields=('file',),
+                                              fields=('file', 'display_name'),
                                               max_num=30,
                                               extra=3,
                                               can_delete=True)
@@ -84,10 +84,10 @@ def upload_attachments(request, article_pk):
                         else:
                             attachment = OtherAttachment(article=article)
                         attachment.file = entry['file']
+                        attachment.display_name = entry['display_name']
                         attachment.save()
-                        messages.success(request, 'Dina bilagor har sparats.')
-                        # if article.upload_images render something else.
-                return redirect('articles:manage attachments', article_pk=article.pk)
+            messages.success(request, 'Dina bilagor har sparats.')
+            return redirect('articles:manage attachments', article_pk=article.pk)
         else:
             return render(request, "articles/attachments.html", {
                         'article': article,

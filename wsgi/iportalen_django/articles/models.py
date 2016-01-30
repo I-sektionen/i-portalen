@@ -272,6 +272,7 @@ class OtherAttachment(models.Model):
         blank=True,
         verbose_name='artikelbilaga',
     )
+    display_name = models.CharField(max_length=160)
     article = models.ForeignKey(Article)
 
 
