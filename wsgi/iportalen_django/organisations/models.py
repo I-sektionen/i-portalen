@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.db import models
 from django.utils.http import urlquote
 from django.contrib.auth.models import Group
@@ -28,9 +27,9 @@ class Organisation(models.Model):
                                    null=True,
                                    blank=True)
     contact_info = models.TextField(verbose_name='Kontaktinfo',
-                                     help_text="Kontaktinformation för organisationen",
-                                     null=True,
-                                     blank=True)
+                                    help_text="Kontaktinformation för organisationen",
+                                    null=True,
+                                    blank=True)
     image = models.FileField(verbose_name='Bild',
                              help_text="Bild för organisationen",
                              upload_to="organisations",

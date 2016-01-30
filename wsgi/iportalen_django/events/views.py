@@ -10,7 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import csv
 from utils.validators import liu_id_validator
 from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm, RejectionForm
-from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticipant, SpeakerList
+from .models import Event, EntryAsPreRegistered, EntryAsReserve
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
 from .feed import generate_feed
@@ -136,7 +136,7 @@ def reserves_list(request, pk):
 
 
 @login_required()
-def check_in(request, pk):
+def check_in(request, pk):  # TODO: Reduce complexity
     event = get_object_or_404(Event, pk=pk)
     can_administer = event.can_administer(request.user)
     if request.method == 'POST':
@@ -160,7 +160,7 @@ def check_in(request, pk):
                 return render(request, 'events/event_check_in.html', {
                     'form': form, 'event': event, "can_administer": can_administer,
                 })
-            if event_user in event.preregistrations or form.cleaned_data["force_check_in"] == True:
+            if event_user in event.preregistrations or form.cleaned_data["force_check_in"]:
                 try:
                     event.check_in(event_user)
                     if event.extra_deadline:
@@ -186,14 +186,15 @@ def check_in(request, pk):
                         'form': form, 'event': event, "can_administer": can_administer,
                     })
                 except:
-                    messages.error(request, "{0} {1} är redan incheckad".format(event_user.first_name.capitalize(),
-                                                                                event_user.last_name.capitalize()))
+                    messages.error(request, "{0} {1} är redan incheckad".format(
+                        event_user.first_name.capitalize(), event_user.last_name.capitalize()))
 
             else:
                 if event_user in event.reserves:
-                    messages.error(request,
-                                   "Användaren {0} {1} är anmäld som reserv".format(event_user.first_name.capitalize(),
-                                                                                    event_user.last_name.capitalize()))
+                    messages.error(
+                        request,
+                        "Användaren {0} {1} är anmäld som reserv".format(
+                            event_user.first_name.capitalize(), event_user.last_name.capitalize()))
                 else:
                     messages.error(request, "Användare {0} {1} är inte anmäld på eventet".format(
                         event_user.first_name.capitalize(), event_user.last_name.capitalize()))
@@ -298,8 +299,8 @@ def event_calender(request):
 
 def event_calender_view(request):
     events = Event.objects.published().order_by('start')
-    return render(request, "events/calendar_view.html",
-                          {'events': events})
+    return render(request, "events/calendar_view.html", {'events': events})
+
 
 @login_required()
 def registered_on_events(request):
@@ -326,7 +327,7 @@ def events_by_user(request):
 
 
 @login_required()
-def create_or_modify_event(request, pk=None):
+def create_or_modify_event(request, pk=None):  # TODO: Reduce complexity
     if pk:  # if pk is set we modify an existing event.
         duplicates = Event.objects.filter(replacing_id=pk)
         if duplicates:
@@ -388,7 +389,7 @@ def file_download(request, pk):
 
 
 @login_required()
-def speaker_list(request, pk):
+def speaker_list(request, pk):  # TODO: Reduce complexity
     if request.method == 'POST':
         try:
             event = Event.objects.get(pk=pk)

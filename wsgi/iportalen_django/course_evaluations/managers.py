@@ -1,6 +1,4 @@
 from django.utils import timezone
-
-__author__ = 'jonathan'
 from django.db import models, transaction
 
 

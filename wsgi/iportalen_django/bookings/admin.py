@@ -1,6 +1,15 @@
 from django.contrib import admin
-from .models import Bookable, Booking, BookingSlot, VariableCostAmount, Invoice, \
-    VariableCostTemplate, FixedCostTemplate, PartialBooking, FixedCostAmount
+from .models import (
+    Bookable,
+    Booking,
+    BookingSlot,
+    VariableCostAmount,
+    Invoice,
+    VariableCostTemplate,
+    FixedCostTemplate,
+    PartialBooking,
+    FixedCostAmount
+)
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.urlresolvers import reverse
 from utils.admin import iportalen_admin_site
@@ -44,7 +53,8 @@ def _get_invoice_status_display(obj):
 
 class BookingsAdmin(admin.ModelAdmin):
 
-    def link_to_user(self, obj):
+    @staticmethod
+    def link_to_user(obj):
         return "<a href={url} target='_blank'>{name}, {phone}</a>".format(
             url=obj.user.get_absolute_url(), name=obj.user.get_full_name, phone=obj.user.phone)
     link_to_user.allow_tags = True
@@ -56,10 +66,10 @@ class BookingsAdmin(admin.ModelAdmin):
     list_display = ('user', 'link_to_user', 'bookable', 'start_time', _get_invoice_status_display,)
     readonly_fields = ('create_invoice_url', _get_invoice_status_display)
 
-    def create_invoice_url(self, obj):
+    @staticmethod
+    def create_invoice_url(obj):
         s = reverse("bookings:create custom invoice", args=[obj.pk])
         return "<a href=\"%s\">Skapa/Se befintlig</a>" % (s,)
-
 
     create_invoice_url.allow_tags = True
     create_invoice_url.short_description = "Länk till faktura"
@@ -86,9 +96,10 @@ class FixedCostInline(admin.TabularInline):
 
 class UserInvoiceAdmin(admin.ModelAdmin):
     readonly_fields = ('ocr', 'send_invoice_email')
-    #fields = ('status', 'due', 'booking')
+    # fields = ('status', 'due', 'booking')
 
-    def send_invoice_email(self, obj):
+    @staticmethod
+    def send_invoice_email(obj):
         try:
             s = reverse("bookings:send invoice email", args=[obj.pk])
             return "<a href=\"%s\">Skicka email till användare</a>" % (s,)

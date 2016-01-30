@@ -13,6 +13,4 @@ urlpatterns = [
     url(r'^admin/period/(?P<pk>[0-9]+)/evaluations/$', view=views.evaluations, name="evaluations"),
     url(r'^admin/courses/$', view=views.create_courses, name="create courses"),
     url(r'^admin/rewards/$', view=views.create_or_modify_rewards, name="edit rewards"),
-    #url(r'^admin/courses/edit$', view=views.create_or_modify_courses, name="edit course"),
-
     ]

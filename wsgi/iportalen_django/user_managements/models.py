@@ -103,7 +103,8 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(verbose_name='kön',
                               max_length=1, null=True, blank=True, choices=GENDER_OPTIONS, default=None)
     allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
-    start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=timezone.now().year, validators=[validate_year])
+    start_year = models.IntegerField(
+        verbose_name='startår', choices=YEAR_CHOICES, default=timezone.now().year, validators=[validate_year])
     current_year = models.CharField(verbose_name='nuvarande årskurs',
                                     max_length=1,
                                     choices=STUDY_YEARS,
@@ -184,4 +185,8 @@ class IpikureSubscriber(models.Model):
         permissions = (('can_view_subscribers', 'Can view subscribers'),)
 
     def __str__(self):
-        return "{user}: {year}-{month}-{day}".format(user=self.user.username, year=self.date_subscribed.year, month=self.date_subscribed.month, day=self.date_subscribed.day)
+        return "{user}: {year}-{month}-{day}".format(
+            user=self.user.username,
+            year=self.date_subscribed.year,
+            month=self.date_subscribed.month,
+            day=self.date_subscribed.day)

@@ -1,6 +1,5 @@
 from django.conf.urls import url
 from django.contrib.auth.views import password_change, password_change_done
-from django.views.generic import TemplateView
 from .views import (
     logout_view,
     login,
@@ -48,7 +47,7 @@ urlpatterns = [
 
     url(r'^password_change/$', password_change, {"template_name": 'user_managements/change_pw.html'},
         name="password_change"),
-    url(r'^password_change/done$', password_change_done, {"template_name":'user_managements/change_pw_done.html'},
+    url(r'^password_change/done$', password_change_done, {"template_name": 'user_managements/change_pw_done.html'},
         name="password_change_done"),
     url(r'^admin$', admin_menu, name="user content"),
     url(r'^subscribe_to_ipikure$', view=subscribe_to_ipikure,

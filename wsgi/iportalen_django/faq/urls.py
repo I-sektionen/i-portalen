@@ -1,6 +1,5 @@
 from django.conf.urls import url
 from . import views as faq_views
-from django.contrib.auth.decorators import permission_required
 
 urlpatterns = [
    url(r'^$',

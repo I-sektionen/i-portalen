@@ -18,6 +18,7 @@ def get_tags(user):
     tags = list(chain(free_tags, user_tags))
     return tags
 
+
 @register.assignment_tag
 def get_menu_choices_tag(user):
     menu_choices = []
