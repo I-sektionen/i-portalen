@@ -1,0 +1,10 @@
+{% extends "master.html" %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+<br>
+    <input type="submit" class="action-button" value="Bekräfta">
+</form>
+{% endblock %}

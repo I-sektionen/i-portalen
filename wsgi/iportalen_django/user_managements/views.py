@@ -363,7 +363,7 @@ def update_list_of_users_from_kobra(request):  # TODO: Reduce complexity
 def subscribe_to_ipikure(request):
     if not (request.user.address and request.user.zip_code and request.user.city):
         messages.error(request, "Du måste ange din adress för att kunna prenumerera på ipikuré")
-        return redirect(reverse("my page"))
+        return redirect(reverse("user_management:my page"))
     try:
         subscriber = IpikureSubscriber.objects.get(user=request.user)
         subscriber.date_subscribed = timezone.now()
@@ -372,7 +372,7 @@ def subscribe_to_ipikure(request):
     except IpikureSubscriber.DoesNotExist:
         IpikureSubscriber.objects.create(user=request.user)
         messages.info(request, "Du prenumererar nu på Ipikuré")
-    return redirect(reverse("my page"))
+    return redirect(reverse("user_management:my page"))
 
 
 @login_required()
