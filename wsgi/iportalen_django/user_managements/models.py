@@ -158,7 +158,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def update_from_kobra_url(self):
-        return reverse("update user from kobra", kwargs={'liu_id': self.username})
+        return reverse("user_management:update user from kobra", kwargs={'liu_id': self.username})
 
     class Meta:
         verbose_name = "användare"

@@ -14,7 +14,7 @@ att använda Q.
 {% endblock %}
 {% block content %}
     <div id="user-search">
-        <form action="{% url "filter users" %}" method="post">
+        <form action="{% url "user_management:filter users" %}" method="post">
             {% csrf_token %}
             {{ form }}
         <button type="submit">Sök</button>

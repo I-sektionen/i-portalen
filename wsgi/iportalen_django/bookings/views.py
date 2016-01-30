@@ -154,8 +154,8 @@ def make_booking(request, bookable_id, weeks_forward=0):  # TODO: Reduce complex
 
 
 @login_required()
-def remove_booking(request, bookable_id):
-    booking = get_object_or_404(Booking, pk=bookable_id)
+def remove_booking(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id)
     if request.user.pk == booking.user.pk:
         booking.delete()
     return redirect("bookings:my bookings")
