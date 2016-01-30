@@ -69,7 +69,7 @@ class BookingsAdmin(admin.ModelAdmin):
     @staticmethod
     def create_invoice_url(obj):
         s = reverse("bookings:create custom invoice", args=[obj.pk])
-        return "<a href=\"%s\">Skapa/Se befintlig</a>" % (s,)
+        return "<a href=\"{url}\">Skapa/Se befintlig</a>".format(url=s)
 
     create_invoice_url.allow_tags = True
     create_invoice_url.short_description = "Länk till faktura"

@@ -1,5 +1,6 @@
 import os
 from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
 from django.db import models, transaction
 from django.conf import settings
 from django.utils import timezone
@@ -143,7 +144,7 @@ class Event(models.Model):
 
     def get_absolute_url(self):
         """Get url of object"""
-        return "/event/%i/" % self.id
+        return reverse('event:event', kwargs={'pk': self.pk})
 
     ###########################################################################
     # Properties reachable in template

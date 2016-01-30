@@ -143,15 +143,13 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
     def get_absolute_url(self):
         """Get url of object"""
-        return "/user/%s/" % self.username
+        return reverse('user_management:profile page', kwargs={'liu_id': self.username})
 
     def get_short_name(self):
         return self.username
 
     def _get_email(self):
         return self.username + "@student.liu.se"
-
-    # email = property(_get_email)
 
     def __str__(self):
         return self.username

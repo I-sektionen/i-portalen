@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.http import urlquote
 from django.contrib.auth.models import Group
@@ -73,7 +74,8 @@ class Organisation(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return "/organisations/{:}/".format(urlquote(self.name))
+
+        return reverse('organisations:organisation', kwargs={'organisation_name': urlquote(self.name)})
 
     def can_edit(self, user):
         if user == self.leader:

@@ -261,7 +261,7 @@ def create_invoice(request, booking_pk):
 @permission_required('bookings.manage_bookings')
 def send_invoice_email(request, invoice_pk):
     i = get_object_or_404(Invoice, pk=invoice_pk)
-    subject = "Faktura för %s" % (i.booking.bookable, )
+    subject = "Faktura för {name}".format(name=i.booking.bookable, )
     msg = "En ny faktura finns nu tillgänglig åt dig på i-portalen.se." \
           " Du behöver logga in på ditt konto för att ta del av fakturan," \
           " klicka på bokningar upp till höger för att se dina fakturor."

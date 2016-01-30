@@ -1,4 +1,5 @@
 from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
 from django.db import models, transaction
 from django.utils import timezone
 from django.conf import settings
@@ -113,7 +114,7 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         """Get url of object"""
-        return "/article/%i/" % self.id
+        return reverse('article:article', kwargs={'pk': self.pk})
 
     ###########################################################################
     # Properties reachable in template
