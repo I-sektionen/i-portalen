@@ -37,7 +37,8 @@ class CustomGroup(GroupAdmin):
 
 
 class IUserAdmin(UserAdmin):
-    def show_kobra_url(self, obj):
+    @staticmethod
+    def show_kobra_url(obj):
         return '<a href="{:}" target="_blank">Uppdatera från kobra</a>'.format(obj.update_from_kobra_url)
 
     show_kobra_url.allow_tags = True

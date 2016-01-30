@@ -98,7 +98,7 @@ class Invoice(models.Model):
             return [int(d) for d in str(n)]
 
         def check_sum(s):
-            digits = digits_of(num)
+            digits = digits_of(s)
             odd_digits = digits[-1::-2]
             even_digits = digits[-2::-2]
 
