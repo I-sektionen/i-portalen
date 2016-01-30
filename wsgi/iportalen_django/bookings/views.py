@@ -10,6 +10,7 @@ from bookings.exceptions import NoSlots, InvalidInput, MaxLength, MultipleBookin
 from utils.time import first_day_of_week, daterange, combine_date_and_time
 from .models import Booking, Bookable, Invoice, BookingSlot, PartialBooking, FixedCostAmount, VariableCostAmount
 from .forms import BookingForm
+from django.utils.translation import ugettext as _
 
 
 @login_required()
@@ -100,14 +101,16 @@ def make_booking(request, bookable_id, weeks_forward=0):  # TODO: Reduce complex
     if bookable.max_number_of_bookings <= nr_of_active_bookings:
         messages.warning(
             request,
-            "".join(["Du har nu bokat {:} det maximala antalet gånger i rad som du får.",
-                     " Avboka eller vänta tills din bokning är över för att göra flera."]).format(bookable.name))
+            "".join([_("Du har nu bokat"),
+                     " {:} ",
+                     _("det maximala antalet gånger i rad som du får."),
+                     _(" Avboka eller vänta tills din bokning är över för att göra flera.")]).format(bookable.name))
 
     if request.method == "POST":
         if form.is_valid():
             if bookable.require_phone and not request.user.phone:
-                messages.error(request, "Du måste ange ditt telefonnummer för att kunna göra en bokning."
-                                        " Klicka på \"konto\" för att ange detta i din profil.")
+                messages.error(request, _("Du måste ange ditt telefonnummer för att kunna göra en bokning."
+                                          " Klicka på \"konto\" för att ange detta i din profil."))
                 return render(request, "bookings/book.html", {
                     "form": form,
                     "bookable_id": bookable_id,
@@ -130,14 +133,14 @@ def make_booking(request, bookable_id, weeks_forward=0):  # TODO: Reduce complex
                                                start_slot=start_slot,
                                                end_slot=end_slot,
                                                user=request.user)
-                messages.success(request, "Du har bokat {bookable}.".format(bookable=bookable))
+                messages.success(request, "".join([_("Du har bokat")," {bookable}."]).format(bookable=bookable))
                 return redirect("bookings:make booking", bookable_id=bookable_id)
             except NoSlots as e:
                 messages.error(request, e.reason)
             except InvalidInput as e:
                 messages.error(request, e.reason)
             except ValidationError:
-                messages.error(request, "There exist already booked slots within your booking.")
+                messages.error(request, _("There exist already booked slots within your booking."))
             except MaxLength as e:
                 messages.error(request, e.reason)
             except MultipleBookings as e:
@@ -261,15 +264,16 @@ def create_invoice(request, booking_pk):
 @permission_required('bookings.manage_bookings')
 def send_invoice_email(request, invoice_pk):
     i = get_object_or_404(Invoice, pk=invoice_pk)
-    subject = "Faktura för {name}".format(name=i.booking.bookable, )
-    msg = "En ny faktura finns nu tillgänglig åt dig på i-portalen.se." \
-          " Du behöver logga in på ditt konto för att ta del av fakturan," \
-          " klicka på bokningar upp till höger för att se dina fakturor."
+    subject = "".join([_("Faktura för"), " {name}"]).format(name=i.booking.bookable, )
+    msg = _("En ny faktura finns nu tillgänglig åt dig på i-portalen.se."
+            " Du behöver logga in på ditt konto för att ta del av fakturan,"
+            " klicka på bokningar upp till höger för att se dina fakturor.")
     frm = "bokning@i-portalen.se"  # Todo: Is this reasonable?
     to = i.booking.user.email
     send_mail(subject, msg, frm, [to])
     if i.status == Invoice.CREATED:
         i.status = Invoice.SENT
         i.save()
-    messages.success(request, "Ett email har skickats till användaren om fakturan, denna faktura har markerats som skickad.")
+    messages.success(request, _("Ett email har skickats till användaren om fakturan, "
+                                "denna faktura har markerats som skickad."))
     return redirect(reverse("admin:bookings_invoice_change", args=[i.pk]))

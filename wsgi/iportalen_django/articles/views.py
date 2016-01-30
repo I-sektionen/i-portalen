@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db import transaction
+from django.utils.translation import ugettext as _
 from .models import Article
 from .forms import ArticleForm, RejectionForm
 from tags.models import Tag
@@ -20,8 +21,10 @@ def create_or_modify_article(request, pk=None):  # TODO: Reduce complexity
                 links += "<a href='{0}'>{1}</a><br>".format(d.get_absolute_url(), d.headline)
             messages.error(
                 request,
-                "Det finns redan en ändrad version av det här arrangemanget! Är du säker på att du vill ändra den här?"
-                "<br>Följande ändringar är redan föreslagna: <br> {:}".format(links),
+                "".join([_("Det finns redan en ändrad version av det här arrangemanget!"
+                           " Är du säker på att du vill ändra den här?"
+                           "<br>Följande ändringar är redan föreslagna:"),
+                         " <br> {:}"]).format(links),
                 extra_tags='safe')
         article = get_object_or_404(Article, pk=pk)
         if not article.can_administer(request.user):
@@ -49,12 +52,12 @@ def create_or_modify_article(request, pk=None):  # TODO: Reduce complexity
             article.save()
             form.save_m2m()
             if article.status == Article.DRAFT:
-                messages.success(request, "Dina ändringar har sparats i ett utkast.")
+                messages.success(request, _("Dina ändringar har sparats i ett utkast."))
             elif article.status == Article.BEING_REVIEWED:
-                messages.success(request, "Dina ändringar har skickats för granskning.")
+                messages.success(request, _("Dina ändringar har skickats för granskning."))
             return redirect('articles:by user')
         else:
-            messages.error(request, "Det uppstod ett fel, se detaljer nedan.")
+            messages.error(request, _("Det uppstod ett fel, se detaljer nedan."))
             return render(request, 'articles/article_form.html', {
                 'form': form,
             })
@@ -103,7 +106,7 @@ def unapprove_article(request, pk):
     if request.method == 'POST':
         if form.is_valid():
             if article.reject(request.user, form.cleaned_data['rejection_message']):
-                messages.success(request, "Artikeln har avslagits.")
+                messages.success(request, _("Artikeln har avslagits."))
                 return redirect('articles:unapproved')
             else:
                 raise PermissionDenied

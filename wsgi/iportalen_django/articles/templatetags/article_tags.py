@@ -3,7 +3,7 @@ from django.utils import timezone
 from articles.models import Article
 from organisations.models import Organisation
 from django import template
-
+from django.utils.translation import ugettext as _
 register = template.Library()
 
 
@@ -21,8 +21,8 @@ def get_organisation_articles(organisation_pk):
 def get_menu_choices_article(user):
     menu_choices = []
     if user.article_set.filter(visible_to__gte=timezone.now()):
-        menu_choices.append(('Mina Artiklar', reverse('articles:by user')))
-    menu_choices.append(('Skapa en artikel', reverse('articles:create')))
+        menu_choices.append((_("Mina Artiklar"), reverse('articles:by user')))
+    menu_choices.append((_("Skapa en artikel"), reverse('articles:create')))
     if user.has_perm("articles.can_approve_article"):
-        menu_choices.append(('Godkänn Artiklar', reverse('articles:unapproved')))  # With perm to edit articles.
+        menu_choices.append((_("Godkänn Artiklar"), reverse('articles:unapproved')))  # With perm to edit articles.
     return menu_choices
