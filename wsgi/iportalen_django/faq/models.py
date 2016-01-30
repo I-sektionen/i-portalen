@@ -49,7 +49,7 @@ class Topic(models.Model):
             potential = base = slugify(self.name[:90])
             while not self.slug:
                 if suffix:
-                    potential = "%s-%s" % (base, suffix)
+                    potential = "{base}-{suffix}".format(base=base, suffix=suffix)
                 if not Topic.objects.filter(slug=potential).exists():
                     self.slug = potential
                 # We hit a conflicting slug; increment the suffix and try again.
@@ -122,7 +122,7 @@ class Question(models.Model):
             potential = base = slugify(self.text[:90])
             while not self.slug:
                 if suffix:
-                    potential = "%s-%s" % (base, suffix)
+                    potential = "{base}-{suffix}".format(base=base, suffix=suffix)
                 if not Question.objects.filter(slug=potential).exists():
                     self.slug = potential
                 # We hit a conflicting slug; increment the suffix and try again.
