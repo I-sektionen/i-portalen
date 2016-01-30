@@ -6,6 +6,7 @@ from django.http import HttpResponseForbidden
 from django.forms import modelformset_factory
 from .models import Organisation, OrganisationPost
 from .forms import OrganisationForm, AddOrganisationForm
+from django.utils.translation import ugettext as _
 
 
 def organisation(request, organisation_name):
@@ -96,7 +97,8 @@ def add_organisation(request):
         form = AddOrganisationForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.info(request, "Organisationen: {:} har skapats".format(form.cleaned_data['name']))
+            messages.info(request, "".join([_("Organisationen:"), " {:} ", _("har skapats")]).format(
+                form.cleaned_data['name']))
             form = AddOrganisationForm()
     else:
         form = AddOrganisationForm()

@@ -12,6 +12,7 @@ from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm, Rejecti
 from .models import Event, EntryAsPreRegistered, EntryAsReserve
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
+from django.utils.translation import ugettext as _
 
 
 def view_event(request, pk):
@@ -28,10 +29,10 @@ def register_to_event(request, pk):
         event = get_object_or_404(Event, pk=pk)
         try:
             event.register_user(request.user)
-            messages.success(request, "Du är nu registrerad på eventet.")
+            messages.success(request, _("Du är nu registrerad på eventet."))
         except CouldNotRegisterException as err:
             messages.error(request,
-                           "Fel, kunde inte registrera dig på " + err.event.headline + " för att " + err.reason + ".")
+                           _("Fel, kunde inte registrera dig på ") + err.event.headline + _(" för att ") + err.reason + ".")
     return redirect("events:event", pk=pk)
 
 
@@ -51,13 +52,17 @@ def import_registrations(request, pk):
                 except CouldNotRegisterException as err:
                     messages.error(
                         request,
-                        "Fel, kunde inte registrera {0} på ".format(liu_id) +
-                        err.event.headline +
-                        " för att " +
-                        err.reason +
-                        ".")
+                        "".join([_("Fel, kunde inte registrera"),
+                                 " {liu_id} ",
+                                 _("på"),
+                                 " {hedline} ",
+                                 _("för att"),
+                                 " {reason}."]).format(
+                            liu_id=liu_id,
+                            hedline=err.event.headline,
+                            reason=err.reason))
                 except ObjectDoesNotExist:
-                    messages.error(request, "{0} finns inte i databasen".format(liu_id))
+                    messages.error(request, "".join(["{liu_id} ", _("finns inte i databasen.")]).format(liu_id))
     else:
         form = ImportEntriesForm()
     return render(request, "events/import_users.html", {'form': form})
@@ -69,7 +74,7 @@ def register_as_reserve(request, pk):
         event = get_object_or_404(Event, pk=pk)
         entry = event.register_reserve(request.user)
         messages.success(request,
-                         "Du är nu anmäld som reserv på eventet, du har plats nr. " + str(entry.position()) + ".")
+                         _("Du är nu anmäld som reserv på eventet, du har plats nr. ") + str(entry.position()) + ".")
     return redirect("events:event", pk=pk)
 
 
@@ -150,7 +155,7 @@ def check_in(request, pk):  # TODO: Reduce complexity
                 else:
                     event_user = IUser.objects.get(rfid_number=form_user)
             except ObjectDoesNotExist:
-                messages.error(request, "Användaren finns inte i databasen")
+                messages.error(request, _("Användaren finns inte i databasen"))
                 form = CheckForm()
                 return render(request, 'events/event_check_in.html', {
                     'form': form, 'event': event, "can_administer": can_administer,
@@ -164,13 +169,15 @@ def check_in(request, pk):  # TODO: Reduce complexity
                         except:
                             extra = False
                         if extra:
-                            extra_str = "<br>Anmälde sig i tid för att " + event.extra_deadline_text + "."
+                            extra_str = _("<br>Anmälde sig i tid för att ") + event.extra_deadline_text + "."
                         else:
-                            extra_str = "<br><span class='errorlist'>Anmälde sig ej i tid för att " + \
+                            extra_str = _("<br><span class='errorlist'>Anmälde sig ej i tid för att ") + \
                                         event.extra_deadline_text + ".</span>"
                     else:
                         extra_str = ""
-                    messages.success(request, "{0} {1} checkades in med talarnummer: {2}{3}".format(
+                    messages.success(request, "".join(["{0} {1} ",
+                                                       _("checkades in med talarnummer:"),
+                                                       " {2}{3}"]).format(
                         event_user.first_name.capitalize(),
                         event_user.last_name.capitalize(),
                         event.entryasparticipant_set.get(user=event_user).speech_nr,
@@ -181,17 +188,17 @@ def check_in(request, pk):  # TODO: Reduce complexity
                         'form': form, 'event': event, "can_administer": can_administer,
                     })
                 except:
-                    messages.error(request, "{0} {1} är redan incheckad".format(
+                    messages.error(request, "".join(["{0} {1} ",_("är redan incheckad")]).format(
                         event_user.first_name.capitalize(), event_user.last_name.capitalize()))
 
             else:
                 if event_user in event.reserves:
                     messages.error(
                         request,
-                        "Användaren {0} {1} är anmäld som reserv".format(
+                        "".join(["{0} {1} ", _("är anmäld som reserv")]).format(
                             event_user.first_name.capitalize(), event_user.last_name.capitalize()))
                 else:
-                    messages.error(request, "Användare {0} {1} är inte anmäld på eventet".format(
+                    messages.error(request, "".join(["{0} {1} ", _("är inte anmäld på eventet")]).format(
                         event_user.first_name.capitalize(), event_user.last_name.capitalize()))
                 reserve = True
                 return render(request, 'events/event_check_in.html',
@@ -234,7 +241,7 @@ def unapprove_event(request, pk):
     if request.method == 'POST':
         if form.is_valid():
             if event.reject(request.user, form.cleaned_data['rejection_message']):
-                messages.success(request, "Eventet har avslagits.")
+                messages.success(request, _("Eventet har avslagits."))
                 return redirect('events:unapproved')
             else:
                 raise PermissionDenied
@@ -281,10 +288,14 @@ def unregister(request, pk):
         event = get_object_or_404(Event, pk=pk)
         try:
             event.deregister_user(request.user)
-            messages.success(request, "Du är nu avregistrerad på eventet.")
+            messages.success(request, _("Du är nu avregistrerad på eventet."))
         except CouldNotRegisterException as err:
             messages.error(request,
-                           "Fel, kunde inte avregistrera dig på " + err.event.headline + " för att " + err.reason + ".")
+                           "".join([_("Fel, kunde inte avregistrera dig på "),
+                                    err.event.headline,
+                                    _(" för att "),
+                                    err.reason,
+                                    "."]))
     return redirect("events:event", pk=pk)
 
 
@@ -330,9 +341,10 @@ def create_or_modify_event(request, pk=None):  # TODO: Reduce complexity
             for d in duplicates:
                 links += "<a href='{0}'>{1}</a><br>".format(d.get_absolute_url(), d.headline)
             messages.error(request,
-                           "Det finns redan en ändrad version av det här arrangemanget! "
-                           "Är du säker på att du vill ändra den här?<br>"
-                           "Följande ändringar är redan föreslagna: <br> {:}".format(links),
+                           "".join([_("Det finns redan en ändrad version av det här arrangemanget! "
+                                      "Är du säker på att du vill ändra den här?<br>"
+                                      "Följande ändringar är redan föreslagna: <br> "),
+                                    "{:}"]).format(links),
                            extra_tags='safe')
         event = get_object_or_404(Event, pk=pk)
         if not event.can_administer(request.user):
@@ -360,12 +372,12 @@ def create_or_modify_event(request, pk=None):  # TODO: Reduce complexity
             event.save()
             form.save_m2m()
             if event.status == Event.DRAFT:
-                messages.success(request, "Dina ändringar har sparats i ett utkast.")
+                messages.success(request, _("Dina ändringar har sparats i ett utkast."))
             elif event.status == Event.BEING_REVIEWED:
-                messages.success(request, "Dina ändringar har skickats för granskning.")
+                messages.success(request, _("Dina ändringar har skickats för granskning."))
             return redirect('events:by user')
         else:
-            messages.error(request, "Det uppstod ett fel, se detaljer nedan.")
+            messages.error(request, _("Det uppstod ett fel, se detaljer nedan."))
             return render(request, 'events/create_event.html', {
                 'form': form,
             })
@@ -391,7 +403,7 @@ def speaker_list(request, pk):  # TODO: Reduce complexity
             if not event.can_administer(request.user):
                 return HttpResponseForbidden()
         except:
-            return JsonResponse({"status": "Inget event med detta idnummer."})
+            return JsonResponse({"status": _("Inget event med detta idnummer.")})
         form = SpeakerForm(request.POST)
         if form.is_valid():
             if form.cleaned_data['method'] == "add":
@@ -400,7 +412,7 @@ def speaker_list(request, pk):  # TODO: Reduce complexity
                     event.add_speaker_to_queue(speech_nr)
                     return JsonResponse({'status': 'ok'})
                 except:
-                    return JsonResponse({"status": "Ingen användare med det talarnummret."})
+                    return JsonResponse({"status": _("Ingen användare med det talarnummret.")})
             elif form.cleaned_data['method'] == "pop":
                 event.remove_first_speaker_from_queue()
                 return JsonResponse({'status': 'ok'})
@@ -410,14 +422,14 @@ def speaker_list(request, pk):  # TODO: Reduce complexity
                     event.remove_speaker_from_queue(speech_nr)
                     return JsonResponse({'status': 'ok'})
                 except:
-                    return JsonResponse({"status": "Ingen användare med det talarnummret."})
+                    return JsonResponse({"status": _("Ingen användare med det talarnummret.")})
             elif form.cleaned_data['method'] == "clear":
                 event.clear_speaker_queue()
                 return JsonResponse({'status': 'ok'})
             elif form.cleaned_data['method'] == "all":
                 return JsonResponse({"status": "ok", "speaker_list": event.get_speaker_queue()})
             else:
-                return JsonResponse({"status": "Ange ett korrekt kommando."})
+                return JsonResponse({"status": _("Ange ett korrekt kommando.")})
     else:
         return JsonResponse({})
 

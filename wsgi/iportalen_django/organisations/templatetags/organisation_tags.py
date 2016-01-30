@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.template.loader_tags import register
 from organisations.models import Organisation
+from django.utils.translation import ugettext as _
 
 
 @register.assignment_tag
@@ -40,6 +41,6 @@ def get_menu_choices_organisation(user):
     menu_choices = []
 
     if user.has_perm("organisations.add_organisation"):
-        menu_choices.append(("Lägg till en organisation", reverse('organisations:create')))
+        menu_choices.append((_("Lägg till en organisation"), reverse('organisations:create')))
 
     return menu_choices

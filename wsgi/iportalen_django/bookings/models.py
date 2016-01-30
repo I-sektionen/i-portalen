@@ -4,6 +4,8 @@ from django.conf import settings
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from utils.time import has_passed, combine_date_and_time, now_plus_one_month
+from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 
 
 class Bookable(models.Model):
@@ -21,8 +23,8 @@ class Bookable(models.Model):
         return reverse('bookings:make booking', args=[str(self.pk)])
 
     class Meta:
-        verbose_name = 'bokningsbart objekt'
-        verbose_name_plural = 'bokningsbara objekt'
+        verbose_name = _("bokningsbart objekt")
+        verbose_name_plural = _("bokningsbara objekt")
 
 
 class BookingSlot(models.Model):
@@ -32,7 +34,7 @@ class BookingSlot(models.Model):
 
     def clean(self):
         if self.start_time >= self.end_time:
-            raise ValidationError('End time must be set after start time.')
+            raise ValidationError(_("End time must be set after start time."))
 
         # Create: Should just check if it fulfills all criterias.
         # Update: Should check same things, but find out which element being updated.
@@ -45,19 +47,19 @@ class BookingSlot(models.Model):
             if self.start_time < slot.start_time:  # Före
                 if self.end_time > slot.start_time:
                     raise ValidationError(
-                        'The timeslots are end- and start times are invalid. They are overlapping. Före')
+                        _("The timeslots are end- and start times are invalid. They are overlapping. Före"))
             else:  # Efter
                 if self.start_time < slot.end_time:
                     raise ValidationError(
-                        "The timeslots are end- and start times are invalid. They are overlapping. Efter")
+                        _("The timeslots are end- and start times are invalid. They are overlapping. Efter"))
         super(BookingSlot, self).clean()
 
     def __str__(self):
         return str(self.start_time) + " - " + str(self.end_time) + " (" + self.bookable.name + ")"
 
     class Meta:
-        verbose_name = 'bokningsblock'
-        verbose_name_plural = 'bokningsblock'
+        verbose_name = _("bokningsblock")
+        verbose_name_plural = _("bokningsblock")
 
 
 class PartialBooking(models.Model):
@@ -67,8 +69,8 @@ class PartialBooking(models.Model):
 
     class Meta:
         unique_together = (('slot', 'date'),)  # Make sure only one booking on one data and timeslot.
-        verbose_name = 'delbokning'
-        verbose_name_plural = 'delbokninar'
+        verbose_name = _("delbokning")
+        verbose_name_plural = _("delbokninar")
 
 
 class Invoice(models.Model):
@@ -78,20 +80,20 @@ class Invoice(models.Model):
     TERMINATED = 'TR'
     PAYED = 'PA'
     INVOICE_STATUSES = (
-        (CREATED, 'Skapad'),
-        (SENT, 'Skickad'),
-        (TERMINATED, 'Avbruten'),
-        (PAYED, 'Betald')
+        (CREATED, _("Skapad")),
+        (SENT, _("Skickad")),
+        (TERMINATED, _("Avbruten")),
+        (PAYED, _("Betald"))
     )
     status = models.CharField(max_length=2,
                               choices=INVOICE_STATUSES,
                               default=CREATED)
 
-    due = models.DateField(default=now_plus_one_month, verbose_name='förfallo dag')
+    due = models.DateField(default=now_plus_one_month, verbose_name=_("förfallo dag"))
 
-    booking = models.ForeignKey("Booking", verbose_name='bokning')
-    ocr = models.CharField(max_length=11, verbose_name="OCR nummer", null=True, blank=True)
-    issuing_date = models.DateField(auto_now_add=True, null=True, blank=False, verbose_name='fakturerings datum')
+    booking = models.ForeignKey("Booking", verbose_name=_("bokning"))
+    ocr = models.CharField(max_length=11, verbose_name=_("OCR nummer"), null=True, blank=True)
+    issuing_date = models.DateField(auto_now_add=True, null=True, blank=False, verbose_name=_("fakturerings datum"))
 
     def _calculate_ocr(self):
         def digits_of(n):
@@ -128,11 +130,11 @@ class Invoice(models.Model):
             self._calculate_ocr()
 
     class Meta:
-        verbose_name = 'faktura'
-        verbose_name_plural = 'fakturor'
+        verbose_name = _("faktura")
+        verbose_name_plural = _("fakturor")
 
     def __str__(self):
-        return 'Faktura'
+        return ugettext("Faktura")
 
     def get_absolute_url(self):
         return reverse('bookings:invoice view', kwargs={'invoice_id': self.pk})
@@ -150,16 +152,16 @@ class Invoice(models.Model):
 
 
 class FixedCostTemplate(models.Model):
-    title = models.CharField(max_length=400, verbose_name='namn')
-    tax = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, verbose_name='momssats')
-    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='belopp ink moms')
+    title = models.CharField(max_length=400, verbose_name=_("namn"))
+    tax = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, verbose_name=_("momssats"))
+    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("belopp ink moms"))
 
     def __str__(self):
         return self.title
 
     class Meta:
-        verbose_name = 'mall'
-        verbose_name_plural = 'mallar för fasta kostnader'
+        verbose_name = _("mall")
+        verbose_name_plural = _("mallar för fasta kostnader")
 
 
 class FixedCostAmount(models.Model):
@@ -187,14 +189,14 @@ class VariableCostTemplate(models.Model):
     title = models.CharField(max_length=400)
     price = models.DecimalField(max_digits=9, decimal_places=2)
     tax = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
-    unit_name = models.CharField(max_length=30, default="st")
+    unit_name = models.CharField(max_length=30, default=_("st"))
 
     def __str__(self):
         return self.title
 
     class Meta:
-        verbose_name = 'mall'
-        verbose_name_plural = 'mallar för rörliga kostnader'
+        verbose_name = _("mall")
+        verbose_name_plural = _("mallar för rörliga kostnader")
 
 
 class VariableCostAmount(models.Model):
@@ -231,21 +233,24 @@ from .managers import BookingManager  # TODO: Look for better solution
 
 
 class Booking(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="bokad av")
-    bookable = models.ForeignKey(Bookable, verbose_name='boknings objekt')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("bokad av"))
+    bookable = models.ForeignKey(Bookable, verbose_name=_("boknings objekt"))
 
     objects = BookingManager()
 
     class Meta:
         permissions = (("unlimited_num_of_bookings", "Unlimited number of bookings"),
                        ("manage_bookings", "Manage bookings"))
-        verbose_name = 'bokning'
-        verbose_name_plural = 'bokningar'
+        verbose_name = _("bokning")
+        verbose_name_plural = _("bokningar")
 
     def __str__(self):
         td = self.get_time_of_booking()
-        return self.bookable.name + " bokad från: " + str(td["start"].strftime("%H:%M %d-%b")) + " till: " + \
-            str(td["end"].strftime("%H:%M %d-%b"))
+        return str("".join([self.bookable.name,
+                        ugettext(" bokad från: "),
+                        str(td["start"].strftime("%H:%M %d-%b")),
+                        ugettext(" till: "),
+                        str(td["end"].strftime("%H:%M %d-%b"))]))
 
     def _can_be_unbooked(self):
         time = self.get_time_of_booking()

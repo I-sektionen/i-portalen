@@ -1,11 +1,12 @@
 from django.template.loader_tags import register
+from django.utils.translation import ugettext as _
 
 
 @register.simple_tag()
 def print_event(event):
     def _descr(e):
         s1 = e.lead
-        s2 = " Eventet finns på: www.i-portalen.se" + e.get_absolute_url()
+        s2 = _(" Eventet finns på: www.i-portalen.se") + e.get_absolute_url()
         return s1 + s2
     t_format = "%Y%m%dT%H%M%S"  # Formating style used by the ics-file format.
 
@@ -23,6 +24,6 @@ def print_event(event):
         summary=event.headline,
         location=event.location,
         desc=_descr(event),
-        url="www.development.i-portalen.se" + event.get_absolute_url(),
+        url="www.i-portalen.se" + event.get_absolute_url(),
         uid="IPORTALEN_DJANGO_1337" + str(event.pk))  # Unique identifier
     return s

@@ -12,6 +12,7 @@ from .models import (
 )
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
 from utils.admin import iportalen_admin_site
 
 
@@ -46,9 +47,9 @@ def _get_invoice_status_display(obj):
         inv = Invoice.objects.get(booking=obj)
         return inv.get_status_display()
     except MultipleObjectsReturned:
-        return "Flera fakturor existerar"
+        return _("Flera fakturor existerar")
     except ObjectDoesNotExist:
-        return "Ej skapad."
+        return _("Ej skapad.")
 
 
 class BookingsAdmin(admin.ModelAdmin):
@@ -58,7 +59,7 @@ class BookingsAdmin(admin.ModelAdmin):
         return "<a href={url} target='_blank'>{name}, {phone}</a>".format(
             url=obj.user.get_absolute_url(), name=obj.user.get_full_name, phone=obj.user.phone)
     link_to_user.allow_tags = True
-    link_to_user.short_description = "Länk till användaren"
+    link_to_user.short_description = _("Länk till användaren")
 
     def has_add_permission(self, request):
         return False
@@ -69,12 +70,12 @@ class BookingsAdmin(admin.ModelAdmin):
     @staticmethod
     def create_invoice_url(obj):
         s = reverse("bookings:create custom invoice", args=[obj.pk])
-        return "<a href=\"{url}\">Skapa/Se befintlig</a>".format(url=s)
+        return "<a href=\"{url}\">{text}</a>".format(url=s, text=_("Skapa/Se befintlig"))
 
     create_invoice_url.allow_tags = True
-    create_invoice_url.short_description = "Länk till faktura"
+    create_invoice_url.short_description = _("Länk till faktura")
 
-    _get_invoice_status_display.short_description = "Status på faktura"
+    _get_invoice_status_display.short_description = _("Status på faktura")
 
     list_filter = ('bookable', )
     search_fields = ('user', )
@@ -102,10 +103,10 @@ class UserInvoiceAdmin(admin.ModelAdmin):
     def send_invoice_email(obj):
         try:
             s = reverse("bookings:send invoice email", args=[obj.pk])
-            return "<a href=\"%s\">Skicka email till användare</a>" % (s,)
+            return "<a href=\"{url}\">{text}</a>".format(url=s, text=_("Skicka email till användare"))
         except:
-            return "Ej tillgängligt"
-    send_invoice_email.short_description = "Skicka faktura"
+            return _("Ej tillgängligt")
+    send_invoice_email.short_description = _("Skicka faktura")
     send_invoice_email.allow_tags = True
 
     inlines = [

@@ -14,8 +14,8 @@ class FAQ(models.Model):
         Organisation,
         blank=True,
         default=None,
-        verbose_name='Ägare',
-        help_text="Organisation(er) som äger FAQ:n. Håll ner Ctrl för att markera flera.")
+        verbose_name=_('Ägare'),
+        help_text=_("Organisation(er) som äger FAQ:n. Håll ner Ctrl för att markera flera."))
 
     def __str__(self):
         return self.name

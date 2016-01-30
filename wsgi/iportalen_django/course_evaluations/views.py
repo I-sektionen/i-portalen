@@ -10,7 +10,7 @@ from course_evaluations.forms import EvaluationForm, PeriodForm, YearForm, Cours
 from .models import Period, Course, Evaluation, Reward, Year, CourseEvaluationSettings
 from utils.markdown import markdown_to_html
 from django.conf import settings as django_settings
-
+from django.utils.translation import ugettext as _
 
 @login_required
 def evaluate_course(request):
@@ -22,10 +22,10 @@ def evaluate_course(request):
     try:
         p = Period.objects.get(start_date__lte=timezone.now(), end_date__gte=timezone.now())
     except Period.DoesNotExist:
-        messages.error(request, "Ingen anmälan till kursutvärderingar är öppen!")
+        messages.error(request, _("Ingen anmälan till kursutvärderingar är öppen!"))
         return render(request, "course_evaluations/evaluate_course.html", {"form": None})
     except Period.MultipleObjectsReturned:
-        messages.error(request, "Flera utvärderingsperioder är aktiva samtidigt!")
+        messages.error(request, _("Flera utvärderingsperioder är aktiva samtidigt!"))
         return render(request, "course_evaluations/evaluate_course.html", {"form": None})
 
     rewards = Reward.objects.all()
@@ -39,17 +39,18 @@ def evaluate_course(request):
             try:
                 evaluation.full_clean()
             except ValidationError:
-                messages.error(request, "Valideringsfel! Detta beror förmodligen på att kursen du valt är redan har blivit tagen för utvärdering.")
+                messages.error(request, _("Valideringsfel! Detta beror förmodligen på att kursen "
+                                          "du valt är redan har blivit tagen för utvärdering."))
                 form = EvaluationForm(None, period=p)
                 return render(request, "course_evaluations/evaluate_course.html", {"form": form})
             evaluation.save()
-            subject = "Viktig information till dig som är utvärderingsansvarig!!"
+            subject = _("Viktig information till dig som är utvärderingsansvarig!!")
             body = markdown_to_html(settings.mail_to_evaluator).format(
                 user=request.user.first_name.capitalize(),
                 period=p.name,
                 year=p.get_year,
                 course=evaluation.course)
-            subject_org = "Viktig information till dig som är utvärderingsansvarig!!"
+            subject_org = _("Viktig information till dig som är utvärderingsansvarig!!")
             body_org = markdown_to_html(settings.mail_to_organisation).format(
                 user=request.user.get_full_name(),
                 user_email=request.user.email,
@@ -168,7 +169,7 @@ def create_year(request):
                 ht1.clean()
                 ht2.clean()
             except ValidationError:
-                form.add_error('vt1_start', 'VT1 överlappar med föregående år! var vänlig sätt ett annat datum!')
+                form.add_error('vt1_start', _("VT1 överlappar med föregående år! var vänlig sätt ett annat datum!"))
                 return render(request, "course_evaluations/admin/create_year.html", {"form": form})
             vt1.save()
             vt2.save()

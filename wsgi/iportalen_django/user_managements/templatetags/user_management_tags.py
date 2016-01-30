@@ -1,18 +1,18 @@
 from django.core.urlresolvers import reverse
 from django.template.loader_tags import register
-
+from django.utils.translation import ugettext as _
 
 @register.assignment_tag
 def get_menu_choices_user(user):
     menu_choices = []
 
     if user.has_perm("user_managements.add_iuser"):
-        menu_choices.append(("Lägg till Liu-idn i whitelist", reverse('user_management:add users to whitelist')))
+        menu_choices.append((_("Lägg till Liu-idn i whitelist"), reverse('user_management:add users to whitelist')))
 
     if user.has_perm('user_managements.can_view_users'):
-        menu_choices.append(('Alla användare', reverse('user_management:all users')))
+        menu_choices.append((_('Alla användare'), reverse('user_management:all users')))
 
     if user.has_perm('user_managements.can_view_subscribers'):
-        menu_choices.append(('Lista Ipikuréprenumeranter', reverse('user_management:ipikure_subscribers')))
+        menu_choices.append((_('Lista Ipikuréprenumeranter'), reverse('user_management:ipikure subscribers')))
 
     return menu_choices

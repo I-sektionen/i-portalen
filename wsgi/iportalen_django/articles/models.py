@@ -3,6 +3,8 @@ from django.core.urlresolvers import reverse
 from django.db import models, transaction
 from django.utils import timezone
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 import os
 from tags.models import Tag
 from utils.validators import less_than_160_characters_validator
@@ -17,29 +19,29 @@ class Article(models.Model):
     REJECTED = 'r'
     APPROVED = 'a'
     STATUSES = (
-        (DRAFT, 'utkast'),
-        (BEING_REVIEWED, 'väntar på godkännande'),
-        (REJECTED, 'Avslaget'),
-        (APPROVED, 'Godkännt')
+        (DRAFT, _("Utkast")),
+        (BEING_REVIEWED, _("väntar på godkännande")),
+        (REJECTED, _("Avslaget")),
+        (APPROVED, _("Godkännt"))
     )
     headline = models.CharField(
-        verbose_name='rubrik',
+        verbose_name=_("rubrik"),
         max_length=255,
-        help_text="Rubriken till artikeln")
+        help_text=_("Rubriken till artikeln"))
     lead = models.TextField(
-        verbose_name='ingress',
-        help_text="Ingressen är den text som syns i nyhetsflödet. Max 160 tecken.",
+        verbose_name=_("ingress"),
+        help_text=_("Ingressen är den text som syns i nyhetsflödet. Max 160 tecken."),
         validators=[less_than_160_characters_validator])
     body = models.TextField(
-        verbose_name='brödtext',
-        help_text="Brödtext syns när en artikel visas enskilt.")
+        verbose_name=_("brödtext"),
+        help_text=_("Brödtext syns när en artikel visas enskilt."))
     visible_from = models.DateTimeField(
-        verbose_name='publicering',
-        help_text="Publiceringsdatum",
+        verbose_name=_("publicering"),
+        help_text=_("Publiceringsdatum"),
         default=time.now)
     visible_to = models.DateTimeField(
-        verbose_name='avpublicering',
-        help_text="Avpubliceringsdatum",
+        verbose_name=_("avpublicering"),
+        help_text=_("Avpubliceringsdatum"),
         default=time.now_plus_one_month)
     status = models.CharField(
         max_length=1,
@@ -51,20 +53,20 @@ class Article(models.Model):
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        verbose_name='användare',
-        help_text="Användaren som skrivit texten",
+        verbose_name=_("användare"),
+        help_text=_("Användaren som skrivit texten"),
         null=True,
         on_delete=models.SET_NULL)
     tags = models.ManyToManyField(
         Tag,
-        verbose_name='tag',
+        verbose_name=_("tag"),
         blank=True,
-        help_text="Håll ner Ctrl för att markera flera.")
+        help_text=_("Håll ner Ctrl för att markera flera."))
 
     attachment = models.FileField(
-        verbose_name='Bifogad fil',
-        help_text="Bifogad fil för artikel",
-        upload_to="article_attachments",
+        verbose_name=_("Bifogad fil"),
+        help_text=_("Bifogad fil för artikel"),
+        upload_to=_("article_attachments"),
         null=True,
         blank=True)
 
@@ -80,21 +82,21 @@ class Article(models.Model):
     organisations = models.ManyToManyField(
         Organisation,
         blank=True,
-        verbose_name='organisationer',
-        help_text="Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln."
-                  " Håll ner Ctrl för att markera flera.")
+        verbose_name=_("organisationer"),
+        help_text=_("Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln."
+                    " Håll ner Ctrl för att markera flera."))
     sponsored = models.BooleanField(
-        verbose_name='sponsrat',
+        verbose_name=_("sponsrat"),
         default=False,
-        help_text="Kryssa i om innehållet är sponsrat")
+        help_text=_("Kryssa i om innehållet är sponsrat"))
     objects = ArticleManager()  # Manager
 
     ###########################################################################
     # Meta data for model
     ###########################################################################
     class Meta:
-        verbose_name = "Artikel"
-        verbose_name_plural = "Artiklar"
+        verbose_name = _("Artikel")
+        verbose_name_plural = _("Artiklar")
         permissions = (('can_approve_article', 'Can approve article'),)
 
     ###########################################################################
@@ -114,7 +116,7 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         """Get url of object"""
-        return reverse('article:article', kwargs={'pk': self.pk})
+        return reverse('articles:article', kwargs={'pk': self.pk})
 
     ###########################################################################
     # Properties reachable in template
@@ -184,13 +186,16 @@ class Article(models.Model):
         if self.status == self.BEING_REVIEWED:
             if msg:
                 send_mail(
-                    "Din artikel har blivit avslagen.",
+                    ugettext("Din artikel har blivit avslagen."),
                     "",
                     settings.EMAIL_HOST_USER,
                     [self.user.email, ],
                     fail_silently=False,
-                    html_message="<p>Din artikel {head} har blivit avslagen med motiveringen:</p><p>{msg}".format(
-                        head=self.headline, msg=msg))
+                    html_message="".join(["<p>",
+                                          ugettext("Din artikel"),
+                                          " {head} ",
+                                          ugettext("har blivit avslagen med motiveringen:"),
+                                          "</p><p>{msg}</p>"]).format(head=self.headline, msg=msg))
             self.rejection_message = msg
             self.status = self.REJECTED
             self.save()

@@ -4,6 +4,7 @@ from django.db import transaction
 from .models import PartialBooking, BookingSlot
 from django.utils import timezone
 from utils.time import combine_date_and_time
+from django.utils.translation import ugettext_lazy as _
 
 
 class BookingManager(models.Manager):
@@ -11,16 +12,16 @@ class BookingManager(models.Manager):
     def make_a_booking(self, bookable, start_date, end_date, start_slot, end_slot, user):  # TODO: Reduce complexity
         now = timezone.now()
         if start_date < now.date():
-            raise InvalidInput("Can't book backwards in time.")
+            raise InvalidInput(_("Can't book backwards in time."))
         if start_date == now.date() and start_slot.start_time < now.time():
-            raise InvalidInput("Booking has already started.")
+            raise InvalidInput(_("Booking has already started."))
         if combine_date_and_time(start_date, start_slot.start_time) - timezone.timedelta(
                 hours=bookable.hours_before_booking) < now:
-            raise TooShortNotice("Too short notice")
+            raise TooShortNotice(_("Too short notice"))
         if start_date > end_date:
-            raise InvalidInput("Start date must be before end date.")
+            raise InvalidInput(_("Start date must be before end date."))
         if start_date == end_date and start_slot.start_time > end_slot.start_time:
-            raise InvalidInput("Start time must be before end time.")
+            raise InvalidInput(_("Start time must be before end time."))
         if self.filter(user=user).exists():
             nr_of_active_bookings = 0
             for b in self.filter(user=user):
@@ -34,7 +35,7 @@ class BookingManager(models.Manager):
                 if active:
                     nr_of_active_bookings += 1
             if bookable.max_number_of_bookings <= nr_of_active_bookings:
-                raise MultipleBookings("You have already booked the bookable the maximum number of times in a row")
+                raise MultipleBookings(_("You have already booked the bookable the maximum number of times in a row"))
         has_next = True
         slot = start_slot
         current_date = start_date
@@ -45,7 +46,7 @@ class BookingManager(models.Manager):
         booking.full_clean()
         booking.save()
         if len(slots) == 0:
-            raise NoSlots("Couldn't find any slots for the given bookable!")
+            raise NoSlots(_("Couldn't find any slots for the given bookable!"))
 
         while has_next:
             p = PartialBooking(booking=booking,
@@ -72,7 +73,7 @@ class BookingManager(models.Manager):
                         cnt += 1
                     slot = slots[cnt + 1]
         if len(partial_bookings) > bookable.max_number_of_slots_in_booking:
-            raise MaxLength("Too many slots in booking")
+            raise MaxLength(_("Too many slots in booking"))
         for p in partial_bookings:
             p.save()
         return booking
