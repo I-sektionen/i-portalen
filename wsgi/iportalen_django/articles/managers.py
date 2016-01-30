@@ -12,7 +12,8 @@ class ArticleManager(models.Manager):
             visible_to__gte=timezone.now()
             ).order_by('-visible_from')
 
-    def get_user_articles(self, user):
+    @staticmethod
+    def get_user_articles(user):
         """Get article's writen by a user"""
         approved_articles = user.article_set.filter(status=APPROVED, visible_to__gte=timezone.now())
         unapproved_articles = user.article_set.filter(status=BEING_REVIEWED, visible_to__gte=timezone.now())

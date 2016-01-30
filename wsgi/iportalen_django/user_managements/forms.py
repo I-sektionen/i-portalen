@@ -77,7 +77,6 @@ class ChangeUserInfoForm(forms.ModelForm):
                   'start_year', 'klass', 'current_year', 'bachelor_profile', 'master_profile', 'phone',)
 
 
-
 class AddWhiteListForm(forms.Form):
     users = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 15, "placeholder": "abcde123\nfghij456\nklmno789\n..."}),
@@ -119,6 +118,7 @@ class SegmentUsersForm(forms.Form):
     klass = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                       choices=IUser.CLASSES,
                                       required=False)
+
 
 class SelectUserFieldsForm(forms.Form):
     FIELDS = (

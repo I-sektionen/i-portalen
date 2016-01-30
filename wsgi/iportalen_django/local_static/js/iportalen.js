@@ -2112,10 +2112,8 @@ else
         };
 
         this.canRedo = function () {
-            if (undoStack[stackPtr + 1]) {
-                return true;
-            }
-            return false;
+            return !!undoStack[stackPtr + 1];
+
         };
 
         // Removes the last state and restores it.
@@ -3869,7 +3867,6 @@ else
         }
         else {
             chunk.startTag = "# ";
-            chunk.selection = chunk.selection;
             chunk.endTag = "\n\n";
             return;
         }

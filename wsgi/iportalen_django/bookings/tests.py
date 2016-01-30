@@ -4,12 +4,12 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from bookings.models import Booking, BookingSlot, Bookable, PartialBooking
 
-# Alla test använder time vilket är native python och inte django time, pallar inte lösa detta
+
 class EventTests(TestCase):
     def setUp(self):
         booker = IUser.objects.create_user(username="testa123")
-        random_guy = IUser.objects.create_user(username="testa321")
-        creator_pall = IUser.objects.create_user(username="liuid123")
+        IUser.objects.create_user(username="testa321")
+        IUser.objects.create_user(username="liuid123")
         booker.gender = IUser.MAN
         booker.save()
         booker.full_clean()
@@ -60,7 +60,7 @@ class EventTests(TestCase):
         self.assertEqual(len(slots), 2)
 
     def test_booking_slots_overlap_after(self):
-        slots = BookingSlot.objects.filter(bookable=self.kamera)
+        BookingSlot.objects.filter(bookable=self.kamera)
 
         check = False
         try:

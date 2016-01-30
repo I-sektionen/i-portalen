@@ -5,32 +5,33 @@ from events.models import Event, SpeakerList
 from .exceptions import CouldNotRegisterException
 from django.utils import timezone
 
+
 class EventTests(TestCase):
     def setUp(self):
         creator = IUser.objects.create_user(username="testa123")
-        random_guy = IUser.objects.create_user(username="testa321")
-        creator_pall = IUser.objects.create_user(username="liuid123")
+        IUser.objects.create_user(username="testa321")
+        IUser.objects.create_user(username="liuid123")
 
-        a = IUser.objects.create_user(username="aaaaa111")
-        b = IUser.objects.create_user(username="bbbbb111")
-        c = IUser.objects.create_user(username="ccccc111")
-        d = IUser.objects.create_user(username="ddddd111")
+        IUser.objects.create_user(username="aaaaa111")
+        IUser.objects.create_user(username="bbbbb111")
+        IUser.objects.create_user(username="ccccc111")
+        IUser.objects.create_user(username="ddddd111")
 
         info = IUser.objects.create_user(username="liuid666")
         perm = Permission.objects.get(codename="can_approve_event")
         info.user_permissions.add(perm)
         info.save()
 
-        e = Event.objects.create(user=creator,
-                                 headline="Eventheader",
-                                 lead="Eventlead",
-                                 body="Eventbody",
-                                 location="C1",
-                                 start=timezone.make_aware(timezone.datetime.strptime("3015-11-04 15:34", "%Y-%m-%d %H:%M")),
-                                 end=timezone.make_aware(timezone.datetime.strptime("3015-11-04 16:56", "%Y-%m-%d %H:%M")),
-                                 visible_from=timezone.make_aware(timezone.datetime.strptime("2014-11-04 15:34", "%Y-%m-%d %H:%M")),
-                                 enable_registration=True,
-                                 registration_limit=2)
+        Event.objects.create(user=creator,
+                             headline="Eventheader",
+                             lead="Eventlead",
+                             body="Eventbody",
+                             location="C1",
+                             start=timezone.make_aware(timezone.datetime.strptime("3015-11-04 15:34", "%Y-%m-%d %H:%M")),
+                             end=timezone.make_aware(timezone.datetime.strptime("3015-11-04 16:56", "%Y-%m-%d %H:%M")),
+                             visible_from=timezone.make_aware(timezone.datetime.strptime("2014-11-04 15:34", "%Y-%m-%d %H:%M")),
+                             enable_registration=True,
+                             registration_limit=2)
 
     # using deprecated functions
     # def test_approve_event(self):
@@ -68,7 +69,7 @@ class EventTests(TestCase):
         c = IUser.objects.get(username="ccccc111")
 
         error = False
-        full = False
+        # full = False
         try:
             event.register_user(a)
         except:
@@ -80,7 +81,8 @@ class EventTests(TestCase):
         try:
             event.register_user(c)
         except CouldNotRegisterException:
-            full = True
+            # full = True
+            pass
         except:
             error = True
 
@@ -92,21 +94,21 @@ class SpeakerListTests(TestCase):
     def setUp(self):
         creator = IUser.objects.create_user(username="testa123")
 
-        a = IUser.objects.create_user(username="aaaaa111")
-        b = IUser.objects.create_user(username="bbbbb111")
-        c = IUser.objects.create_user(username="ccccc111")
-        d = IUser.objects.create_user(username="ddddd111")
+        IUser.objects.create_user(username="aaaaa111")
+        IUser.objects.create_user(username="bbbbb111")
+        IUser.objects.create_user(username="ccccc111")
+        IUser.objects.create_user(username="ddddd111")
 
-        e = Event.objects.create(user=creator,
-                                 headline="Eventheader",
-                                 lead="Eventlead",
-                                 body="Eventbody",
-                                 location="C1",
-                                 start=timezone.make_aware(timezone.datetime.strptime("3015-11-04 15:34", "%Y-%m-%d %H:%M")),
-                                 end=timezone.make_aware(timezone.datetime.strptime("3015-11-04 16:56", "%Y-%m-%d %H:%M")),
-                                 visible_from=timezone.make_aware(timezone.datetime.strptime("2014-11-04 15:34", "%Y-%m-%d %H:%M")),
-                                 enable_registration=True,
-                                 registration_limit=2)
+        Event.objects.create(user=creator,
+                             headline="Eventheader",
+                             lead="Eventlead",
+                             body="Eventbody",
+                             location="C1",
+                             start=timezone.make_aware(timezone.datetime.strptime("3015-11-04 15:34", "%Y-%m-%d %H:%M")),
+                             end=timezone.make_aware(timezone.datetime.strptime("3015-11-04 16:56", "%Y-%m-%d %H:%M")),
+                             visible_from=timezone.make_aware(timezone.datetime.strptime("2014-11-04 15:34", "%Y-%m-%d %H:%M")),
+                             enable_registration=True,
+                             registration_limit=2)
 
     def test_speaker_list(self):
         event = Event.objects.get(headline__exact='Eventheader')

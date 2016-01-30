@@ -2,7 +2,8 @@
  * Created by isac on 2016-01-17.
  */
 $(document).ready(function () {
-  $('.accordion-tabs').each(function(index) {
+    var tabs = $('.accordion-tabs');
+  tabs.each(function(index) {
       //The original code line from bourbon refils:
       //$(this).children('li').first().children('a').addClass('is-active').next().addClass('is-open').show();
       //Was changed to this. (This searches for is-active and activates this tab.
@@ -15,7 +16,7 @@ $(document).ready(function () {
       //End changes.
 
   });
-  $('.accordion-tabs').on('click', 'li > a.tab-link', function(event) {
+  tabs.on('click', 'li > a.tab-link', function(event) {
     if (!$(this).hasClass('is-active')) {
       event.preventDefault();
       var accordionTabs = $(this).closest('.accordion-tabs');

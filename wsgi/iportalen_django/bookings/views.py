@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
@@ -46,7 +46,7 @@ def invoice(request, invoice_id):
 
 
 @login_required()
-def make_booking(request, bookable_id, weeks_forward=0):
+def make_booking(request, bookable_id, weeks_forward=0):  # TODO: Reduce complexity
     weeks_forward = int(weeks_forward)
     today = timezone.datetime.today() + timezone.timedelta(weeks=weeks_forward)
     today = today.isocalendar()
@@ -98,13 +98,16 @@ def make_booking(request, bookable_id, weeks_forward=0):
         if active:
             nr_of_active_bookings += 1
     if bookable.max_number_of_bookings <= nr_of_active_bookings:
-        messages.warning(request,
-                         "Du har nu bokat {:} det maximala antalet gånger i rad som du får. Avboka eller vänta tills din bokning är över för att göra flera.".format(bookable.name))
+        messages.warning(
+            request,
+            "".join(["Du har nu bokat {:} det maximala antalet gånger i rad som du får.",
+                     " Avboka eller vänta tills din bokning är över för att göra flera."]).format(bookable.name))
 
     if request.method == "POST":
         if form.is_valid():
             if bookable.require_phone and not request.user.phone:
-                messages.error(request, "Du måste ange ditt telefonnummer för att kunna göra en bokning. Klicka på \"konto\" för att ange detta i din profil.")
+                messages.error(request, "Du måste ange ditt telefonnummer för att kunna göra en bokning."
+                                        " Klicka på \"konto\" för att ange detta i din profil.")
                 return render(request, "bookings/book.html", {
                     "form": form,
                     "bookable_id": bookable_id,
@@ -259,7 +262,9 @@ def create_invoice(request, booking_pk):
 def send_invoice_email(request, invoice_pk):
     i = get_object_or_404(Invoice, pk=invoice_pk)
     subject = "Faktura för %s" % (i.booking.bookable, )
-    msg = "En ny faktura finns nu tillgänglig åt dig på i-portalen.se. Du behöver logga in på ditt konto för att ta del av fakturan, klicka på bokningar upp till höger för att se dina fakturor."
+    msg = "En ny faktura finns nu tillgänglig åt dig på i-portalen.se." \
+          " Du behöver logga in på ditt konto för att ta del av fakturan," \
+          " klicka på bokningar upp till höger för att se dina fakturor."
     frm = "bokning@i-portalen.se"  # Todo: Is this reasonable?
     to = i.booking.user.email
     send_mail(subject, msg, frm, [to])

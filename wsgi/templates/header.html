@@ -14,7 +14,7 @@
                 <li class="nav-link"><a href="{% url 'events:calender_view' %}">Kalender</a></li>
                 <li class="nav-link more"><a href="javascript:void(0)">Sektionen</a>
                     <ul class="submenu">
-                        <div class="submenu-column">
+                        <div class="submenu-column">{% comment %}<!--TODO: Element Div not alowed here-->{% endcomment %}
                             {% for o in menu_orgs.sektionen %}
                                 <li><a href="{{ o.get_absolute_url }}">{{ o|capfirst }}</a></li>
                                 {% cycle 'False' 'False' 'False' 'False' 'True' as new_col silent %}
@@ -89,7 +89,7 @@
                     </li>
                 {% else %}
                     <li class="user-tools-button">
-                        <a href="/user/login"><i class="fa fa-sign-in"></i><span>Logga in</span></a>
+                        <a href="{% url "login_view" %}"><i class="fa fa-sign-in"></i><span>Logga in</span></a>
                     </li>
 
                 {% endif %}

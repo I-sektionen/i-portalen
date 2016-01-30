@@ -1,5 +1,4 @@
 from django.core.mail import send_mail
-from django.core.urlresolvers import reverse
 from django.db import models, transaction
 from django.utils import timezone
 from django.conf import settings
@@ -21,7 +20,7 @@ STATUSES = (
     (APPROVED, 'Godkännt')
 )
 
-from .managers import ArticleManager
+from .managers import ArticleManager  # TODO: Look for better solution
 
 
 class Article(models.Model):
@@ -156,7 +155,7 @@ class Article(models.Model):
             return True
         return False
 
-    def get_new_status(self, draft):
+    def get_new_status(self, draft):  # TODO: Reduce complexity
         try:
             s_db = Article.objects.get(pk=self.pk)
             if s_db.status == DRAFT:

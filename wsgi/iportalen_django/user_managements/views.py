@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError, PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required, permission_required
-from .forms import ChangeUserInfoForm, AddWhiteListForm, MembershipForm, MembershipForm, SegmentUsersForm, SelectUserFieldsForm
+from .forms import ChangeUserInfoForm, AddWhiteListForm, MembershipForm, SegmentUsersForm, SelectUserFieldsForm
 from .models import IUser, IpikureSubscriber
 from django.core.urlresolvers import reverse
 from django.contrib import messages
@@ -16,7 +16,6 @@ from django.contrib.auth.views import (
 from utils.kobra import get_user_by_liu_id, LiuGetterError, LiuNotFoundError
 import re
 import time
-import operator
 
 
 def logout_view(request):
@@ -24,7 +23,7 @@ def logout_view(request):
     return redirect('/')  # TODO: Where should this redirect?
 
 
-def login(request):
+def login(request):  # TODO: Reduce complexity
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -167,7 +166,7 @@ def my_page_view(request):
 
 
 @login_required()
-def add_users_to_white_list(request):
+def add_users_to_white_list(request):  # TODO: Reduce complexity
     user = request.user
     if not user.has_perm("user_managements.add_iuser"):
         raise PermissionDenied
@@ -321,7 +320,7 @@ def update_all_users_from_kobra(request):
 
 
 @login_required()
-def update_list_of_users_from_kobra(request):
+def update_list_of_users_from_kobra(request):  # TODO: Reduce complexity
     if not request.user.has_perm("user_managements.add_iuser"):
         messages.error(request, "Du har inte rätt behörighet att updatera från kobra.")
         return render(request, "user_managements/kobra.html")
@@ -360,6 +359,7 @@ def update_list_of_users_from_kobra(request):
         form = AddWhiteListForm()
     return render(request, "user_managements/add_whitelist.html", {'form': form})
 
+
 @login_required()
 def subscribe_to_ipikure(request):
     # return password_reset_done(request, template_name='user_managements/reset/pw_res_done.html')
@@ -376,19 +376,22 @@ def subscribe_to_ipikure(request):
         messages.info(request, "Du prenumererar nu på Ipikuré")
     return redirect(reverse("my page"))
 
+
 @login_required()
 def ipikure_subscribers(request):
     subscribers = IpikureSubscriber.objects.all().order_by('user__username')
 
-    return render(request, "user_managements/ipikure_subscribers.html",
-                          {'subscribers_list': subscribers})
+    return render(request, "user_managements/ipikure_subscribers.html", {'subscribers_list': subscribers})
+
+
 @login_required()
 def admin_menu(request):
     return render(request, "user_managements/user_admin.html")
 
+
 @login_required()
 @permission_required('user_managements.can_view_users')
-def filter_users(request):
+def filter_users(request):  # TODO: Reduce complexity
     users = None
     select_user_fields_form = SelectUserFieldsForm()
     if request.method == 'POST':
@@ -474,6 +477,4 @@ def all_users(request):
 @login_required()
 def profile_page(request, liu_id):
     u = get_object_or_404(IUser, username=liu_id)
-    return render(request, 'user_managements/profile_page.html',{
-        'user': u,
-    })
+    return render(request, 'user_managements/profile_page.html', {'user': u})
