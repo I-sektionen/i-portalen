@@ -100,7 +100,7 @@
         if (options.helpButton) {
             options.strings.help = options.strings.help || options.helpButton.title;
         }
-        var getString = function (identifier) { return options.strings[identifier] || defaultsStrings[identifier]; }
+        var getString = function (identifier) { return options.strings[identifier] || defaultsStrings[identifier]; };
 
         idPostfix = idPostfix || "";
 
@@ -112,7 +112,7 @@
                                                   * image url (or null if the user cancelled). If this hook returns false, the default dialog will be used.
                                                   */
 
-        this.getConverter = function () { return markdownConverter; }
+        this.getConverter = function () { return markdownConverter; };
 
         var that = this,
             panels;
@@ -147,7 +147,7 @@
             forceRefresh();
         };
 
-    }
+    };
 
     // before: contains all the text in the input box BEFORE the selection.
     // after: contains all the text in the input box AFTER the selection.
@@ -208,7 +208,7 @@
         if (remove) {
             beforeReplacer = afterReplacer = "";
         } else {
-            beforeReplacer = function (s) { that.before += s; return ""; }
+            beforeReplacer = function (s) { that.before += s; return ""; };
             afterReplacer = function (s) { that.after = s + that.after; return ""; }
         }
 
@@ -301,8 +301,7 @@
         this.buttonBar = doc.getElementById("wmd-button-bar" + postfix);
         this.preview = doc.getElementById("wmd-preview" + postfix);
         this.input = doc.getElementById("wmd-input" + postfix);
-    };
-
+    }
     // Returns true if the DOM element is visible, false if it's hidden.
     // Checks if display is anything other than none.
     util.isVisible = function (elem) {
@@ -383,7 +382,7 @@
         pattern = pre + pattern + post;
 
         return new re(pattern, flags);
-    }
+    };
 
     // UNFINISHED
     // The assignment in the while loop makes jslint cranky.
@@ -491,10 +490,8 @@
         };
 
         this.canRedo = function () {
-            if (undoStack[stackPtr + 1]) {
-                return true;
-            }
-            return false;
+            return !!undoStack[stackPtr + 1];
+
         };
 
         // Removes the last state and restores it.
@@ -600,7 +597,7 @@
                 if (window.event) {
                     window.event.returnValue = false;
                 }
-                return;
+
             }
         };
 
@@ -701,7 +698,7 @@
                 this.text = inputArea.value;
             }
 
-        }
+        };
 
         // Sets the selected text in the input box after we've performed an
         // operation.
@@ -818,8 +815,7 @@
             this.scrollTop = chunk.scrollTop;
         };
         this.init();
-    };
-
+    }
     function PreviewManager(converter, panels, previewRefreshCallback) {
 
         var managerObj = this;
@@ -953,11 +949,11 @@
                 parent.appendChild(preview);
             else
                 parent.insertBefore(preview, sibling);
-        }
+        };
 
         var nonSuckyBrowserPreviewSet = function (text) {
             panels.preview.innerHTML = text;
-        }
+        };
 
         var previewSetter;
 
@@ -1013,8 +1009,7 @@
         };
 
         init();
-    };
-
+    }
     // Creates the background behind the hyperlink text entry box.
     // And download dialog
     // Most of this has been moved to CSS but the div creation and
@@ -1374,8 +1369,7 @@
             if (button.execute) {
                 button.execute(undoManager);
             }
-        };
-
+        }
         function setupButton(button, isEnabled) {
 
             var normalYShift = "0px";
@@ -1520,8 +1514,7 @@
                 setupButton(buttons.undo, undoManager.canUndo());
                 setupButton(buttons.redo, undoManager.canRedo());
             }
-        };
-
+        }
         this.setUndoRedoButtonStates = setUndoRedoButtonStates;
 
     }
@@ -1609,7 +1602,7 @@
             chunk.after = markup + chunk.after;
         }
 
-        return;
+
     };
 
     commandProto.stripLinkDefs = function (text, defsToAdd) {
@@ -1687,7 +1680,7 @@
         
         var okayToModify = function(offset) {
             return rendered.indexOf(testlink + offset + "/unicorn") !== -1;
-        }
+        };
         
         var addDefNumber = function (def) {
             refNumber++;
@@ -1781,7 +1774,7 @@
                         break;
                 }
                 return encodeURI(match);
-            })
+            });
             
             if (title) {
                 title = title.trim ? title.trim() : title.replace(/^\s*/, "").replace(/\s*$/, "");
@@ -2248,7 +2241,6 @@
         }
         else {
             chunk.startTag = "# ";
-            chunk.selection = chunk.selection;
             chunk.endTag = "\n\n";
             return;
         }

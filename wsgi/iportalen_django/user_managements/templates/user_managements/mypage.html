@@ -6,11 +6,11 @@
 
     {% with u=request.user %}
 
-    <h3>Namn: {{ u.first_name|default:"Du har inte angett någon information"|capfirst}}
-    {{ u.last_name|default:"Du har inte angett någon information"|capfirst}}</h3>
+    <h3>Namn: {{ u.first_name|default:"Du har inte angett någon information"|capfirst }}
+    {{ u.last_name|default:"Du har inte angett någon information"|capfirst }}</h3>
     <h4>Liu-id: {{ u.username}}</h4>
-    <p>Adress: {{ u.address|default:"Du har inte angett någon information"}} {{ u.zip_code|default:""}} {{ u.city|default:""}}</p>
-    <p>Allergier: {{ u.allergies|default:"Du har inte angett någon information"}}</p>
+    <p>Adress: {{ u.address|default:"Du har inte angett någon information" }} {{ u.zip_code|default:"" }} {{ u.city|default:"" }}</p>
+    <p>Allergier: {{ u.allergies|default:"Du har inte angett någon information" }}</p>
         {% if u.ipikuresubscriber %}
         <p>Du prenumererar på ipikure sedan {{ u.ipikuresubscriber.date_subscribed|date:"Y-m-d" }} glöm inte att uppdatera din prenumeration efter sommaruppehållet. <a href="{% url "subscribe_to_ipikure" %}">Uppdatera prenumerationen på ipikuré</a></p>
         {% else %}

@@ -473,7 +473,8 @@ class Event(models.Model):
         for ele in to_remove:
             self._remove_speaker_from_queue(ele)
 
-    def _remove_speaker_from_queue(self, to_remove):
+    @staticmethod
+    def _remove_speaker_from_queue(to_remove):
         before = None
         after = None
         try:

@@ -4,7 +4,7 @@
 function speaker_list_view(url) {
     init_csrf();
 
-    var s_list = $("#speaker_list ol");
+    var s_list = $("#speaker_list").find("ol");
     var t=setInterval(reload_list, 1000);
     function reload_list() {
 

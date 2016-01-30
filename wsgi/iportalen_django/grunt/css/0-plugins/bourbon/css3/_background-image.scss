@@ -37,6 +37,5 @@
     $spec-images:   append($spec-images,   $spec-image,   comma);
   }
 
-  background-image: $webkit-images;
   background-image: $spec-images;
 }
