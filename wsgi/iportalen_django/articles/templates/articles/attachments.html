@@ -6,7 +6,7 @@
             <table>
             <thead>
             <tr>
-                <th>Fil</th><th>Radera?</th>
+                <th>Fil</th><td>Visningsnamn</td><th>Radera?</th>
             </tr>
             </thead>
                 {{ formset.management_form }}
@@ -14,6 +14,7 @@
                     {% csrf_token %}
                     <tr>
                         <td>{{ form.file }}</td>
+                        <td>{{ form.display_name }}</td>
                         {% if formset.can_delete %}
                             <td>{{ form.DELETE }}</td>
                         {% endif %}
