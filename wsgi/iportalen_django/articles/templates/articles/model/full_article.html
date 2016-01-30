@@ -24,7 +24,10 @@
         {% endif %}
     </p>
     {{ article.body|markdown }}
-    {% if article.attachment %}
-        <p>Bifogad fil: <a href="{% url "articles:download" article.pk %}">{{ article.filename }}</a></p>
+    {% if attachments %}
+        {% for attachment in attachments.all %}
+            <p>Bifogad fil: <a href="{% url 'articles:download attachment' attachment.pk %}">{{ attachment.display_name }}</a></p>
+                <!--<a href="{% url "articles:download attachment" article.pk %}">{{ article.filename }}</a></p>-->
+        {% endfor %}
     {% endif %}
 </article>

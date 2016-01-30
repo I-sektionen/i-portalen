@@ -1,9 +1,9 @@
-<!--
---
-- This files contains the view rendered for *single articles*
--
--->
 {% extends "master.html" %}
+
+{% comment %}
+ This files contains the view rendered for *single articles*
+{% endcomment %}
+
 {% load staticfiles %}
 {% block page_subtitle %}{{ article.headline }}{% endblock %}
 {% block head %}
