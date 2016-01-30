@@ -11,6 +11,13 @@ class EventManager(models.Manager):
                 end__gte=timezone.now()
                 ).order_by('-start')
 
+    def events_by_user(self, user):
+        """Returns the events a specific user is preregistered to.
+        :param user: A django user.
+        """
+        r = self.filter(entryaspreregistered__user=user)
+        return r
+
 
 class SpeakerListManager(models.Manager):
     @staticmethod

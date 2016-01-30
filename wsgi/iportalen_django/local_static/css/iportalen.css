@@ -2466,6 +2466,47 @@ div.booking-container .third-container .third .center {
   }
 }
 
+.sponsored_feed_container::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.sponsored_container hr {
+  border-bottom: 1px solid #c4c4c4;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  margin: 1.5em 0;
+}
+@media screen and (min-width: 1200px) {
+  .sponsored_container .sponsored_feed_headline {
+    float: left;
+    display: block;
+    margin-right: 1.75788%;
+    width: 30.04146%;
+    margin-right: 0;
+  }
+  .sponsored_container .sponsored_feed_headline:last-child {
+    margin-right: 0;
+  }
+}
+.sponsored_container #sponsored_feed_content {
+  padding-left: 0.2em;
+}
+@media screen and (min-width: 1200px) {
+  .sponsored_container #sponsored_feed_content {
+    float: left;
+    display: block;
+    margin-right: 1.75788%;
+    width: 68.20066%;
+    margin-right: 0;
+  }
+  .sponsored_container #sponsored_feed_content:last-child {
+    margin-right: 0;
+  }
+}
+
 #organisation-admin-panel {
   margin: 1em 0;
   float: left;
