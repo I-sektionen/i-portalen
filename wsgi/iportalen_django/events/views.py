@@ -18,6 +18,21 @@ from .feed import generate_feed
 
 # Create your views here.
 
+@login_required()
+def summarise_noshow(request,pk):
+    event = get_object_or_404(Event,pk=pk)
+    if not event.can_administer(request.user):
+        raise PermissionDenied
+    if not event.finished:
+        event.finished = True
+    noshows = event.no_show()
+    for user in noshows:
+        noshow = EntryAsPreRegistered.objects.get(event=event, user=user)
+        noshow.no_show = True
+        noshow.save()
+    event.save()
+    return redirect("events:administer event", pk=pk)
+
 
 def view_event(request, pk):
     event = get_object_or_404(Event, pk=pk)

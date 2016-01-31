@@ -27,6 +27,7 @@ from .views import (
     file_download,
     calendar_feed,
     personal_calendar_feed,
+    summarise_noshow,
 )
 
 urlpatterns = [
@@ -47,6 +48,7 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/administer/preregistrations/download/$', view=CSV_view_preregistrations,
         name="preregistrations download"),
     url(r'^(?P<pk>[0-9]+)/administer/event_check_in/$', view=check_in, name="check in"),
+    url(r'^(?P<pk>[0-9]+)/administer/noshow/$', view=summarise_noshow, name="no show"),
     url(r'^unapproved/$', view=all_unapproved_events, name='unapproved'),
     url(r'^(?P<event_id>[0-9]+)/approve$', view=approve_event, name='approve'),
     url(r'^(?P<pk>[0-9]+)/unapprove$', view=unapprove_event, name='unapprove'),
