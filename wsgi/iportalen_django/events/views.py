@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.contrib.auth.decorators import login_required
@@ -17,6 +18,8 @@ from .feed import generate_feed
 
 
 # Create your views here.
+from wsgi.iportalen_django.iportalen import settings
+
 
 @login_required()
 def summarise_noshow(request,pk):
@@ -30,6 +33,17 @@ def summarise_noshow(request,pk):
         noshow = EntryAsPreRegistered.objects.get(event=event, user=user)
         noshow.no_show = True
         noshow.save()
+    for user in noshows:
+        if len(EntryAsPreRegistered.objects.get_noshow(user=user)) == 2:
+            subject = "Du har nu missat ditt andra event"
+            body = "<p>Hej du har missat 2 event som du har anmält dig på. Om du missar en tredje gång så blir vi tvungna att stänga av dig från " \
+                   "framtida event fram tills ett halv år framåt.</p>"
+            send_mail(subject, "", settings.EMAIL_HOST_USER, [user.email, ], fail_silently=False, html_message=body)
+        elif len(EntryAsPreRegistered.objects.get_noshow(user=user)) == 3:
+            subject = "Du har nu missat ditt tredje event"
+            body = "<p>Hej igen du har missat 3 event som du har anmält dig på. Du kommer härmed att blir avstängd från " \
+                   "framtida event fram tills ett halv år framåt. Ha en bra dag :)</p>"
+            send_mail(subject, "", settings.EMAIL_HOST_USER, [user.email, ], fail_silently=False, html_message=body)
     event.save()
     return redirect("events:administer event", pk=pk)
 
