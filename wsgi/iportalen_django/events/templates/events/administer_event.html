@@ -12,6 +12,9 @@
         <li><a href="{% url "events:check in" event.pk %}">Starta incheckning</a></li>
         <li><a href="{% url "events:edit" event.pk %}">Ändra event</a></li>
         <li><a href="{% url "events:import registrations" event.pk %}">Importera anmälningar</a></li>
-
+        {% if not event.finished %}
+        <li><a href="{% url "events:no show" event.pk %}">Avsluta event</a></li>
+        {% endif %}
     </ul>
+    {{ event.finished }}
 {% endblock %}
