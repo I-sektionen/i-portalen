@@ -10,7 +10,7 @@ from utils.validators import less_than_160_characters_validator
 from organisations.models import Organisation
 from tags.models import Tag
 from .exceptions import CouldNotRegisterException
-from .managers import SpeakerListManager, EventManager
+from .managers import SpeakerListManager, EventManager, EntryAsPreRegisteredManager
 
 
 # A user can register and deregister
@@ -262,6 +262,9 @@ class Event(models.Model):
         # Has the register date passed?
         if not self.can_deregister:
             raise CouldNotRegisterException(event=self, reason="anmälningstiden har passerats")
+        # Is the user banned from event registration?
+        if len(EntryAsPreRegistered.objects.get_noshow(user=user)) >= 3:
+            raise CouldNotRegisterException(event=self, reason="du har missat 3 event")
 
         EntryAsPreRegistered(user=user, event=self).save()
         try:
@@ -312,6 +315,10 @@ class Event(models.Model):
 
         if user in self.participants:
             raise CouldNotRegisterException(event=self, reason="du är anmäld som deltagare")
+
+        # Is the user banned from event registration?
+        if len(EntryAsPreRegistered.objects.get_noshow(user=user)) >= 3:
+            raise CouldNotRegisterException(event=self, reason="du har missat 3 event")
 
         # Register as reserve
         entry = EntryAsReserve(event=self, user=user)
@@ -548,6 +555,8 @@ class EntryAsPreRegistered(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(auto_now_add=True)
     no_show = models.BooleanField(default=False)
+
+    objects = EntryAsPreRegisteredManager()
 
     class Meta:
         verbose_name = "Anmälning"

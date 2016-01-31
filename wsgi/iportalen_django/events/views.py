@@ -25,7 +25,7 @@ def summarise_noshow(request,pk):
         raise PermissionDenied
     if not event.finished:
         event.finished = True
-    noshows = event.no_show()
+    noshows = event.no_show
     for user in noshows:
         noshow = EntryAsPreRegistered.objects.get(event=event, user=user)
         noshow.no_show = True
