@@ -39,6 +39,13 @@ class EventForm(forms.ModelForm):
         self.fields['body'].widget.attrs['class'] = 'wmd-input'
         self.fields['body'].widget.attrs['id'] = 'wmd-input-body'
 
+        for f in self.fields:
+            if self.fields[f].required:
+                try:
+                    self.fields[f].widget.attrs['class'] += ' required'
+                except:
+                    self.fields[f].widget.attrs['class'] = 'required'
+
     def clean(self):
         super(EventForm, self).clean()
         enable_registration = self.cleaned_data.get("enable_registration")
