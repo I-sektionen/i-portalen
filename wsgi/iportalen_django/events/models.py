@@ -257,6 +257,10 @@ class Event(models.Model):
         if self.start < timezone.now():
             raise CouldNotRegisterException(event=self, reason="starttiden har passerats")
 
+        # Has the register date passed?
+        if not self.can_deregister:
+            raise CouldNotRegisterException(event=self, reason="anmälningstiden har passerats")
+
         EntryAsPreRegistered(user=user, event=self).save()
         try:
             entry = EntryAsReserve.objects.get(user=user, event=self)

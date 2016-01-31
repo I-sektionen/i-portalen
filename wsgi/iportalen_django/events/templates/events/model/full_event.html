@@ -53,21 +53,26 @@
     {% if not preview %}
     {% if event.enable_registration %}
         {% if not registered %}
-            {% if not event.full %}
-                <form method="post" action="{% url "events:register to" event.pk %}">
-                    {% csrf_token %}
-                    <label>
-                        <button class="button-group-item"  type="submit" title="snälla">Anmäl mig</button>
-                    </label>
-                </form>
+            {% if event.can_deregister %}
+                {% if not event.full %}
+                    <form method="post" action="{% url "events:register to" event.pk %}">
+                        {% csrf_token %}
+                        <label>
+                            <button class="button-group-item"  type="submit" title="snälla">Anmäl mig</button>
+                        </label>
+                    </form>
+                {% else %}
+                    <form method="post" action="{% url "events:register as reserve" event.pk %}">
+                        {% csrf_token %}
+                        <label>
+                            <button class="button-group-item" type="submit" title="snälla">Anmäl mig som reserv</button>
+                        </label>
+                    </form>
+                {% endif %}
             {% else %}
-                <form method="post" action="{% url "events:register as reserve" event.pk %}">
-                    {% csrf_token %}
-                    <label>
-                        <button class="button-group-item" type="submit" title="snälla">Anmäl mig som reserv</button>
-                    </label>
-                </form>
+                <p>Det är för sent att anmäla sig nu.</p>
             {% endif %}
+
         {% else %}
             {% event_reserve event request.user as reserve %}
             {% if reserve %}
