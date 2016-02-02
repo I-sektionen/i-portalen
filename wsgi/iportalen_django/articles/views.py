@@ -6,10 +6,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db import transaction
 from django.forms import modelformset_factory
-from .models import Article, OtherAttachment
+from .models import Article, OtherAttachment, ImageAttachment
 from .forms import ArticleForm, RejectionForm
 from tags.models import Tag
-
+from utils.image_processing import create_thumbnail
 
 @login_required()
 def create_or_modify_article(request, pk=None):
@@ -70,21 +70,22 @@ def upload_attachments(request, article_pk):
                                               fields=('file', 'display_name'),
                                               max_num=30,
                                               extra=3,
-                                              can_delete=True)
+                                              can_delete=True,
+                                              )
     if request.method == 'POST':
         formset = AttachmentFormset(request.POST, request.FILES, queryset=OtherAttachment.objects.filter(article=article))
         if formset.is_valid():
             for entry in formset.cleaned_data:
                 if not entry == {}:
                     if entry['DELETE']:
-                        entry['id'].delete()  # TODO: Remove the clear option from html-widget.
+                        entry['id'].delete()  # TODO: Remove the clear option from html-widget (or make it work).
                     else:
                         if entry['id']:
                             attachment = entry['id']
                         else:
                             attachment = OtherAttachment(article=article)
+                            attachment.file_name = entry['file'].name
                         attachment.file = entry['file']
-                        attachment.file_name = entry['file'].name
                         attachment.display_name = entry['display_name']
                         attachment.save()
             messages.success(request, 'Dina bilagor har sparats.')
@@ -100,6 +101,46 @@ def upload_attachments(request, article_pk):
                         'formset': formset,
                         })
 
+
+def upload_attachments_images(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    AttachmentFormset = modelformset_factory(ImageAttachment,
+                                              fields=('img', 'caption'),
+                                              max_num=30,
+                                              extra=3,
+                                              can_delete=True,
+                                              )
+    if request.method == 'POST':
+        formset = AttachmentFormset(request.POST,
+                                    request.FILES,
+                                    queryset=ImageAttachment.objects.filter(article=article)
+                                    )
+        if formset.is_valid():
+            for entry in formset.cleaned_data:
+                if not entry == {}:
+                    if entry['DELETE']:
+                        entry['id'].delete()  # TODO: Remove the clear option from html-widget (or make it work).
+                    else:
+                        if entry['id']:
+                            attachment = entry['id']
+                        else:
+                            attachment = ImageAttachment(article=article)
+                            attachment.file_name = entry['img'].name
+                        attachment.file = entry['img']
+                        attachment.caption = entry['caption']
+                        attachment.save()
+            messages.success(request, 'Dina bilagor har sparats.')
+            return redirect('articles:manage attachments', article_pk=article.pk)
+        else:
+            return render(request, "articles/attach_images.html", {
+                        'article': article,
+                        'formset': formset,
+                        })
+    formset = AttachmentFormset(queryset=OtherAttachment.objects.filter(article=article))
+    return render(request, "articles/attach_images.html", {
+                        'article': article,
+                        'formset': formset,
+                        })
 
 def download_attachment(request, pk):
     attachment = OtherAttachment.objects.get(pk=pk)

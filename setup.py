@@ -16,6 +16,6 @@ setup(name='I-Portalen',
                         'urllib3',
                         'django_extensions',
                         'pytz',
-                        #'pillow>=2.0.0'
+                        'pillow>=2.0.0'
                         ],  # This should match requirements.txt!
       )
