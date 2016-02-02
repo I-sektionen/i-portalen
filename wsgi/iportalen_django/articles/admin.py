@@ -6,11 +6,31 @@ from django.contrib.admin import ModelAdmin
 
 class OtherAttachmentInline(admin.StackedInline):
     model = OtherAttachment
+    readonly_fields = ('file_name', 'file')
+    extra = 0
 
 
-#class ArticleAdmin(HiddenModelAdmin):
+class OtherAttachmentAdmin(admin.ModelAdmin):
+    readonly_fields = ('file_name',)
+    list_display = ('article', 'file_name')
+    list_filter = ('article',)
 
 
-iportalen_admin_site.register(ImageAttachment, HiddenModelAdmin)
-iportalen_admin_site.register(Article, HiddenModelAdmin)
-iportalen_admin_site.register(OtherAttachment, HiddenModelAdmin)
+class ImageAttachmentInline(admin.TabularInline):
+    model = ImageAttachment
+    readonly_fields = ('img', 'thumbnail')
+    extra = 0
+
+
+class ImageAttachmentAdmin(admin.ModelAdmin):
+    readonly_fields = ('thumbnail',)
+    list_display = ('article',)
+    list_filter = ('article',)
+
+
+class ArticleAdmin(HiddenModelAdmin):
+    inlines = [OtherAttachmentInline, ImageAttachmentInline]
+
+iportalen_admin_site.register(ImageAttachment, ImageAttachmentAdmin)
+iportalen_admin_site.register(Article, ArticleAdmin)
+iportalen_admin_site.register(OtherAttachment, OtherAttachmentAdmin)
