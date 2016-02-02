@@ -3,10 +3,14 @@ from django.core.urlresolvers import reverse
 from django.db import models, transaction
 from django.utils import timezone
 from django.conf import settings
+from django.core.files.storage import default_storage as storage
+from django.core.files.base import ContentFile
+from PIL import Image
+import io
 import os
 from tags.models import Tag
 from utils.validators import less_than_160_characters_validator
-from utils import time
+from utils import time, image_processing
 from organisations.models import Organisation
 
 # Internal:
@@ -236,25 +240,70 @@ class Article(models.Model):
 ###########################################################################
 
 
+def _image_file_path(instance, filename):
+    return os.path.join(
+        'article', 'img', filename
+    )
+
+
+THUMB_SIZE = (129, 129)  # Size of saved thumbnails.
 class ImageAttachment(models.Model):
     """Used to handle image attachments to be shown in the article"""
-    img = models.FileField(
-        upload_to='article_images',
+    img = models.ImageField(
+        upload_to=_image_file_path,
         null=False,
         blank=False,
         verbose_name='artikelbild'
     )
+    thumbnail = models.ImageField(
+        upload_to='article_thumbnails',
+        null=True,
+        blank=True,
+        verbose_name='förhandsvisning'
+    )
+    caption = models.CharField(max_length=100)
     article = models.ForeignKey(Article)
 
+    def _set_thumbnail(self):
+        path = self.img.path
+        #img_file = storage.open(path).read()
+        #img_file = open(self.img.path, 'r')
+        try:
+            image = Image.open(path)
+        except IOError:
+            print("Could not open!")
+            return False
+        #finally:
+        #    img_file.close()
+        image.thumbnail(THUMB_SIZE, Image.ANTIALIAS)
+        thumb_name, thumb_extension = os.path.splitext(self.img.name)
+        thumb_extension = thumb_extension.lower()
 
-class ThumbnailAttachment(models.Model):
-    """An automaticly generated thumbnail, called by save() in ImageAttachment"""
-    thumb = models.FileField(
-        upload_to='article_thumbs',
-        null=False,
-        blank=False,
-        verbose_name='thumbnail'
-    )
+        thumb_file_name = thumb_name + '_thumb' + thumb_extension
+
+        if thumb_extension in ['.jpg', '.jpeg']:
+            FTYPE = 'JPEG'
+        elif thumb_extension == '.gif':
+            FTYPE = 'GIF'
+        elif thumb_extension == '.png':
+            FTYPE = 'PNG'
+        else:
+            print('Wrong file extension!')
+            return False    # Unrecognized file type
+
+        temp_thumb = io.BytesIO()
+        image.save(temp_thumb, FTYPE)
+        temp_thumb.seek(0)
+
+        self.thumbnail.save(thumb_file_name, ContentFile(temp_thumb.read()), save=False)
+        temp_thumb.close()
+        return True
+
+    def save(self, *args, **kwargs):
+        self._set_thumbnail()
+        super(ImageAttachment, self).save(*args, **kwargs)
+        #if not self._set_thumbnail():
+        #    raise Exception('Could not create thumbnail. Valid file ending?')
 
 
 def _file_path(instance, filename):
@@ -269,11 +318,21 @@ class OtherAttachment(models.Model):
     file = models.FileField(
         upload_to=_file_path,
         null=False,
-        blank=True,
+        blank=False,
         verbose_name='artikelbilaga',
     )
-    display_name = models.CharField(max_length=160)
-    file_name = models.CharField(max_length=300)
+    display_name = models.CharField(max_length=160, null=False, blank=False)
+    file_name = models.CharField(max_length=300, null=False, blank=False)
     article = models.ForeignKey(Article)
 
+    def __str__(self):
+        return self.display_name + " (" + self.file_name + ")" + "för artikel: " + str(self.article)
 
+#  This receiver part here makes sure to remove files if the model instance is deleted.
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
+
+
+@receiver(pre_delete, sender=OtherAttachment)
+def other_attachment_delete(sender, instance, **kwargs):
+    instance.file.delete(False)  # False avoids saving the model.
