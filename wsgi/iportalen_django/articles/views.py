@@ -125,7 +125,6 @@ def upload_attachments_images(request, article_pk):
                             attachment = entry['id']
                         else:
                             attachment = ImageAttachment(article=article)
-                            attachment.file_name = entry['img'].name
                         attachment.file = entry['img']
                         attachment.caption = entry['caption']
                         attachment.save()
@@ -153,7 +152,11 @@ def single_article(request, pk):
     article = Article.objects.get(pk=pk)
     if article.status == Article.APPROVED:
         attachments = article.otherattachment_set
-        return render(request, 'articles/article.html', {'article': article, 'attachments': attachments})
+        image_attachments = article.imageattachment_set
+        return render(request, 'articles/article.html', {
+            'article': article,
+            'attachments': attachments,
+            'image_attachments': image_attachments})
     elif request.user == article.user:  # TODO: Should this maybe be more defined? (Superusers and certain permissions?)
         return render(request, 'articles/article.html', {'article': article})
     raise PermissionDenied

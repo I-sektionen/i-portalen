@@ -23,6 +23,11 @@
             <span>Sponsrat innehåll</span>
         {% endif %}
     </p>
+    {% if image_attachments %}
+        {% for attachment in image_attachments.all %}
+            <img src="{{ attachment.thumbnail.url }}">
+        {% endfor %}
+    {% endif %}
     {{ article.body|markdown }}
     {% if attachments %}
         {% for attachment in attachments.all %}
