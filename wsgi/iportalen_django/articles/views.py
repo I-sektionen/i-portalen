@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.db import transaction
 from django.forms import modelformset_factory
 from .models import Article, OtherAttachment, ImageAttachment
-from .forms import ArticleForm, RejectionForm
+from .forms import ArticleForm, RejectionForm, AttachmentForm, ImageAttachmentForm
 from tags.models import Tag
 from utils.image_processing import create_thumbnail
 
@@ -53,7 +53,7 @@ def create_or_modify_article(request, pk=None):
                 messages.success(request, "Dina ändringar har sparats i ett utkast.")
             elif article.status == Article.BEING_REVIEWED:
                 messages.success(request, "Dina ändringar har skickats för granskning.")
-            return redirect('articles:manage attachments', article_pk=article.pk)
+            return redirect('articles:article', pk=article.pk)
         else:
             messages.error(request, "Det uppstod ett fel, se detaljer nedan.")
             return render(request, 'articles/article_form.html', {
@@ -67,11 +67,11 @@ def create_or_modify_article(request, pk=None):
 def upload_attachments(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     AttachmentFormset = modelformset_factory(OtherAttachment,
-                                              fields=('file', 'display_name'),
-                                              max_num=30,
-                                              extra=3,
-                                              can_delete=True,
-                                              )
+                                             form=AttachmentForm,
+                                             max_num=30,
+                                             extra=3,
+                                             can_delete=True,
+                                             )
     if request.method == 'POST':
         formset = AttachmentFormset(request.POST, request.FILES, queryset=OtherAttachment.objects.filter(article=article))
         if formset.is_valid():
@@ -105,11 +105,11 @@ def upload_attachments(request, article_pk):
 def upload_attachments_images(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     AttachmentFormset = modelformset_factory(ImageAttachment,
-                                              fields=('img', 'caption'),
-                                              max_num=30,
-                                              extra=3,
-                                              can_delete=True,
-                                              )
+                                             form=ImageAttachmentForm,
+                                             max_num=30,
+                                             extra=3,
+                                             can_delete=True,
+                                             )
     if request.method == 'POST':
         formset = AttachmentFormset(request.POST,
                                     request.FILES,
@@ -129,17 +129,18 @@ def upload_attachments_images(request, article_pk):
                         attachment.caption = entry['caption']
                         attachment.save()
             messages.success(request, 'Dina bilagor har sparats.')
-            return redirect('articles:manage attachments', article_pk=article.pk)
+            return redirect('articles:article', article.pk)
         else:
             return render(request, "articles/attach_images.html", {
                         'article': article,
                         'formset': formset,
                         })
-    formset = AttachmentFormset(queryset=OtherAttachment.objects.filter(article=article))
+    formset = AttachmentFormset(queryset=ImageAttachment.objects.filter(article=article))
     return render(request, "articles/attach_images.html", {
                         'article': article,
                         'formset': formset,
                         })
+
 
 def download_attachment(request, pk):
     attachment = OtherAttachment.objects.get(pk=pk)
@@ -150,15 +151,20 @@ def download_attachment(request, pk):
 
 def single_article(request, pk):
     article = Article.objects.get(pk=pk)
-    if article.status == Article.APPROVED:
+    if article.can_administer(request.user):
+        admin = True
+    else:
+        admin = False
+    if article.status == Article.APPROVED or admin:
         attachments = article.otherattachment_set
         image_attachments = article.imageattachment_set
         return render(request, 'articles/article.html', {
             'article': article,
             'attachments': attachments,
-            'image_attachments': image_attachments})
-    elif request.user == article.user:  # TODO: Should this maybe be more defined? (Superusers and certain permissions?)
-        return render(request, 'articles/article.html', {'article': article})
+            'image_attachments': image_attachments,
+            'can_administer': admin})
+    #elif request.user == article.user:  # TODO: Should this maybe be more defined? (Superusers and certain permissions?)
+        #return render(request, 'articles/article.html', {'article': article})
     raise PermissionDenied
 
 
