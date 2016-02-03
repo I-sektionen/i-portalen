@@ -425,6 +425,34 @@ def speaker_list(request, pk):
     else:
         return JsonResponse({})
 
+@login_required()
+def user_view(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    user = request.user
+    #checks if user is a participant
+    try:
+        participant = EntryAsParticipant.objects.get(event=event, user=user)
+    except EntryAsParticipant.DoesNotExist:
+        raise PermissionDenied
+    return render(request, "events/user_view.html", {'event': event})
+
+
+@login_required()
+def speaker_list_user_add_self(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    user = request.user
+    speaker_number = EntryAsParticipant.objects.get(event=event, user=user).speech_nr
+    event.add_speaker_to_queue(speaker_number)
+    messages.success(request,"Du har skrivit upp dig på talarlistan!")
+    return redirect(reverse('events:user view', kwargs={'pk': event.pk}))
+
+@login_required()
+def speaker_list_user_remove_self(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    user = request.user
+    speaker_number = EntryAsParticipant.objects.get(event=event, user=user).speech_nr
+    event.remove_speaker_from_queue(speaker_number)
+    return redirect(reverse('events:user view', kwargs={'pk': event.pk}))
 
 @login_required()
 def speaker_list_display(request, pk):
