@@ -18,3 +18,10 @@
 {% block content %}
 {% include "articles/model/full_article.html" with article=article %}
 {% endblock %}
+{% block after_scripts %}
+    <script>
+        jQuery(document).ready(function () {
+            $(".fancybox").fancybox();
+        })
+    </script>
+{% endblock %}
