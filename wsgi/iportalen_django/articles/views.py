@@ -125,7 +125,7 @@ def upload_attachments_images(request, article_pk):
                             attachment = entry['id']
                         else:
                             attachment = ImageAttachment(article=article)
-                        attachment.file = entry['img']
+                        attachment.img = entry['img']
                         attachment.caption = entry['caption']
                         attachment.save()
             messages.success(request, 'Dina bilagor har sparats.')
