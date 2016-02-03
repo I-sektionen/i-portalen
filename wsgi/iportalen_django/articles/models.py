@@ -250,6 +250,8 @@ def _image_file_path(instance, filename):
 
 
 THUMB_SIZE = (129, 129)  # Size of saved thumbnails.
+
+
 class ImageAttachment(models.Model):
     """Used to handle image attachments to be shown in the article"""
     img = models.ImageField(
