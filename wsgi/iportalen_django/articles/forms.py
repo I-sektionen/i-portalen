@@ -1,7 +1,7 @@
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django import forms
-from .models import Article, OtherAttachment
+from .models import Article, OtherAttachment, ImageAttachment
 
 
 class ArticleForm(forms.ModelForm):
@@ -48,5 +48,12 @@ class RejectionForm(forms.Form):
 
 
 class AttachmentForm(forms.ModelForm):
-    model = OtherAttachment
-    fields = ('file',)
+    class Meta:
+        model = OtherAttachment
+        fields = ('file', 'display_name')
+
+
+class ImageAttachmentForm(forms.ModelForm):
+    class Meta:
+        model = ImageAttachment
+        fields = ('img', 'caption')
