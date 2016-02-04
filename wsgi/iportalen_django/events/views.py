@@ -214,7 +214,7 @@ def check_in(request, pk):
 
 @login_required()
 def all_unapproved_events(request):
-    if request.user.has_perm("event.can_approve_event"):
+    if request.user.has_perm("events.can_approve_event"):
         events = Event.objects.filter(status=Event.BEING_REVIEWED, end__gte=timezone.now())
         return render(request, 'events/approve_event.html', {'events': events})
     else:
