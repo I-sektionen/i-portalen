@@ -5,18 +5,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 
-
-from .views import placeholder, display_news_feed, glasscubes_link, display_sponsored_content
-
-from articles import urls as article_urls
-from user_managements import urls as user_urls
-from events import urls as event_urls
-from organisations import urls as org_urls
-from bookings import urls as booking_urls
-from course_evaluations import urls as course_urls
-from .sitemaps import StaticViewSitemapHigh, EventSitemap, ArticleSitemap, StaticViewSitemapLow, OrganisationSitemap, StaticViewSitemapMedium
 from . import views
-from .sitemaps import StaticViewSitemapHigh, EventSitemap, ArticleSitemap, StaticViewSitemapLow
+from .sitemaps import (
+    StaticViewSitemapHigh,
+    EventSitemap,
+    ArticleSitemap,
+    StaticViewSitemapLow,
+    OrganisationSitemap,
+    StaticViewSitemapMedium
+)
 
 sitemaps = {
     'static': StaticViewSitemapHigh,
