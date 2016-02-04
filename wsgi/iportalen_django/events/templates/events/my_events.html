@@ -12,7 +12,7 @@
                 <tr>
                     <th colspan="2">Rubrik</th>
                     <th>Publicering</th>
-                    <th>Ändra</th>
+                    <th colspan="2">Ändra</th>
                     <th colspan="2">Ägare</th>
                     <th>Status</th>
                 </tr>
@@ -24,7 +24,7 @@
                     {% if event.replacing %}Ersätter: <a href="{{ event.replacing.get_absolute_url }}">{{ event.replacing.headline }}</a>{% endif %}
                     </td>
                     <td>{{ event.visible_from|date:"Y-m-d" }}</td>
-                    <td><a href="{% url "events:edit" event.pk %}"><button>Ändra</button></a></td>
+                    <td colspan="2"><a href="{% url "events:administer event" event.pk %}"><button>Administrera</button></a></td>
                     <td colspan="2">{{ event.user }}</td>
                     <td>
                         {% if event.status == "r" %}

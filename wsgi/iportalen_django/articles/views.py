@@ -5,13 +5,17 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db import transaction
+from django.utils.translation import ugettext as _
 from .models import Article
 from .forms import ArticleForm, RejectionForm
+from django.forms import modelformset_factory
+from .models import Article, OtherAttachment, ImageAttachment
+from .forms import ArticleForm, RejectionForm, AttachmentForm, ImageAttachmentForm
 from tags.models import Tag
 
 
 @login_required()
-def create_or_modify_article(request, pk=None):
+def create_or_modify_article(request, pk=None):  # TODO: Reduce complexity
     if pk:  # if pk is set we modify an existing article.
         duplicates = Article.objects.filter(replacing_id=pk)
         if duplicates:
@@ -20,8 +24,10 @@ def create_or_modify_article(request, pk=None):
                 links += "<a href='{0}'>{1}</a><br>".format(d.get_absolute_url(), d.headline)
             messages.error(
                 request,
-                "Det finns redan en ändrad version av det här arrangemanget! Är du säker på att du vill ändra den här?"
-                "<br>Följande ändringar är redan föreslagna: <br> {:}".format(links),
+                "".join([_("Det finns redan en ändrad version av det här arrangemanget!"
+                           " Är du säker på att du vill ändra den här?"
+                           "<br>Följande ändringar är redan föreslagna:"),
+                         " <br> {:}"]).format(links),
                 extra_tags='safe')
         article = get_object_or_404(Article, pk=pk)
         if not article.can_administer(request.user):
@@ -49,12 +55,12 @@ def create_or_modify_article(request, pk=None):
             article.save()
             form.save_m2m()
             if article.status == Article.DRAFT:
-                messages.success(request, "Dina ändringar har sparats i ett utkast.")
+                messages.success(request, _("Dina ändringar har sparats i ett utkast."))
             elif article.status == Article.BEING_REVIEWED:
-                messages.success(request, "Dina ändringar har skickats för granskning.")
-            return redirect('articles:by user')
+                messages.success(request, _("Dina ändringar har skickats för granskning."))
+            return redirect('articles:article', pk=article.pk)
         else:
-            messages.error(request, "Det uppstod ett fel, se detaljer nedan.")
+            messages.error(request, _("Det uppstod ett fel, se detaljer nedan."))
             return render(request, 'articles/article_form.html', {
                 'form': form,
             })
@@ -63,19 +69,116 @@ def create_or_modify_article(request, pk=None):
     })
 
 
+def upload_attachments(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    if not article.can_administer(request.user):
+        return HttpResponseForbidden()
+    AttachmentFormset = modelformset_factory(OtherAttachment,
+                                             form=AttachmentForm,
+                                             max_num=30,
+                                             extra=3,
+                                             can_delete=True,
+                                             )
+    if request.method == 'POST':
+        formset = AttachmentFormset(request.POST, request.FILES, queryset=OtherAttachment.objects.filter(article=article))
+        if formset.is_valid():
+            for entry in formset.cleaned_data:
+                if not entry == {}:
+                    if entry['DELETE']:
+                        entry['id'].delete()  # TODO: Remove the clear option from html-widget (or make it work).
+                    else:
+                        if entry['id']:
+                            attachment = entry['id']
+                        else:
+                            attachment = OtherAttachment(article=article)
+                            attachment.file_name = entry['file'].name
+                        attachment.file = entry['file']
+                        attachment.display_name = entry['display_name']
+                        attachment.modified_by = request.user
+                        attachment.save()
+            messages.success(request, 'Dina bilagor har sparats.')
+            return redirect('articles:manage attachments', article_pk=article.pk)
+        else:
+            return render(request, "articles/attachments.html", {
+                        'article': article,
+                        'formset': formset,
+                        })
+    formset = AttachmentFormset(queryset=OtherAttachment.objects.filter(article=article))
+    return render(request, "articles/attachments.html", {
+                        'article': article,
+                        'formset': formset,
+                        })
+
+
+def upload_attachments_images(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    if not article.can_administer(request.user):
+        return HttpResponseForbidden()
+    AttachmentFormset = modelformset_factory(ImageAttachment,
+                                             form=ImageAttachmentForm,
+                                             max_num=30,
+                                             extra=3,
+                                             can_delete=True,
+                                             )
+    if request.method == 'POST':
+        formset = AttachmentFormset(request.POST,
+                                    request.FILES,
+                                    queryset=ImageAttachment.objects.filter(article=article)
+                                    )
+        if formset.is_valid():
+            for entry in formset.cleaned_data:
+                if not entry == {}:
+                    if entry['DELETE']:
+                        entry['id'].delete()  # TODO: Remove the clear option from html-widget (or make it work).
+                    else:
+                        if entry['id']:
+                            attachment = entry['id']
+                        else:
+                            attachment = ImageAttachment(article=article)
+                        attachment.img = entry['img']
+                        attachment.caption = entry['caption']
+                        attachment.modified_by = request.user
+                        attachment.save()
+            messages.success(request, 'Dina bilagor har sparats.')
+            return redirect('articles:article', article.pk)
+        else:
+            return render(request, "articles/attach_images.html", {
+                        'article': article,
+                        'formset': formset,
+                        })
+    formset = AttachmentFormset(queryset=ImageAttachment.objects.filter(article=article))
+    return render(request, "articles/attach_images.html", {
+                        'article': article,
+                        'formset': formset,
+                        })
+
+
+def download_attachment(request, pk):
+    attachment = OtherAttachment.objects.get(pk=pk)
+    response = HttpResponse(attachment.file)
+    response['Content-Disposition'] = 'attachment; filename="{filename}"'.format(filename=attachment.file_name)
+    return response
+
+
 def single_article(request, pk):
     article = Article.objects.get(pk=pk)
-    if article.status == Article.APPROVED:
-        return render(request, 'articles/article.html', {'article': article})
-    elif request.user == article.user:
-        return render(request, 'articles/article.html', {'article': article})
+    if article.can_administer(request.user):
+        admin = True
+    else:
+        admin = False
+    if article.status == Article.APPROVED or admin:
+        attachments = article.otherattachment_set
+        image_attachments = article.imageattachment_set
+        return render(request, 'articles/article.html', {
+            'article': article,
+            'attachments': attachments,
+            'image_attachments': image_attachments,
+            'can_administer': admin})
     raise PermissionDenied
 
 
 def all_articles(request):
-    articles = Article.objects.filter(status=Article.APPROVED,
-                                      visible_from__lte=timezone.now(),
-                                      visible_to__gte=timezone.now())
+    articles = Article.objects.published()
     return render(request, 'articles/articles.html', {'articles': articles})
 
 
@@ -105,7 +208,7 @@ def unapprove_article(request, pk):
     if request.method == 'POST':
         if form.is_valid():
             if article.reject(request.user, form.cleaned_data['rejection_message']):
-                messages.success(request, "Artikeln har avslagits.")
+                messages.success(request, _("Artikeln har avslagits."))
                 return redirect('articles:unapproved')
             else:
                 raise PermissionDenied

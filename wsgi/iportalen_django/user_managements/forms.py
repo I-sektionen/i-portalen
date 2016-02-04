@@ -2,8 +2,7 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm, ReadOnly
 from django import forms
 from .models import IUser, BachelorProfile, MasterProfile
 from utils.validators import liu_id_validator
-
-__author__ = 'jonathan'
+from django.utils.translation import ugettext_lazy as _
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -44,8 +43,8 @@ class CustomUserCreationForm(UserCreationForm):
 
 class CustomUserChangeForm(UserChangeForm):
     password = ReadOnlyPasswordHashField(
-        label="Lösenord",
-        help_text="Ändra lösenordet med <a href=\'password/\'> det här formuläret</a>."
+        label=_("Lösenord"),
+        help_text=_("Ändra lösenordet med <a href=\'password/\'> det här formuläret</a>.")
     )
 
     class Meta(UserChangeForm.Meta):
@@ -77,22 +76,21 @@ class ChangeUserInfoForm(forms.ModelForm):
                   'start_year', 'klass', 'current_year', 'bachelor_profile', 'master_profile', 'phone',)
 
 
-
 class AddWhiteListForm(forms.Form):
     users = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 15, "placeholder": "abcde123\nfghij456\nklmno789\n..."}),
-        help_text="Ange ett liu-id per rad inga andra tecken är tillåtna."
+        help_text=_("Ange ett liu-id per rad inga andra tecken är tillåtna.")
 
     )
 
     def __init__(self, *args, **kwargs):
         super(AddWhiteListForm, self).__init__(*args, **kwargs)
-        self.fields['users'].label = "Lista med Liu-id:n att lägga till:"
+        self.fields['users'].label = _("Lista med Liu-id:n att lägga till:")
 
 
 class MembershipForm(forms.Form):
-    user = forms.CharField(label="Liu-id", validators=[liu_id_validator, ])
-    password = forms.CharField(label='Lösenord', widget=forms.PasswordInput)
+    user = forms.CharField(label=_("Liu-id"), validators=[liu_id_validator, ])
+    password = forms.CharField(label=_('Lösenord'), widget=forms.PasswordInput)
 
 
 class SegmentUsersForm(forms.Form):
@@ -120,20 +118,21 @@ class SegmentUsersForm(forms.Form):
                                       choices=IUser.CLASSES,
                                       required=False)
 
+
 class SelectUserFieldsForm(forms.Form):
     FIELDS = (
-        ('email', 'email'),
-        ('first_name', 'förnamn'),
-        ('last_name', 'efternamn'),
-        ('gender', 'kön'),
-        ('start_year', 'start år'),
-        ('current_year', 'nuvarande årskurs'),
-        ('bachelor_profile', 'teknisk inriktning'),
-        ('master_profile', 'master profil'),
-        ('city', 'stad'),
-        ('zip_code', 'postnummer'),
-        ('address', 'adress'),
-        ('allergies', 'allergier'),
+        ('email', _("email")),
+        ('first_name', _("förnamn")),
+        ('last_name', _("efternamn")),
+        ('gender', _("kön")),
+        ('start_year', _("start år")),
+        ('current_year', _("nuvarande årskurs")),
+        ('bachelor_profile', _("teknisk inriktning")),
+        ('master_profile', _("master profil")),
+        ('city', _("stad")),
+        ('zip_code', _("postnummer")),
+        ('address', _("adress")),
+        ('allergies', _("allergier")),
     )
     selected_fields = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                                 choices=FIELDS,

@@ -3,13 +3,14 @@
  */
 $(document).ready(function() {
   var menuToggle = $('#js-centered-navigation-mobile-menu').unbind();
-  $('#js-centered-navigation-menu').removeClass("show");
+  var js_center_nav_menu = $('#js-centered-navigation-menu');
+  js_center_nav_menu.removeClass("show");
 
   menuToggle.on('click', function(e) {
     e.preventDefault();
-    $('#js-centered-navigation-menu').slideToggle(function(){
-      if($('#js-centered-navigation-menu').is(':hidden')) {
-        $('#js-centered-navigation-menu').removeAttr('style');
+    js_center_nav_menu.slideToggle(function(){
+      if(js_center_nav_menu.is(':hidden')) {
+        js_center_nav_menu.removeAttr('style');
       }
     });
   });
