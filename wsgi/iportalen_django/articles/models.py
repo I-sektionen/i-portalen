@@ -3,7 +3,8 @@ from django.core.urlresolvers import reverse
 from django.db import models, transaction
 from django.utils import timezone
 from django.conf import settings
-from django.core.files.storage import default_storage as storage
+from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 from django.core.files.base import ContentFile
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
@@ -12,48 +13,40 @@ import io
 import os
 from tags.models import Tag
 from utils.validators import less_than_160_characters_validator
-from utils import time, image_processing
+from utils import time
 from organisations.models import Organisation
-
-# Internal:
-DRAFT = 'd'
-BEING_REVIEWED = 'b'
-REJECTED = 'r'
-APPROVED = 'a'
-STATUSES = (
-    (DRAFT, 'utkast'),
-    (BEING_REVIEWED, 'väntar på godkännande'),
-    (REJECTED, 'Avslaget'),
-    (APPROVED, 'Godkännt')
-)
-
 from .managers import ArticleManager
 
 
 class Article(models.Model):
-    DRAFT = DRAFT
-    BEING_REVIEWED = BEING_REVIEWED
-    REJECTED = REJECTED
-    APPROVED = APPROVED
-    STATUSES = STATUSES
+    DRAFT = 'd'
+    BEING_REVIEWED = 'b'
+    REJECTED = 'r'
+    APPROVED = 'a'
+    STATUSES = (
+        (DRAFT, _("Utkast")),
+        (BEING_REVIEWED, _("väntar på godkännande")),
+        (REJECTED, _("Avslaget")),
+        (APPROVED, _("Godkännt"))
+    )
     headline = models.CharField(
-        verbose_name='rubrik',
+        verbose_name=_("rubrik"),
         max_length=255,
-        help_text="Rubriken till artikeln")
+        help_text=_("Rubriken till artikeln"))
     lead = models.TextField(
-        verbose_name='ingress',
-        help_text="Ingressen är den text som syns i nyhetsflödet. Max 160 tecken.",
+        verbose_name=_("ingress"),
+        help_text=_("Ingressen är den text som syns i nyhetsflödet. Max 160 tecken."),
         validators=[less_than_160_characters_validator])
     body = models.TextField(
-        verbose_name='brödtext',
-        help_text="Brödtext syns när en artikel visas enskilt.")
+        verbose_name=_("brödtext"),
+        help_text=_("Brödtext syns när en artikel visas enskilt."))
     visible_from = models.DateTimeField(
-        verbose_name='publicering',
-        help_text="Publiceringsdatum",
+        verbose_name=_("publicering"),
+        help_text=_("Publiceringsdatum"),
         default=time.now)
     visible_to = models.DateTimeField(
-        verbose_name='avpublicering',
-        help_text="Avpubliceringsdatum",
+        verbose_name=_("avpublicering"),
+        help_text=_("Avpubliceringsdatum"),
         default=time.now_plus_one_month)
     status = models.CharField(
         max_length=1,
@@ -65,20 +58,20 @@ class Article(models.Model):
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        verbose_name='användare',
-        help_text="Användaren som skrivit texten",
+        verbose_name=_("användare"),
+        help_text=_("Användaren som skrivit texten"),
         null=True,
         on_delete=models.SET_NULL)
     tags = models.ManyToManyField(
         Tag,
-        verbose_name='tag',
+        verbose_name=_("tag"),
         blank=True,
-        help_text="Håll ner Ctrl för att markera flera.")
+        help_text=_("Håll ner Ctrl för att markera flera."))
 
-    attachment = models.FileField(  # This field should be removed. It is saved by legacy reasons.
-        verbose_name='Bifogad fil', # TODO: When no articles uses this field, remove it. (Tricky to migrate)
-        help_text="Bifogad fil för artikel",
-        upload_to="article_attachments",
+    attachment = models.FileField(
+        verbose_name=_("Bifogad fil"),  # This field should be removed. It is saved by legacy reasons.
+        help_text=_("Bifogad fil för artikel"),  # TODO: When no articles uses this field, remove it.(Tricky to migrate)
+        upload_to=_("article_attachments"),
         null=True,
         blank=True)
 
@@ -94,21 +87,21 @@ class Article(models.Model):
     organisations = models.ManyToManyField(
         Organisation,
         blank=True,
-        verbose_name='organisationer',
-        help_text="Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln."
-                  " Håll ner Ctrl för att markera flera.")
+        verbose_name=_("organisationer"),
+        help_text=_("Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln."
+                    " Håll ner Ctrl för att markera flera."))
     sponsored = models.BooleanField(
-        verbose_name='sponsrat',
+        verbose_name=_("sponsrat"),
         default=False,
-        help_text="Kryssa i om innehållet är sponsrat")
+        help_text=_("Kryssa i om innehållet är sponsrat"))
     objects = ArticleManager()  # Manager
 
     ###########################################################################
     # Meta data for model
     ###########################################################################
     class Meta:
-        verbose_name = "Artikel"
-        verbose_name_plural = "Artiklar"
+        verbose_name = _("Artikel")
+        verbose_name_plural = _("Artiklar")
         permissions = (('can_approve_article', 'Can approve article'),)
 
     ###########################################################################
@@ -128,7 +121,7 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         """Get url of object"""
-        return "/article/%i/" % self.id
+        return reverse('articles:article', kwargs={'pk': self.pk})
 
     ###########################################################################
     # Properties reachable in template
@@ -162,51 +155,54 @@ class Article(models.Model):
             return True
         return False
 
-    def get_new_status(self, draft):
+    def get_new_status(self, draft):  # TODO: Reduce complexity
         try:
             s_db = Article.objects.get(pk=self.pk)
-            if s_db.status == DRAFT:
+            if s_db.status == self.DRAFT:
                 if draft:
-                    return {"new": False, "status": DRAFT}
+                    return {"new": False, "status": self.DRAFT}
                 else:
-                    return {"new": False, "status": BEING_REVIEWED}
-            elif s_db.status == BEING_REVIEWED:
+                    return {"new": False, "status": self.BEING_REVIEWED}
+            elif s_db.status == self.BEING_REVIEWED:
                 if draft:
-                    return {"new": False, "status": DRAFT}
+                    return {"new": False, "status": self.DRAFT}
                 else:
-                    return {"new": False, "status": BEING_REVIEWED}
-            elif s_db.status == APPROVED:
+                    return {"new": False, "status": self.BEING_REVIEWED}
+            elif s_db.status == self.APPROVED:
                 if draft:
-                    return {"new": True, "status": DRAFT}
+                    return {"new": True, "status": self.DRAFT}
                 else:
-                    return {"new": True, "status": BEING_REVIEWED}
-            elif s_db.status == REJECTED:
+                    return {"new": True, "status": self.BEING_REVIEWED}
+            elif s_db.status == self.REJECTED:
                 if draft:
-                    return {"new": False, "status": DRAFT}
+                    return {"new": False, "status": self.DRAFT}
                 else:
-                    return {"new": False, "status": BEING_REVIEWED}
+                    return {"new": False, "status": self.BEING_REVIEWED}
         except:
             if draft:
-                return {"new": False, "status": DRAFT}
+                return {"new": False, "status": self.DRAFT}
             else:
-                return {"new": False, "status": BEING_REVIEWED}
+                return {"new": False, "status": self.BEING_REVIEWED}
 
     # Rejects an event from being published, attaches message if present.
     def reject(self, user, msg=None):
         if not user.has_perm('articles.can_approve_article'):
             return False
-        if self.status == BEING_REVIEWED:
+        if self.status == self.BEING_REVIEWED:
             if msg:
                 send_mail(
-                    "Din artikel har blivit avslagen.",
+                    ugettext("Din artikel har blivit avslagen."),
                     "",
                     settings.EMAIL_HOST_USER,
                     [self.user.email, ],
                     fail_silently=False,
-                    html_message="<p>Din artikel {head} har blivit avslagen med motiveringen:</p><p>{msg}".format(
-                        head=self.headline, msg=msg))
+                    html_message="".join(["<p>",
+                                          ugettext("Din artikel"),
+                                          " {head} ",
+                                          ugettext("har blivit avslagen med motiveringen:"),
+                                          "</p><p>{msg}</p>"]).format(head=self.headline, msg=msg))
             self.rejection_message = msg
-            self.status = REJECTED
+            self.status = self.REJECTED
             self.save()
             return True
         return False
@@ -214,8 +210,8 @@ class Article(models.Model):
     # Approves the event.
     @transaction.atomic
     def approve(self, user):
-        if self.status == BEING_REVIEWED and user.has_perm('articles.can_approve_article'):
-            self.status = APPROVED
+        if self.status == self.BEING_REVIEWED and user.has_perm('articles.can_approve_article'):
+            self.status = self.APPROVED
             self.save()
             if self.replacing:
 

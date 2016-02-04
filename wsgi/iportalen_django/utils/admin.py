@@ -8,7 +8,9 @@ class MyAdminSite(AdminSite):
         Removed check for is_staff.
         """
         return request.user.is_active
+
 iportalen_admin_site = MyAdminSite(name='iportalenadmin')
+
 
 class HiddenModelAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):

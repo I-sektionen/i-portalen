@@ -1,5 +1,4 @@
 from itertools import chain
-
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -8,6 +7,8 @@ from django.utils import timezone
 from .managers import YearManager
 from django.db import transaction
 from organisations.models import Organisation
+from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 
 PERIOD_CHOICES = [('VT1', 'VT1'), ('VT2', 'VT2'), ('HT1', 'HT1'), ('HT2', 'HT2')]
 
@@ -15,20 +16,22 @@ PERIOD_CHOICES = [('VT1', 'VT1'), ('VT2', 'VT2'), ('HT1', 'HT1'), ('HT2', 'HT2')
 class CourseEvaluationSettings(models.Model):
     organisation = models.ForeignKey(Organisation, null=True, blank=False, on_delete=models.SET_NULL)
     evaluate_course_text = models.TextField(null=True, blank=False)
-    mail_to_evaluator = models.TextField(null=True, blank=False, help_text="Följande variabler finns att tillgå: "
-                                                                           "{user} = Registrerade användarens förnamn, "
-                                                                           "{period} = namnet på perioden, "
-                                                                           "{year} = Året, "
-                                                                           "{course} = Kursens kod och namn")
-    mail_to_organisation = models.TextField(null=True, blank=False,
-                                            help_text="Följande variabler finns att tillgå: "
-                                                       "{user} = Registrerade användarens fullständiga namn, "
-                                                       "{user_email} = Registrerade användarens epost, "
-                                                       "{period} = namnet på perioden, "
-                                                       "{year} = Året, "
-                                                       "{course} = Kursens kod och namn, "
-                                                       "{reward} = Den valda belöningen")
-    mail_addresses_to_organisation = models.TextField(null=True, blank=False, help_text="En adress per rad.")
+    mail_to_evaluator = models.TextField(null=True, blank=False,
+                                         help_text=_("Följande variabler finns att tillgå: "
+                                                     "{user} = Registrerade användarens förnamn, "
+                                                     "{period} = namnet på perioden, "
+                                                     "{year} = Året, "
+                                                     "{course} = Kursens kod och namn"))
+    mail_to_organisation = models.TextField(null=True,
+                                            blank=False,
+                                            help_text=_("Följande variabler finns att tillgå: "
+                                                        "{user} = Registrerade användarens fullständiga namn, "
+                                                        "{user_email} = Registrerade användarens epost, "
+                                                        "{period} = namnet på perioden, "
+                                                        "{year} = Året, "
+                                                        "{course} = Kursens kod och namn, "
+                                                        "{reward} = Den valda belöningen"))
+    mail_addresses_to_organisation = models.TextField(null=True, blank=False, help_text=_("En adress per rad."))
     contact_email = models.EmailField(null=True, blank=False)
 
     def save(self, *args, **kwargs):
@@ -39,18 +42,18 @@ class CourseEvaluationSettings(models.Model):
 class Year(models.Model):
     YEAR_CHOICES = []
     for r in range(2014, (timezone.now().year+50)):
-        YEAR_CHOICES.append((r,r))
-    year = models.IntegerField(verbose_name="år", unique=True, choices=YEAR_CHOICES,
+        YEAR_CHOICES.append((r, r))
+    year = models.IntegerField(verbose_name=_("år"), unique=True, choices=YEAR_CHOICES,
                                default=timezone.now().year)
     vt1 = models.ForeignKey("Period", verbose_name="VT1", related_name="vt1", )
     vt2 = models.ForeignKey("Period", verbose_name="VT2", related_name="vt2")
     ht1 = models.ForeignKey("Period", verbose_name="HT1", related_name="ht1")
     ht2 = models.ForeignKey("Period", verbose_name="HT2", related_name="ht2")
     objects = YearManager()
-    
+
     class Meta:
-        verbose_name = 'år'
-        verbose_name_plural = 'år'
+        verbose_name = _("år")
+        verbose_name_plural = _("år")
 
     def __str__(self):
         return "{year}".format(year=self.year)
@@ -86,37 +89,38 @@ class Year(models.Model):
 
 
 class Course(models.Model):
-    code = models.CharField(verbose_name='kurskod', max_length=10, unique=True)
-    name = models.CharField(verbose_name='kursnamn', max_length=255, null=True, blank=True)
+    code = models.CharField(verbose_name=_("kurskod"), max_length=10, unique=True)
+    name = models.CharField(verbose_name=_("kursnamn"), max_length=255, null=True, blank=True)
 
     class Meta:
-        verbose_name = 'kurs'
-        verbose_name_plural = 'kurser'
+        verbose_name = _("kurs")
+        verbose_name_plural = _("kurser")
 
     def __str__(self):
         return "{code} - {name}".format(code=self.code, name=self.name)
 
 
 class Reward(models.Model):
-    name = models.CharField(verbose_name='namn', max_length=255, unique=True)
-    active = models.BooleanField(verbose_name='aktiv', default=False)
+    name = models.CharField(verbose_name=_("namn"), max_length=255, unique=True)
+    active = models.BooleanField(verbose_name=_("aktiv"), default=False)
+
     class Meta:
-        verbose_name = 'belöning'
-        verbose_name_plural = 'belöningar'
+        verbose_name = _("belöning")
+        verbose_name_plural = _("belöningar")
 
     def __str__(self):
         return "{name}".format(name=self.name)
 
 
 class Period(models.Model):
-    start_date = models.DateField(verbose_name="startdatum", help_text="startdatum för perioden")
-    end_date = models.DateField(verbose_name="slutdatum", help_text="slutdatum för perioden")
-    name = models.CharField(verbose_name="namn", help_text="Ex, VT1", choices=PERIOD_CHOICES, max_length=255)
-    courses = models.ManyToManyField(Course, verbose_name="kurser", help_text="kurser att utvärdera")
+    start_date = models.DateField(verbose_name=_("startdatum"), help_text=_("startdatum för perioden"))
+    end_date = models.DateField(verbose_name=_("slutdatum"), help_text=_("slutdatum för perioden"))
+    name = models.CharField(verbose_name=_("namn"), help_text=_("Ex, VT1"), choices=PERIOD_CHOICES, max_length=255)
+    courses = models.ManyToManyField(Course, verbose_name=_("kurser"), help_text=_("kurser att utvärdera"))
 
     class Meta:
-        verbose_name = 'läsperiod'
-        verbose_name_plural = 'läsperioder'
+        verbose_name = _("läsperiod")
+        verbose_name_plural = _("läsperioder")
 
     def __str__(self):
         return "{name} {start} - {end}".format(name=self.name, start=self.start_date, end=self.end_date)
@@ -140,7 +144,7 @@ class Period(models.Model):
     def clean(self):
         super(Period, self).clean()
         if self.start_date > self.end_date:
-            raise ValidationError('End time must be set after start time.')
+            raise ValidationError(_("End time must be set after start time."))
 
         periods = Period.objects.all()
         if self.pk:
@@ -148,10 +152,12 @@ class Period(models.Model):
         for period in periods:
             if self.start_date <= period.start_date:  # Före
                 if self.end_date >= period.end_date:
-                    raise ValidationError('The periods are end- and start times are invalid. They are overlapping. before')
+                    raise ValidationError(
+                        _("The periods are end- and start times are invalid. They are overlapping. before"))
             else:  # Efter
                 if self.start_date <= period.end_date:
-                    raise ValidationError("The periods are end- and start times are invalid. They are overlapping. after")
+                    raise ValidationError(
+                        _("The periods are end- and start times are invalid. They are overlapping. after"))
 
     def save(self, *args, **kwargs):
 
@@ -185,16 +191,16 @@ class Period(models.Model):
 
 
 class Evaluation(models.Model):
-    course = models.ForeignKey(Course, verbose_name="kurs", on_delete=models.SET_NULL, null=True, blank=False)
-    reward = models.ForeignKey(Reward, verbose_name="belönig", on_delete=models.SET_NULL, null=True, blank=False)
-    period = models.ForeignKey(Period, verbose_name="läsperiod", on_delete=models.SET_NULL, null=True, blank=False)
-    user = models.ForeignKey(IUser, verbose_name="användare", null=False, blank=False)
-    evaluated = models.BooleanField(verbose_name="genomförd", default=False)
+    course = models.ForeignKey(Course, verbose_name=_("kurs"), on_delete=models.SET_NULL, null=True, blank=False)
+    reward = models.ForeignKey(Reward, verbose_name=_("belönig"), on_delete=models.SET_NULL, null=True, blank=False)
+    period = models.ForeignKey(Period, verbose_name=_("läsperiod"), on_delete=models.SET_NULL, null=True, blank=False)
+    user = models.ForeignKey(IUser, verbose_name=_("användare"), null=False, blank=False)
+    evaluated = models.BooleanField(verbose_name=_("genomförd"), default=False)
 
     class Meta:
         unique_together = (('course', 'period'),)  # Make sure only one booking on one data and timeslot.
-        verbose_name = 'kursutvärderare'
-        verbose_name_plural = 'kursutvärderare'
+        verbose_name = _("kursutvärderare")
+        verbose_name_plural = _("kursutvärderare")
 
     def __str__(self):
         return "{course}, {period}, {user}".format(

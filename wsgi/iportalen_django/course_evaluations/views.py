@@ -6,10 +6,11 @@ from django.db import transaction
 from django.forms import modelformset_factory, formset_factory
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from course_evaluations.forms import EvaluationForm, PeriodForm, YearForm, CourseForm, RewardForm
+from course_evaluations.forms import EvaluationForm, PeriodForm, YearForm, CourseForm
 from .models import Period, Course, Evaluation, Reward, Year, CourseEvaluationSettings
 from utils.markdown import markdown_to_html
 from django.conf import settings as django_settings
+from django.utils.translation import ugettext as _
 
 @login_required
 def evaluate_course(request):
@@ -21,10 +22,10 @@ def evaluate_course(request):
     try:
         p = Period.objects.get(start_date__lte=timezone.now(), end_date__gte=timezone.now())
     except Period.DoesNotExist:
-        messages.error(request, "Ingen anmälan till kursutvärderingar är öppen!")
+        messages.error(request, _("Ingen anmälan till kursutvärderingar är öppen!"))
         return render(request, "course_evaluations/evaluate_course.html", {"form": None})
     except Period.MultipleObjectsReturned:
-        messages.error(request, "Flera utvärderingsperioder är aktiva samtidigt!")
+        messages.error(request, _("Flera utvärderingsperioder är aktiva samtidigt!"))
         return render(request, "course_evaluations/evaluate_course.html", {"form": None})
 
     rewards = Reward.objects.all()
@@ -38,17 +39,18 @@ def evaluate_course(request):
             try:
                 evaluation.full_clean()
             except ValidationError:
-                messages.error(request, "Valideringsfel! Detta beror förmodligen på att kursen du valt är redan har blivit tagen för utvärdering.")
+                messages.error(request, _("Valideringsfel! Detta beror förmodligen på att kursen "
+                                          "du valt är redan har blivit tagen för utvärdering."))
                 form = EvaluationForm(None, period=p)
                 return render(request, "course_evaluations/evaluate_course.html", {"form": form})
             evaluation.save()
-            subject = "Viktig information till dig som är utvärderingsansvarig!!"
+            subject = _("Viktig information till dig som är utvärderingsansvarig!!")
             body = markdown_to_html(settings.mail_to_evaluator).format(
                 user=request.user.first_name.capitalize(),
                 period=p.name,
                 year=p.get_year,
                 course=evaluation.course)
-            subject_org = "Viktig information till dig som är utvärderingsansvarig!!"
+            subject_org = _("Viktig information till dig som är utvärderingsansvarig!!")
             body_org = markdown_to_html(settings.mail_to_organisation).format(
                 user=request.user.get_full_name(),
                 user_email=request.user.email,
@@ -88,6 +90,7 @@ def admin_year(request, year):
         year.ht2.update_courses_from_list(request.POST.getlist('courses_ht2'))
 
     return render(request, "course_evaluations/admin/year.html", {"year": year, "courses": courses})
+
 
 @login_required
 @permission_required('course_evaluations.add_course')
@@ -166,7 +169,7 @@ def create_year(request):
                 ht1.clean()
                 ht2.clean()
             except ValidationError:
-                form.add_error('vt1_start', 'VT1 överlappar med föregående år! var vänlig sätt ett annat datum!')
+                form.add_error('vt1_start', _("VT1 överlappar med föregående år! var vänlig sätt ett annat datum!"))
                 return render(request, "course_evaluations/admin/create_year.html", {"form": form})
             vt1.save()
             vt2.save()
@@ -207,6 +210,7 @@ def edit_period(request, pk):
 
     return render(request, "course_evaluations/admin/edit_period.html", {'period': period, "form": form})
 
+
 @login_required
 @transaction.atomic
 @permission_required('course_evaluations.add_course')
@@ -244,7 +248,7 @@ def create_courses(request):
         if formset.is_valid():
             for entry in formset.cleaned_data:
                 if not entry == {}:
-                    c = Course.objects.create(code=entry['code'], name=entry['name'])
+                    Course.objects.create(code=entry['code'], name=entry['name'])
             formset = CourseFormSet()
             return render(request, "course_evaluations/admin/add_courses.html", {"formset": formset, "courses": courses})
         else:

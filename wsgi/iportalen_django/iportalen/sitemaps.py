@@ -18,7 +18,6 @@ class StaticViewSitemapLow(sitemaps.Sitemap):
         return reverse(obj)
 
 
-
 class StaticViewSitemapMedium(sitemaps.Sitemap):
     priority = 0.6
     changefreq = 'monthly'
@@ -35,7 +34,7 @@ class StaticViewSitemapHigh(sitemaps.Sitemap):
     changefreq = 'daily'
 
     def items(self):
-        return ['news feed', 'events:calender']  # Add static url names here (that should be indexed by search engines)!
+        return ['news feed', 'events:calender']  # Add static url names here (that should be indexed by search engines)
 
     def location(self, obj):
         return reverse(obj)
@@ -48,7 +47,8 @@ class EventSitemap(sitemaps.Sitemap):
     def items(self):
         return Event.objects.published()
 
-    def lastmod(self, obj):
+    @staticmethod
+    def lastmod(obj):
         return obj.modified
 
 
@@ -59,7 +59,8 @@ class ArticleSitemap(sitemaps.Sitemap):
     def items(self):
         return Article.objects.published()
 
-    def lastmod(self, obj):
+    @staticmethod
+    def lastmod(obj):
         return obj.modified
 
 

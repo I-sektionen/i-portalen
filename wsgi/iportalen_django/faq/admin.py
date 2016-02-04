@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Question, Topic, FAQ
 from utils.admin import iportalen_admin_site
 
+
 class FAQAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super(FAQAdmin, self).get_queryset(request)
@@ -12,7 +13,6 @@ class FAQAdmin(admin.ModelAdmin):
 
 
 class TopicAdmin(admin.ModelAdmin):
-    #prepopulated_fields = {'slug':('name',)}
 
     def get_queryset(self, request):
         qs = super(TopicAdmin, self).get_queryset(request)
@@ -41,7 +41,7 @@ class QuestionAdmin(admin.ModelAdmin):
     list_editable = ['sort_order', 'status']
 
     def get_form(self, request, obj=None, **kwargs):
-        self.exclude = ("created_by", "updated_by", "created_on", "updated_on", "slug" )
+        self.exclude = ("created_by", "updated_by", "created_on", "updated_on", "slug")
         form = super(QuestionAdmin, self).get_form(request, obj, **kwargs)
         return form
 
@@ -52,17 +52,17 @@ class QuestionAdmin(admin.ModelAdmin):
         qs = qs.filter(topic__faq__organisations__in=request.user.get_organisations())
         return qs
 
-    def save_model(self, request, obj, form, change): 
-        '''
+    def save_model(self, request, obj, form, change):
+        """
         Update created-by / modified-by fields.
-        
-        The date fields are upadated at the model layer, but that's not got
+
+        The date fields are updated at the model layer, but that's not got
         access to the user.
-        '''
+        """
         # If the object's new update the created_by field.
         if not change:
             obj.created_by = request.user
-        
+
         # Either way update the updated_by field.
         obj.updated_by = request.user
 
@@ -76,7 +76,7 @@ class QuestionAdmin(admin.ModelAdmin):
         if db_field.name == "topic":
             kwargs["queryset"] = Topic.objects.filter(faq__organisations__in=request.user.get_organisations())
         return super(QuestionAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-        
+
 iportalen_admin_site.register(Question, QuestionAdmin)
 iportalen_admin_site.register(Topic, TopicAdmin)
 iportalen_admin_site.register(FAQ, FAQAdmin)

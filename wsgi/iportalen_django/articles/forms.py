@@ -1,11 +1,11 @@
 from django.utils import timezone
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django import forms
 from .models import Article, OtherAttachment, ImageAttachment
 
 
 class ArticleForm(forms.ModelForm):
-    draft = forms.BooleanField(label="Utkast", required=False, help_text="Sparar utan att publicera")
+    draft = forms.BooleanField(label=_("Utkast"), required=False, help_text=_("Sparar utan att publicera"))
 
     class Meta:
         model = Article
@@ -38,13 +38,13 @@ class ArticleForm(forms.ModelForm):
         if visible_to:
             if visible_from:
                 if visible_to < timezone.now():
-                    self.add_error('visible_to', "Datumet måste vara före dagens datum.")
+                    self.add_error('visible_to', _("Datumet måste vara före dagens datum."))
             if visible_to < visible_from:
-                self.add_error('visible_to', "Datumet måste vara före publiceringsdatumet.")
+                self.add_error('visible_to', _("Datumet måste vara före publiceringsdatumet."))
 
 
 class RejectionForm(forms.Form):
-    rejection_message = forms.CharField(label="Avslagsmeddelande", widget=forms.Textarea())
+    rejection_message = forms.CharField(label=_("Avslagsmeddelande"), widget=forms.Textarea())
 
 
 class AttachmentForm(forms.ModelForm):

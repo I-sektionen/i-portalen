@@ -23,7 +23,3 @@ class ArticleTests (TestCase):
                     )
 
         self.assertEqual(a.headline, "headline")
-
-
-
-
