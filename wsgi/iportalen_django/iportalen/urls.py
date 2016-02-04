@@ -16,13 +16,15 @@ from events import urls as event_urls
 from organisations import urls as org_urls
 from bookings import urls as booking_urls
 from course_evaluations import urls as course_urls
-from .sitemaps import StaticViewSitemapHigh, EventSitemap, ArticleSitemap, StaticViewSitemapLow
+from .sitemaps import StaticViewSitemapHigh, EventSitemap, ArticleSitemap, StaticViewSitemapLow, OrganisationSitemap, StaticViewSitemapMedium
 
 sitemaps = {
     'static': StaticViewSitemapHigh,
     'event': EventSitemap,
     'article': ArticleSitemap,
-    'static_low': StaticViewSitemapLow
+    'organisations': OrganisationSitemap,
+    'static_low': StaticViewSitemapLow,
+    'static_mid': StaticViewSitemapMedium,
 }
 
 urlpatterns = [
