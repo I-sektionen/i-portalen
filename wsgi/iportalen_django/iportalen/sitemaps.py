@@ -18,6 +18,7 @@ class StaticViewSitemapLow(sitemaps.Sitemap):
         return reverse(obj)
 
 
+
 class StaticViewSitemapMedium(sitemaps.Sitemap):
     priority = 0.6
     changefreq = 'monthly'

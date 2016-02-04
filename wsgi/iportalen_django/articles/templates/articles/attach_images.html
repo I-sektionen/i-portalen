@@ -14,6 +14,7 @@
                 {% for form in formset %}
                     {% csrf_token %}
                     <tr>
+                    {{ form.errors }}
                         <td>{{ form.img }}</td>
                         <td>{{ form.caption }}</td>
                         {% if formset.can_delete %}
