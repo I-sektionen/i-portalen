@@ -16,7 +16,7 @@
         <p>Om du väljer att navigera ifrån den här sidan utan att bli medlem eller väljer att inte bli medlem kommer du inte kunna logga in på iportalen igen.</p>
         <p>Enligt PUL måste vi be dig samtycka till att vi behandlar lämnade uppgifter om dig i egenskap av medlem i Sektionen för Industriell ekonomi vid Linköpings universitet. Vi ber dig därför att läsa igenom de fullständigavillkoren för PUL. <a href="{% url 'pul' %}" target="_blank">Till användarvillkoren angående PUL.</a></p>
 
-        <form action="{% url "become member" %}" method="post">
+        <form action="{% url "user_management:become member" %}" method="post">
             {% csrf_token %}
             {{ form }}
             <div class="button-group">

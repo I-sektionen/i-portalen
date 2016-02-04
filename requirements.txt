@@ -8,3 +8,4 @@ boto
 urllib3
 django_extensions
 pytz
+Pillow >= 2.0.0

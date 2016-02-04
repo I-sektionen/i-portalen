@@ -364,8 +364,8 @@ else
             // "paragraphs" that are wrapped in non-block-level tags, such as anchors,
             // phrase emphasis, and spans. The list of tags we're looking for is
             // hard-coded:
-            var block_tags_a = "p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math|ins|del"
-            var block_tags_b = "p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math"
+            var block_tags_a = "p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math|ins|del";
+            var block_tags_b = "p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math";
 
             // First, look for nested blocks, e.g.:
             //   <div>
@@ -487,7 +487,7 @@ else
             return hashBlock(m1);
         }
         
-        var blockGamutHookCallback = function (t) { return _RunBlockGamut(t); }
+        var blockGamutHookCallback = function (t) { return _RunBlockGamut(t); };
 
         function _RunBlockGamut(text, doNotUnhash, doNotCreateParagraphs) {
             //
@@ -922,7 +922,7 @@ else
                     var list_type = (m2.search(/[*+-]/g) > -1) ? "ul" : "ol";
                     var first_number;
                     if (list_type === "ol")
-                        first_number = parseInt(m2, 10)
+                        first_number = parseInt(m2, 10);
 
                     var result = _ProcessListItems(list, list_type, isInsideParagraphlessListItem);
 
@@ -947,7 +947,7 @@ else
 
                     var first_number;
                     if (list_type === "ol")
-                        first_number = parseInt(m3, 10)
+                        first_number = parseInt(m3, 10);
 
                     var result = _ProcessListItems(list, list_type);
                     var opening = "<" + list_type;
@@ -1394,7 +1394,7 @@ else
                     str = _RunSpanGamut(str);
                     str = str.replace(/^([ \t]*)/g, doNotCreateParagraphs ? "" : "<p>");
                     if (!doNotCreateParagraphs)
-                        str += "</p>"
+                        str += "</p>";
                     grafsOut.push(str);
                 }
 
@@ -1562,7 +1562,7 @@ else
             text = text.replace(/^(\t|[ ]{1,4})/gm, "~0"); // attacklab: g_tab_width
 
             // attacklab: clean up hack
-            text = text.replace(/~0/g, "")
+            text = text.replace(/~0/g, "");
 
             return text;
         }
@@ -1592,7 +1592,7 @@ else
 
         function attributeSafeUrl(url) {
             url = attributeEncode(url);
-            url = escapeCharacters(url, "*_:()[]")
+            url = escapeCharacters(url, "*_:()[]");
             return url;
         }
 
@@ -1721,7 +1721,7 @@ else
         if (options.helpButton) {
             options.strings.help = options.strings.help || options.helpButton.title;
         }
-        var getString = function (identifier) { return options.strings[identifier] || defaultsStrings[identifier]; }
+        var getString = function (identifier) { return options.strings[identifier] || defaultsStrings[identifier]; };
 
         idPostfix = idPostfix || "";
 
@@ -1733,7 +1733,7 @@ else
                                                   * image url (or null if the user cancelled). If this hook returns false, the default dialog will be used.
                                                   */
 
-        this.getConverter = function () { return markdownConverter; }
+        this.getConverter = function () { return markdownConverter; };
 
         var that = this,
             panels;
@@ -1768,7 +1768,7 @@ else
             forceRefresh();
         };
 
-    }
+    };
 
     // before: contains all the text in the input box BEFORE the selection.
     // after: contains all the text in the input box AFTER the selection.
@@ -1829,7 +1829,7 @@ else
         if (remove) {
             beforeReplacer = afterReplacer = "";
         } else {
-            beforeReplacer = function (s) { that.before += s; return ""; }
+            beforeReplacer = function (s) { that.before += s; return ""; };
             afterReplacer = function (s) { that.after = s + that.after; return ""; }
         }
 
@@ -1922,8 +1922,7 @@ else
         this.buttonBar = doc.getElementById("wmd-button-bar" + postfix);
         this.preview = doc.getElementById("wmd-preview" + postfix);
         this.input = doc.getElementById("wmd-input" + postfix);
-    };
-
+    }
     // Returns true if the DOM element is visible, false if it's hidden.
     // Checks if display is anything other than none.
     util.isVisible = function (elem) {
@@ -2004,7 +2003,7 @@ else
         pattern = pre + pattern + post;
 
         return new re(pattern, flags);
-    }
+    };
 
     // UNFINISHED
     // The assignment in the while loop makes jslint cranky.
@@ -2112,10 +2111,8 @@ else
         };
 
         this.canRedo = function () {
-            if (undoStack[stackPtr + 1]) {
-                return true;
-            }
-            return false;
+            return !!undoStack[stackPtr + 1];
+
         };
 
         // Removes the last state and restores it.
@@ -2221,7 +2218,7 @@ else
                 if (window.event) {
                     window.event.returnValue = false;
                 }
-                return;
+
             }
         };
 
@@ -2322,7 +2319,7 @@ else
                 this.text = inputArea.value;
             }
 
-        }
+        };
 
         // Sets the selected text in the input box after we've performed an
         // operation.
@@ -2439,8 +2436,7 @@ else
             this.scrollTop = chunk.scrollTop;
         };
         this.init();
-    };
-
+    }
     function PreviewManager(converter, panels, previewRefreshCallback) {
 
         var managerObj = this;
@@ -2574,11 +2570,11 @@ else
                 parent.appendChild(preview);
             else
                 parent.insertBefore(preview, sibling);
-        }
+        };
 
         var nonSuckyBrowserPreviewSet = function (text) {
             panels.preview.innerHTML = text;
-        }
+        };
 
         var previewSetter;
 
@@ -2634,8 +2630,7 @@ else
         };
 
         init();
-    };
-
+    }
     // Creates the background behind the hyperlink text entry box.
     // And download dialog
     // Most of this has been moved to CSS but the div creation and
@@ -2995,8 +2990,7 @@ else
             if (button.execute) {
                 button.execute(undoManager);
             }
-        };
-
+        }
         function setupButton(button, isEnabled) {
 
             var normalYShift = "0px";
@@ -3141,8 +3135,7 @@ else
                 setupButton(buttons.undo, undoManager.canUndo());
                 setupButton(buttons.redo, undoManager.canRedo());
             }
-        };
-
+        }
         this.setUndoRedoButtonStates = setUndoRedoButtonStates;
 
     }
@@ -3230,7 +3223,7 @@ else
             chunk.after = markup + chunk.after;
         }
 
-        return;
+
     };
 
     commandProto.stripLinkDefs = function (text, defsToAdd) {
@@ -3308,7 +3301,7 @@ else
         
         var okayToModify = function(offset) {
             return rendered.indexOf(testlink + offset + "/unicorn") !== -1;
-        }
+        };
         
         var addDefNumber = function (def) {
             refNumber++;
@@ -3402,7 +3395,7 @@ else
                         break;
                 }
                 return encodeURI(match);
-            })
+            });
             
             if (title) {
                 title = title.trim ? title.trim() : title.replace(/^\s*/, "").replace(/\s*$/, "");
@@ -3869,7 +3862,6 @@ else
         }
         else {
             chunk.startTag = "# ";
-            chunk.selection = chunk.selection;
             chunk.endTag = "\n\n";
             return;
         }
@@ -3940,7 +3932,7 @@ else
         converter.hooks.chain("postConversion", sanitizeHtml);
         converter.hooks.chain("postConversion", balanceTags);
         return converter;
-    }
+    };
 
     function sanitizeHtml(html) {
         return html.replace(/<[^>]*>?/gi, sanitizeTag);
@@ -4038,7 +4030,8 @@ else
  */
 function cloneMore(selector, type) {
     var newElement = $(selector).clone(true);
-    var total = $('#id_' + type + '-TOTAL_FORMS').val();
+    var form_id = $('#id_' + type + '-TOTAL_FORMS');
+    var total = form_id.val();
     newElement.find(':input').each(function() {
         var name = $(this).attr('name').replace('-' + (total-1) + '-','-' + total + '-');
         var id = 'id_' + name;
@@ -4049,15 +4042,14 @@ function cloneMore(selector, type) {
         $(this).attr('for', newFor);
     });
     total++;
-    $('#id_' + type + '-TOTAL_FORMS').val(total);
+    form_id.val(total);
     $(selector).after(newElement);
 }
 ;/**
  * Created by isac on 2015-11-22.
  */
 function generate_booking_form(pk, weeks_forward){
-    console.log(weeks_forward);
-    jQuery.get('booking/book/'+pk+"/api/"+weeks_forward+"/" , function( data ){
+    jQuery.get('/booking/book/'+pk+"/api/"+weeks_forward+"/" , function( data ){
         var $element = jQuery(".booking");
         $element.data("max_number_of_slots_in_booking", data.bookable.max_number_of_slots_in_booking);
         var bookings = data.bookings;
@@ -4283,13 +4275,14 @@ var MOBILE_BREAKPOINT = 900;;/**
  */
 $(document).ready(function() {
   var menuToggle = $('#js-centered-navigation-mobile-menu').unbind();
-  $('#js-centered-navigation-menu').removeClass("show");
+  var js_center_nav_menu = $('#js-centered-navigation-menu');
+  js_center_nav_menu.removeClass("show");
 
   menuToggle.on('click', function(e) {
     e.preventDefault();
-    $('#js-centered-navigation-menu').slideToggle(function(){
-      if($('#js-centered-navigation-menu').is(':hidden')) {
-        $('#js-centered-navigation-menu').removeAttr('style');
+    js_center_nav_menu.slideToggle(function(){
+      if(js_center_nav_menu.is(':hidden')) {
+        js_center_nav_menu.removeAttr('style');
       }
     });
   });
@@ -4499,14 +4492,15 @@ catch(err) {
     e.stopPropagation();
   });
 };;$(document).ready(function() {
+  var js_nav_menu = $('#js-navigation-menu');
   var menuToggle = $('#js-mobile-menu').unbind();
-  $('#js-navigation-menu').removeClass("show");
+  js_nav_menu.removeClass("show");
 
   menuToggle.on('click', function(e) {
     e.preventDefault();
-    $('#js-navigation-menu').slideToggle(function(){
-      if($('#js-navigation-menu').is(':hidden')) {
-        $('#js-navigation-menu').removeAttr('style');
+    js_nav_menu.slideToggle(function(){
+      if(js_nav_menu.is(':hidden')) {
+        js_nav_menu.removeAttr('style');
       }
     });
   });
@@ -4831,8 +4825,8 @@ var sliding_panel = function (){
  */
 function speaker_list_admin(url){
     init_csrf();
-    var input_field = $("#id_speech_nr")
-    var s_list = $("#list ol");
+    var input_field = $("#id_speech_nr");
+    var s_list = $("#list").find("ol");
     $("#post").click(function(e) {
         e.preventDefault();
         var data = {
@@ -4921,7 +4915,7 @@ function speaker_list_admin(url){
 function speaker_list_view(url) {
     init_csrf();
 
-    var s_list = $("#speaker_list ol");
+    var s_list = $("#speaker_list").find("ol");
     var t=setInterval(reload_list, 1000);
     function reload_list() {
 
@@ -4951,7 +4945,8 @@ function speaker_list_view(url) {
  * Created by isac on 2016-01-17.
  */
 $(document).ready(function () {
-  $('.accordion-tabs').each(function(index) {
+    var tabs = $('.accordion-tabs');
+  tabs.each(function(index) {
       //The original code line from bourbon refils:
       //$(this).children('li').first().children('a').addClass('is-active').next().addClass('is-open').show();
       //Was changed to this. (This searches for is-active and activates this tab.
@@ -4964,7 +4959,7 @@ $(document).ready(function () {
       //End changes.
 
   });
-  $('.accordion-tabs').on('click', 'li > a.tab-link', function(event) {
+  tabs.on('click', 'li > a.tab-link', function(event) {
     if (!$(this).hasClass('is-active')) {
       event.preventDefault();
       var accordionTabs = $(this).closest('.accordion-tabs');
@@ -4977,4 +4972,12 @@ $(document).ready(function () {
       event.preventDefault();
     }
   });
-});
+});;/*! vTicker 1.15
+ http://richhollis.github.com/vticker/ | http://richhollis.github.com/vticker/license/ | based on Jubgits vTicker http://www.jugbit.com/jquery-vticker-vertical-news-ticker/ */
+(function(d){var n={speed:700,pause:4E3,showItems:1,mousePause:!0,height:0,animate:!0,margin:0,padding:0,startPaused:!1},c={moveUp:function(a,b){c.animate(a,b,"up")},moveDown:function(a,b){c.animate(a,b,"down")},animate:function(a,b,e){var c=a.itemHeight,f=a.options,k=a.element,g=k.children("ul"),l="up"===e?"li:first":"li:last";k.trigger("vticker.beforeTick");var m=g.children(l).clone(!0);0<f.height&&(c=g.children("li:first").height());c+=f.margin+2*f.padding;"down"===e&&g.css("top","-"+c+"px").prepend(m);
+if(b&&b.animate){if(a.animating)return;a.animating=!0;g.animate("up"===e?{top:"-="+c+"px"}:{top:0},f.speed,function(){d(g).children(l).remove();d(g).css("top","0px");a.animating=!1;k.trigger("vticker.afterTick")})}else g.children(l).remove(),g.css("top","0px"),k.trigger("vticker.afterTick");"up"===e&&m.appendTo(g)},nextUsePause:function(){var a=d(this).data("state"),b=a.options;a.isPaused||2>a.itemCount||f.next.call(this,{animate:b.animate})},startInterval:function(){var a=d(this).data("state"),b=
+this;a.intervalId=setInterval(function(){c.nextUsePause.call(b)},a.options.pause)},stopInterval:function(){var a=d(this).data("state");a&&(a.intervalId&&clearInterval(a.intervalId),a.intervalId=void 0)},restartInterval:function(){c.stopInterval.call(this);c.startInterval.call(this)}},f={init:function(a){f.stop.call(this);var b=jQuery.extend({},n);a=d.extend(b,a);var b=d(this),e={itemCount:b.children("ul").children("li").length,itemHeight:0,itemMargin:0,element:b,animating:!1,options:a,isPaused:a.startPaused?
+!0:!1,pausedByCode:!1};d(this).data("state",e);b.css({overflow:"hidden",position:"relative"}).children("ul").css({position:"absolute",margin:0,padding:0}).children("li").css({margin:a.margin,padding:a.padding});isNaN(a.height)||0===a.height?(b.children("ul").children("li").each(function(){var a=d(this);a.height()>e.itemHeight&&(e.itemHeight=a.height())}),b.children("ul").children("li").each(function(){d(this).height(e.itemHeight)}),b.height((e.itemHeight+(a.margin+2*a.padding))*a.showItems+a.margin)):
+b.height(a.height);var h=this;a.startPaused||c.startInterval.call(h);a.mousePause&&b.bind("mouseenter",function(){!0!==e.isPaused&&(e.pausedByCode=!0,c.stopInterval.call(h),f.pause.call(h,!0))}).bind("mouseleave",function(){if(!0!==e.isPaused||e.pausedByCode)e.pausedByCode=!1,f.pause.call(h,!1),c.startInterval.call(h)})},pause:function(a){var b=d(this).data("state");if(b){if(2>b.itemCount)return!1;b.isPaused=a;b=b.element;a?(d(this).addClass("paused"),b.trigger("vticker.pause")):(d(this).removeClass("paused"),
+b.trigger("vticker.resume"))}},next:function(a){var b=d(this).data("state");if(b){if(b.animating||2>b.itemCount)return!1;c.restartInterval.call(this);c.moveUp(b,a)}},prev:function(a){var b=d(this).data("state");if(b){if(b.animating||2>b.itemCount)return!1;c.restartInterval.call(this);c.moveDown(b,a)}},stop:function(){d(this).data("state")&&c.stopInterval.call(this)},remove:function(){var a=d(this).data("state");a&&(c.stopInterval.call(this),a=a.element,a.unbind(),a.remove())}};d.fn.vTicker=function(a){if(f[a])return f[a].apply(this,
+Array.prototype.slice.call(arguments,1));if("object"!==typeof a&&a)d.error("Method "+a+" does not exist on jQuery.vTicker");else return f.init.apply(this,arguments)}})(jQuery);

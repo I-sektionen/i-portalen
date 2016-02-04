@@ -1,18 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.template.loader_tags import register
 from organisations.models import Organisation
-
-
-@register.assignment_tag
-def get_all_organisations():
-    organisations = Organisation.objects.all().order_by('-name')
-    return organisations
-
-
-@register.assignment_tag
-def get_organisation(pk):
-    organisation = Organisation.objects.get(pk=pk)
-    return organisation
+from django.utils.translation import ugettext as _
 
 
 @register.assignment_tag
@@ -38,6 +27,7 @@ def get_child_organisations(org_pk):
 def can_edit_organisation(user, org):
     return org.can_edit(user)
 
+
 @register.assignment_tag
 def get_organisation_leader(org):
     try:
@@ -45,11 +35,12 @@ def get_organisation_leader(org):
     except:
         return None
 
+
 @register.assignment_tag
 def get_menu_choices_organisation(user):
     menu_choices = []
 
     if user.has_perm("organisations.add_organisation"):
-        menu_choices.append(("Lägg till en organisation", reverse('organisations:create')))
+        menu_choices.append((_("Lägg till en organisation"), reverse('organisations:create')))
 
     return menu_choices

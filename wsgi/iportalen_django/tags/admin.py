@@ -1,4 +1,3 @@
-from django.contrib import admin
 from utils.admin import HiddenModelAdmin, iportalen_admin_site
 from .models import Tag
 

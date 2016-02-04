@@ -3,8 +3,8 @@
  */
 function speaker_list_admin(url){
     init_csrf();
-    var input_field = $("#id_speech_nr")
-    var s_list = $("#list ol");
+    var input_field = $("#id_speech_nr");
+    var s_list = $("#list").find("ol");
     $("#post").click(function(e) {
         e.preventDefault();
         var data = {
