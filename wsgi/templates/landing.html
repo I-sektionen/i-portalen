@@ -12,6 +12,21 @@
             <a href="{% url "events:calender" %}" class="content-type-nav">Event</a>
             <a href="{% url "sponsored" %}" class="content-type-nav">Näringsliv</a>
         </div>
+{% load iportalen_tags %}
+{% get_sponsored_content as sponsored_content %}
+    <div class="sponsored_container">
+        <div class="sponsored_feed_container">
+            <div class="sponsored_feed_headline"><a href="{% url "sponsored" %}" class="content-type-nav">Senaste:</a></div>
+            <div id="sponsored_feed_content">
+                <ul>
+                    {% for c in sponsored_content %}
+                        <li><strong><a href="{{ c.get_absolute_url }}">{{ c.headline|truncatechars:62 }}</a></strong></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <hr>
+    </div>
         {% for content in content_feed_list %}
             {% if content.type == "article" %}
                 {% include "articles/model/small_article.html" with article=content %}
@@ -43,3 +58,14 @@
     </section>
 
 {% endblock %}
+{% block after_scripts %}
+    <script>
+    jQuery(document).ready(function () {
+
+        $(function() {
+            $('#sponsored_feed_content').vTicker();
+        });
+    });
+</script>
+{% endblock %}
+
