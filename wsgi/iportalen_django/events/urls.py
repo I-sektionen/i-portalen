@@ -1,4 +1,5 @@
 from django.conf.urls import url
+
 from .views import (
     view_event,
     register_to_event,
@@ -28,7 +29,12 @@ from .views import (
     calendar_feed,
     personal_calendar_feed,
     summarise_noshow,
-)
+    speaker_list_user_add_self,
+    user_view,
+    speaker_list_user_remove_self,
+    upload_attachments_images,
+    upload_attachments,
+    download_attachment,)
 
 urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/$', view=view_event, name="event"),
@@ -42,6 +48,9 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/administer/participants/$', view=participants_list, name="participants"),
     url(r'^(?P<pk>[0-9]+)/administer/import_preregistrations/$', view=import_registrations, name="import registrations"),
     url(r'^(?P<pk>[0-9]+)/administer/speech_nr_list/$', view=speech_nr_list, name="speech nr list"),
+    url(r'^(?P<pk>[0-9]+)/user_add_self_speech_list/$', view=speaker_list_user_add_self, name="add user speech nr list"),
+    url(r'^(?P<pk>[0-9]+)/user_remove_self_speech_list/$', view=speaker_list_user_remove_self, name="remove user speech nr list"),
+    url(r'^(?P<pk>[0-9]+)/user_view/$', view=user_view, name="user view"),
     url(r'^(?P<pk>[0-9]+)/administer/reserves/$', view=reserves_list, name="reserves"),
     url(r'^(?P<pk>[0-9]+)/administer/participants/download/$', view=CSV_view_participants,
         name="participants download"),
@@ -61,5 +70,8 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/administer/speaker/api/$', view=speaker_list, name="speaker api"),
     url(r'^(?P<pk>[0-9]+)/download/$', view=file_download, name='download'),
     url(r'^feed/feed.ics$', view=calendar_feed, name='calendar feed'),
-    url(r'^feed/(?P<liu_id>[a-z]{4,5}\d{3})/feed.ics$', view=personal_calendar_feed, name='personal calendar feed')
+    url(r'^feed/(?P<liu_id>[a-z]{4,5}\d{3})/feed.ics$', view=personal_calendar_feed, name='personal calendar feed'),
+    url(r'^(?P<pk>[0-9]+)/attachments/$', upload_attachments, name='manage attachments'),
+    url(r'^(?P<pk>[0-9]+)/images/$', upload_attachments_images, name='manage images'),
+    url(r'^attachments/other/(?P<pk>[0-9]+)/$', download_attachment, name='download attachment')
 ]
