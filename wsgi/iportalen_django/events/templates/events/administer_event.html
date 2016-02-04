@@ -11,7 +11,11 @@
         <li><a href="{% url "events:reserves" event.pk %}">Se reserver</a></li>
         <li><a href="{% url "events:check in" event.pk %}">Starta incheckning</a></li>
         <li><a href="{% url "events:edit" event.pk %}">Ändra event</a></li>
+        <li><a href="{% url "events:manage attachments" event.pk %}">Hantera bilagor</a></li>
+        <li><a href="{% url "events:manage images" event.pk %}">Hantera bilder</a></li>
         <li><a href="{% url "events:import registrations" event.pk %}">Importera anmälningar</a></li>
-
+        {% if not event.finished %}
+        <li><a href="{% url "events:no show" event.pk %}">Avsluta event</a></li>
+        {% endif %}
     </ul>
 {% endblock %}

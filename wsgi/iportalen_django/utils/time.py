@@ -30,3 +30,7 @@ def has_passed(time):
 
 def now():
     return timezone.now()
+
+
+def six_months_back():
+    return timezone.now()-timezone.timedelta(days=180)
