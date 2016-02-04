@@ -328,6 +328,11 @@ class Event(models.Model):
             return True
         return False
 
+    def is_checked_in(self, user):
+        if user in self.participants:
+            return True
+        return False
+
     def reserve(self, user):
         if user in self.reserves:
             return True
