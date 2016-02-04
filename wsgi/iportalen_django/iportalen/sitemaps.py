@@ -9,10 +9,21 @@ from organisations.models import Organisation
 
 class StaticViewSitemapLow(sitemaps.Sitemap):
     priority = 0.2
-    changefreq = 'weekly'
+    changefreq = 'yearly'
 
     def items(self):
-        return ['pul']  # Add static url names here (that should be indexed by search engines)!
+        return ['pul', 'cookies']  # Add static url names here (that should be indexed by search engines)!
+
+    def location(self, obj):
+        return reverse(obj)
+
+
+class StaticViewSitemapMedium(sitemaps.Sitemap):
+    priority = 0.6
+    changefreq = 'monthly'
+
+    def items(self):
+        return ['faq:faq_topic_list', 'course_evaluations:evaluate course']
 
     def location(self, obj):
         return reverse(obj)
@@ -52,7 +63,7 @@ class ArticleSitemap(sitemaps.Sitemap):
 
 
 class OrganisationSitemap(sitemaps.Sitemap):
-    priority = 0.5
+    priority = 0.8
     changefreq = 'monthly'
 
     def items(self):
