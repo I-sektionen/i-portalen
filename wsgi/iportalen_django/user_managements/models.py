@@ -5,6 +5,7 @@ from .managers import IUserManager
 from django.utils import timezone
 from organisations.models import Organisation
 from utils.validators import liu_id_validator, validate_year
+from django.utils.translation import ugettext_lazy as _
 
 YEAR_CHOICES = []
 for r in range(1969, (timezone.now().year+10)):
@@ -12,26 +13,26 @@ for r in range(1969, (timezone.now().year+10)):
 
 
 class BachelorProfile(models.Model):
-    name = models.CharField(verbose_name='namn', max_length=255)
+    name = models.CharField(verbose_name=_("namn"), max_length=255)
     info = models.TextField(null=True, blank=True)
     link = models.URLField(null=True, blank=True)
 
     class Meta:
-        verbose_name = "kandidatprofil"
-        verbose_name_plural = "kandidatprofiler"
+        verbose_name = _("kandidatprofil")
+        verbose_name_plural = _("kandidatprofiler")
 
     def __str__(self):
         return self.name
 
 
 class MasterProfile(models.Model):
-    name = models.CharField(verbose_name='namn', max_length=255)
+    name = models.CharField(verbose_name=_("namn"), max_length=255)
     info = models.TextField(null=True, blank=True)
     link = models.URLField(null=True, blank=True)
 
     class Meta:
-        verbose_name = "masterprofil"
-        verbose_name_plural = "masterprofiler"
+        verbose_name = _("masterprofil")
+        verbose_name_plural = _("masterprofiler")
 
     def __str__(self):
         return self.name
@@ -44,10 +45,10 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     OTHER = 'o'  # Other / non-binary
     UNSPECIFIED = 'u'  # Don't want to specify
     GENDER_OPTIONS = (
-        (MAN, 'Man'),
-        (WOMEN, 'Kvinna'),
-        (OTHER, 'Annat / icke-binär'),
-        (UNSPECIFIED, 'Vill ej ange')
+        (MAN, _("Man")),
+        (WOMEN, _("Kvinna")),
+        (OTHER, _("Annat / icke-binär")),
+        (UNSPECIFIED, _("Vill ej ange"))
     )
 
     YEAR1 = '1'
@@ -57,12 +58,12 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     YEAR5 = '5'
     PAUSE = 'p'
     STUDY_YEARS = (
-        (YEAR1, 'åk 1'),
-        (YEAR2, 'åk 2'),
-        (YEAR3, 'åk 3'),
-        (YEAR4, 'åk 4'),
-        (YEAR5, 'åk 5'),
-        (PAUSE, 'uppehåll')
+        (YEAR1, _("åk 1")),
+        (YEAR2, _("åk 2")),
+        (YEAR3, _("åk 3")),
+        (YEAR4, _("åk 4")),
+        (YEAR5, _("åk 5")),
+        (PAUSE, _("uppehåll"))
     )
 
     A_CLASS = 'a'
@@ -75,62 +76,63 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     IB_CLASS = 'y'
     UNSPECIFIED_CLASS = 'u'
     CLASSES = (
-        (UNSPECIFIED_CLASS, 'ej angivet'),
-        (A_CLASS, 'a-klassen'),
-        (B_CLASS, 'b-klassen'),
-        (C_CLASS, 'c-klassen'),
-        (D_CLASS, 'd-klassen'),
-        (E_CLASS, 'e-klassen'),
-        (F_CLASS, 'f-klassen'),
-        (IA_CLASS, 'ia-klassen'),
-        (IB_CLASS, 'ib-klassen'),
+        (UNSPECIFIED_CLASS, _("ej angivet")),
+        (A_CLASS, _("a-klassen")),
+        (B_CLASS, _("b-klassen")),
+        (C_CLASS, _("c-klassen")),
+        (D_CLASS, _("d-klassen")),
+        (E_CLASS, _("e-klassen")),
+        (F_CLASS, _("f-klassen")),
+        (IA_CLASS, _("ia-klassen")),
+        (IB_CLASS, _("ib-klassen")),
     )
 
     # basic fields
-    username = models.CharField(verbose_name='LiU-ID', unique=True, max_length=8, validators=[liu_id_validator])
-    email = models.EmailField(verbose_name='Email')
-    first_name = models.CharField(verbose_name='förnamn', max_length=50, null=True, blank=True)
-    last_name = models.CharField(verbose_name='efternamn', max_length=50, null=True, blank=True)
-    date_joined = models.DateTimeField(auto_now_add=True, verbose_name='gick med datum')
+    username = models.CharField(verbose_name=_("LiU-ID"), unique=True, max_length=8, validators=[liu_id_validator])
+    email = models.EmailField(verbose_name=_("Email"))
+    first_name = models.CharField(verbose_name=_("förnamn"), max_length=50, null=True, blank=True)
+    last_name = models.CharField(verbose_name=_("efternamn"), max_length=50, null=True, blank=True)
+    date_joined = models.DateTimeField(auto_now_add=True, verbose_name=_("gick med datum"))
     is_active = models.BooleanField(default=True, null=False)
     is_staff = models.BooleanField(default=False, null=False)
 
     # our fields
-    p_nr = models.CharField(verbose_name='personnummer', max_length=255, null=True, blank=True)
-    address = models.CharField(verbose_name='adress', max_length=255, null=True, blank=True)
-    zip_code = models.CharField(verbose_name='postnummer', max_length=255, null=True, blank=True)
-    city = models.CharField(verbose_name='ort', max_length=255, null=True, blank=True)
-    gender = models.CharField(verbose_name='kön',
+    p_nr = models.CharField(verbose_name=_("personnummer"), max_length=255, null=True, blank=True)
+    address = models.CharField(verbose_name=_("adress"), max_length=255, null=True, blank=True)
+    zip_code = models.CharField(verbose_name=_("postnummer"), max_length=255, null=True, blank=True)
+    city = models.CharField(verbose_name=_("ort"), max_length=255, null=True, blank=True)
+    gender = models.CharField(verbose_name=_("kön"),
                               max_length=1, null=True, blank=True, choices=GENDER_OPTIONS, default=None)
-    allergies = models.TextField(verbose_name='allergier', null=True, blank=True)
-    start_year = models.IntegerField(verbose_name='startår', choices=YEAR_CHOICES, default=timezone.now().year, validators=[validate_year])
-    current_year = models.CharField(verbose_name='nuvarande årskurs',
+    allergies = models.TextField(verbose_name=_("allergier"), null=True, blank=True)
+    start_year = models.IntegerField(
+        verbose_name=_("startår"), choices=YEAR_CHOICES, default=timezone.now().year, validators=[validate_year])
+    current_year = models.CharField(verbose_name=_("nuvarande årskurs"),
                                     max_length=1,
                                     choices=STUDY_YEARS,
                                     default=YEAR1,
                                     blank=False,
                                     null=True)
-    klass = models.CharField(verbose_name="klass",
+    klass = models.CharField(verbose_name=_("klass"),
                              max_length=1,
                              choices=CLASSES,
                              default=UNSPECIFIED_CLASS,
                              blank=False,
                              null=True)
-    bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name='kandidatprofil',
+    bachelor_profile = models.ForeignKey(BachelorProfile, null=True, blank=True, verbose_name=_("kandidatprofil"),
                                          on_delete=models.SET_NULL,
-                                         help_text="Välj Ej valt om du inte har valt kandidatprofil.")
-    master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name='masterprofil',
+                                         help_text=_("Välj Ej valt om du inte har valt kandidatprofil."))
+    master_profile = models.ForeignKey(MasterProfile, null=True, blank=True, verbose_name=_("masterprofil"),
                                        on_delete=models.SET_NULL,
-                                       help_text="Välj Ej valt om du inte har valt kandidatprofil.")
-    rfid_number = models.CharField(verbose_name='rfid', max_length=255, null=True, blank=True)
-    is_member = models.NullBooleanField(verbose_name="Är medlem?", blank=True, null=True, default=None)
+                                       help_text=_("Välj Ej valt om du inte har valt kandidatprofil."))
+    rfid_number = models.CharField(verbose_name=_("rfid"), max_length=255, null=True, blank=True)
+    is_member = models.NullBooleanField(verbose_name=_("Är medlem?"), blank=True, null=True, default=None)
 
-    must_edit = models.BooleanField(verbose_name="Måste uppdatera info", default=True)
+    must_edit = models.BooleanField(verbose_name=_("Måste uppdatera info"), default=True)
 
-    phone = models.CharField(verbose_name='Telefon', max_length=255, null=True, blank=True)
+    phone = models.CharField(verbose_name=_("Telefon"), max_length=255, null=True, blank=True)
 
     objects = IUserManager()
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = "username"
     REQUIRED_FIELDS = []
 
     @property
@@ -142,7 +144,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
     def get_absolute_url(self):
         """Get url of object"""
-        return "/user/%s/" % self.username
+        return reverse('user_management:profile page', kwargs={'liu_id': self.username})
 
     def get_short_name(self):
         return self.username
@@ -150,18 +152,16 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     def _get_email(self):
         return self.username + "@student.liu.se"
 
-    # email = property(_get_email)
-
     def __str__(self):
         return self.username
 
     @property
     def update_from_kobra_url(self):
-        return reverse("update user from kobra", kwargs={'liu_id': self.username})
+        return reverse("user_management:update user from kobra", kwargs={'liu_id': self.username})
 
     class Meta:
-        verbose_name = "användare"
-        verbose_name_plural = "användare"
+        verbose_name = _("användare")
+        verbose_name_plural = _("användare")
         permissions = (('can_view_users', 'Can view users'),)
 
     def get_organisations(self):
@@ -176,12 +176,16 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
 class IpikureSubscriber(models.Model):
     user = models.OneToOneField(IUser, null=True, blank=True)
-    date_subscribed = models.DateTimeField(auto_now_add=True, verbose_name='prenumererar sedan datum')
+    date_subscribed = models.DateTimeField(auto_now_add=True, verbose_name=_("prenumererar sedan datum"))
 
     class Meta:
-        verbose_name = "ipikureprenumerant"
-        verbose_name_plural = "ipikureprenumeranter"
+        verbose_name = _("ipikureprenumerant")
+        verbose_name_plural = _("ipikureprenumeranter")
         permissions = (('can_view_subscribers', 'Can view subscribers'),)
 
     def __str__(self):
-        return "{user}: {year}-{month}-{day}".format(user=self.user.username, year=self.date_subscribed.year, month=self.date_subscribed.month, day=self.date_subscribed.day)
+        return "{user}: {year}-{month}-{day}".format(
+            user=self.user.username,
+            year=self.date_subscribed.year,
+            month=self.date_subscribed.month,
+            day=self.date_subscribed.day)

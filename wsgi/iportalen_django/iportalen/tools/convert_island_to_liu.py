@@ -5,7 +5,7 @@ import re
 import codecs
 
 
-def main(argv):
+def main(argv):  # TODO: Reduce complexity
     parser = argparse.ArgumentParser(description='Translate islands-id')
     parser.add_argument("-i", "--input", dest="input",
                         help="File with list of islands-id to translate", metavar="ISLAND")

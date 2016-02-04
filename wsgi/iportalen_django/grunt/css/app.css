@@ -589,7 +589,7 @@ article.news-preview {
   -ms-flex-direction: column;
   border-radius: 3px;
   border-left: 5px solid #fecd09;
-  padding: 0px 15px 15px 15px;
+  padding: 0 15px 15px 15px;
   box-shadow: 1px 1px 5px #cccccc;
   margin-bottom: 1em;
 }

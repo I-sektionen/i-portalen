@@ -341,7 +341,6 @@ ul {
 
 header a {
   text-decoration: none;
-  text-transform: uppercase;
   font-size: 14px;
   font-weight: 400;
   text-decoration: none;
@@ -643,7 +642,7 @@ header #navigation-menu .submenu > * {
   display: inline-block;
   background-color: #F2F2F2;
   border-radius: 5px;
-  box-shadow: 0px 0px 2px #B2B2B2;
+  box-shadow: 0 0 2px #B2B2B2;
   margin-bottom: 15px;
   padding: 7px;
   content: " ";
@@ -733,7 +732,7 @@ header #navigation-menu .submenu > * {
   -ms-flex-direction: column;
   border-radius: 3px;
   border-left: 3px solid #f9d026;
-  padding: 0px 15px 15px 15px;
+  padding: 0 15px 15px 15px;
   margin-bottom: 1em;
 }
 .wrapper div.review article.news-preview:hover {
@@ -825,7 +824,7 @@ article.news-single-view {
   display: block;
   margin-right: 2.35765%;
   width: 82.94039%;
-  padding: 0px 15px 15px 15px;
+  padding: 0 15px 15px 15px;
   margin-bottom: 1em;
 }
 article.news-single-view:last-child {
@@ -1181,7 +1180,7 @@ article.event-preview .meta p {
   width: 82.94039%;
   border-radius: 3px;
   border-left: 3px solid #7ba66d;
-  padding: 0px 15px 15px 15px;
+  padding: 0 15px 15px 15px;
   margin-bottom: 1em;
 }
 #organisation #organisation-presentation:last-child {
@@ -1202,7 +1201,7 @@ article.event-preview .meta p {
   width: 82.94039%;
   border-radius: 3px;
   border-left: 3px solid #ffde7c;
-  padding: 0px 15px 15px 15px;
+  padding: 0 15px 15px 15px;
   margin-bottom: 1em;
 }
 #organisation #organisation-contact-info:last-child {
@@ -1215,7 +1214,7 @@ article.event-preview .meta p {
   width: 82.94039%;
   border-radius: 3px;
   border-left: 3px solid #ffde7c;
-  padding: 0px 15px 15px 15px;
+  padding: 0 15px 15px 15px;
   margin-bottom: 1em;
 }
 #organisation #organisation-members:last-child {

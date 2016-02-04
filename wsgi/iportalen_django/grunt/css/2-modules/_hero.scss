@@ -21,7 +21,6 @@ $hero-text-color: $light-gray;
   .hero-content {
     padding: 2em;
     text-align: center;
-    width: 60%;
     //This positions the element rela
     @include position(absolute);
     left: 50%;
