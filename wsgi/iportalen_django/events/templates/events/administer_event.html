@@ -14,6 +14,8 @@
         <li><a href="{% url "events:manage attachments" event.pk %}">Hantera bilagor</a></li>
         <li><a href="{% url "events:manage images" event.pk %}">Hantera bilder</a></li>
         <li><a href="{% url "events:import registrations" event.pk %}">Importera anmälningar</a></li>
-
+        {% if not event.finished %}
+        <li><a href="{% url "events:no show" event.pk %}">Avsluta event</a></li>
+        {% endif %}
     </ul>
 {% endblock %}

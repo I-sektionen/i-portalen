@@ -10,7 +10,6 @@ from utils.validators import less_than_160_characters_validator
 from organisations.models import Organisation
 from tags.models import Tag
 from .exceptions import CouldNotRegisterException
-from .managers import SpeakerListManager, EventManager
 from django.core.files.base import ContentFile
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
@@ -18,6 +17,7 @@ from PIL import Image
 import io
 from tags.models import Tag
 from organisations.models import Organisation
+from .managers import SpeakerListManager, EventManager, EntryAsPreRegisteredManager
 
 
 # A user can register and deregister
@@ -122,6 +122,8 @@ class Event(models.Model):
         verbose_name='arrangör',
         help_text="Organisation(er) som arrangerar evenemanget. Medlemmar i dessa kan senare ändra eventet. Håll ner Ctrl för att markera flera.")
     sponsored = models.BooleanField(verbose_name='sponsrat', default=False, help_text="Kryssa i om innehållet är sponsrat")
+
+    finished = models.BooleanField(verbose_name='Avsluta event', default=False, help_text="Kryssa i om eventet ska avslutas")
 
     objects = EventManager()
     ###########################################################################
@@ -267,6 +269,9 @@ class Event(models.Model):
         # Has the register date passed?
         if not self.can_deregister:
             raise CouldNotRegisterException(event=self, reason="anmälningstiden har passerats")
+        # Is the user banned from event registration?
+        if len(EntryAsPreRegistered.objects.get_noshow(user=user)) >= 3:
+            raise CouldNotRegisterException(event=self, reason="du har missat 3 event")
 
         EntryAsPreRegistered(user=user, event=self).save()
         try:
@@ -317,6 +322,10 @@ class Event(models.Model):
 
         if user in self.participants:
             raise CouldNotRegisterException(event=self, reason="du är anmäld som deltagare")
+
+        # Is the user banned from event registration?
+        if len(EntryAsPreRegistered.objects.get_noshow(user=user)) >= 3:
+            raise CouldNotRegisterException(event=self, reason="du har missat 3 event")
 
         # Register as reserve
         entry = EntryAsReserve(event=self, user=user)
@@ -688,6 +697,8 @@ class EntryAsPreRegistered(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(auto_now_add=True)
     no_show = models.BooleanField(default=False)
+
+    objects = EntryAsPreRegisteredManager()
 
     class Meta:
         verbose_name = "Anmälning"
