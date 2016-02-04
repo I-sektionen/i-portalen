@@ -5,7 +5,6 @@ from django.utils import timezone
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
-from django.core.files.storage import default_storage as storage
 from django.core.files.base import ContentFile
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
@@ -14,7 +13,7 @@ import io
 import os
 from tags.models import Tag
 from utils.validators import less_than_160_characters_validator
-from utils import time, image_processing
+from utils import time
 from organisations.models import Organisation
 from .managers import ArticleManager
 
@@ -71,7 +70,7 @@ class Article(models.Model):
 
     attachment = models.FileField(
         verbose_name=_("Bifogad fil"),  # This field should be removed. It is saved by legacy reasons.
-        help_text=_("Bifogad fil för artikel"),  # TODO: When no articles uses this field, remove it. (Tricky to migrate)
+        help_text=_("Bifogad fil för artikel"),  # TODO: When no articles uses this field, remove it.(Tricky to migrate)
         upload_to=_("article_attachments"),
         null=True,
         blank=True)

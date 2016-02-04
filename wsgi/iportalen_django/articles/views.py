@@ -58,8 +58,6 @@ def create_or_modify_article(request, pk=None):  # TODO: Reduce complexity
                 messages.success(request, _("Dina ändringar har sparats i ett utkast."))
             elif article.status == Article.BEING_REVIEWED:
                 messages.success(request, _("Dina ändringar har skickats för granskning."))
-            return redirect('articles:by user')
-                messages.success(request, "Dina ändringar har skickats för granskning.")
             return redirect('articles:article', pk=article.pk)
         else:
             messages.error(request, _("Det uppstod ett fel, se detaljer nedan."))

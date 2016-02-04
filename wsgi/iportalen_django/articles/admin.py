@@ -1,9 +1,6 @@
-from .models import Article
 from django.contrib import admin
 from .models import Article, OtherAttachment, ImageAttachment
 from utils.admin import HiddenModelAdmin, iportalen_admin_site
-
-iportalen_admin_site.register(Article, HiddenModelAdmin)
 
 class OtherAttachmentInline(admin.StackedInline):
     model = OtherAttachment
