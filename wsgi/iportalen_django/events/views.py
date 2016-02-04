@@ -2,7 +2,6 @@ from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory
-from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
@@ -11,16 +10,13 @@ from django.utils import timezone
 from django.db import transaction
 import csv
 from utils.validators import liu_id_validator
-from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm, RejectionForm
-from .models import Event, EntryAsPreRegistered, EntryAsReserve
 from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm, RejectionForm, AttachmentForm, \
     ImageAttachmentForm
-from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticipant, SpeakerList, OtherAttachment, \
+from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticipant, OtherAttachment, \
     ImageAttachment
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
 from django.utils.translation import ugettext as _
-from .feed import generate_feed
 
 
 # Create your views here.
