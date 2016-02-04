@@ -15,3 +15,10 @@
 
 {% include "events/model/full_event.html" with event=event %}
 {% endblock %}
+{% block after_scripts %}
+    <script>
+        jQuery(document).ready(function () {
+            $(".fancybox").fancybox();
+        })
+    </script>
+{% endblock %}

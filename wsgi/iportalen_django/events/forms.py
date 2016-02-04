@@ -1,6 +1,6 @@
 from django import forms
 from django.utils import timezone
-from .models import Event
+from .models import Event, OtherAttachment, ImageAttachment
 
 
 class EventForm(forms.ModelForm):
@@ -90,3 +90,16 @@ class ImportEntriesForm(forms.Form):
 
 class RejectionForm(forms.Form):
     rejection_message = forms.CharField(label="Avslagsmeddelande", widget=forms.Textarea())
+
+
+class AttachmentForm(forms.ModelForm):
+    class Meta:
+        model = OtherAttachment
+        fields = ('file', 'display_name')
+
+
+class ImageAttachmentForm(forms.ModelForm):
+    class Meta:
+        model = ImageAttachment
+        fields = ('img', 'caption')
+
