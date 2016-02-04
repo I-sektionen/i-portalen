@@ -270,6 +270,12 @@ class ImageAttachment(models.Model):
     article = models.ForeignKey(Article,
                                 null=False,
                                 blank=False)
+    modified_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='användare',
+        help_text="Uppladdat av.",
+        null=True,
+        on_delete=models.SET_NULL)
 
     def _set_thumbnail(self):
         if self.thumbnail:
@@ -341,6 +347,12 @@ class OtherAttachment(models.Model):
     article = models.ForeignKey(Article,
                                 null=False,
                                 blank=False)
+    modified_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='användare',
+        help_text="Uppladdat av.",
+        null=True,
+        on_delete=models.SET_NULL)
 
     def save(self, *args, **kwargs):
         self.file_name = os.path.basename(self.file.name)

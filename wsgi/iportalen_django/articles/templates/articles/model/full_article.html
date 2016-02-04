@@ -34,7 +34,6 @@
     {% if attachments %}
         {% for attachment in attachments.all %}
             <p>Bifogad fil: <a href="{% url 'articles:download attachment' attachment.pk %}">{{ attachment.display_name }}</a></p>
-                <!--<a href="{% url "articles:download attachment" article.pk %}">{{ article.filename }}</a></p>-->
         {% endfor %}
     {% endif %}
 </article>

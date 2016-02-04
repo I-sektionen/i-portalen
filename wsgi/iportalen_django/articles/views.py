@@ -9,7 +9,7 @@ from django.forms import modelformset_factory
 from .models import Article, OtherAttachment, ImageAttachment
 from .forms import ArticleForm, RejectionForm, AttachmentForm, ImageAttachmentForm
 from tags.models import Tag
-from utils.image_processing import create_thumbnail
+
 
 @login_required()
 def create_or_modify_article(request, pk=None):
@@ -66,6 +66,8 @@ def create_or_modify_article(request, pk=None):
 
 def upload_attachments(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
+    if not article.can_administer(request.user):
+        return HttpResponseForbidden()
     AttachmentFormset = modelformset_factory(OtherAttachment,
                                              form=AttachmentForm,
                                              max_num=30,
@@ -87,6 +89,7 @@ def upload_attachments(request, article_pk):
                             attachment.file_name = entry['file'].name
                         attachment.file = entry['file']
                         attachment.display_name = entry['display_name']
+                        attachment.modified_by = request.user
                         attachment.save()
             messages.success(request, 'Dina bilagor har sparats.')
             return redirect('articles:manage attachments', article_pk=article.pk)
@@ -104,6 +107,8 @@ def upload_attachments(request, article_pk):
 
 def upload_attachments_images(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
+    if not article.can_administer(request.user):
+        return HttpResponseForbidden()
     AttachmentFormset = modelformset_factory(ImageAttachment,
                                              form=ImageAttachmentForm,
                                              max_num=30,
@@ -127,6 +132,7 @@ def upload_attachments_images(request, article_pk):
                             attachment = ImageAttachment(article=article)
                         attachment.img = entry['img']
                         attachment.caption = entry['caption']
+                        attachment.modified_by = request.user
                         attachment.save()
             messages.success(request, 'Dina bilagor har sparats.')
             return redirect('articles:article', article.pk)
@@ -163,8 +169,6 @@ def single_article(request, pk):
             'attachments': attachments,
             'image_attachments': image_attachments,
             'can_administer': admin})
-    #elif request.user == article.user:  # TODO: Should this maybe be more defined? (Superusers and certain permissions?)
-        #return render(request, 'articles/article.html', {'article': article})
     raise PermissionDenied
 
 

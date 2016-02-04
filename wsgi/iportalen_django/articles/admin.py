@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import Article, OtherAttachment, ImageAttachment
 from utils.admin import HiddenModelAdmin, iportalen_admin_site
-from django.contrib.admin import ModelAdmin
 
 
 class OtherAttachmentInline(admin.StackedInline):
@@ -11,7 +10,7 @@ class OtherAttachmentInline(admin.StackedInline):
 
 
 class OtherAttachmentAdmin(admin.ModelAdmin):
-    readonly_fields = ('file_name',)
+    readonly_fields = ('file_name', 'modified_by')
     list_display = ('article', 'file_name')
     list_filter = ('article',)
 
@@ -23,7 +22,7 @@ class ImageAttachmentInline(admin.TabularInline):
 
 
 class ImageAttachmentAdmin(admin.ModelAdmin):
-    readonly_fields = ('thumbnail',)
+    readonly_fields = ('thumbnail', 'modified_by')
     list_display = ('article',)
     list_filter = ('article',)
 

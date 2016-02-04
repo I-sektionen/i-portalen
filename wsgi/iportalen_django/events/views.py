@@ -1,4 +1,5 @@
 from django.core.urlresolvers import reverse
+from django.forms import modelformset_factory
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
@@ -9,8 +10,10 @@ from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
 import csv
 from utils.validators import liu_id_validator
-from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm, RejectionForm
-from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticipant, SpeakerList
+from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm, RejectionForm, AttachmentForm, \
+    ImageAttachmentForm
+from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticipant, SpeakerList, OtherAttachment, \
+    ImageAttachment
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
 from .feed import generate_feed
@@ -376,6 +379,97 @@ def create_or_modify_event(request, pk=None):
     return render(request, 'events/create_event.html', {
         'form': form,
     })
+
+
+def upload_attachments(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    if not event.can_administer(request.user):
+        return HttpResponseForbidden()
+    AttachmentFormset = modelformset_factory(OtherAttachment,
+                                             form=AttachmentForm,
+                                             max_num=30,
+                                             extra=3,
+                                             can_delete=True,
+                                             )
+    if request.method == 'POST':
+        formset = AttachmentFormset(request.POST, request.FILES, queryset=OtherAttachment.objects.filter(event=event))
+        if formset.is_valid():
+            for entry in formset.cleaned_data:
+                if not entry == {}:
+                    if entry['DELETE']:
+                        entry['id'].delete()  # TODO: Remove the clear option from html-widget (or make it work).
+                    else:
+                        if entry['id']:
+                            attachment = entry['id']
+                        else:
+                            attachment = OtherAttachment(event=event)
+                            attachment.file_name = entry['file'].name
+                        attachment.file = entry['file']
+                        attachment.display_name = entry['display_name']
+                        attachment.modified_by = request.user
+                        attachment.save()
+            messages.success(request, 'Dina bilagor har sparats.')
+            return redirect('events:manage attachments', pk=event.pk)
+        else:
+            return render(request, "events/attachments.html", {
+                        'event': event,
+                        'formset': formset,
+                        })
+    formset = AttachmentFormset(queryset=OtherAttachment.objects.filter(event=event))
+    return render(request, "events/attachments.html", {
+                        'event': event,
+                        'formset': formset,
+                        })
+
+
+def upload_attachments_images(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    if not event.can_administer(request.user):
+        return HttpResponseForbidden()
+    AttachmentFormset = modelformset_factory(ImageAttachment,
+                                             form=ImageAttachmentForm,
+                                             max_num=30,
+                                             extra=3,
+                                             can_delete=True,
+                                             )
+    if request.method == 'POST':
+        formset = AttachmentFormset(request.POST,
+                                    request.FILES,
+                                    queryset=ImageAttachment.objects.filter(event=event)
+                                    )
+        if formset.is_valid():
+            for entry in formset.cleaned_data:
+                if not entry == {}:
+                    if entry['DELETE']:
+                        entry['id'].delete()  # TODO: Remove the clear option from html-widget (or make it work).
+                    else:
+                        if entry['id']:
+                            attachment = entry['id']
+                        else:
+                            attachment = ImageAttachment(event=event)
+                        attachment.img = entry['img']
+                        attachment.caption = entry['caption']
+                        attachment.modified_by = request.user
+                        attachment.save()
+            messages.success(request, 'Dina bilagor har sparats.')
+            return redirect('events:event', event.pk)
+        else:
+            return render(request, "events/attach_images.html", {
+                        'event': event,
+                        'formset': formset,
+                        })
+    formset = AttachmentFormset(queryset=ImageAttachment.objects.filter(event=event))
+    return render(request, "events/attach_images.html", {
+                        'event': event,
+                        'formset': formset,
+                        })
+
+
+def download_attachment(request, pk):
+    attachment = OtherAttachment.objects.get(pk=pk)
+    response = HttpResponse(attachment.file)
+    response['Content-Disposition'] = 'attachment; filename="{filename}"'.format(filename=attachment.file_name)
+    return response
 
 
 def file_download(request, pk):

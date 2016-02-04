@@ -1,4 +1,5 @@
 from django.conf.urls import url
+
 from .views import (
     view_event,
     register_to_event,
@@ -27,7 +28,9 @@ from .views import (
     file_download,
     calendar_feed,
     personal_calendar_feed,
-)
+    upload_attachments_images,
+    upload_attachments,
+    download_attachment)
 
 urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/$', view=view_event, name="event"),
@@ -59,5 +62,8 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/administer/speaker/api/$', view=speaker_list, name="speaker api"),
     url(r'^(?P<pk>[0-9]+)/download/$', view=file_download, name='download'),
     url(r'^feed/feed.ics$', view=calendar_feed, name='calendar feed'),
-    url(r'^feed/(?P<liu_id>[a-z]{4,5}\d{3})/feed.ics$', view=personal_calendar_feed, name='personal calendar feed')
+    url(r'^feed/(?P<liu_id>[a-z]{4,5}\d{3})/feed.ics$', view=personal_calendar_feed, name='personal calendar feed'),
+    url(r'^(?P<pk>[0-9]+)/attachments/$', upload_attachments, name='manage attachments'),
+    url(r'^(?P<pk>[0-9]+)/images/$', upload_attachments_images, name='manage images'),
+    url(r'^attachments/other/(?P<pk>[0-9]+)/$', download_attachment, name='download attachment')
 ]
