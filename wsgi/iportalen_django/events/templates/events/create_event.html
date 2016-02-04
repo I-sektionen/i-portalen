@@ -76,10 +76,6 @@
                             <div id="wmd-button-bar-body"></div>
                             {{ form.body }}
                         </div>
-                        {{ form.attachment.errors }}
-                        {{ form.attachment.label_tag }}
-                        {{ form.attachment }}
-                        <p>{{ form.attachment.help_text }}</p>
                     </div>
 
 
@@ -110,9 +106,10 @@
                         {{ form.sponsored.help_text }}
                         {{ form.sponsored }}
                     </div>
-
                     <div id="article-create-form-buttons">
-                        <button type="submit">Publicera eventet</button>
+
+                        <button class="action-button" type="submit">Publicera eventet</button>
+                        <p>OBS! Eventuella bilder samt bilagor laddas upp under "Administrera evenemang" efter att du tryckt "Publicera eventet".</p>
                     </div>
                 </form>
             </div>
