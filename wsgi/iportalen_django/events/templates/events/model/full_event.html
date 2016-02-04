@@ -1,6 +1,7 @@
 {% load event_tags %}
 {% load iportalen_tags %}
 {% get_event event request.user as res %}
+{% event_is_checked_in event request.user as is_checked_in %}
 {% with res.can_administer as can_administer %}
 {% with res.registered as registered %}
 <article class="news-feed-content">
@@ -110,6 +111,9 @@
     {% endif %}
     {% if not preview %}
     <div class="admin-event">
+        {% if is_checked_in %}
+            <a class="button" href="{% url "events:user view" event.pk %}">Användarsida</a>
+        {% endif %}
         {% if can_administer %}
             <label>
                 <a class="button action-button-group-item" href="{% url "events:administer event" event.pk %}">

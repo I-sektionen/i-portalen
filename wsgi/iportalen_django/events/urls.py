@@ -28,9 +28,12 @@ from .views import (
     file_download,
     calendar_feed,
     personal_calendar_feed,
+    speaker_list_user_add_self,
+    user_view,
+    speaker_list_user_remove_self,
     upload_attachments_images,
     upload_attachments,
-    download_attachment)
+    download_attachment,)
 
 urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/$', view=view_event, name="event"),
@@ -44,6 +47,9 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/administer/participants/$', view=participants_list, name="participants"),
     url(r'^(?P<pk>[0-9]+)/administer/import_preregistrations/$', view=import_registrations, name="import registrations"),
     url(r'^(?P<pk>[0-9]+)/administer/speech_nr_list/$', view=speech_nr_list, name="speech nr list"),
+    url(r'^(?P<pk>[0-9]+)/user_add_self_speech_list/$', view=speaker_list_user_add_self, name="add user speech nr list"),
+    url(r'^(?P<pk>[0-9]+)/user_remove_self_speech_list/$', view=speaker_list_user_remove_self, name="remove user speech nr list"),
+    url(r'^(?P<pk>[0-9]+)/user_view/$', view=user_view, name="user view"),
     url(r'^(?P<pk>[0-9]+)/administer/reserves/$', view=reserves_list, name="reserves"),
     url(r'^(?P<pk>[0-9]+)/administer/participants/download/$', view=CSV_view_participants,
         name="participants download"),
