@@ -41,7 +41,20 @@
         {% endif %}
     </p>
     <h2>{{ event.lead|truncatewords_html:50 }}</h2>
-    <p>{{ event.body|markdown }}</p>
+    {% if event.imageattachment_set %}
+        {% for attachment in event.imageattachment_set.all %}
+            <a class="fancybox" rel="event_gallery" href="{{ attachment.img.url }}" title="{{ attachment.caption }}">
+                <img src="{{ attachment.thumbnail.url }}" alt=""/>
+            </a>
+        {% endfor %}
+    {% endif %}
+    {{ event.body|markdown }}
+    {% if event.otherattachment_set.all %}
+        {% for attachment in event.otherattachment_set.all %}
+            <p>Bifogad fil: <a href="{% url 'events:download attachment' attachment.pk %}">{{ attachment.display_name }}</a></p>
+        {% endfor %}
+    {% endif %}
+
 </article>
     {% if event.attachment %}
         <p>Bifogad fil: <a href="{% url "events:download" event.pk %}">{{ event.filename }}</a></p>

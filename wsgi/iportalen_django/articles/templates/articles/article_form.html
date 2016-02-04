@@ -27,11 +27,15 @@
                                 <div id="wmd-button-bar-body"></div>
                                 {{ form.body }}
                             </div>
-
+                            {% comment %}
+                                This field is depreciated (not used any more).
+                                The OtherAttachment-model is now used. TODO: Remove.
                             {{ form.attachment.errors }}
                             {{ form.attachment.label_tag }}
                             {{ form.attachment }}
                             <p>{{ form.attachment.help_text }}</p>
+                            {% endcomment %}
+                            <p><b>OBS. Eventuella bilder samt bilagor laddas upp i ett senare steg. </b></p>
                     </div>
                     <div id="article-create-small">
                             {{ form.organisations.errors }}
@@ -62,7 +66,7 @@
                         {{ form.sponsored }}
 
                         <div id="article-create-form-buttons">
-                            <button type="submit">Publicera artikeln</button>
+                            <button type="submit">Nästa steg</button>
                         </div>
                     </div>
                 </section>
