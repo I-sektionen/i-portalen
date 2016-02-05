@@ -62,7 +62,7 @@ module.exports = function (grunt) {
         }
     });
     /**
-     * Load Grunt plugins dynaically
+     * Load Grunt plugins dynamically
      */
     require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
     grunt.registerTask('default', ['sass:dev', 'watch', 'concat']);
