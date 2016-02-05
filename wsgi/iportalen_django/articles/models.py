@@ -219,7 +219,9 @@ class Article(models.Model):
                            "id",
                            "created",
                            "modified",
-                           "replacing"]
+                           "replacing",
+                           "imageattachment",
+                           "otherattachment"]
                 multi = ["tags", "organisations"]
                 for field in self.replacing._meta.get_fields():
                     if field.name not in exclude:
