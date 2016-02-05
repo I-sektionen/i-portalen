@@ -1,4 +1,7 @@
 @charset "UTF-8";
+/* This is where all .sass files are imported to. */
+/* Add every app, and in that app import parts. */
+/* TODO: Example how to add in comments. */
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 /**
  * 1. Set default font family to sans-serif.
