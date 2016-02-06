@@ -50,7 +50,7 @@ module.exports = function (grunt) {
                     style: 'compressed'
                 },
                 files: {
-                    'wsgi/iportalen_django/iportalen/static/iportalen/css/<%= pkg.name %>.css':
+                    'wsgi/iportalen_django/iportalen/static/iportalen/css/<%= pkg.name %>.min.css':
                         'app.sass'
                 }
             }
@@ -62,7 +62,7 @@ module.exports = function (grunt) {
             main: {
                 files: {
                     'wsgi/iportalen_django/iportalen/static/iportalen/js/<%= pkg.name %>.js':
-                        'wsgi/iportalen_django/local_static/js/<%= pkg.name %>.js'
+                        'wsgi/iportalen_django/local_static/js/<%= pkg.name %>.min.js'
 
                 }
             }
@@ -79,8 +79,8 @@ module.exports = function (grunt) {
             },
             my_target:{
                 files: {
-                    'wsgi/iportalen_django/iportalen/static/iportalen/js/<%= pkg.name %>.js':
-                        'wsgi/iportalen_django/iportalen/static/iportalen/js/<%= pkg.name %>.js'
+                    'wsgi/iportalen_django/iportalen/static/iportalen/js/<%= pkg.name %>.min.js':
+                        'wsgi/iportalen_django/iportalen/static/iportalen/js/<%= pkg.name %>.min.js'
                 }
             }
         }
