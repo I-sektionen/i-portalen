@@ -11,15 +11,27 @@ module.exports = function (grunt) {
             }
         },
 
-        //Waits for changes to files and then runs tasks.
+        //Waits for changes to files and then runs tasks. It watches for changes to files.
         watch: {
             javascript_watch: {
                 files: [
-                'wsgi/iportalen_django/**/js/src/*.js',
-                'wsgi/iportalen_django/**/.sass',
-                'wsgi/iportalen_django/**/.scss'
+                'wsgi/iportalen_django/**/js/src/*.js'
                 ],
-                tasks: ['concat', 'copy', 'uglify', 'sass']
+                tasks: ['concat', 'copy', 'uglify']
+            },
+            sass_watch: {
+                files: [
+                    'wsgi/iportalen_django/**/sass/*.sass', //All app specific sass.
+                    'wsgi/iportalen_django/**/sass/*.scss',
+                    'sass/base/*.*',        //DO NOT IMPORT PLUGINS! (Eats up the cpu)
+                    'sass/common_modules/*.*',
+                    'sass/layouts/*.*'
+                ],
+                tasks: ['sass']
+            },
+            live_reload: {          //To use it: http://livereload.com/extensions/
+                options: {livereload: true},
+                files: ['wsgi/iportalen_django/local_static/**']
             }
         },
 
@@ -62,7 +74,7 @@ module.exports = function (grunt) {
                 compress: {
                     drop_console: true
                 },
-                screwIE8: true,
+                screwIE8: true, //Fuck yeah!
                 preserveComments: false
             },
             my_target:{
