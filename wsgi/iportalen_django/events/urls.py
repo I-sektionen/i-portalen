@@ -17,6 +17,7 @@ admin_patterns = [
     url(r'^participants/download/$',     view=views.CSV_view_participants,     name="participants download"),
     url(r'^preregistrations/download/$', view=views.CSV_view_preregistrations, name="preregistrations download"),
     url(r'^event_check_in/$',            view=views.check_in,                  name="check in"),
+    url(r'^noshow/$',                    view=views.summarise_noshow,          name="no show"),
 ]
 
 event_patterns = [
