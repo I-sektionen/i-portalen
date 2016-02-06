@@ -8,8 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
-    "type": "",
-    "url": ""
+    "type": "git",
+    "url": "github.com/I-sektionen/i-portalen"
   },
   "author": "Webgroup",
   "license": "ISC",
