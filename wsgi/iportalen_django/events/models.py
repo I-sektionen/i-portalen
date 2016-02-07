@@ -1,9 +1,9 @@
 import os
 from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
 from django.db import models, transaction
 from django.conf import settings
 from django.utils import timezone
-from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
 from utils.validators import less_than_160_characters_validator
@@ -11,6 +11,16 @@ from organisations.models import Organisation
 from tags.models import Tag
 from .exceptions import CouldNotRegisterException
 from .managers import SpeakerListManager, EventManager
+from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
+from django.core.files.base import ContentFile
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
+from PIL import Image
+import io
+from tags.models import Tag
+from organisations.models import Organisation
+from .managers import SpeakerListManager, EventManager, EntryAsPreRegisteredManager
 
 
 # A user can register and deregister
@@ -30,77 +40,77 @@ class Event(models.Model):
     REJECTED = 'r'
     APPROVED = 'a'
     STATUSES = (
-        (DRAFT, 'utkast'),
-        (BEING_REVIEWED, 'väntar på godkännande'),
-        (REJECTED, 'Avslaget'),
-        (APPROVED, 'Godkännt')
+        (DRAFT, _("utkast")),
+        (BEING_REVIEWED, _("väntar på godkännande")),
+        (REJECTED, _("Avslaget")),
+        (APPROVED, _("Godkännt"))
     )
 
     #  Description:
     headline = models.CharField(
-        verbose_name='arrangemangets namn',
-        help_text="Ge ditt evenemang en titel, till exempel 'Excelutbildning med Knowit'",
+        verbose_name=_("arrangemangets namn"),
+        help_text=_("Ge ditt evenemang en titel, till exempel 'Excelutbildning med Knowit'"),
         max_length=255)
     lead = models.TextField(
-        verbose_name='kort beskrivning',
-        help_text="Ge en kort beskrivning av ditt event. Max 160 tecken. Tex. 'Få cellsynt kompetens med Knowit!'",
+        verbose_name=_("kort beskrivning"),
+        help_text=_("Ge en kort beskrivning av ditt event. Max 160 tecken. Tex. 'Få cellsynt kompetens med Knowit!'"),
         validators=[less_than_160_characters_validator])
     body = models.TextField(
-        verbose_name='beskrivning',
-        help_text="Beskrivning av eventet")
+        verbose_name=_("beskrivning"),
+        help_text=_("Beskrivning av eventet"))
     location = models.CharField(
         max_length=30,
-        verbose_name="plats",
-        help_text="Plats för eventet tex. C1 eller Märkesbacken")
+        verbose_name=_("plats"),
+        help_text=_("Plats för eventet tex. C1 eller Märkesbacken"))
 
     start = models.DateTimeField(
-        verbose_name='starttid',
-        help_text="När startar arrangemanget?")  # When the event starts.
+        verbose_name=_("starttid"),
+        help_text=_("När startar arrangemanget?"))  # When the event starts.
     end = models.DateTimeField(
-        verbose_name='sluttid',
-        help_text="När slutar arrangemanget?")  # When the event ends.
+        verbose_name=_("sluttid"),
+        help_text=_("När slutar arrangemanget?"))  # When the event ends.
 
     enable_registration = models.BooleanField(
-        verbose_name='användare kan anmäla sig')
+        verbose_name=_("användare kan anmäla sig"))
     registration_limit = models.PositiveIntegerField(
-        verbose_name='antal platser', help_text="Hur många kan anmäla sig?", blank=True, null=True)
+        verbose_name=_("antal platser"), help_text=_("Hur många kan anmäla sig?"), blank=True, null=True)
 
     extra_deadline = models.DateTimeField(
-        verbose_name='extra anmälningsstopp',
-        help_text="Exempelvis: Datum att anmäla sig innan för att få mat. Kan lämnas tomt.",
+        verbose_name=_("extra anmälningsstopp"),
+        help_text=_("Exempelvis: Datum att anmäla sig innan för att få mat. Kan lämnas tomt."),
         blank=True,
         null=True)
     extra_deadline_text = models.CharField(
         max_length=255,
-        verbose_name="beskrivning till det extra anmälningsstoppet",
-        help_text="Ex. få mat, garanteras fika osv. Lämna tomt om extra anmälningsstopp ej angivits.",
+        verbose_name=_("beskrivning till det extra anmälningsstoppet"),
+        help_text=_("Ex. få mat, garanteras fika osv. Lämna tomt om extra anmälningsstopp ej angivits."),
         blank=True,
         null=True)
     # Dagar innan start för avanmälan. Räknas bakåt från 'start'
     deregister_delta = models.PositiveIntegerField(
-        verbose_name='Sista dag för använmälan',
+        verbose_name=_("Sista dag för använmälan"),
         default=1,
-        help_text="Sista dag för avanmälan i antal dagar innan eventet")
+        help_text=_("Sista dag för avanmälan i antal dagar innan eventet"))
 
     visible_from = models.DateTimeField(
-        verbose_name="Datum för publicering")
+        verbose_name=_("Datum för publicering"))
 
     #  Access rights
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, verbose_name='användare', null=True,
+        settings.AUTH_USER_MODEL, verbose_name=_("användare"), null=True,
         on_delete=models.SET_NULL)  # User with admin rights/creator.
     # The group which has admin rights. If left blank is it only the user who can admin.
     tags = models.ManyToManyField(
-        Tag, verbose_name='tag', blank=True,
-        help_text="Håll ner Ctrl för att markera flera.")
+        Tag, verbose_name=_("tag"), blank=True,
+        help_text=_("Håll ner Ctrl för att markera flera."))
 
     status = models.CharField(
         max_length=1, choices=STATUSES, default=DRAFT, blank=False, null=False)
     rejection_message = models.TextField(blank=True, null=True)
 
     attachment = models.FileField(
-        verbose_name='Bifogad fil',
-        help_text="Bifogad fil för event",
+        verbose_name=_("Bifogad fil"),
+        help_text=_("Bifogad fil för event"),
         upload_to="event_attachments",
         null=True,
         blank=True)
@@ -112,18 +122,24 @@ class Event(models.Model):
         Organisation,
         blank=True,
         default=None,
-        verbose_name='arrangör',
-        help_text="Organisation(er) som arrangerar evenemanget. Medlemmar i dessa kan senare ändra eventet. Håll ner Ctrl för att markera flera.")
-    sponsored = models.BooleanField(verbose_name='sponsrat', default=False, help_text="Kryssa i om innehållet är sponsrat")
+        verbose_name=_("arrangör"),
+        help_text=_("Organisation(er) som arrangerar evenemanget. "
+                    "Medlemmar i dessa kan senare ändra eventet. Håll ner Ctrl för att markera flera."))
+    sponsored = models.BooleanField(
+        verbose_name=_("sponsrat"), default=False, help_text=_("Kryssa i om innehållet är sponsrat"))
+
+    finished = models.BooleanField(verbose_name='Avsluta event', default=False, help_text="Kryssa i om eventet ska avslutas")
 
     objects = EventManager()
+
     ###########################################################################
     # Meta data for model
     ###########################################################################
+
     class Meta:
-        verbose_name = "Arrangemang"
-        verbose_name_plural = "Arrangemang"
-        permissions = (('can_approve_event', 'Can approve event'),)
+        verbose_name = _("Arrangemang")
+        verbose_name_plural = _("Arrangemang")
+        permissions = (('can_approve_event', 'Can approve event'), ('can_view_no_shows', 'Can view no shows'))
 
     ###########################################################################
     # Overridden and standard functions
@@ -142,7 +158,7 @@ class Event(models.Model):
 
     def get_absolute_url(self):
         """Get url of object"""
-        return "/event/%i/" % self.id
+        return reverse('events:event', kwargs={'pk': self.pk})
 
     ###########################################################################
     # Properties reachable in template
@@ -204,8 +220,8 @@ class Event(models.Model):
     def no_show(self):
         preregistered = EntryAsPreRegistered.objects.filter(event=self)
         participants = EntryAsParticipant.objects.filter(event=self)
-        preregistered_list=[]
-        participant_list=[]
+        preregistered_list = []
+        participant_list = []
         for p in preregistered:
             preregistered_list.append(p.user)
         for p in participants:
@@ -240,26 +256,29 @@ class Event(models.Model):
         """This method determines if a specific user can register to an event."""
         # possible to register?
         if not self.enable_registration:
-            raise CouldNotRegisterException(event=self, reason="registering är avstängd")
+            raise CouldNotRegisterException(event=self, reason=ugettext("registering är avstängd"))
 
         # Already registered?
         try:
             EntryAsPreRegistered.objects.get(event=self, user=user)
-            raise CouldNotRegisterException(event=self, reason="du är redan registrerad")
+            raise CouldNotRegisterException(event=self, reason=ugettext("du är redan registrerad"))
         except ObjectDoesNotExist:
             pass
 
         # To many participants?
         if self.number_of_preregistrations >= self.registration_limit:
-            raise CouldNotRegisterException(event=self, reason="maxantalet deltagare är uppnått")
+            raise CouldNotRegisterException(event=self, reason=ugettext("maxantalet deltagare är uppnått"))
 
         # Has the start date passed?
         if self.start < timezone.now():
-            raise CouldNotRegisterException(event=self, reason="starttiden har passerats")
+            raise CouldNotRegisterException(event=self, reason=ugettext("starttiden har passerats"))
 
         # Has the register date passed?
         if not self.can_deregister:
             raise CouldNotRegisterException(event=self, reason="anmälningstiden har passerats")
+        # Is the user banned from event registration?
+        if len(EntryAsPreRegistered.objects.get_noshow(user=user)) >= 3:
+            raise CouldNotRegisterException(event=self, reason="du har missat 3 event")
 
         EntryAsPreRegistered(user=user, event=self).save()
         try:
@@ -272,7 +291,7 @@ class Event(models.Model):
     def deregister_user(self, user):
         # Deregistration time has passed.
         if not self.can_deregister:
-            return CouldNotRegisterException(event=self, reason="avanmälningstiden har passerats")
+            return CouldNotRegisterException(event=self, reason=ugettext("avanmälningstiden har passerats"))
         found = False
         try:
             entry = EntryAsPreRegistered.objects.get(event=self, user=user)
@@ -281,11 +300,14 @@ class Event(models.Model):
             if reserves.exists():
                 user = reserves[0]
                 self.register_user(reserves[0].user)
-                subject = "Du har blivit uppflyttad från reservlistan!"
-                body = "".join(["<p>Grattis!</p>",
-                                "<p>Du har blivit uppflyttad från reservlistan och är nu anmäld till {event}.</p>",
-                                "<p>Vill du inte ha din plats kan du avanmäla dig på länken ",
-                                "<a href='{site}{link}'>{site}{link}</a></p>"]
+                subject = ugettext("Du har blivit uppflyttad från reservlistan!")
+                body = "".join(["<p>",
+                                ugettext("Grattis!"),
+                                "</p><p>",
+                                ugettext("Du har blivit uppflyttad från reservlistan och är nu anmäld till"),
+                                " {event}.</p><p>",
+                                ugettext("Vill du inte ha din plats kan du avanmäla dig på länken"),
+                                " <a href='{site}{link}'>{site}{link}</a></p>"]
                                ).format(event=self.headline,
                                         site=Site.objects.get_current().domain,
                                         link=self.get_absolute_url())
@@ -306,10 +328,14 @@ class Event(models.Model):
     def register_reserve(self, user):
         # Check for weirdness:
         if user in self.reserves:
-            raise CouldNotRegisterException(event=self, reason="du är redan registrerad som reserv")
+            raise CouldNotRegisterException(event=self, reason=ugettext("du är redan registrerad som reserv"))
 
         if user in self.participants:
-            raise CouldNotRegisterException(event=self, reason="du är anmäld som deltagare")
+            raise CouldNotRegisterException(event=self, reason=ugettext("du är anmäld som deltagare"))
+
+        # Is the user banned from event registration?
+        if len(EntryAsPreRegistered.objects.get_noshow(user=user)) >= 3:
+            raise CouldNotRegisterException(event=self, reason="du har missat 3 event")
 
         # Register as reserve
         entry = EntryAsReserve(event=self, user=user)
@@ -318,6 +344,11 @@ class Event(models.Model):
 
     def registered(self, user):
         if (user in self.preregistrations) or (user in self.reserves):
+            return True
+        return False
+
+    def is_checked_in(self, user):
+        if user in self.participants:
             return True
         return False
 
@@ -331,7 +362,7 @@ class Event(models.Model):
 
     def check_in(self, user):
         if user in self.participants:
-            raise CouldNotRegisterException(event=self, reason="Du är redan anmäld som deltagare")
+            raise CouldNotRegisterException(event=self, reason=ugettext("Du är redan anmäld som deltagare"))
         participant = EntryAsParticipant(user=user, event=self)
         participant.save()
         participant.add_speech_nr()
@@ -351,7 +382,7 @@ class Event(models.Model):
             return True
         return False
 
-    def get_new_status(self, draft):
+    def get_new_status(self, draft):  # TODO: Reduce complexity
         try:
             s_db = Event.objects.get(pk=self.pk)
             if s_db.status == Event.DRAFT:
@@ -387,12 +418,16 @@ class Event(models.Model):
         if self.status == Event.BEING_REVIEWED:
             if msg:
                 send_mail(
-                    "Ditt event har blivit avslaget.",
+                    ugettext("Ditt event har blivit avslaget."),
                     "",
                     settings.EMAIL_HOST_USER,
                     [self.user.email, ],
                     fail_silently=False,
-                    html_message="<p>Ditt event {head} har blivit avslaget med motiveringen:</p><p>{msg}</p>".format(
+                    html_message="".join(["<p>",
+                                          ugettext("Ditt event"),
+                                          " {head} ",
+                                          ugettext("har blivit avslaget med motiveringen:"),
+                                          "</p><p>{msg}</p>"]).format(
                         head=self.headline, msg=msg))
             self.rejection_message = msg
             self.status = Event.REJECTED
@@ -416,7 +451,9 @@ class Event(models.Model):
                            "id",
                            "created",
                            "modified",
-                           "replacing"]
+                           "replacing",
+                           "imageattachment",
+                           "otherattachment"]
                 multi = ["tags", "organisations"]
                 for field in self.replacing._meta.get_fields():
                     if field.name not in exclude:
@@ -476,7 +513,8 @@ class Event(models.Model):
         for ele in to_remove:
             self._remove_speaker_from_queue(ele)
 
-    def _remove_speaker_from_queue(self, to_remove):
+    @staticmethod
+    def _remove_speaker_from_queue(to_remove):
         before = None
         after = None
         try:
@@ -513,6 +551,136 @@ class Event(models.Model):
             next_speaker = next_speaker.next_speaker
         return result
 
+###########################################################################
+# Attachment Models
+###########################################################################
+
+
+def _image_file_path(instance, filename):
+    """Returns the subfolder in which to upload images for event. This results in media/event/img/<filename>"""
+    return os.path.join(
+        'event', str(instance.event.pk), 'images', filename
+    )
+
+
+THUMB_SIZE = (129, 129)  # Size of saved thumbnails.
+
+
+class ImageAttachment(models.Model):
+    """Used to handle image attachments to be shown in the event"""
+    img = models.ImageField(
+        upload_to=_image_file_path,
+        null=False,
+        blank=False,
+        verbose_name='eventlbild'
+    )
+    thumbnail = models.ImageField(
+        upload_to=_image_file_path,
+        null=True,
+        blank=True,
+        verbose_name='förhandsvisning'
+    )
+    caption = models.CharField(max_length=100)
+    event = models.ForeignKey(Event,
+                              null=False,
+                              blank=False)
+    modified_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='användare',
+        help_text="Uppladdat av.",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='event_image_uploader')
+
+    def _set_thumbnail(self):
+        if self.thumbnail:
+            return  # This means no updates! (Otherwise it double saves.)
+        path = self.img.path
+        try:
+            image = Image.open(path)
+        except IOError:
+            print("Could not open!")
+            raise
+        image.thumbnail(THUMB_SIZE, Image.ANTIALIAS)
+        thumb_name_path, thumb_extension = os.path.splitext(self.img.name)
+        thumb_extension = thumb_extension.lower()
+        a, thumb_name = os.path.split(thumb_name_path)
+        thumb_file_name = thumb_name + '_thumb' + thumb_extension
+
+        if thumb_extension in ['.jpg', '.jpeg']:
+            FTYPE = 'JPEG'
+        elif thumb_extension == '.gif':
+            FTYPE = 'GIF'
+        elif thumb_extension == '.png':
+            FTYPE = 'PNG'
+        else:
+            print('Wrong file extension!')
+            return False    # Unrecognized file type
+
+        temp_thumb = io.BytesIO()
+        image.save(temp_thumb, FTYPE)
+        temp_thumb.seek(0)
+
+        self.thumbnail.save(thumb_file_name, ContentFile(temp_thumb.read()), save=True)
+        temp_thumb.close()
+        return True
+
+    def save(self, *args, **kwargs):
+        super(ImageAttachment, self).save(*args, **kwargs)  # It saves first to set the main img.
+        self._set_thumbnail()  # Then it generates the thumbnail, and saves again.
+        #  It seems the model must be saved once in order to open the img and generate the thumbnail.
+        #  This means that a thumbnail only cna be generated once. Since if it is set the _set_thumbnail method
+        #  Wont run.
+
+    def __str__(self):
+        return os.path.basename(self.img.name) + " (Event: " + str(self.article.pk) + ")"
+
+# Clean up when model is removed
+@receiver(pre_delete, sender=ImageAttachment)
+def other_attachment_delete(sender, instance, **kwargs):
+    instance.img.delete(False)  # False avoids saving the model.
+    instance.thumb.delete(False)
+
+
+def _file_path(instance, filename):
+    return os.path.join(
+        'event', str(instance.event.pk), 'attachments', filename
+    )
+
+
+class OtherAttachment(models.Model):
+    """"Regular attachments such as pdf:s and it's like."""
+
+    file = models.FileField(
+        upload_to=_file_path,
+        null=False,
+        blank=False,
+        verbose_name='eventlbilaga',
+    )
+    display_name = models.CharField(max_length=160, null=False, blank=False)
+    file_name = models.CharField(max_length=300, null=False, blank=True)
+    event = models.ForeignKey(Event, null=False, blank=False)
+    modified_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='användare',
+        help_text="Uppladdat av.",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='event_attachment_uploader')
+
+    def save(self, *args, **kwargs):
+        self.file_name = os.path.basename(self.file.name)
+        super(OtherAttachment, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.display_name + " (" + self.file_name + ")" + "för event: " + str(self.article)
+
+
+#  This receiver part here makes sure to remove files if the model instance is deleted.
+@receiver(pre_delete, sender=OtherAttachment)
+def other_attachment_delete(sender, instance, **kwargs):
+    instance.file.delete(False)  # False avoids saving the model.
+
 
 ######################################################################
 #  Entry models are used for the logic behind users standing in line  #
@@ -533,38 +701,40 @@ class EntryAsReserve(models.Model):
         return None
 
     class Meta:
-        verbose_name = "Reserv"
-        verbose_name_plural = "Reserver"
+        verbose_name = _("Reserv")
+        verbose_name_plural = _("Reserver")
 
     def __str__(self):
-        return str(self.user) + " reserv på " + str(self.event)
+        return str(self.user) + ugettext(" reserv på ") + str(self.event)
 
 
 # Used to track the pre-registered users for an event.
 class EntryAsPreRegistered(models.Model):
-    event = models.ForeignKey(Event, verbose_name='arrangemang', null=True, on_delete=models.SET_NULL)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)
+    event = models.ForeignKey(Event, verbose_name=_("arrangemang"), null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("användare"), null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(auto_now_add=True)
     no_show = models.BooleanField(default=False)
 
+    objects = EntryAsPreRegisteredManager()
+
     class Meta:
-        verbose_name = "Anmälning"
-        verbose_name_plural = "Anmälningar"
+        verbose_name = _("Anmälning")
+        verbose_name_plural = _("Anmälningar")
 
     def __str__(self):
-        return str(self.user) + " anmäld på: " + str(self.event)
+        return str(self.user) + ugettext(" anmäld på: ") + str(self.event)
 
 
 # Used to track the people check in on an event. (Actually participating)
 class EntryAsParticipant(models.Model):
-    event = models.ForeignKey(Event, verbose_name="arrangemang", null=True, on_delete=models.SET_NULL)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)
+    event = models.ForeignKey(Event, verbose_name=_("arrangemang"), null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("användare"), null=True, on_delete=models.SET_NULL)
     timestamp = models.DateTimeField(auto_now_add=True)
-    speech_nr = models.PositiveIntegerField(verbose_name="talar nummer", null=True, blank=True)
+    speech_nr = models.PositiveIntegerField(verbose_name=_("talar nummer"), null=True, blank=True)
 
     class Meta:
-        verbose_name = "Deltagare"
-        verbose_name_plural = "Deltagare"
+        verbose_name = _("Deltagare")
+        verbose_name_plural = _("Deltagare")
 
     def __str__(self):
         return str(self.event) + " | " + str(self.user)
@@ -579,8 +749,8 @@ class EntryAsParticipant(models.Model):
 
 
 class SpeakerList(models.Model):
-    event = models.ForeignKey(Event, verbose_name="arrangemang", null=True, on_delete=models.SET_NULL)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='användare', null=True, on_delete=models.SET_NULL)
+    event = models.ForeignKey(Event, verbose_name=_("arrangemang"), null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("användare"), null=True, on_delete=models.SET_NULL)
     first = models.NullBooleanField(default=None)
     next_speaker = models.ForeignKey('self', null=True, blank=True, default=None, on_delete=models.SET_NULL)
 

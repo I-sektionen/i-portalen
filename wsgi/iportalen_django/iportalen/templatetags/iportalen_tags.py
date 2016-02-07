@@ -1,9 +1,8 @@
 from django import template
 from django.conf import settings
 from django.template.defaultfilters import stringfilter
-from django.utils import timezone
 from django.utils.safestring import mark_safe
-
+from django.utils.translation import ugettext as _
 from articles.models import Article
 from events.models import Event
 from utils.markdown import markdown_to_html
@@ -25,7 +24,7 @@ def markdown(text):
 def get_menu_choices_iportalen(self):
     menu_choices = []  # List of extra menu choices.
     if self.is_staff:
-        menu_choices.append(('Adminsidan', '/admin'))  # Staff users who can access Admin page.
+        menu_choices.append((_('Adminsidan'), '/admin'))  # Staff users who can access Admin page.
     return menu_choices
 
 

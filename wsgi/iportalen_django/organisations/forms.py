@@ -20,9 +20,3 @@ class AddOrganisationForm(forms.ModelForm):
     class Meta:
         model = Organisation
         fields = ('name', 'leader', 'organisation_type', 'parent_organisation', 'group')
-
-
-class OrganisationPostForm(forms.ModelForm):
-    class Meta:
-        model = OrganisationPost
-        fields = ('post', 'user', 'email')

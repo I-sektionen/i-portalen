@@ -16,9 +16,9 @@
 {% get_sponsored_content as sponsored_content %}
     <div class="sponsored_container">
         <div class="sponsored_feed_container">
-            <div class="sponsored_feed_headline"><a href="{% url "sponsored" %}" class="content-type-nav">Senaste näringsliv:</a></div>
+            <div class="sponsored_feed_headline"><a href="{% url "sponsored" %}" class="content-type-nav">Senaste:</a></div>
             <div id="sponsored_feed_content">
-                <ul>
+                <ul style="display: block; overflow: hidden">
                     {% for c in sponsored_content %}
                         <li><strong><a href="{{ c.get_absolute_url }}">{{ c.headline|truncatechars:62 }}</a></strong></li>
                     {% endfor %}
