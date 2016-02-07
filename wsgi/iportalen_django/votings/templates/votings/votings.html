@@ -1,0 +1,8 @@
+{% extends "master.html"%}
+{% block hero %}
+{% endblock %}
+{% block content %}
+{% for qg in question_groups %}
+    <a href="{{ qg.get_absolute_url }}">{{ qg }}</a>
+{% endfor %}
+{% endblock %}
