@@ -1,0 +1,65 @@
+$hero-overlay-gradient: linear-gradient(rgba(black, 0.5), rgba(black, 0.5));
+//Variables for heading
+$hero-heading-color: $light-gray;
+// Variables for divider
+$hero-divider-color: $light-gray;
+$hero-divider-height: 5px;
+// Variables for hero text
+$hero-text-color: $light-gray;
+
+.top-hero {
+  display: none;
+  min-height: 50vh;
+  @include position(relative);
+
+  @include media($large-screen) {
+
+    display: block;
+
+  }
+
+  .hero-content {
+    padding: 2em;
+    text-align: center;
+    //This positions the element rela
+    @include position(absolute);
+    left: 50%;
+    top: 50%;
+    @include transform(translate(-50%, -50%));
+    width: 100%;
+
+    @include media($large-screen) {
+
+      width: auto;
+
+    }
+  }
+
+  .hero-heading {
+    color: $hero-heading-color;
+    font-size: 2em;
+    text-transform: uppercase;
+    margin-bottom: 0;
+    @include  media ($large-screen) {
+      font-size: 3em;
+    }
+
+  }
+    .hero-divider {
+      border: none;
+      background-color: $hero-divider-color;
+      height: $hero-divider-height;
+      margin: 5px;
+    }
+
+  .hero-text {
+    font-size: 1.5em;
+    color: $hero-text-color;
+    @include media ($large-screen) {
+      text-align: justify;
+    }
+
+  }
+
+}
+

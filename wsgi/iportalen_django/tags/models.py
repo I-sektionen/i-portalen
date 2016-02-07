@@ -1,17 +1,14 @@
 from django.db import models
-from django.contrib.auth.models import Group
 from utils.validators import slash_validator
+from django.utils.translation import ugettext_lazy as _
 
 
 class Tag(models.Model):
-    name = models.CharField(verbose_name='namn', max_length=255, unique=True, validators=[slash_validator])
+    name = models.CharField(verbose_name=_('namn'), max_length=255, unique=True, validators=[slash_validator])
 
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return "/articles/tag/%s/" % self.name
-
     class Meta:
-        verbose_name = "tagg"
-        verbose_name_plural = "taggar"
+        verbose_name = _("tagg")
+        verbose_name_plural = _("taggar")

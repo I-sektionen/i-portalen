@@ -7,6 +7,10 @@
 
 ## Länkar
 
-- [Gamla I-portalen](http://i-portalen.se)
+- [Gamla I-portalen](http://old.i-portalen.se)
 - [Development I-portalen](http://development.i-portalen.se)
-- [Master I-portalen](http://master.i-portalen.se)
+- [I-portalen](https://www.i-portalen.se)
+- [Användar manual I-portalen](http://i-sektionen.github.io/i-portalen/index.html)
+
+##Nya dependecies:
+sudo apt-get install libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk

@@ -1,22 +1,54 @@
+from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
-from django.shortcuts import render, get_object_or_404, redirect, render_to_response
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
+from django.forms import modelformset_factory
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.contrib import messages
 from django.utils import timezone
 from django.db import transaction
-from django.core.exceptions import ObjectDoesNotExist
 import csv
 from utils.validators import liu_id_validator
-from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm, RejectionForm
-from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticipant, SpeakerList
+from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm, RejectionForm, AttachmentForm, \
+    ImageAttachmentForm
+from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticipant, OtherAttachment, \
+    ImageAttachment
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
-from .feed import generate_feed
+from django.utils.translation import ugettext as _
 
 
 # Create your views here.
+from wsgi.iportalen_django.iportalen import settings
+from utils.time import six_months_back
+
+
+@login_required()
+def summarise_noshow(request,pk):
+    event = get_object_or_404(Event,pk=pk)
+    if not event.can_administer(request.user):
+        raise PermissionDenied
+    if not event.finished:
+        event.finished = True
+    noshows = event.no_show
+    for user in noshows:
+        noshow = EntryAsPreRegistered.objects.get(event=event, user=user)
+        noshow.no_show = True
+        noshow.save()
+    for user in noshows:
+        if len(EntryAsPreRegistered.objects.get_noshow(user=user)) == 2:
+            subject = "Du har nu missat ditt andra event"
+            body = "<p>Hej du har missat 2 event som du har anmält dig på. Om du missar en tredje gång så blir vi tvungna att stänga av dig från " \
+                   "framtida event fram tills ett halv år framåt.</p>"
+            send_mail(subject, "", settings.EMAIL_HOST_USER, [user.email, ], fail_silently=False, html_message=body)
+        elif len(EntryAsPreRegistered.objects.get_noshow(user=user)) == 3:
+            subject = "Du har nu missat ditt tredje event"
+            body = "<p>Hej igen du har missat 3 event som du har anmält dig på. Du kommer härmed att blir avstängd från " \
+                   "framtida event fram tills ett halv år framåt. Ha en bra dag :)</p>"
+            send_mail(subject, "", settings.EMAIL_HOST_USER, [user.email, ], fail_silently=False, html_message=body)
+    event.save()
+    return redirect("events:administer event", pk=pk)
 
 
 def view_event(request, pk):
@@ -33,10 +65,10 @@ def register_to_event(request, pk):
         event = get_object_or_404(Event, pk=pk)
         try:
             event.register_user(request.user)
-            messages.success(request, "Du är nu registrerad på eventet.")
+            messages.success(request, _("Du är nu registrerad på eventet."))
         except CouldNotRegisterException as err:
             messages.error(request,
-                           "Fel, kunde inte registrera dig på " + err.event.headline + " för att " + err.reason + ".")
+                           _("Fel, kunde inte registrera dig på ") + err.event.headline + _(" för att ") + err.reason + ".")
     return redirect("events:event", pk=pk)
 
 
@@ -56,13 +88,17 @@ def import_registrations(request, pk):
                 except CouldNotRegisterException as err:
                     messages.error(
                         request,
-                        "Fel, kunde inte registrera {0} på ".format(liu_id) +
-                        err.event.headline +
-                        " för att " +
-                        err.reason +
-                        ".")
+                        "".join([_("Fel, kunde inte registrera"),
+                                 " {liu_id} ",
+                                 _("på"),
+                                 " {hedline} ",
+                                 _("för att"),
+                                 " {reason}."]).format(
+                            liu_id=liu_id,
+                            hedline=err.event.headline,
+                            reason=err.reason))
                 except ObjectDoesNotExist:
-                    messages.error(request, "{0} finns inte i databasen".format(liu_id))
+                    messages.error(request, "".join(["{liu_id} ", _("finns inte i databasen.")]).format(liu_id))
     else:
         form = ImportEntriesForm()
     return render(request, "events/import_users.html", {'form': form})
@@ -74,7 +110,7 @@ def register_as_reserve(request, pk):
         event = get_object_or_404(Event, pk=pk)
         entry = event.register_reserve(request.user)
         messages.success(request,
-                         "Du är nu anmäld som reserv på eventet, du har plats nr. " + str(entry.position()) + ".")
+                         _("Du är nu anmäld som reserv på eventet, du har plats nr. ") + str(entry.position()) + ".")
     return redirect("events:event", pk=pk)
 
 
@@ -136,7 +172,7 @@ def reserves_list(request, pk):
 
 
 @login_required()
-def check_in(request, pk):
+def check_in(request, pk):  # TODO: Reduce complexity
     event = get_object_or_404(Event, pk=pk)
     can_administer = event.can_administer(request.user)
     if request.method == 'POST':
@@ -155,12 +191,12 @@ def check_in(request, pk):
                 else:
                     event_user = IUser.objects.get(rfid_number=form_user)
             except ObjectDoesNotExist:
-                messages.error(request, "Användaren finns inte i databasen")
+                messages.error(request, _("Användaren finns inte i databasen"))
                 form = CheckForm()
                 return render(request, 'events/event_check_in.html', {
                     'form': form, 'event': event, "can_administer": can_administer,
                 })
-            if event_user in event.preregistrations or form.cleaned_data["force_check_in"] == True:
+            if event_user in event.preregistrations or form.cleaned_data["force_check_in"]:
                 try:
                     event.check_in(event_user)
                     if event.extra_deadline:
@@ -169,13 +205,15 @@ def check_in(request, pk):
                         except:
                             extra = False
                         if extra:
-                            extra_str = "<br>Anmälde sig i tid för att " + event.extra_deadline_text + "."
+                            extra_str = _("<br>Anmälde sig i tid för att ") + event.extra_deadline_text + "."
                         else:
-                            extra_str = "<br><span class='errorlist'>Anmälde sig ej i tid för att " + \
+                            extra_str = _("<br><span class='errorlist'>Anmälde sig ej i tid för att ") + \
                                         event.extra_deadline_text + ".</span>"
                     else:
                         extra_str = ""
-                    messages.success(request, "{0} {1} checkades in med talarnummer: {2}{3}".format(
+                    messages.success(request, "".join(["{0} {1} ",
+                                                       _("checkades in med talarnummer:"),
+                                                       " {2}{3}"]).format(
                         event_user.first_name.capitalize(),
                         event_user.last_name.capitalize(),
                         event.entryasparticipant_set.get(user=event_user).speech_nr,
@@ -186,16 +224,17 @@ def check_in(request, pk):
                         'form': form, 'event': event, "can_administer": can_administer,
                     })
                 except:
-                    messages.error(request, "{0} {1} är redan incheckad".format(event_user.first_name.capitalize(),
-                                                                                event_user.last_name.capitalize()))
+                    messages.error(request, "".join(["{0} {1} ",_("är redan incheckad")]).format(
+                        event_user.first_name.capitalize(), event_user.last_name.capitalize()))
 
             else:
                 if event_user in event.reserves:
-                    messages.error(request,
-                                   "Användaren {0} {1} är anmäld som reserv".format(event_user.first_name.capitalize(),
-                                                                                    event_user.last_name.capitalize()))
+                    messages.error(
+                        request,
+                        "".join(["{0} {1} ", _("är anmäld som reserv")]).format(
+                            event_user.first_name.capitalize(), event_user.last_name.capitalize()))
                 else:
-                    messages.error(request, "Användare {0} {1} är inte anmäld på eventet".format(
+                    messages.error(request, "".join(["{0} {1} ", _("är inte anmäld på eventet")]).format(
                         event_user.first_name.capitalize(), event_user.last_name.capitalize()))
                 reserve = True
                 return render(request, 'events/event_check_in.html',
@@ -214,7 +253,7 @@ def check_in(request, pk):
 
 @login_required()
 def all_unapproved_events(request):
-    if request.user.has_perm("event.can_approve_event"):
+    if request.user.has_perm("events.can_approve_event"):
         events = Event.objects.filter(status=Event.BEING_REVIEWED, end__gte=timezone.now())
         return render(request, 'events/approve_event.html', {'events': events})
     else:
@@ -238,7 +277,7 @@ def unapprove_event(request, pk):
     if request.method == 'POST':
         if form.is_valid():
             if event.reject(request.user, form.cleaned_data['rejection_message']):
-                messages.success(request, "Eventet har avslagits.")
+                messages.success(request, _("Eventet har avslagits."))
                 return redirect('events:unapproved')
             else:
                 raise PermissionDenied
@@ -285,10 +324,14 @@ def unregister(request, pk):
         event = get_object_or_404(Event, pk=pk)
         try:
             event.deregister_user(request.user)
-            messages.success(request, "Du är nu avregistrerad på eventet.")
+            messages.success(request, _("Du är nu avregistrerad på eventet."))
         except CouldNotRegisterException as err:
             messages.error(request,
-                           "Fel, kunde inte avregistrera dig på " + err.event.headline + " för att " + err.reason + ".")
+                           "".join([_("Fel, kunde inte avregistrera dig på "),
+                                    err.event.headline,
+                                    _(" för att "),
+                                    err.reason,
+                                    "."]))
     return redirect("events:event", pk=pk)
 
 
@@ -298,8 +341,8 @@ def event_calender(request):
 
 def event_calender_view(request):
     events = Event.objects.published().order_by('start')
-    return render(request, "events/calendar_view.html",
-                          {'events': events})
+    return render(request, "events/calendar_view.html", {'events': events})
+
 
 @login_required()
 def registered_on_events(request):
@@ -326,7 +369,7 @@ def events_by_user(request):
 
 
 @login_required()
-def create_or_modify_event(request, pk=None):
+def create_or_modify_event(request, pk=None):  # TODO: Reduce complexity
     if pk:  # if pk is set we modify an existing event.
         duplicates = Event.objects.filter(replacing_id=pk)
         if duplicates:
@@ -334,9 +377,10 @@ def create_or_modify_event(request, pk=None):
             for d in duplicates:
                 links += "<a href='{0}'>{1}</a><br>".format(d.get_absolute_url(), d.headline)
             messages.error(request,
-                           "Det finns redan en ändrad version av det här arrangemanget! "
-                           "Är du säker på att du vill ändra den här?<br>"
-                           "Följande ändringar är redan föreslagna: <br> {:}".format(links),
+                           "".join([_("Det finns redan en ändrad version av det här arrangemanget! "
+                                      "Är du säker på att du vill ändra den här?<br>"
+                                      "Följande ändringar är redan föreslagna: <br> "),
+                                    "{:}"]).format(links),
                            extra_tags='safe')
         event = get_object_or_404(Event, pk=pk)
         if not event.can_administer(request.user):
@@ -364,18 +408,109 @@ def create_or_modify_event(request, pk=None):
             event.save()
             form.save_m2m()
             if event.status == Event.DRAFT:
-                messages.success(request, "Dina ändringar har sparats i ett utkast.")
+                messages.success(request, _("Dina ändringar har sparats i ett utkast."))
             elif event.status == Event.BEING_REVIEWED:
-                messages.success(request, "Dina ändringar har skickats för granskning.")
+                messages.success(request, _("Dina ändringar har skickats för granskning."))
             return redirect('events:by user')
         else:
-            messages.error(request, "Det uppstod ett fel, se detaljer nedan.")
+            messages.error(request, _("Det uppstod ett fel, se detaljer nedan."))
             return render(request, 'events/create_event.html', {
                 'form': form,
             })
     return render(request, 'events/create_event.html', {
         'form': form,
     })
+
+
+def upload_attachments(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    if not event.can_administer(request.user):
+        return HttpResponseForbidden()
+    AttachmentFormset = modelformset_factory(OtherAttachment,
+                                             form=AttachmentForm,
+                                             max_num=30,
+                                             extra=3,
+                                             can_delete=True,
+                                             )
+    if request.method == 'POST':
+        formset = AttachmentFormset(request.POST, request.FILES, queryset=OtherAttachment.objects.filter(event=event))
+        if formset.is_valid():
+            for entry in formset.cleaned_data:
+                if not entry == {}:
+                    if entry['DELETE']:
+                        entry['id'].delete()  # TODO: Remove the clear option from html-widget (or make it work).
+                    else:
+                        if entry['id']:
+                            attachment = entry['id']
+                        else:
+                            attachment = OtherAttachment(event=event)
+                            attachment.file_name = entry['file'].name
+                        attachment.file = entry['file']
+                        attachment.display_name = entry['display_name']
+                        attachment.modified_by = request.user
+                        attachment.save()
+            messages.success(request, 'Dina bilagor har sparats.')
+            return redirect('events:manage attachments', pk=event.pk)
+        else:
+            return render(request, "events/attachments.html", {
+                        'event': event,
+                        'formset': formset,
+                        })
+    formset = AttachmentFormset(queryset=OtherAttachment.objects.filter(event=event))
+    return render(request, "events/attachments.html", {
+                        'event': event,
+                        'formset': formset,
+                        })
+
+
+def upload_attachments_images(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    if not event.can_administer(request.user):
+        return HttpResponseForbidden()
+    AttachmentFormset = modelformset_factory(ImageAttachment,
+                                             form=ImageAttachmentForm,
+                                             max_num=30,
+                                             extra=3,
+                                             can_delete=True,
+                                             )
+    if request.method == 'POST':
+        formset = AttachmentFormset(request.POST,
+                                    request.FILES,
+                                    queryset=ImageAttachment.objects.filter(event=event)
+                                    )
+        if formset.is_valid():
+            for entry in formset.cleaned_data:
+                if not entry == {}:
+                    if entry['DELETE']:
+                        entry['id'].delete()  # TODO: Remove the clear option from html-widget (or make it work).
+                    else:
+                        if entry['id']:
+                            attachment = entry['id']
+                        else:
+                            attachment = ImageAttachment(event=event)
+                        attachment.img = entry['img']
+                        attachment.caption = entry['caption']
+                        attachment.modified_by = request.user
+                        attachment.save()
+            messages.success(request, 'Dina bilagor har sparats.')
+            return redirect('events:event', event.pk)
+        else:
+            return render(request, "events/attach_images.html", {
+                        'event': event,
+                        'formset': formset,
+                        })
+    formset = AttachmentFormset(queryset=ImageAttachment.objects.filter(event=event))
+    return render(request, "events/attach_images.html", {
+                        'event': event,
+                        'formset': formset,
+                        })
+
+
+def download_attachment(request, pk):
+    attachment = OtherAttachment.objects.get(pk=pk)
+    response = HttpResponse(attachment.file)
+    response['Content-Disposition'] = 'attachment; filename="{filename}"'.format(filename=attachment.file_name)
+    return response
 
 
 def file_download(request, pk):
@@ -388,14 +523,14 @@ def file_download(request, pk):
 
 
 @login_required()
-def speaker_list(request, pk):
+def speaker_list(request, pk):  # TODO: Reduce complexity
     if request.method == 'POST':
         try:
             event = Event.objects.get(pk=pk)
             if not event.can_administer(request.user):
                 return HttpResponseForbidden()
         except:
-            return JsonResponse({"status": "Inget event med detta idnummer."})
+            return JsonResponse({"status": _("Inget event med detta idnummer.")})
         form = SpeakerForm(request.POST)
         if form.is_valid():
             if form.cleaned_data['method'] == "add":
@@ -404,7 +539,7 @@ def speaker_list(request, pk):
                     event.add_speaker_to_queue(speech_nr)
                     return JsonResponse({'status': 'ok'})
                 except:
-                    return JsonResponse({"status": "Ingen användare med det talarnummret."})
+                    return JsonResponse({"status": _("Ingen användare med det talarnummret.")})
             elif form.cleaned_data['method'] == "pop":
                 event.remove_first_speaker_from_queue()
                 return JsonResponse({'status': 'ok'})
@@ -414,17 +549,45 @@ def speaker_list(request, pk):
                     event.remove_speaker_from_queue(speech_nr)
                     return JsonResponse({'status': 'ok'})
                 except:
-                    return JsonResponse({"status": "Ingen användare med det talarnummret."})
+                    return JsonResponse({"status": _("Ingen användare med det talarnummret.")})
             elif form.cleaned_data['method'] == "clear":
                 event.clear_speaker_queue()
                 return JsonResponse({'status': 'ok'})
             elif form.cleaned_data['method'] == "all":
                 return JsonResponse({"status": "ok", "speaker_list": event.get_speaker_queue()})
             else:
-                return JsonResponse({"status": "Ange ett korrekt kommando."})
+                return JsonResponse({"status": _("Ange ett korrekt kommando.")})
     else:
         return JsonResponse({})
 
+@login_required()
+def user_view(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    user = request.user
+    #checks if user is a participant
+    try:
+        participant = EntryAsParticipant.objects.get(event=event, user=user)
+    except EntryAsParticipant.DoesNotExist:
+        raise PermissionDenied
+    return render(request, "events/user_view.html", {'event': event})
+
+
+@login_required()
+def speaker_list_user_add_self(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    user = request.user
+    speaker_number = EntryAsParticipant.objects.get(event=event, user=user).speech_nr
+    event.add_speaker_to_queue(speaker_number)
+    messages.success(request,"Du har skrivit upp dig på talarlistan!")
+    return redirect(reverse('events:user view', kwargs={'pk': event.pk}))
+
+@login_required()
+def speaker_list_user_remove_self(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    user = request.user
+    speaker_number = EntryAsParticipant.objects.get(event=event, user=user).speech_nr
+    event.remove_speaker_from_queue(speaker_number)
+    return redirect(reverse('events:user view', kwargs={'pk': event.pk}))
 
 @login_required()
 def speaker_list_display(request, pk):
@@ -458,8 +621,32 @@ def personal_calendar_feed(request, liu_id):
     events = Event.objects.events_by_user(u)
     response = render(request,
                       template_name='events/feed.ics',
-                      context={'liu_user': u},
+                      context={'liu_user': u, 'events': events},
                       content_type='text/calendar; charset=UTF-8')
     response['Filename'] = 'feed.ics'
     response['Content-Disposition'] = 'attachment; filename=feed.ics'
     return response
+
+@login_required()
+@permission_required('events.can_view_no_shows')
+def show_noshows(request):
+    user = request.user
+    no_shows = EntryAsPreRegistered.objects.filter(no_show = True, timestamp__gte= six_months_back).order_by("user")
+    result = []
+
+    tempuser = {"user": None, "count": 0, "no_shows": []}
+    for no_show in no_shows:
+        if tempuser["user"] == no_show.user:
+            tempuser["count"] += 1
+        else:
+            if tempuser["user"]:
+                result.append(tempuser)
+            tempuser = {"user": no_show.user, "count":1, "no_shows": []}
+
+        tempuser["no_shows"].append(no_show)
+    if tempuser["user"]:
+        result.append(tempuser)
+
+
+
+    return render(request, "events/show_noshows.html", {"user": user, "no_shows":result})

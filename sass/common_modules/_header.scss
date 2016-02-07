@@ -1,0 +1,376 @@
+/*
+* This header is a modified version from Thoughtbots Refills
+* Written by Andreas Gustafsson 2015
+*/
+
+header.navigation {
+  $base-border-color: gainsboro !default;
+  $base-border-radius: $base-border-radius;
+  //$action-color: #477DCA !default;
+  //$dark-gray: #333 !default;
+  $large-screen: em(860) !default;
+  $navigation-padding: 1em;
+  $navigation-background: $white;
+  $navigation-color: $dark-gray;
+  $navigation-color-hover: transparentize($dark-gray, 0.3);
+  $navigation-height: 60px;
+  $navigation-nav-button-background: $action-color;
+  $navigation-nav-button-background-hover: lighten($navigation-background, 10%);
+  $navigation-nav-button-border: 1px solid lighten($navigation-nav-button-background, 20%);
+  $navigation-search-background: lighten($navigation-background, 5);
+  $navigation-search-border: 1px solid darken($navigation-background, 5);
+  $navigation-active-link-color: transparentize(white, 0.5);
+  $navigation-submenu-padding: 1em;
+  $navigation-submenu-width: 18em;
+  $horizontal-bar-mode: $large-screen;
+  $navigation-submenu-font-size: 1em;
+
+  background-color: $navigation-background;
+  min-height: $navigation-height;
+  width: 100%;
+  z-index: 999;
+  box-shadow: 1px 1px 5px silver;
+
+  .navigation-wrapper {
+    @include clearfix;
+    @include outer-container;
+    position: relative;
+    z-index: 9999;
+  }
+
+  .logo {
+    float: left;
+    max-height: $navigation-height;
+    padding-left: $navigation-padding;
+    padding-right: 2em;
+
+    img {
+      max-height: $navigation-height;
+      padding: 0.8em 0;
+    }
+  }
+
+  // Mobile view
+
+  .navigation-menu-button {
+    color: $navigation-color;
+    display: block;
+    float: right;
+    line-height: $navigation-height;
+    margin: 0;
+    padding-right: 1em;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    @include media ($horizontal-bar-mode) {
+      display: none;
+    }
+
+    &:focus,
+    &:hover {
+      color: $navigation-color-hover;
+    }
+  }
+
+  // Nav menu
+  nav {
+    float: none;
+    min-height: $navigation-height;
+    z-index: 9999999;
+
+
+    @include media ($horizontal-bar-mode) {
+      float: left;
+      margin-left: 4em;
+    }
+  }
+
+  ul.navigation-menu {
+    clear: both;
+    display: none;
+    margin: 0 auto;
+    overflow: visible;
+    padding: 1em;
+    width: 100%;
+    z-index: 9999;
+
+    &.show {
+      display: block;
+    }
+
+    @include media ($horizontal-bar-mode) {
+      display: inline;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  // The nav items
+
+  ul li.nav-link {
+    //background: $navigation-background;
+    display: block;
+    line-height: 30px;
+    overflow: hidden;
+    padding-right: 0.8em;
+    //text-align: right;
+    width: 100%;
+    z-index: 9999;
+
+    @include media ($horizontal-bar-mode) {
+      background: transparent;
+      display: inline;
+      line-height: $navigation-height;
+      text-decoration: none;
+      width: auto;
+    }
+
+    // This sets fonts size all main categories in the menu i.e "Sektionen" or "Föreningar"
+    & > a:first-child {
+
+      font-size: 1.2em;
+      font-weight: 600;
+
+      //reset font sizes for desktop
+      @include media($horizontal-bar-mode)
+      {
+        font-size: 0.8em;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+    }
+    a {
+      color: $navigation-color;
+      display: inline-block;
+      text-decoration: none;
+
+      @include media ($horizontal-bar-mode) {
+        padding-right: 1em;
+      }
+
+      &:focus,
+      &:hover {
+        color: $navigation-color-hover;
+      }
+    }
+  }
+
+  .active-nav-item a {
+    border-bottom: 1px solid $navigation-active-link-color;
+    padding-bottom: 3px;
+  }
+
+  // Sub menus
+
+  li.more.nav-link {
+    padding-right: 0;
+
+    @include media($horizontal-bar-mode) {
+      padding-right: $navigation-submenu-padding;
+    }
+
+    > ul > li:first-child a  {
+      //padding-top: 1em;
+    }
+
+    a {
+      margin-right: $navigation-submenu-padding;
+    }
+
+    > a {
+      padding-right: 0.6em;
+    }
+
+    > a:after {
+      @include media($horizontal-bar-mode) {
+        @include position(absolute, auto -0.4em auto auto);
+        content: '\25BE';
+        color: $navigation-color;
+      }
+    }
+  }
+
+  li.more {
+    overflow: visible;
+    padding-right: 0;
+
+    a {
+      padding-right: 0.8em;
+    }
+
+    > a {
+      padding-right: 1.6em;
+      position: relative;
+
+      @include media($horizontal-bar-mode) {
+        margin-right: $navigation-submenu-padding;
+      }
+    }
+
+    // show submenu on hover
+    &:focus,
+    &:hover .submenu {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    @include media($horizontal-bar-mode) {
+      padding-right: 0.8em;
+      position: relative;
+    }
+  }
+
+  /*
+  * The submenu is the item showed on hover
+  */
+  ul.submenu {
+    padding-left: 1em;
+    $submenu-arrow-width: 8px;
+    $submenu-distance-from-item: 10em;
+    $submenu-arrow-distance-from-box: 0em;
+    $tooltip-shadow: 0 2px 2px $dark-gray;
+
+    @include media($horizontal-bar-mode) {
+      position: absolute;
+      @include transition (all 0.2s ease-in);
+      background: #fff;
+      border-radius: $base-border-radius;
+      font-size: 0.9em; // Make sure you use -webkit-backface-visibility: hidden; on the body element to prevent 1px nudging bugs.
+      line-height: 1.5em;
+      margin: 0 auto;
+      opacity: 0;
+      padding: 1em;
+      text-align: center;
+      visibility: hidden;
+      top: 4em;
+      z-index: 10;
+      left: -$navigation-submenu-padding;
+      box-shadow: 2px 2px 8px darken($light-gray, 40%);
+      background: $white;
+      display: flex;
+
+      //This is the arrow at top of dropdown menu
+
+      &:after {
+      //@include position(absolute, null 0 null 0);
+      position: absolute;
+      top: -1.2em;
+      left: 0;
+      //this width indicates the distance from left corner. A higher percentage moves the arrow towards middle
+      width: 20%;
+      border: $submenu-arrow-width solid transparent;
+      bottom: $submenu-arrow-distance-from-box;
+      color: $white;
+      content: '▲';
+      font-size: 1.4em;
+      text-align: center;
+      text-shadow: 1px -1px 1px silver;
+      height: 1.4em;
+    }
+
+    }
+    .submenu-column {
+      @include media($horizontal-bar-mode) {
+        text-align: center;
+      }
+
+    }
+
+    li {
+      display: block;
+      padding-right: 0;
+
+      @include media($horizontal-bar-mode) {
+        line-height: $navigation-height / 1.3;
+
+        &:first-child > a {
+          border-top-left-radius: $base-border-radius;
+          border-top-right-radius: $base-border-radius;
+        }
+
+        &:last-child > a {
+          border-bottom-left-radius: $base-border-radius;
+          border-bottom-right-radius: $base-border-radius;
+          padding-bottom: 0.7em;
+        }
+      }
+
+      a {
+        display: inline-block;
+        width: 100%;
+        font-size: $navigation-submenu-font-size;
+        font-weight: 400;
+
+        @include media($horizontal-bar-mode) {
+          //background-color: $navigation-background;
+          padding-left: $navigation-submenu-padding;
+          text-align: center;
+          width: $navigation-submenu-width;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  // Elements on the far right
+
+  .navigation-tools {
+    background: $dark-gray;
+    clear: both;
+    display: block;
+    height: $navigation-height;
+
+    @include media($horizontal-bar-mode) {
+      background: transparent;
+      clear: none;
+      float: right;
+    }
+    .user-nav-tools {
+      list-style: none;
+      $user-nav-tools-padding: 1em 0em;
+      $user-nav-tools-link-color: $light-gray;
+      $user-nav-tools-link-color-hover: transparentize($user-nav-tools-link-color, 0.3);
+      $user-nav-tools-link-size: 0.5em;
+      $user-nav-tools-link-weight: bold;
+      $user-nav-tools-horizontal-bar-mode-width: 20em;
+      @include media($horizontal-bar-mode) {
+        width: $user-nav-tools-horizontal-bar-mode-width;
+      }
+      @include display(flex);
+      @include justify-content(space-around);
+      padding: $user-nav-tools-padding;
+
+      a {
+        color: $user-nav-tools-link-color;
+        font-size: $user-nav-tools-link-size;
+        font-weight: $user-nav-tools-link-weight;
+        text-transform: uppercase;
+
+        @include media($horizontal-bar-mode) {
+          color: $dark-gray;
+          font-size: $user-nav-tools-link-size;
+          &:hover {
+            color: lighten($dark-gray, 30%);
+          }
+        }
+      }
+      li {
+        text-align: center;
+        @include flex(1);
+        a {
+          @include display(flex);
+          @include flex-direction(column);
+        }
+
+        i {
+          font-size: 3em;
+          margin-bottom: 3px;
+          @include media($horizontal-bar-mode) {
+            font-size: 2em;
+
+          }
+        }
+      }
+    }
+  }
+}

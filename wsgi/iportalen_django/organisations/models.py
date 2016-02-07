@@ -1,8 +1,9 @@
-from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.http import urlquote
 from django.contrib.auth.models import Group
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 from utils.validators import slash_validator
 
 
@@ -12,69 +13,78 @@ class Organisation(models.Model):
     SEKTIONEN = "S"
     FORENINGAR = "F"
     ORGANISATION_TYPE_CHOICES = (
-        (NOT_IN_MENU, "Inte i menyn"),
-        (SEKTIONEN, "Sektionen"),
-        (FORENINGAR, "Föreningar"),
+        (NOT_IN_MENU, _("Inte i menyn")),
+        (SEKTIONEN, _("Sektionen")),
+        (FORENINGAR, _("Föreningar")),
     )
 
-    name = models.CharField(verbose_name='Namn',
-                            help_text="Namn för organisationen",
+    name = models.CharField(verbose_name=_("Namn"),
+                            help_text=_("Namn för organisationen"),
                             max_length=255,
                             unique=True,
                             null=False,
                             validators=[slash_validator])
-    description = models.TextField(verbose_name='Beskrivning',
-                                   help_text="Beskrivning av organisationen",
+    description = models.TextField(verbose_name=_("Beskrivning"),
+                                   help_text=_("Beskrivning av organisationen"),
                                    null=True,
                                    blank=True)
-    contact_info = models.TextField(verbose_name='Kontaktinfo',
-                                     help_text="Kontaktinformation för organisationen",
-                                     null=True,
-                                     blank=True)
-    image = models.FileField(verbose_name='Bild',
-                             help_text="Bild för organisationen",
+    contact_info = models.TextField(verbose_name=_("Kontaktinfo"),
+                                    help_text=_("Kontaktinformation för organisationen"),
+                                    null=True,
+                                    blank=True)
+    image = models.FileField(verbose_name=_("Bild"),
+                             help_text=_("Bild för organisationen"),
                              upload_to="organisations",
                              null=True,
                              blank=True)
     leader = models.ForeignKey(settings.AUTH_USER_MODEL,
-                               verbose_name='Ledare',
-                               help_text="Ledare för organisationen",
+                               verbose_name=_("Ledare"),
+                               help_text=_("Ledare för organisationen"),
                                null=True,
                                blank=True,
                                related_name="leader",
                                on_delete=models.SET_NULL)
-    organisation_type = models.CharField(verbose_name='Meny',
-                                         help_text="Under vilken menyrubrik ska organisationen ligga, "
-                                                   "(Välj samma som hos föräldrar organisationen om en sådan är vald)",
+    organisation_type = models.CharField(verbose_name=_("Meny"),
+                                         help_text=_("Under vilken menyrubrik ska organisationen ligga, "
+                                                   "(Välj samma som hos föräldrar organisationen om en sådan är vald)"),
                                          max_length=1,
                                          null=True,
                                          blank=False,
                                          choices=ORGANISATION_TYPE_CHOICES,
                                          default=NOT_IN_MENU)
     parent_organisation = models.ForeignKey('self',
-                                            verbose_name='Föräldrar organisation',
-                                            help_text="Organisation under vilken denna organisation ligger",
+                                            verbose_name=_("Föräldrar organisation"),
+                                            help_text=_("Organisation under vilken denna organisation ligger"),
                                             null=True,
                                             blank=True,
                                             related_name="parent",
                                             on_delete=models.SET_NULL)
     group = models.ForeignKey(Group,
-                              verbose_name='Grupp',
-                              help_text="Grupp knuten till organisationen",
+                              verbose_name=_("Grupp"),
+                              help_text=_("Grupp knuten till organisationen"),
                               null=True,
                               blank=True,
                               related_name="group",
                               on_delete=models.SET_NULL)
 
+    modified_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='användare',
+        help_text="Ändrad av.",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name = "org_modified_by")
+
     class Meta:
-        verbose_name = "organisation"
-        verbose_name_plural = "organisationer"
+        verbose_name = _("organisation")
+        verbose_name_plural = _("organisationer")
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return "/organisations/{:}/".format(urlquote(self.name))
+
+        return reverse('organisations:organisation', kwargs={'organisation_name': urlquote(self.name)})
 
     def can_edit(self, user):
         if user == self.leader:
@@ -95,26 +105,35 @@ class OrganisationPost(models.Model):
     post = models.CharField(max_length=40,
                             blank=True,
                             null=True,
-                            verbose_name="Posten medlemmen har i organisationen")
+                            verbose_name=_("Posten medlemmen har i organisationen"))
 
-    email = models.EmailField(verbose_name="Emailadress",
-                              help_text="Email som är specifik för posten.",
+    email = models.EmailField(verbose_name=_("Emailadress"),
+                              help_text=_("Email som är specifik för posten."),
                               blank=True,
                               null=True)
 
     org = models.ForeignKey(Organisation,
                             null=False,
                             blank=False,
-                            verbose_name="Medlemmens organisation",
+                            verbose_name=_("Medlemmens organisation"),
                             )
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              null=False,
                              blank=False,
-                             verbose_name="Användare")
+                             verbose_name=_("Användare"))
+
+    modified_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='användare',
+        help_text="Ändrat av.",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name = "org_post_modified_by")
+
 
     class Meta:
-        verbose_name = "Organisations post"
-        verbose_name_plural = "Organisations poster"
+        verbose_name = _("Organisations post")
+        verbose_name_plural = _("Organisations poster")
 
     def __str__(self):
         return self.post + " (i " + str(self.org) + ")"

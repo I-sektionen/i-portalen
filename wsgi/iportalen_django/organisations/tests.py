@@ -9,7 +9,8 @@ class OrganisationTests(TestCase):
     def setUp(self):
         leader = IUser.objects.create_user(username="testa123")
         member = IUser.objects.create_user(username="testa321")
-        not_member = IUser.objects.create_user(username="liuid123")
+
+        IUser.objects.create_user(username="liuid123")
         info = IUser.objects.create_user(username="liuid666")
         perm = Permission.objects.get(codename="change_organisation")
         info.user_permissions.add(perm)
