@@ -4,6 +4,7 @@ from .models import Event
 
 
 class EventForm(forms.ModelForm):
+    required_css_class = 'required'
     draft = forms.BooleanField(label="Utkast", required=False, help_text="Sparar utan att publicera")
 
     class Meta:
@@ -38,6 +39,8 @@ class EventForm(forms.ModelForm):
         self.fields['body'].widget.attrs['rows'] = 15
         self.fields['body'].widget.attrs['class'] = 'wmd-input'
         self.fields['body'].widget.attrs['id'] = 'wmd-input-body'
+
+
 
         for f in self.fields:
             if self.fields[f].required:

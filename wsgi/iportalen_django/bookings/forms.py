@@ -9,6 +9,7 @@ from .models import BookingSlot
 
 
 class NewBookingForm(forms.Form):
+
     forms.CharField(max_length=300)
 
 
@@ -18,6 +19,7 @@ class BookingForm(forms.Form):
 
 
 class BookingSlotForm(forms.ModelForm):
+
     class Meta:
         model = BookingSlot
         fields = ['bookable', ]

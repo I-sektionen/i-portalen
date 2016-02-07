@@ -7,6 +7,7 @@ __author__ = 'jonathan'
 
 
 class CustomUserCreationForm(UserCreationForm):
+
     """ A form for creating new users. Includes all the required fields, plus a repeated password. """
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password Confirmation', widget=forms.PasswordInput)
@@ -43,6 +44,8 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CustomUserChangeForm(UserChangeForm):
+    required_css_class = 'required'
+
     password = ReadOnlyPasswordHashField(
         label="Lösenord",
         help_text="Ändra lösenordet med <a href=\'password/\'> det här formuläret</a>."
@@ -60,6 +63,8 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class ChangeUserInfoForm(forms.ModelForm):
+    required_css_class = 'required'
+
     def __init__(self, *args, **kwargs):
         super(ChangeUserInfoForm, self).__init__(*args, **kwargs)
 
@@ -121,6 +126,7 @@ class SegmentUsersForm(forms.Form):
                                       required=False)
 
 class SelectUserFieldsForm(forms.Form):
+
     FIELDS = (
         ('email', 'email'),
         ('first_name', 'förnamn'),

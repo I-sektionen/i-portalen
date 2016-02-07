@@ -7,7 +7,7 @@
     <div class="course-evaluation">
     <a href="{% url 'course_evaluations:admin' %}"><button type="button">Tillbaka</button></a>
     <hr>
-<h1>Belönigar</h1>
+<h1>Belöningar</h1>
     <ul>
         {% for reward in rewards %}
             <li>{% if reward.active %}<strong>{{ reward }}</strong>{% else %}{{ reward }}{% endif %}</li>

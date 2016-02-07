@@ -5,6 +5,7 @@ from .models import Article
 
 
 class ArticleForm(forms.ModelForm):
+    required_css_class = 'required'
     draft = forms.BooleanField(label="Utkast", required=False, help_text="Sparar utan att publicera")
 
     class Meta:
