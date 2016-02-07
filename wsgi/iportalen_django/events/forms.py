@@ -6,6 +6,7 @@ from .models import Event, OtherAttachment, ImageAttachment
 
 
 class EventForm(forms.ModelForm):
+    required_css_class = 'required'
     draft = forms.BooleanField(label="Utkast", required=False, help_text=_("Sparar utan att publicera"))
 
     class Meta:
