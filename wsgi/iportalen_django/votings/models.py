@@ -3,6 +3,7 @@ from django.db import models, transaction
 from django.utils.translation import ugettext_lazy as _, ugettext
 from events.models import Event
 from iportalen import settings
+from organisations.models import Organisation
 from utils import time
 from .exceptions import CouldNotVoteException
 from .managers import QuestionGroupManager, QuestionManager
@@ -15,7 +16,7 @@ class QuestionGroup(models.Model):
         (EVENT, _("Incheckade deltagare på ett event kan rösta.")),
         (ALL, _("Alla medlemmar kan rösta")),
     )
-
+    name = models.CharField(verbose_name=_('namn'), max_length=255, blank=True, null=True)
     question_status = models.CharField(
         max_length=1,
         choices=STATUSES,
@@ -31,7 +32,13 @@ class QuestionGroup(models.Model):
         verbose_name=_("avpublicering"),
         help_text=_("Avpubliceringsdatum"),
         default=time.now_plus_one_month)
-
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("skapare"), null=True, blank=False)
+    organisations = models.ManyToManyField(
+        Organisation,
+        blank=True,
+        default=None,
+        verbose_name=_("administrerar"),
+        help_text=_("Organisation(er) som administrerar frågeguppen, Håll ner Ctrl för att markera flera."))
     objects = QuestionGroupManager()
 
     def __str__(self):
@@ -39,7 +46,7 @@ class QuestionGroup(models.Model):
 
     def get_absolute_url(self):
         """Get url of object"""
-        return reverse('votings:question group', kwargs={'pk': self.pk})
+        return reverse('votings:question group', kwargs={'qg_pk': self.pk})
 
     class Meta:
         verbose_name = _("frågegrupp")
