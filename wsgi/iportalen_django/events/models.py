@@ -139,7 +139,7 @@ class Event(models.Model):
     class Meta:
         verbose_name = _("Arrangemang")
         verbose_name_plural = _("Arrangemang")
-        permissions = (('can_approve_event', 'Can approve event'),)
+        permissions = (('can_approve_event', 'Can approve event'), ('can_view_no_shows', 'Can view no shows'))
 
     ###########################################################################
     # Overridden and standard functions
