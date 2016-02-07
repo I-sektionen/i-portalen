@@ -60,4 +60,7 @@ def get_menu_choices_event(user):
     menu_choices.append((_('Skapa ett event'), reverse('events:create')))
     if user.has_perm("events.can_approve_event"):
         menu_choices.append((_('Godkänn Event'), reverse('events:unapproved')))  # With perm to edit events.
+    if user.has_perm("events.can_view_no_shows"):
+        menu_choices.append((_('Visa No Shows'), reverse('events:no_shows')))
     return menu_choices
+
