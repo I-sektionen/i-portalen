@@ -9,21 +9,25 @@
     padding: 0.3em
     margin: 0.3em
     text-align: center
+
     color: white
     +display(flex)
 
+    & > span
+      position: relative
+      margin: auto
+      left: 20px
 
     & > button
-      +flex(1)
       +background(rgba(0,0,0,0))
       box-shadow: 0 0 0 0
+      justify-content: flex-start
+
 
       &:hover
         color: black
 
 
-    & > span
-      +flex(20)
 
   & > .info
     background-color: $blue

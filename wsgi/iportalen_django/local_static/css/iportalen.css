@@ -1660,29 +1660,19 @@ label.required:after {
 #message-box > div:last-child {
   margin-right: 0;
 }
+#message-box > div > span {
+  position: relative;
+  margin: auto;
+  left: 20px;
+}
 #message-box > div > button {
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  box-flex: 1;
-  -webkit-flex: 1;
-  -moz-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   background: transparent;
   background: transparent;
   box-shadow: 0 0 0 0;
+  justify-content: flex-start;
 }
 #message-box > div > button:hover {
   color: black;
-}
-#message-box > div > span {
-  -webkit-box-flex: 20;
-  -moz-box-flex: 20;
-  box-flex: 20;
-  -webkit-flex: 20;
-  -moz-flex: 20;
-  -ms-flex: 20;
-  flex: 20;
 }
 #message-box > .info {
   background-color: #1e77d6;
