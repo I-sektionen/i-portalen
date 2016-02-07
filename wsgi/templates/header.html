@@ -47,11 +47,12 @@
                             <li><a href="http://shop.i-portalen.se">I-butiken <i class="fa fa-external-link"></i></a></li>
                             <li><a href="http://ipikure.se">ipikuré <i class="fa fa-external-link"></i></a></li>
                             <li><a href="{% url "faq:faq_topic_list" %}">FAQs</a></li>
+                            <li><a href="https://www.isektionen.se">Isektionen.se <i class="fa fa-external-link"></i></a></li>
                         </div>
                         <div class="submenu-column">
                             {% for bookable in bookables %}
                                 <li><a href="{{ bookable.get_absolute_url }}">Boka {{ bookable.name|title }}</a></li>
-                                {% cycle 'False' 'False' 'False' 'False' 'True' as new_col silent %}
+                                {% cycle 'False' 'False' 'False' 'False' 'False' 'True' as new_col silent %}
                                 {% if new_col == 'True' %}
                                     </div>
                                     <div class="submenu-column">
