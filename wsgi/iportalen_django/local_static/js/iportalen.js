@@ -1,4 +1,545 @@
-"use strict";
+function markdown_article_preview() {
+        var converter = Markdown.getSanitizingConverter();
+        converter.hooks.chain("preConversion", function (text) {
+            return text.replace(/[&<"'\/]/g, function (s) {
+                var entityMap = {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    '"': '&quot;',
+                    "'": '&#39;',
+                    "/": '&#x2F;'
+                };
+                return entityMap[s];
+            }).replace(/([#]{2,})/g, '#').replace(/([=]{3,})/g, '').replace(/([-]{3,})/g, '').replace(/([`])/g, '');
+        });
+        converter.hooks.chain("plainLinkText", function (url) {
+            return url.replace(/^https?:\/\//, "");
+        });
+        var editor = new Markdown.Editor(converter, "-body");
+        editor.run();
+    }
+/**
+ * This function
+ * 1. Starts the markdown engine.
+ * 2. Add event listeners on the forms.
+ */
+var article_preview = function () {
+    //Start the engines. Listens to the body and outputs.
+    markdown_article_preview();
+
+    //These are the elements that is being listened to.
+    var listened_to = [];
+    var headline = $("#id_headline");
+    var lead = $("#id_lead");
+    var organisation = $("#id_organisations");
+    var from = $("#id_visible_from");
+    var tags = $("#id_tags");
+    var sponsor = $("#id_sponsored");
+
+    //This is the elements where the results are printed to.
+    var headline_preview = $(".headline_preview");
+    var lead_preview = $(".lead_preview");
+    var author_preview = $(".author_preview");
+    var from_preview_date = $(".date_preview");
+    var tags_preview = $(".tags_preview");
+    var sponsor_preview = $(".sponsor_preview");
+
+    listened_to.push(
+                    [headline, headline_preview],
+                    [lead, lead_preview],
+                    [organisation, author_preview],
+                    [from, from_preview_date],
+                    [tags, tags_preview],
+                    [sponsor, sponsor_preview]
+    );
+
+    var render = function (){
+        jQuery.each(listened_to, function(index, element){
+            var txt;
+
+            //Special case of start-time:
+            if(element[0].is(from)) {
+                if (element[0].val() != "") {
+                    var d = element[0].val().split(" ");
+                    var date = d[0];
+                    element[1].text(date);
+                }
+            } else if(element[0].is(tags)) {
+                var selected_tags = tags.children().filter(":selected");
+                var tag_string = "";
+                jQuery.each(selected_tags, function (index, ele) {
+                    tag_string = tag_string + ele.innerHTML + ", ";
+                });
+                if (tag_string != "") {
+                    tag_string = tag_string.substring(0, tag_string.length - 2)
+                }
+                element[1].text(tag_string);
+            } else if(element[0].is(sponsor)) {
+                if(sponsor.prop('checked')){
+                    sponsor_preview.text("Sponsrat innehåll");
+                } else {
+                    sponsor_preview.text("");
+                }
+            } else if(element[0].is(organisation)) {
+                var selected_org = organisation.children().filter(":selected");
+                var org_string = "";
+                jQuery.each(selected_org, function(index, ele){
+                    org_string = ele.innerHTML;
+                });
+                if(org_string == ""){
+                    author_preview.text("Ditt namn");
+                } else {
+                    author_preview.text(org_string);
+                }
+            }
+            else
+            {
+                txt = element[0].val();
+                element[1].text(txt);
+            }
+        });
+    };
+
+    jQuery.each(listened_to, function(index, element){
+        var ele = element[0];
+        ele.change(function(){render()});
+        ele.keypress(function(){render()});
+    });
+};;/**
+ * Created by isac on 2015-11-22.
+ */
+function generate_booking_form(pk, weeks_forward){
+    jQuery.get('/booking/book/'+pk+"/api/"+weeks_forward+"/" , function( data ){
+        var $element = jQuery(".booking");
+        $element.data("max_number_of_slots_in_booking", data.bookable.max_number_of_slots_in_booking);
+        var bookings = data.bookings;
+        var bookable = data.bookable;
+        var user = data.user;
+        var $days = jQuery("#days");
+        //Each day
+        var year = null;
+        var year_str = null;
+        jQuery.each( bookings, function(index, value){
+            var s = "<div class=\"single_day\">";
+            var d = value.date;
+            var month = d.month;
+            if (month <10){
+                month = "0"+month;
+            }
+            var day = d.day;
+            if (day <10){
+                day = "0"+day;
+            }
+            if (year == null){
+                year = d.year;
+                year_str = d.year;
+            }
+            if (year != d.year){
+                year = d.year;
+                year_str = year_str + " - " + d.year;
+            }
+            s = s + "<p>" + d.day + "/" + d.month;
+            //Each slot:
+            jQuery.each( value.slots, function( index, value2 ){
+                s = s + "<div data-start=\""+d.year + "" + month + "" + day+"_"+value2.start_time + "\" " +
+                     "data-end=\""+d.year + "" + month + "" + day+"_"+value2.end_time + "\" class=\"slot";
+                if(value2.available){
+                    if(value2.blocked){
+                        s = s + " blocked\">";
+                    } else {
+                        s = s + " available\" ";
+                        if (user.nr_of_active_bookings<bookable.max_number_of_bookings){
+                            s = s + "onclick=\"select_booking_slot(this)\"";
+                        }
+                            s = s + ">";
+                    }
+                } else {
+                    if(value2.blocked){
+                        s = s + " blocked\">";
+                    } else {
+                        s = s + " unavailable\">";
+                    }
+                    var temp_user = value2.user;
+                    if(temp_user != undefined){
+                        s = s + "<a href=\"/user/";
+                        s = s + temp_user + "\">"+temp_user+"</a>";
+                    }
+                }
+                var start_time = value2.start_time.split(':');
+                var end_time = value2.end_time.split(':');
+                s = s + "<p>" + start_time[0] + ":" + start_time[1] + "</p>";
+                s = s + "<p>" + end_time[0] + ":" + end_time[1] + "</p>";
+                s = s + "</div>";
+            });
+             // Write values to child!
+
+            $days.append(s);
+        });
+        $('#year').append("<h2>"+year_str+"</h2>");
+    });
+    $("#id_end").attr("hidden","");
+    $("#id_start").attr("hidden","");
+}
+
+function select_booking_slot(element){
+    var max_number_of_slots_in_booking = jQuery(".booking").data("max_number_of_slots_in_booking");
+    var $el = $(element);
+    var $container = jQuery("#days");
+    var first_click = null;
+    var last_click = null;
+    var it = 0;
+    $container.find(".slot").each(function(i) {
+        var $tmp = $($container.find(".slot")[i]);
+        if ($tmp.data('clicked') == true){
+            if (first_click == null){
+                first_click = i;
+                it++;
+            } else {
+                last_click = i;
+                it++;
+            }
+        }
+    });
+
+    var j = $container.find(".slot").index($el);
+    if (first_click==null && last_click==null){
+        $el.data('clicked', true);
+        $el.addClass("choosen");
+    }
+    else if (first_click!=null && last_click==null){
+        if (max_number_of_slots_in_booking!=1 && (j==first_click+1 || j==first_click-1)){
+            $el.data('clicked', true);
+            $el.addClass("choosen");
+        } else if (j==first_click) {
+            $el.data('clicked', false);
+            $el.removeClass("choosen");
+        } else if(max_number_of_slots_in_booking!=1){
+            console.log("max nr of slots");
+        } else {
+            console.log("måste sitta ihop.");
+        }
+    }
+    else {
+        if (j==first_click-1 && it<max_number_of_slots_in_booking){
+            $el.data('clicked', true);
+            $el.addClass("choosen");
+        } else if (j==last_click+1 && it<max_number_of_slots_in_booking){
+            $el.data('clicked', true);
+            $el.addClass("choosen");
+        } else if (j==first_click || j==last_click) {
+            $el.data('clicked', false);
+            $el.removeClass("choosen");
+        } else if(it>=max_number_of_slots_in_booking){
+             console.log("max nr of slots");
+        } else {
+            console.log("måste sitta ihop.");
+        }
+    }
+    first_click = null;
+    $container.find(".slot").each(function(i) {
+        var $tmp = $($container.find(".slot")[i]);
+        if ($tmp.data('clicked') == true){
+            if (first_click == null){
+                first_click = i;
+            } else {
+                last_click = i;
+            }
+        }
+    });
+    $("#id_start").val($($container.find(".slot")[first_click]).data('start'));
+    if (last_click==null){
+        $("#id_end").val($($container.find(".slot")[first_click]).data('end'));
+    } else {
+        $("#id_end").val($($container.find(".slot")[last_click]).data('end'));
+    }
+
+};/**
+ * Created by jonathan on 2016-01-21.
+ */
+function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+};//This function initiates the markdown engine. It is called on by event_preview below.
+function markdown_event_preview() {
+        var converter = Markdown.getSanitizingConverter();
+        converter.hooks.chain("preConversion", function (text) {
+            return text.replace(/[&<"'\/]/g, function (s) {
+                var entityMap = {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    '"': '&quot;',
+                    "'": '&#39;',
+                    "/": '&#x2F;'
+                };
+                return entityMap[s];
+            }).replace(/([#]{2,})/g, '#').replace(/([=]{3,})/g, '').replace(/([-]{3,})/g, '').replace(/([`])/g, '');
+        });
+        converter.hooks.chain("plainLinkText", function (url) {
+            return url.replace(/^https?:\/\//, "");
+        });
+        var editor = new Markdown.Editor(converter, "-body");
+        editor.run();
+    }
+
+/**
+ * This function
+ * 1. Starts the markdown engine.
+ * 2. Add event listeners on the forms.
+ */
+var event_preview = function () {
+    //Start the engines. Listens to the body and outputs.
+    markdown_event_preview();
+
+    //These are the elements that is being listened to.
+    var listened_to = [];
+    var headline = $("#id_headline");
+    var lead = $("#id_lead");
+    var place = $("#id_location");
+    var start = $("#id_start");
+    var end = $("#id_end");
+    var enable_registration = $("#id_enable_registration");
+    var free_places = $("#id_registration_limit");
+    var organisation = $("#id_organisations");
+    var tags = $("#id_tags");
+    var sponsor = $("#id_sponsored");
+    var extra_registration = $("#id_extra_deadline_text");
+    var extra_registration_date = $("#id_extra_deadline");
+
+    //This is the elements where the results are printed to.
+    var lead_preview = $(".lead_preview");
+    var headline_preview = $(".headline_preview");
+    var place_preview = $(".place_preview");
+    var start_preview_date = $(".start_preview_date");
+    var start_preview_time = $(".start_preview_time");
+    var end_preview = $("#id_end_preview");
+    var enable_registration_preview = $(".enable_registration_preview");
+    var free_places_preview = $(".registration_limit_preview");
+    var author_preview = $(".author_preview");
+    var tags_preview = $(".tags_preview");
+    var sponsor_preview = $(".sponsor_preview");
+    var extra_registration_preview = $(".extra_registration_preview");
+
+
+    listened_to.push([headline, headline_preview],
+                    [lead, lead_preview],
+                    [place, place_preview],
+                    [start, [start_preview_time, start_preview_date]],
+                    [end, end_preview],
+                    [enable_registration, enable_registration_preview],
+                    [free_places, free_places_preview],
+                    [organisation, author_preview],
+                    [tags, tags_preview],
+                    [sponsor, sponsor_preview],
+                    [extra_registration, extra_registration_preview]
+    );
+    enable_registration_preview.hide();
+    var render = function (){
+        jQuery.each(listened_to, function(index, element){
+            var txt;
+
+            //Special case of start-time:
+            if(element[0].is(start)) {
+                if(element[0].val() != ""){
+                    var d = element[0].val().split(" ");
+                    var date = d[0];
+                    var time = "Kl. " + d[1];
+                    element[1][0].text(time);
+                    element[1][1].text(date);
+                }
+
+                //Special case of
+            } else if(element[0].is(enable_registration)) {
+                if (element[0].is(":checked")) {
+                    element[1].show();
+                } else {
+                    element[1].hide();
+                }
+            } else if(element[0].is(organisation)) {
+                var selected_org = organisation.children().filter(":selected");
+                var org_string = "";
+                jQuery.each(selected_org, function (index, ele) {
+                    org_string = ele.innerHTML;
+                });
+                if (org_string == "") {
+                    author_preview.text("Ditt namn");
+                } else {
+                    author_preview.text(org_string);
+                }
+            } else if(element[0].is(tags)) {
+                var selected_tags = tags.children().filter(":selected");
+                var tag_string = "";
+                jQuery.each(selected_tags, function (index, ele) {
+                    tag_string = tag_string + ele.innerHTML + ", ";
+                });
+                if (tag_string != "") {
+                    tag_string = tag_string.substring(0, tag_string.length - 2)
+                }
+                element[1].text(tag_string);
+            } else if(element[0].is(sponsor)) {
+                if(sponsor.prop('checked')){
+                    sponsor_preview.text("Sponsrat innehåll");
+                } else {
+                    sponsor_preview.text("");
+                }
+            } else if(element[0].is(extra_registration)) {
+                txt = element[0].val();
+                var tmp = "";
+
+                if (txt == ""){
+                    element[1].text("");
+                } else {
+                    txt = "Anmälningsstop för att " + txt;
+                    if (extra_registration_date.val() != ""){
+                       txt = txt + " " + extra_registration_date.val();
+                    } else {
+                        txt = txt + "(Datum ej angivet)"
+                    }
+                    element[1].text(txt);
+                }
+            } else {
+                txt = element[0].val();
+                element[1].text(txt);
+            }
+        });
+    };
+
+    jQuery.each(listened_to, function(index, element){
+        var ele = element[0];
+        ele.change(function(){render()});
+        ele.keypress(function(){render()});
+    });
+};
+
+
+
+;/**
+ * Created by jonathan on 2015-11-09.
+ */
+function speaker_list_admin(url){
+    init_csrf();
+    var input_field = $("#id_speech_nr");
+    var s_list = $("#list").find("ol");
+    $("#post").click(function(e) {
+        e.preventDefault();
+        var data = {
+            'method':'add',
+            'speech_nr': input_field.val()
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function(result) {
+                if (result.status === "ok"){
+
+                } else {
+                    console.log(result.status);
+                }
+            }
+        });
+        input_field.val('');
+    });
+    $("#next").click(function(e) {
+        e.preventDefault();
+        s_list.find('li:first').remove();
+        var data = {
+            'method':'pop'
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function(result) {
+                if (result.status === "ok"){
+
+                } else {
+                    console.log(result.status);
+                }
+            }
+        });
+    });
+    $("#clear").click(function(e) {
+        e.preventDefault();
+        s_list.empty();
+        var data = {
+            'method':'clear'
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function(result) {
+                if (result.status === "ok"){
+
+                } else {
+                    console.log(result.status);
+                }
+            }
+        });
+    });
+    $("#remove").click(function(e) {
+        e.preventDefault();
+        var data = {
+            'method':'remove',
+            'speech_nr': input_field.val()
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function(result) {
+                if (result.status === "ok"){
+
+                } else {
+                    console.log(result.status);
+                }
+            }
+        });
+        input_field.val('');
+    });
+};/**
+ * Created by jonathan on 2015-11-09.
+ */
+function speaker_list_view(url) {
+    init_csrf();
+
+    var s_list = $("#speaker_list").find("ol");
+    var t=setInterval(reload_list, 1000);
+    function reload_list() {
+
+        var data = {
+            'method': 'all'
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function (result) {
+                if (result.status === "ok") {
+                    var speakerlist = result.speaker_list;
+                    var arrayLength = speakerlist.length;
+                    s_list.empty();
+                    for (var i = 0; i < arrayLength; i++) {
+                        s_list.append('<li>' + speakerlist[i].first_name + ' ' + speakerlist[i].last_name + '</li>');
+                    }
+                } else {
+                    console.log(result.status);
+                }
+            }
+        });
+    }
+};"use strict";
 var Markdown;
 
 if (typeof exports === "object" && typeof require === "function") // we're in a CommonJS (e.g. Node.js) module
@@ -4046,154 +4587,6 @@ function cloneMore(selector, type) {
     $(selector).after(newElement);
 }
 ;/**
- * Created by isac on 2015-11-22.
- */
-function generate_booking_form(pk, weeks_forward){
-    jQuery.get('/booking/book/'+pk+"/api/"+weeks_forward+"/" , function( data ){
-        var $element = jQuery(".booking");
-        $element.data("max_number_of_slots_in_booking", data.bookable.max_number_of_slots_in_booking);
-        var bookings = data.bookings;
-        var bookable = data.bookable;
-        var user = data.user;
-        var $days = jQuery("#days");
-        //Each day
-        var year = null;
-        var year_str = null;
-        jQuery.each( bookings, function(index, value){
-            var s = "<div class=\"single_day\">";
-            var d = value.date;
-            var month = d.month;
-            if (month <10){
-                month = "0"+month;
-            }
-            var day = d.day;
-            if (day <10){
-                day = "0"+day;
-            }
-            if (year == null){
-                year = d.year;
-                year_str = d.year;
-            }
-            if (year != d.year){
-                year = d.year;
-                year_str = year_str + " - " + d.year;
-            }
-            s = s + "<p>" + d.day + "/" + d.month;
-            //Each slot:
-            jQuery.each( value.slots, function( index, value2 ){
-                s = s + "<div data-start=\""+d.year + "" + month + "" + day+"_"+value2.start_time + "\" " +
-                     "data-end=\""+d.year + "" + month + "" + day+"_"+value2.end_time + "\" class=\"slot";
-                if(value2.available){
-                    if(value2.blocked){
-                        s = s + " blocked\">";
-                    } else {
-                        s = s + " available\" ";
-                        if (user.nr_of_active_bookings<bookable.max_number_of_bookings){
-                            s = s + "onclick=\"select_booking_slot(this)\"";
-                        }
-                            s = s + ">";
-                    }
-                } else {
-                    if(value2.blocked){
-                        s = s + " blocked\">";
-                    } else {
-                        s = s + " unavailable\">";
-                    }
-                    var temp_user = value2.user;
-                    if(temp_user != undefined){
-                        s = s + "<a href=\"/user/";
-                        s = s + temp_user + "\">"+temp_user+"</a>";
-                    }
-                }
-                var start_time = value2.start_time.split(':');
-                var end_time = value2.end_time.split(':');
-                s = s + "<p>" + start_time[0] + ":" + start_time[1] + "</p>";
-                s = s + "<p>" + end_time[0] + ":" + end_time[1] + "</p>";
-                s = s + "</div>";
-            });
-             // Write values to child!
-
-            $days.append(s);
-        });
-        $('#year').append("<h2>"+year_str+"</h2>");
-    });
-    $("#id_end").attr("hidden","");
-    $("#id_start").attr("hidden","");
-}
-
-function select_booking_slot(element){
-    var max_number_of_slots_in_booking = jQuery(".booking").data("max_number_of_slots_in_booking");
-    var $el = $(element);
-    var $container = jQuery("#days");
-    var first_click = null;
-    var last_click = null;
-    var it = 0;
-    $container.find(".slot").each(function(i) {
-        var $tmp = $($container.find(".slot")[i]);
-        if ($tmp.data('clicked') == true){
-            if (first_click == null){
-                first_click = i;
-                it++;
-            } else {
-                last_click = i;
-                it++;
-            }
-        }
-    });
-
-    var j = $container.find(".slot").index($el);
-    if (first_click==null && last_click==null){
-        $el.data('clicked', true);
-        $el.addClass("choosen");
-    }
-    else if (first_click!=null && last_click==null){
-        if (max_number_of_slots_in_booking!=1 && (j==first_click+1 || j==first_click-1)){
-            $el.data('clicked', true);
-            $el.addClass("choosen");
-        } else if (j==first_click) {
-            $el.data('clicked', false);
-            $el.removeClass("choosen");
-        } else if(max_number_of_slots_in_booking!=1){
-            console.log("max nr of slots");
-        } else {
-            console.log("måste sitta ihop.");
-        }
-    }
-    else {
-        if (j==first_click-1 && it<max_number_of_slots_in_booking){
-            $el.data('clicked', true);
-            $el.addClass("choosen");
-        } else if (j==last_click+1 && it<max_number_of_slots_in_booking){
-            $el.data('clicked', true);
-            $el.addClass("choosen");
-        } else if (j==first_click || j==last_click) {
-            $el.data('clicked', false);
-            $el.removeClass("choosen");
-        } else if(it>=max_number_of_slots_in_booking){
-             console.log("max nr of slots");
-        } else {
-            console.log("måste sitta ihop.");
-        }
-    }
-    first_click = null;
-    $container.find(".slot").each(function(i) {
-        var $tmp = $($container.find(".slot")[i]);
-        if ($tmp.data('clicked') == true){
-            if (first_click == null){
-                first_click = i;
-            } else {
-                last_click = i;
-            }
-        }
-    });
-    $("#id_start").val($($container.find(".slot")[first_click]).data('start'));
-    if (last_click==null){
-        $("#id_end").val($($container.find(".slot")[first_click]).data('end'));
-    } else {
-        $("#id_end").val($($container.find(".slot")[last_click]).data('end'));
-    }
-
-};/**
  * Created by isac on 2015-10-08.
  */
 function closeMessage(element){
@@ -4505,303 +4898,7 @@ catch(err) {
     });
   });
 });
-;function markdown_article_preview() {
-        var converter = Markdown.getSanitizingConverter();
-        converter.hooks.chain("preConversion", function (text) {
-            return text.replace(/[&<"'\/]/g, function (s) {
-                var entityMap = {
-                    "&": "&amp;",
-                    "<": "&lt;",
-                    '"': '&quot;',
-                    "'": '&#39;',
-                    "/": '&#x2F;'
-                };
-                return entityMap[s];
-            }).replace(/([#]{2,})/g, '#').replace(/([=]{3,})/g, '').replace(/([-]{3,})/g, '').replace(/([`])/g, '');
-        });
-        converter.hooks.chain("plainLinkText", function (url) {
-            return url.replace(/^https?:\/\//, "");
-        });
-        var editor = new Markdown.Editor(converter, "-body");
-        editor.run();
-    }
-/**
- * This function
- * 1. Starts the markdown engine.
- * 2. Add event listeners on the forms.
- */
-var article_preview = function () {
-    //Start the engines. Listens to the body and outputs.
-    markdown_article_preview();
-
-    //These are the elements that is being listened to.
-    var listened_to = [];
-    var headline = $("#id_headline");
-    var lead = $("#id_lead");
-    var organisation = $("#id_organisations");
-    var from = $("#id_visible_from");
-    var tags = $("#id_tags");
-    var sponsor = $("#id_sponsored");
-
-    //This is the elements where the results are printed to.
-    var headline_preview = $(".headline_preview");
-    var lead_preview = $(".lead_preview");
-    var author_preview = $(".author_preview");
-    var from_preview_date = $(".date_preview");
-    var tags_preview = $(".tags_preview");
-    var sponsor_preview = $(".sponsor_preview");
-
-    listened_to.push(
-                    [headline, headline_preview],
-                    [lead, lead_preview],
-                    [organisation, author_preview],
-                    [from, from_preview_date],
-                    [tags, tags_preview],
-                    [sponsor, sponsor_preview]
-    );
-
-    var render = function (){
-        jQuery.each(listened_to, function(index, element){
-            var txt;
-
-            //Special case of start-time:
-            if(element[0].is(from)) {
-                if (element[0].val() != "") {
-                    var d = element[0].val().split(" ");
-                    var date = d[0];
-                    element[1].text(date);
-                }
-            } else if(element[0].is(tags)) {
-                var selected_tags = tags.children().filter(":selected");
-                var tag_string = "";
-                jQuery.each(selected_tags, function (index, ele) {
-                    tag_string = tag_string + ele.innerHTML + ", ";
-                });
-                if (tag_string != "") {
-                    tag_string = tag_string.substring(0, tag_string.length - 2)
-                }
-                element[1].text(tag_string);
-            } else if(element[0].is(sponsor)) {
-                if(sponsor.prop('checked')){
-                    sponsor_preview.text("Sponsrat innehåll");
-                } else {
-                    sponsor_preview.text("");
-                }
-            } else if(element[0].is(organisation)) {
-                var selected_org = organisation.children().filter(":selected");
-                var org_string = "";
-                jQuery.each(selected_org, function(index, ele){
-                    org_string = ele.innerHTML;
-                });
-                if(org_string == ""){
-                    author_preview.text("Ditt namn");
-                } else {
-                    author_preview.text(org_string);
-                }
-            }
-            else
-            {
-                txt = element[0].val();
-                element[1].text(txt);
-            }
-        });
-    };
-
-    jQuery.each(listened_to, function(index, element){
-        var ele = element[0];
-        ele.change(function(){render()});
-        ele.keypress(function(){render()});
-    });
-};;//This function initiates the markdown engine. It is called on by event_preview below.
-function markdown_event_preview() {
-        var converter = Markdown.getSanitizingConverter();
-        converter.hooks.chain("preConversion", function (text) {
-            return text.replace(/[&<"'\/]/g, function (s) {
-                var entityMap = {
-                    "&": "&amp;",
-                    "<": "&lt;",
-                    '"': '&quot;',
-                    "'": '&#39;',
-                    "/": '&#x2F;'
-                };
-                return entityMap[s];
-            }).replace(/([#]{2,})/g, '#').replace(/([=]{3,})/g, '').replace(/([-]{3,})/g, '').replace(/([`])/g, '');
-        });
-        converter.hooks.chain("plainLinkText", function (url) {
-            return url.replace(/^https?:\/\//, "");
-        });
-        var editor = new Markdown.Editor(converter, "-body");
-        editor.run();
-    }
-
-/**
- * This function
- * 1. Starts the markdown engine.
- * 2. Add event listeners on the forms.
- */
-var event_preview = function () {
-    //Start the engines. Listens to the body and outputs.
-    markdown_event_preview();
-
-    //These are the elements that is being listened to.
-    var listened_to = [];
-    var headline = $("#id_headline");
-    var lead = $("#id_lead");
-    var place = $("#id_location");
-    var start = $("#id_start");
-    var end = $("#id_end");
-    var enable_registration = $("#id_enable_registration");
-    var free_places = $("#id_registration_limit");
-    var organisation = $("#id_organisations");
-    var tags = $("#id_tags");
-    var sponsor = $("#id_sponsored");
-    var extra_registration = $("#id_extra_deadline_text");
-    var extra_registration_date = $("#id_extra_deadline");
-
-    //This is the elements where the results are printed to.
-    var lead_preview = $(".lead_preview");
-    var headline_preview = $(".headline_preview");
-    var place_preview = $(".place_preview");
-    var start_preview_date = $(".start_preview_date");
-    var start_preview_time = $(".start_preview_time");
-    var end_preview = $("#id_end_preview");
-    var enable_registration_preview = $(".enable_registration_preview");
-    var free_places_preview = $(".registration_limit_preview");
-    var author_preview = $(".author_preview");
-    var tags_preview = $(".tags_preview");
-    var sponsor_preview = $(".sponsor_preview");
-    var extra_registration_preview = $(".extra_registration_preview");
-
-
-    listened_to.push([headline, headline_preview],
-                    [lead, lead_preview],
-                    [place, place_preview],
-                    [start, [start_preview_time, start_preview_date]],
-                    [end, end_preview],
-                    [enable_registration, enable_registration_preview],
-                    [free_places, free_places_preview],
-                    [organisation, author_preview],
-                    [tags, tags_preview],
-                    [sponsor, sponsor_preview],
-                    [extra_registration, extra_registration_preview]
-    );
-    enable_registration_preview.hide();
-    var render = function (){
-        jQuery.each(listened_to, function(index, element){
-            var txt;
-
-            //Special case of start-time:
-            if(element[0].is(start)) {
-                if(element[0].val() != ""){
-                    var d = element[0].val().split(" ");
-                    var date = d[0];
-                    var time = "Kl. " + d[1];
-                    element[1][0].text(time);
-                    element[1][1].text(date);
-                }
-
-                //Special case of
-            } else if(element[0].is(enable_registration)) {
-                if (element[0].is(":checked")) {
-                    element[1].show();
-                } else {
-                    element[1].hide();
-                }
-            } else if(element[0].is(organisation)) {
-                var selected_org = organisation.children().filter(":selected");
-                var org_string = "";
-                jQuery.each(selected_org, function (index, ele) {
-                    org_string = ele.innerHTML;
-                });
-                if (org_string == "") {
-                    author_preview.text("Ditt namn");
-                } else {
-                    author_preview.text(org_string);
-                }
-            } else if(element[0].is(tags)) {
-                var selected_tags = tags.children().filter(":selected");
-                var tag_string = "";
-                jQuery.each(selected_tags, function (index, ele) {
-                    tag_string = tag_string + ele.innerHTML + ", ";
-                });
-                if (tag_string != "") {
-                    tag_string = tag_string.substring(0, tag_string.length - 2)
-                }
-                element[1].text(tag_string);
-            } else if(element[0].is(sponsor)) {
-                if(sponsor.prop('checked')){
-                    sponsor_preview.text("Sponsrat innehåll");
-                } else {
-                    sponsor_preview.text("");
-                }
-            } else if(element[0].is(extra_registration)) {
-                txt = element[0].val();
-                var tmp = "";
-
-                if (txt == ""){
-                    element[1].text("");
-                } else {
-                    txt = "Anmälningsstop för att " + txt;
-                    if (extra_registration_date.val() != ""){
-                       txt = txt + " " + extra_registration_date.val();
-                    } else {
-                        txt = txt + "(Datum ej angivet)"
-                    }
-                    element[1].text(txt);
-                }
-            } else {
-                txt = element[0].val();
-                element[1].text(txt);
-            }
-        });
-    };
-
-    jQuery.each(listened_to, function(index, element){
-        var ele = element[0];
-        ele.change(function(){render()});
-        ele.keypress(function(){render()});
-    });
-};
-
-
-
 ;/**
- * Created by jonathan on 2015-12-18.
- */
-//This function initiates the markdown engine. It is called on by event_preview below.
-function markdown_organisation_preview() {
-        var converter = Markdown.getSanitizingConverter();
-        converter.hooks.chain("preConversion", function (text) {
-            return text.replace(/[&<"'\/]/g, function (s) {
-                var entityMap = {
-                    "&": "&amp;",
-                    "<": "&lt;",
-                    '"': '&quot;',
-                    "'": '&#39;',
-                    "/": '&#x2F;'
-                };
-                return entityMap[s];
-            }).replace(/([#]{2,})/g, '#').replace(/([=]{3,})/g, '').replace(/([-]{3,})/g, '').replace(/([`])/g, '');
-        });
-        converter.hooks.chain("plainLinkText", function (url) {
-            return url.replace(/^https?:\/\//, "");
-        });
-        var editor = new Markdown.Editor(converter, "-body");
-        editor.run();
-    }
-;/**
- * Created by jonathan on 2016-01-21.
- */
-function printDiv(divName) {
-     var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
-
-     document.body.innerHTML = printContents;
-
-     window.print();
-
-     document.body.innerHTML = originalContents;
-};/**
  * Created by jonathan on 2015-10-20.
  */
     var shuffle_sponsors = function () {
@@ -4821,127 +4918,6 @@ var sliding_panel = function (){
         e.preventDefault();
     });
 };;/**
- * Created by jonathan on 2015-11-09.
- */
-function speaker_list_admin(url){
-    init_csrf();
-    var input_field = $("#id_speech_nr");
-    var s_list = $("#list").find("ol");
-    $("#post").click(function(e) {
-        e.preventDefault();
-        var data = {
-            'method':'add',
-            'speech_nr': input_field.val()
-        };
-        $.ajax({
-            "type": "POST",
-            "dataType": "json",
-            "url": url,
-            "data": data,
-            "success": function(result) {
-                if (result.status === "ok"){
-
-                } else {
-                    console.log(result.status);
-                }
-            }
-        });
-        input_field.val('');
-    });
-    $("#next").click(function(e) {
-        e.preventDefault();
-        s_list.find('li:first').remove();
-        var data = {
-            'method':'pop'
-        };
-        $.ajax({
-            "type": "POST",
-            "dataType": "json",
-            "url": url,
-            "data": data,
-            "success": function(result) {
-                if (result.status === "ok"){
-
-                } else {
-                    console.log(result.status);
-                }
-            }
-        });
-    });
-    $("#clear").click(function(e) {
-        e.preventDefault();
-        s_list.empty();
-        var data = {
-            'method':'clear'
-        };
-        $.ajax({
-            "type": "POST",
-            "dataType": "json",
-            "url": url,
-            "data": data,
-            "success": function(result) {
-                if (result.status === "ok"){
-
-                } else {
-                    console.log(result.status);
-                }
-            }
-        });
-    });
-    $("#remove").click(function(e) {
-        e.preventDefault();
-        var data = {
-            'method':'remove',
-            'speech_nr': input_field.val()
-        };
-        $.ajax({
-            "type": "POST",
-            "dataType": "json",
-            "url": url,
-            "data": data,
-            "success": function(result) {
-                if (result.status === "ok"){
-
-                } else {
-                    console.log(result.status);
-                }
-            }
-        });
-        input_field.val('');
-    });
-};/**
- * Created by jonathan on 2015-11-09.
- */
-function speaker_list_view(url) {
-    init_csrf();
-
-    var s_list = $("#speaker_list").find("ol");
-    var t=setInterval(reload_list, 1000);
-    function reload_list() {
-
-        var data = {
-            'method': 'all'
-        };
-        $.ajax({
-            "type": "POST",
-            "dataType": "json",
-            "url": url,
-            "data": data,
-            "success": function (result) {
-                if (result.status === "ok") {
-                    var speakerlist = result.speaker_list;
-                    var arrayLength = speakerlist.length;
-                    s_list.empty();
-                    for (var i = 0; i < arrayLength; i++) {
-                        s_list.append('<li>' + speakerlist[i].first_name + ' ' + speakerlist[i].last_name + '</li>');
-                    }
-                } else {
-                    console.log(result.status);
-                }
-            }
-        });
-    }
-};/**
  * Created by isac on 2016-01-17.
  */
 $(document).ready(function () {
@@ -4981,3 +4957,27 @@ this;a.intervalId=setInterval(function(){c.nextUsePause.call(b)},a.options.pause
 b.height(a.height);var h=this;a.startPaused||c.startInterval.call(h);a.mousePause&&b.bind("mouseenter",function(){!0!==e.isPaused&&(e.pausedByCode=!0,c.stopInterval.call(h),f.pause.call(h,!0))}).bind("mouseleave",function(){if(!0!==e.isPaused||e.pausedByCode)e.pausedByCode=!1,f.pause.call(h,!1),c.startInterval.call(h)})},pause:function(a){var b=d(this).data("state");if(b){if(2>b.itemCount)return!1;b.isPaused=a;b=b.element;a?(d(this).addClass("paused"),b.trigger("vticker.pause")):(d(this).removeClass("paused"),
 b.trigger("vticker.resume"))}},next:function(a){var b=d(this).data("state");if(b){if(b.animating||2>b.itemCount)return!1;c.restartInterval.call(this);c.moveUp(b,a)}},prev:function(a){var b=d(this).data("state");if(b){if(b.animating||2>b.itemCount)return!1;c.restartInterval.call(this);c.moveDown(b,a)}},stop:function(){d(this).data("state")&&c.stopInterval.call(this)},remove:function(){var a=d(this).data("state");a&&(c.stopInterval.call(this),a=a.element,a.unbind(),a.remove())}};d.fn.vTicker=function(a){if(f[a])return f[a].apply(this,
 Array.prototype.slice.call(arguments,1));if("object"!==typeof a&&a)d.error("Method "+a+" does not exist on jQuery.vTicker");else return f.init.apply(this,arguments)}})(jQuery);
+;/**
+ * Created by jonathan on 2015-12-18.
+ */
+//This function initiates the markdown engine. It is called on by event_preview below.
+function markdown_organisation_preview() {
+        var converter = Markdown.getSanitizingConverter();
+        converter.hooks.chain("preConversion", function (text) {
+            return text.replace(/[&<"'\/]/g, function (s) {
+                var entityMap = {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    '"': '&quot;',
+                    "'": '&#39;',
+                    "/": '&#x2F;'
+                };
+                return entityMap[s];
+            }).replace(/([#]{2,})/g, '#').replace(/([=]{3,})/g, '').replace(/([-]{3,})/g, '').replace(/([`])/g, '');
+        });
+        converter.hooks.chain("plainLinkText", function (url) {
+            return url.replace(/^https?:\/\//, "");
+        });
+        var editor = new Markdown.Editor(converter, "-body");
+        editor.run();
+    }

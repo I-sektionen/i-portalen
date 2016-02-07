@@ -1,5 +1,13 @@
 from .models import Organisation, OrganisationPost
 from utils.admin import HiddenModelAdmin, iportalen_admin_site
 
-iportalen_admin_site.register(Organisation, HiddenModelAdmin)
-iportalen_admin_site.register(OrganisationPost, HiddenModelAdmin)
+
+class OrganisationsAdmin(HiddenModelAdmin):
+    readonly_fields = ("modified_by",)
+
+
+class OrganisationsPostAdmin(HiddenModelAdmin):
+    readonly_fields = ("modified_by",)
+
+iportalen_admin_site.register(Organisation, OrganisationsAdmin)
+iportalen_admin_site.register(OrganisationPost, OrganisationsPostAdmin)

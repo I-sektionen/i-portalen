@@ -260,3 +260,8 @@ LOGGING = {
         },
     },
 }
+
+#  Grunt. This is used in iportalen.apps.IportalenAppConfig
+RUN_GRUNT = False
+if (not ON_PASS) and (not ON_JENKINS):
+    RUN_GRUNT = True
