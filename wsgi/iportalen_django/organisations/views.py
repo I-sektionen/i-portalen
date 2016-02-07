@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
@@ -19,6 +20,7 @@ def organisation(request, organisation_name):
 
 
 @login_required()
+@transaction.atomic
 def edit_organisation(request, organisation_name):
     my_organisation = Organisation.objects.get(name=organisation_name)
 
@@ -30,7 +32,9 @@ def edit_organisation(request, organisation_name):
         form = OrganisationForm(request.POST, request.FILES, instance=my_organisation)
 
         if form.is_valid():
-            form.save()
+            org=form.save()
+            org.modified_by=request.user
+            org.save()
 
         return redirect(reverse("organisations:organisation", kwargs={'organisation_name': organisation_name}))
     else:
@@ -40,6 +44,7 @@ def edit_organisation(request, organisation_name):
 
 
 @login_required()
+@transaction.atomic
 def edit_memebers(request, organisation_name):
     my_organisation = Organisation.objects.get(name=organisation_name)
 
@@ -73,6 +78,7 @@ def edit_memebers(request, organisation_name):
                         org_post.email = entry['email']
                         org_post.post = entry['post']
                         org_post.user = entry['user']
+                        org_post.modified_by=request.user
                         org_post.save()
                         group.user_set.add(org_post.user)
             return redirect("organisations:edit organisation members", organisation_name=my_organisation.name)
@@ -90,13 +96,16 @@ def edit_memebers(request, organisation_name):
 
 
 @login_required()
+@transaction.atomic
 def add_organisation(request):
     if not request.user.has_perm('organisations.add organisation'):
         return HttpResponseForbidden()
     if request.method == 'POST':
         form = AddOrganisationForm(request.POST)
         if form.is_valid():
-            form.save()
+            org = form.save()
+            org.modified_by=request.user
+            org.save()
             messages.info(request, "".join([_("Organisationen:"), " {:} ", _("har skapats")]).format(
                 form.cleaned_data['name']))
             form = AddOrganisationForm()
