@@ -1,0 +1,44 @@
+{% extends "master.html"%}
+{% block hero %}
+{% endblock %}
+{% block content %}
+    <table>
+    <tr>
+        <th>Användare</th>
+
+        <th>
+            Antal No Shows
+        </th>
+        <th colspan="3">
+            Event
+        </th>
+    </tr>
+    {% for no_show in no_shows %}
+        <tr>
+        <td>
+            {{ no_show.user.first_name|capfirst }}
+            {{ no_show.user.last_name|capfirst }}
+            <br>
+            {{ no_show.user }}
+        </td>
+        <td>
+            {{ no_show.count }}
+        </td>
+        <td colspan="3">
+        <ul>
+            {% for event in no_show.no_shows %}
+                <li>
+
+            {{ event.event }},
+            {{ event.timestamp|date:"Y-m-d" }}
+                </li>
+            {% endfor %}
+        </ul>
+
+        </td>
+        </tr>
+
+    {% endfor %}
+    </table>
+
+{% endblock %}

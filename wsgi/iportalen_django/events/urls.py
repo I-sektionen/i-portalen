@@ -45,7 +45,7 @@ event_patterns = [
     url(r'^(?P<pk>[0-9]+)/images/$', view=views.upload_attachments_images, name='manage images'),
     url(r'^attachments/other/(?P<pk>[0-9]+)/$', view=views.download_attachment, name='download attachment'),
     url(r'^(?P<pk>[0-9]+)/administer/', include(admin_patterns)),
-
+    url(r'no_shows/$',                           view=views.show_noshows, name="no_shows"),
 ]
 
 urlpatterns = [url(r'^', include(event_patterns, namespace=app_name))]
