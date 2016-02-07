@@ -1324,6 +1324,10 @@ article.news-preview-organisation .article-lead {
   color: #e33c3c;
 }
 
+label.required:after {
+  color: #e33c3c;
+}
+
 #event-create-form-main {
   float: left;
   display: block;
@@ -1463,6 +1467,10 @@ article.event-preview-organisation p {
   line-height: 1.5;
   font-size: 14px;
   margin: 1em 0;
+}
+
+label.required:after {
+  color: #e33c3c;
 }
 
 .modal label {
@@ -2264,6 +2272,10 @@ div.booking-container .third-container .third .center {
   flex: 6;
 }
 
+label.required:after {
+  color: #e33c3c;
+}
+
 #admin-menu {
   max-width: 1200px;
   margin-left: auto;
@@ -2711,6 +2723,10 @@ div.booking-container .third-container .third .center {
   #organisation-hero .hero .no-img .placeholder h1 {
     font-size: 3.5em;
   }
+}
+
+label.required:after {
+  color: #e33c3c;
 }
 
 #article-create-form {
