@@ -5,6 +5,7 @@ from .models import Article, OtherAttachment, ImageAttachment
 
 
 class ArticleForm(forms.ModelForm):
+    required_css_class = 'required'
     draft = forms.BooleanField(label=_("Utkast"), required=False, help_text=_("Sparar utan att publicera"))
 
     class Meta:
