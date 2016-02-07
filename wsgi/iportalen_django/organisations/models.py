@@ -67,6 +67,14 @@ class Organisation(models.Model):
                               related_name="group",
                               on_delete=models.SET_NULL)
 
+    modified_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='användare',
+        help_text="Ändrad av.",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name = "org_modified_by")
+
     class Meta:
         verbose_name = _("organisation")
         verbose_name_plural = _("organisationer")
@@ -113,6 +121,15 @@ class OrganisationPost(models.Model):
                              null=False,
                              blank=False,
                              verbose_name=_("Användare"))
+
+    modified_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='användare',
+        help_text="Ändrat av.",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name = "org_post_modified_by")
+
 
     class Meta:
         verbose_name = _("Organisations post")
