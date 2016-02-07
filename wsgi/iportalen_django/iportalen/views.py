@@ -15,6 +15,10 @@ def glasscubes_link(request):
     return redirect("https://industriellekonomi.glasscubes.com/share/s/d6msv3iv5a4g36o8d5q1ct2uvm")
 
 
+def isektionen_link(request):
+    return redirect("https://www.isektionen.se/")
+
+
 def display_news_feed(request):
     content_feed_list = list(Article.objects.filter(
         status=Article.APPROVED,
