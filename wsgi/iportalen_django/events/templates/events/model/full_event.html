@@ -56,9 +56,6 @@
     {% endif %}
 
 </article>
-    {% if event.attachment %}
-        <p>Bifogad fil: <a href="{% url "events:download" event.pk %}">{{ event.filename }}</a></p>
-    {% endif %}
 <p>Anmälningsstopp: {{ event.entry_deadline|date:"Y-m-d H:i:s" }}</p>
 {% if event.extra_deadline %}
     <p>Anmälningsstopp för att {{ event.extra_deadline_text }}: {{ event.extra_deadline|date:"Y-m-d H:i:s" }}</p>
