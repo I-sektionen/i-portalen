@@ -21,7 +21,7 @@ booking_patterns = [
         view=views.make_booking, name="make booking week"),
     url(r'^book/(?P<bookable_id>[0-9]+)/api/$',
         view=views.api_view, name="api booking"),
-    url(r'^book/(?P<bookable_id>[0-9]+)/api/(?P<weeks_forward>[0-9]+)/$',
+    url(r'^book/(?P<bookable_id>[0-9]+)/(?P<weeks_forward>[0-9]+)/api/$',
         view=views.api_view, name="api booking week_forward"),
     url(r'^(?P<booking_id>[0-9]+)/delete$',
         view=views.remove_booking, name="remove booking"),
