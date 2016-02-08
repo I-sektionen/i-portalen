@@ -3,7 +3,10 @@
 {% block hero %}
 {% endblock %}
 {% block content %}
-    {{ question }}
+    {% with question.get_result as result %}
+        <p>Valdeltagande: {{ result.attendance }}</p>
+        {{ result }}
     <br>
     <a href="{% url 'votings:question group' question.question_group_id %}" class="button">Tillbaka</a>
+    {% endwith %}
 {% endblock %}
