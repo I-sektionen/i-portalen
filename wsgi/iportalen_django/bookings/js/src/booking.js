@@ -2,7 +2,7 @@
  * Created by isac on 2015-11-22.
  */
 function generate_booking_form(pk, weeks_forward){
-    jQuery.get("api/"+weeks_forward+"/" , function( data ){
+    jQuery.get("api/" , function( data ){
         var $element = jQuery(".booking");
         $element.data("max_number_of_slots_in_booking", data.bookable.max_number_of_slots_in_booking);
         var bookings = data.bookings;
