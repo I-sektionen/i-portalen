@@ -1,0 +1,9 @@
+{% extends "master.html"%}
+{% load voting_tags %}
+{% block hero %}
+{% endblock %}
+{% block content %}
+    {{ question }}
+    <br>
+    <a href="{% url 'votings:question group' question.question_group_id %}" class="button">Tillbaka</a>
+{% endblock %}

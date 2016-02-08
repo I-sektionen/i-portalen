@@ -2,6 +2,7 @@
 {% block hero %}
 {% endblock %}
 {% block content %}
+    <h1>Öppna omröstningar</h1>
 {% for qg in question_groups %}
     <a href="{{ qg.get_absolute_url }}">{{ qg }}</a>
 {% endfor %}
