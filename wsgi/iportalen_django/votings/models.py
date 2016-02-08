@@ -42,7 +42,12 @@ class QuestionGroup(models.Model):
     objects = QuestionGroupManager()
 
     def __str__(self):
-        return "id: {pk}".format(pk=self.pk)
+        if self.question_status == self.EVENT:
+            return self.event.headline
+        elif self.name:
+            return self.name
+        else:
+            return "Question group: {pk}".format(pk=self.pk)
 
     def get_absolute_url(self):
         """Get url of object"""
@@ -52,11 +57,26 @@ class QuestionGroup(models.Model):
         verbose_name = _("frågegrupp")
         verbose_name_plural = _("frågegrupper")
 
+    def can_administer(self, user):
+        if not user.is_authenticated():
+            return False
+        qg_orgs = self.organisations.all()
+        user_orgs = user.get_organisations()
+        intersection = set(qg_orgs).intersection(user_orgs)
+        # Like a venn diagram where the intersections is the organisations that both the user and the event have.
+        if intersection:
+            return True
+        if self.creator == user:
+            return True
+        return False
+
 
 class Question(models.Model):
+    DRAFT = 'd'
     OPEN = 'o'
     CLOSED = 'c'
     STATUSES = (
+        (DRAFT, _("Utkast")),
         (OPEN, _("Öppen")),
         (CLOSED, _("Stängd")),
     )
@@ -68,6 +88,14 @@ class Question(models.Model):
         (PUBLIC_LIMITED, _("Publik tillgång till begränsad information om röstningen.")),
         (PRIVATE, _("Privat åtkomst enbart för administratörer")),
     )
+    BEFORE = 'b'
+    AFTER = 'a'
+    ON_CLOSE = 'c'
+    PUBLISH_RESULT_OPTIONS = (
+        (BEFORE, _("Gör resultaten synliga innan man röstat.")),
+        (AFTER, _("Gör resultaten synliga efter att man röstat.")),
+        (ON_CLOSE, _("Gör resultaten synliga när röstningen stängt.")),
+    )
     question_group = models.ForeignKey(QuestionGroup, verbose_name=_('frågegrupp'),)
     name = models.CharField(verbose_name=_('namn'), max_length=255)
     body = models.TextField(verbose_name=_("utförlig information"), help_text=_("Utförligare information till frågan."))
@@ -77,14 +105,20 @@ class Question(models.Model):
         default=PRIVATE,
         blank=False,
         null=False)
+    publish_results = models.CharField(
+        max_length=1,
+        choices=PUBLISH_RESULT_OPTIONS,
+        default=ON_CLOSE,
+        blank=False,
+        null=False)
     status = models.CharField(
         max_length=1,
         choices=STATUSES,
-        default=CLOSED,
+        default=DRAFT,
         blank=False,
         null=False)
     nr_of_picks = models.IntegerField(verbose_name=_("Antal val en användare kan kryssa i på frågan."), default=1)
-    anonymous = models.BooleanField(verbose_name=_('namn'), default=True)
+    anonymous = models.BooleanField(verbose_name=_('anonym'), default=True)
     modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name=_("användare"),
@@ -99,7 +133,11 @@ class Question(models.Model):
 
     def get_absolute_url(self):
         """Get url of object"""
-        return reverse('votings:question', kwargs={'pk': self.pk})
+        return reverse('votings:question', kwargs={'qg_pk': self.question_group_id, 'q_pk': self.pk})
+
+    def get_absolute_result_url(self):
+        """Get url of object"""
+        return reverse('votings:result', kwargs={'qg_pk': self.question_group_id, 'q_pk': self.pk})
 
     class Meta:
         verbose_name = _("fråga")
@@ -120,14 +158,36 @@ class Question(models.Model):
     def can_vote(self, user):
         return self.is_voter(user) and not self.has_voted(user) and self.status == self.OPEN
 
+    def show_result(self, user):
+        if self.result == self.PUBLIC_DETAILED or self.result == self.PUBLIC_LIMITED:
+            if self.publish_results == self.ON_CLOSE:
+                if self.status == self.CLOSED:
+                    return True
+                else:
+                    return False
+            elif self.publish_results == self.BEFORE:
+                return True
+            elif self.publish_results == self.AFTER:
+                if self.has_voted(user):
+                    return True
+                else:
+                    return False
+        else:
+            return False
+
+
     @transaction.atomic
     def vote(self, user, options):
-        if not self.can_vote(user):
-            raise CouldNotVoteException(reason=_("User can't vote in this Question"))
+        if not self.is_voter(user):
+            raise CouldNotVoteException(reason=_("Du kan inte rösta i den här frågan."))
+        if self.has_voted(user):
+            raise CouldNotVoteException(reason=_("Du har redan röstat i den här frågan."))
+        if self.status != self.OPEN:
+            raise CouldNotVoteException(reason=_("Frågan är inte längre öppen för omröstning."))
         if len(options) > self.nr_of_picks:
-            raise CouldNotVoteException(reason=_("Too many picks"))
+            raise CouldNotVoteException(reason=_("Du har valt för många alternativ."))
         for option in options:
-            Vote.objects.create(question=self, option=option, user=user)
+            Vote.objects.create(question=self, option_id=option, user=user)
         HasVoted.objects.create(question=self, user=user)
 
 

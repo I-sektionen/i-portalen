@@ -1,0 +1,21 @@
+{% extends "master.html"%}
+{% load iportalen_tags %}
+{% block hero %}
+{% endblock %}
+{% block content %}
+    <h1>{{ question.name }}</h1>
+    {{ question.body|markdown }}
+
+    <p>Antal val: {{ question.nr_of_picks }}</p>
+    <form action="" method="post">
+    {% csrf_token %}
+        <ul>
+            {% for field in form %}
+                <li>{{ field }} {{ field.errors }}</li>
+            {% endfor %}
+        </ul>
+        <br>
+        <a href="{% url 'votings:question group' question.question_group_id %}" class="button">Tillbaka</a>
+        <input class="button action-button" type="submit" name="vote" title="Rösta" value="Rösta">
+    </form>
+{% endblock %}

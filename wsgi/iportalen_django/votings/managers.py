@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 
 
@@ -13,8 +14,7 @@ class QuestionGroupManager(models.Manager):
 class QuestionManager(models.Manager):
     def published(self):
         return self.filter(
-                status=self.model.OPEN,
                 question_group__visible_from__lte=timezone.now(),
                 question_group__visible_to__gte=timezone.now()
-                ).order_by('-pk')
+                ).filter(~Q(status=self.model.DRAFT,)).order_by('-pk')
 
