@@ -15,6 +15,7 @@ local_settings.py
 
 ## Directory-based project format:
 .idea/
+/wsgi/iportalen_django/iportalen/static/iportalen/js/iportalen.js
 # if you remove the above rule, at least ignore the following:
 
 # User-specific stuff:
