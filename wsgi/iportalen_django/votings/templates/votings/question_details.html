@@ -10,10 +10,13 @@
     <form action="" method="post">
     {% csrf_token %}
         <ul>
-            {% for field in form %}
+            {% for field in form.options %}
                 <li>{{ field }} {{ field.errors }}</li>
             {% endfor %}
         </ul>
+        {% if question.verification %}
+            {{ form.verification.label }}{{ form.verification }} {{ form.verification.errors }}
+        {% endif %}
         <br>
         <a href="{% url 'votings:question group' question.question_group_id %}" class="button">Tillbaka</a>
         <input class="button action-button" type="submit" name="vote" title="Rösta" value="Rösta">
