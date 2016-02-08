@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.db import models, transaction
+from django.db.models import Count
 from django.utils.translation import ugettext_lazy as _, ugettext
 from events.models import Event
 from iportalen import settings
@@ -96,6 +97,13 @@ class Question(models.Model):
         (AFTER, _("Gör resultaten synliga efter att man röstat.")),
         (ON_CLOSE, _("Gör resultaten synliga när röstningen stängt.")),
     )
+    verification = models.CharField(
+        verbose_name=_('verifiering'),
+        max_length=255,
+        help_text=_("Verifieringskod att ange vid omröstningen, valfritt."),
+        blank=True,
+        null=True
+    )
     question_group = models.ForeignKey(QuestionGroup, verbose_name=_('frågegrupp'),)
     name = models.CharField(verbose_name=_('namn'), max_length=255)
     body = models.TextField(verbose_name=_("utförlig information"), help_text=_("Utförligare information till frågan."))
@@ -174,6 +182,17 @@ class Question(models.Model):
                     return False
         else:
             return False
+
+    def get_result(self):
+        voters = self.voters().count()
+        has_voted = self.hasvoted_set.all().count()
+        result = self.vote_set.all().values('option__name').annotate(total=Count('option')).order_by('total')
+
+        return {
+            "voters": voters,
+            "has_voted": has_voted,
+            "result": result,
+            "attendance": "{percent}%".format(percent=(has_voted/voters)*100)}
 
 
     @transaction.atomic
