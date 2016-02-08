@@ -34,7 +34,6 @@ event_patterns = [
     url(r'^calendar_view/$',                   view=views.event_calender_view,    name='calender_view'),
     url(r'^user_entries/$',                    view=views.registered_on_events,   name='registered on'),
     url(r'^my_events/$',                       view=views.events_by_user,         name='by user'),
-    url(r'^(?P<pk>[0-9]+)/download/$',         view=views.file_download,          name='download'),
     url(r'^feed/feed.ics$',                    view=views.calendar_feed,          name='calendar feed'),
     url(r'^feed/(?P<liu_id>[a-z]{4,5}\d{3})/feed.ics$',
         view=views.personal_calendar_feed, name='personal calendar feed'),
