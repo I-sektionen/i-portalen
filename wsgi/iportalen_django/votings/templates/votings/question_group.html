@@ -11,7 +11,7 @@
             {% show_result question request.user as result %}
             <li>
                 {% if show %}<a href="{{ question.get_absolute_url }}">{% endif %}{{ question }}{% if show %}</a>{% endif %}
-                {% if result %}<a href="{{ question.get_absolute_result_url }}">resultat</a>{% endif %}
+                {% if result %}<li class="indent-me">- <a href="{{ question.get_absolute_result_url }}">resultat</a></li>{% endif %}
             </li>
         {% empty %}
             <li>Det finns tyvärr inga frågor att rösta i för tillfället.</li>
