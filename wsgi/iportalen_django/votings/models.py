@@ -186,13 +186,17 @@ class Question(models.Model):
     def get_result(self):
         voters = self.voters().count()
         has_voted = self.hasvoted_set.all().count()
-        result = self.vote_set.all().values('option__name').annotate(total=Count('option')).order_by('total')
+        result = self.vote_set.all().values('option__name').annotate(total=Count('option')).order_by('-total')
+        nr_of_votes = self.vote_set.all().count()
 
         return {
             "voters": voters,
             "has_voted": has_voted,
             "result": result,
-            "attendance": "{percent}%".format(percent=(has_voted/voters)*100)}
+            "attendance": "{percent}%".format(percent=(has_voted/voters)*100),
+            "nr_of_votes": nr_of_votes,
+            "nr_of_blanks": ((self.nr_of_picks*has_voted)-nr_of_votes)
+        }
 
 
     @transaction.atomic

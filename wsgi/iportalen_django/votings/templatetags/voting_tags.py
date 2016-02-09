@@ -17,7 +17,12 @@ def show_result(question, user):
 def get_menu_choices_user(user):
     menu_choices = []
 
-    #if user.has_perm("user_managements.add_iuser"):
-    menu_choices.append((_("Skapa en omröstning"), reverse('votings:create')))
+    if user.has_perm("votings.add_questiongroup"):
+        menu_choices.append((_("Skapa en omröstning"), reverse('votings:create')))
 
     return menu_choices
+
+
+@register.simple_tag
+def percent_of_votes(votes, voters):
+    return "{percent}%".format(percent=(votes/voters)*100)
