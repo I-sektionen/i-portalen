@@ -68,13 +68,6 @@ class Article(models.Model):
         blank=True,
         help_text=_("Håll ner Ctrl för att markera flera."))
 
-    attachment = models.FileField(
-        verbose_name=_("Bifogad fil"),  # This field should be removed. It is saved by legacy reasons.
-        help_text=_("Bifogad fil för artikel"),  # TODO: When no articles uses this field, remove it.(Tricky to migrate)
-        upload_to=_("article_attachments"),
-        null=True,
-        blank=True)
-
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
 
