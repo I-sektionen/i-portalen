@@ -17,7 +17,6 @@ article_patterns = [
     url(r'^(?P<pk>[0-9]+)/delete/$',              view=views.delete_article,            name='delete'),
     url(r'^(?P<article_pk>[0-9]+)/attachments/$', view=views.upload_attachments,        name='manage attachments'),
     url(r'^(?P<article_pk>[0-9]+)/images/$',      view=views.upload_attachments_images, name='manage images'),
-    url(r'^attachments/other/(?P<pk>[0-9]+)/$',   view=views.download_attachment,       name='download attachment')
 ]
 
 urlpatterns = [url(r'^', include(article_patterns, namespace=app_name))]
