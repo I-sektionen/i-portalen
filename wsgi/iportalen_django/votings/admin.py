@@ -9,39 +9,29 @@ from django.db.models import Q, ManyToManyField
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
 
-class OptionsInlineHidden(admin.StackedInline):
-    model = models.Option
-    extra = 0
-    readonly_fields = ('name',)
-
-    def has_delete_permission(self, request, obj=None):
-        if request.user.is_superuser:
-            return True
-        return False
-
-    def has_add_permission(self, request, obj=None):
-        return False
-
-
 class OptionsInline(admin.StackedInline):
     model = models.Option
-    fk_name = 'question'
     extra = 1
-    editable_fields = []
+    readonly_fields = ()
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            if obj.status != models.Question.DRAFT:  # This is retarded but the obj is the question not the option.
+                return self.readonly_fields + ('name',)
+        return self.readonly_fields
 
     def has_delete_permission(self, request, obj=None):
-        return False
+        if obj:
+            if obj.status != models.Question.DRAFT:  # This is retarded but the obj is the question not the option.
+                return False
+        return True
 
-    def has_change_permission(self, request, obj=None):
-        return False
-
-    def has_add_permission(self, request, obj=None):
+    def has_add_permission(self, request, obj=None):  # This is retarded but you can't add since the name field is hidden.
         return True
 
 
 class QuestionAdmin(admin.ModelAdmin):
     model = models.Question
-    fk_name = 'question_group'
     extra = 1
     readonly_fields = ('modified_by',)
     list_display = ['name', 'status']
@@ -61,16 +51,17 @@ class QuestionAdmin(admin.ModelAdmin):
         return qs
 
     def get_readonly_fields(self, request, obj=None):
-        if obj:  # editing an existing object
-            return self.readonly_fields + (
-                'result_readers',
-                'anonymous',
-                'nr_of_picks',
-                'publish_results',
-                'result',
-                'body',
-                'name',
-                'question_group')
+        if obj:
+            if obj.status != models.Question.DRAFT:  # editing an existing object
+                return self.readonly_fields + (
+                    'result_readers',
+                    'anonymous',
+                    'nr_of_picks',
+                    'publish_results',
+                    'result',
+                    'body',
+                    'name',
+                    'question_group')
         return self.readonly_fields
 
     def save_model(self, request, obj, form, change):
@@ -89,9 +80,12 @@ class QuestionAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         if request.user.is_superuser:
             return True
-        return False
+        elif obj:
+            if obj.status != models.Question.DRAFT:  # This is retarded but the obj is the question not the option.
+                return False
+        return True
 
-    inlines = [OptionsInlineHidden, OptionsInline, ]
+    inlines = [OptionsInline, ]
 
 
 ################################################################
