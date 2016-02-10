@@ -18,5 +18,8 @@
         {% endfor %}
     </ul>
     <br>
-    <a href="{% url 'votings:votings' %}" class="button">Tillbaka</a>
+    {% if question_group.event %}
+    <a href="{% url "events:event" question_group.event_id %}" class="action-button">Tillbaka till eventet</a>
+    {% endif %}
+    <a href="{% url 'votings:votings' %}" class="button">Visa alla öppna omröstningar</a>
 {% endblock %}

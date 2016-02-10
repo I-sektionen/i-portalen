@@ -84,10 +84,12 @@ class Question(models.Model):
     PUBLIC_DETAILED = 'd'
     PUBLIC_LIMITED = 'l'
     PRIVATE = 'p'
+    SUPER_PRIVATE = 's'
     RESULT = (
         (PUBLIC_DETAILED, _("Publik tillgång till detaljerad information om röstingen.")),
         (PUBLIC_LIMITED, _("Publik tillgång till begränsad information om röstningen.")),
         (PRIVATE, _("Privat åtkomst enbart för administratörer")),
+        (SUPER_PRIVATE, _("Privat åtkomst enbart för personer listade i \"Användare som kan se resultatet\"")),
     )
     BEFORE = 'b'
     AFTER = 'a'
@@ -105,20 +107,23 @@ class Question(models.Model):
         null=True
     )
     question_group = models.ForeignKey(QuestionGroup, verbose_name=_('frågegrupp'),)
-    name = models.CharField(verbose_name=_('namn'), max_length=255)
+    name = models.CharField(verbose_name=_('fråga'), max_length=255)
     body = models.TextField(verbose_name=_("utförlig information"), help_text=_("Utförligare information till frågan."))
     result = models.CharField(
         max_length=1,
         choices=RESULT,
         default=PRIVATE,
         blank=False,
-        null=False)
+        null=False,
+        verbose_name=_("resultattyp")
+    )
     publish_results = models.CharField(
         max_length=1,
         choices=PUBLISH_RESULT_OPTIONS,
         default=ON_CLOSE,
         blank=False,
-        null=False)
+        null=False,
+        verbose_name=_("publicerings alternativ"))
     status = models.CharField(
         max_length=1,
         choices=STATUSES,
@@ -127,6 +132,14 @@ class Question(models.Model):
         null=False)
     nr_of_picks = models.IntegerField(verbose_name=_("Antal val en användare kan kryssa i på frågan."), default=1)
     anonymous = models.BooleanField(verbose_name=_('anonym'), default=True)
+    result_readers = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        verbose_name=_("användare som kan se resultatet"),
+        help_text=_("Användaren som kan se resultatet i omröstningen, används bara om resultattypen är: "
+                    "\"Privat åtkomst enbart för personer listade i \"Användare som kan se resultatet\"\" "),
+        related_name="result_reader",
+        blank=True
+    )
     modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name=_("användare"),
@@ -166,20 +179,29 @@ class Question(models.Model):
     def can_vote(self, user):
         return self.is_voter(user) and not self.has_voted(user) and self.status == self.OPEN
 
-    def show_result(self, user):
-        if self.result == self.PUBLIC_DETAILED or self.result == self.PUBLIC_LIMITED:
-            if self.publish_results == self.ON_CLOSE:
-                if self.status == self.CLOSED:
-                    return True
-                else:
-                    return False
-            elif self.publish_results == self.BEFORE:
+    def _internal_timing_of_result(self, user):
+        if self.publish_results == Question.ON_CLOSE:
+            if self.status == Question.CLOSED:
                 return True
-            elif self.publish_results == self.AFTER:
-                if self.has_voted(user):
-                    return True
-                else:
-                    return False
+            else:
+                return False
+        elif self.publish_results == Question.BEFORE:
+            return True
+        elif self.publish_results == Question.AFTER:
+            if self.has_voted(user):
+                return True
+            else:
+                return False
+        else:
+            return False
+
+    def show_result(self, user):
+        if self.result == Question.PUBLIC_DETAILED or self.result == Question.PUBLIC_LIMITED:
+            return self._internal_timing_of_result(user)
+        elif self.result == Question.PRIVATE and self.question_group.can_administer(user):
+            return self._internal_timing_of_result(user)
+        elif self.result == Question.SUPER_PRIVATE and user in self.result_readers:
+            return self._internal_timing_of_result(user)
         else:
             return False
 
@@ -197,7 +219,6 @@ class Question(models.Model):
             "nr_of_votes": nr_of_votes,
             "nr_of_blanks": ((self.nr_of_picks*has_voted)-nr_of_votes)
         }
-
 
     @transaction.atomic
     def vote(self, user, options):
