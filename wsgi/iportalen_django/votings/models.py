@@ -200,10 +200,16 @@ class Question(models.Model):
             return self._internal_timing_of_result(user)
         elif self.result == Question.PRIVATE and self.question_group.can_administer(user):
             return self._internal_timing_of_result(user)
-        elif self.result == Question.SUPER_PRIVATE and user in self.result_readers:
+        elif self.result == Question.SUPER_PRIVATE and user in self.result_readers.all():
             return self._internal_timing_of_result(user)
         else:
             return False
+
+    def detailed(self, user):
+        if self.result == Question.PUBLIC_LIMITED and not self.question_group.can_administer(user):
+            return False
+        else:
+            return True
 
     def get_result(self):
         voters = self.voters().count()
