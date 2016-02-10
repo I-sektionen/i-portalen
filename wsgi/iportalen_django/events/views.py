@@ -506,14 +506,6 @@ def upload_attachments_images(request, pk):
                         })
 
 
-def download_attachment(request, pk):
-    attachment = OtherAttachment.objects.get(pk=pk)
-    mimetype, enc = mimetypes.guess_type(attachment.file.url)
-    response = HttpResponse(attachment.file, content_type=mimetype)
-    response['Content-Disposition'] = 'attachment; filename="{filename}"'.format(filename=attachment.file_name)
-    return response
-
-
 @login_required()
 def speaker_list(request, pk):  # TODO: Reduce complexity
     if request.method == 'POST':
@@ -639,6 +631,4 @@ def show_noshows(request):
     if tempuser["user"]:
         result.append(tempuser)
 
-
-
-    return render(request, "events/show_noshows.html", {"user": user, "no_shows":result})
+    return render(request, "events/show_noshows.html", {"user": user, "no_shows": result})
