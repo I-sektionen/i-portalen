@@ -108,7 +108,10 @@ class Question(models.Model):
     )
     question_group = models.ForeignKey(QuestionGroup, verbose_name=_('frågegrupp'),)
     name = models.CharField(verbose_name=_('fråga'), max_length=255)
-    body = models.TextField(verbose_name=_("utförlig information"), help_text=_("Utförligare information till frågan."))
+    body = models.TextField(verbose_name=_("utförlig information"),
+                            help_text=_("Utförligare information till frågan."),
+                            blank=True,
+                            null=True,)
     result = models.CharField(
         max_length=1,
         choices=RESULT,
@@ -129,7 +132,12 @@ class Question(models.Model):
         choices=STATUSES,
         default=DRAFT,
         blank=False,
-        null=False)
+        null=False,
+        help_text=_("Kan inte ändras tillbaka till draft efter att det öppnats"
+                    " och kan inte öppnats efter att den stängts. "
+                    "Det går inte heller att göra ändringar på annat än status och "
+                    "verifieringskod efter att draft läget lämnats.")
+    )
     nr_of_picks = models.IntegerField(verbose_name=_("Antal val en användare kan kryssa i på frågan."), default=1)
     anonymous = models.BooleanField(verbose_name=_('anonym'), default=True)
     result_readers = models.ManyToManyField(
@@ -148,6 +156,10 @@ class Question(models.Model):
         on_delete=models.SET_NULL)
 
     objects = QuestionManager()
+
+    def __init__(self, *args, **kwargs):
+        super(Question, self).__init__(*args, **kwargs)
+        self._initial_status = self.status
 
     def __str__(self):
         return self.name
@@ -239,6 +251,15 @@ class Question(models.Model):
         for option in options:
             Vote.objects.create(question=self, option_id=option, user=user)
         HasVoted.objects.create(question=self, user=user)
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if self.pk:
+            if self.status == Question.DRAFT and self._initial_status != Question.DRAFT:
+                self.status = self._initial_status
+            elif self.status == Question.OPEN and self._initial_status == Question.CLOSED:
+                self.status = self._initial_status
+        super(Question, self).save(
+            force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
 
 
 class Option(models.Model):
