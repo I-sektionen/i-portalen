@@ -1,9 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import ugettext as _
 
+from events.models import Event
 from votings.exceptions import CouldNotVoteException
 from votings.forms import VotingForm
 from votings.models import QuestionGroup, Question
@@ -44,3 +46,34 @@ def question_details(request, qg_pk, q_pk):
 def question_result(request, qg_pk, q_pk):
     q = get_object_or_404(Question, pk=q_pk)
     return render(request, "votings/result.html", {"question": q})
+
+
+def create(request):
+    return redirect(reverse('admin:app_list', args=('votings',)))
+
+
+@login_required()
+def create_from_event(request, event_pk):
+    e = get_object_or_404(Event, pk=event_pk)
+    if e.can_administer(request.user):
+        qg = QuestionGroup.objects.create(name=e.headline,
+                                          question_status=QuestionGroup.EVENT,
+                                          event=e,
+                                          creator=request.user)
+        return redirect(reverse('admin:votings_questiongroup_change', args=(qg.pk,)))
+    else:
+        raise PermissionDenied()
+
+
+def admin_from_event(request, event_pk):
+    e = get_object_or_404(Event, pk=event_pk)
+    if e.can_administer(request.user):
+        qg = get_object_or_404(QuestionGroup, event_id=event_pk)
+        return redirect(reverse('admin:votings_questiongroup_change', args=(qg.pk,)))
+    else:
+        raise PermissionDenied()
+
+
+def get_from_event(request, event_pk):
+    qg = get_object_or_404(QuestionGroup, event_id=event_pk)
+    return redirect(reverse('votings:question group', args=(qg.pk,)))
