@@ -62,6 +62,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'nested_inline',
     'iportalen',
     'storages',
     'tags',
@@ -73,7 +74,8 @@ INSTALLED_APPS = (
     'django_extensions',
     'course_evaluations',
     'faq',
-    'django.contrib.sitemaps'
+    'django.contrib.sitemaps',
+    'votings',
 )
 
 MIDDLEWARE_CLASSES = (

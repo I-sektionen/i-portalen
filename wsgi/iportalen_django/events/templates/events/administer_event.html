@@ -14,6 +14,12 @@
         <li><a href="{% url "events:manage attachments" event.pk %}">Hantera bilagor</a></li>
         {% comment %}<li><a href="{% url "events:manage images" event.pk %}">Hantera bilder</a></li>{% endcomment %}
         <li><a href="{% url "events:import registrations" event.pk %}">Importera anmälningar</a></li>
+        {% if not event.questiongroup_set.all %}
+            <li><a href="{% url "votings:create from event" event.pk %}">Skapa omröstningar</a></li>
+        {% else %}
+            <li><a href="{% url "votings:admin from event" event.pk %}">Administrera omröstningar</a></li>
+            <li><a href="{% url "votings:get from event" event.pk %}">Visa omröstningar</a></li>
+        {% endif %}
         {% if not event.finished %}
         <li><a href="{% url "events:no show" event.pk %}">Rapportera eventet</a> <i>(Klicka här när incheckningen är klar för att rapportera in vilka som kom på eventet.)</i></li>
         {% endif %}
