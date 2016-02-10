@@ -51,7 +51,7 @@
     {{ event.body|markdown }}
     {% if event.otherattachment_set.all %}
         {% for attachment in event.otherattachment_set.all %}
-            <p>Bifogad fil: <a href="{% url 'events:download attachment' attachment.pk %}">{{ attachment.display_name }}</a></p>
+            <p>Bifogad fil: <a href="{{ attachment.file.url }}">{{ attachment.display_name }}</a></p>
         {% endfor %}
     {% endif %}
 
