@@ -62,7 +62,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'nested_inline',
     'iportalen',
     'storages',
     'tags',
