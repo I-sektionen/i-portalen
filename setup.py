@@ -17,6 +17,5 @@ setup(name='I-Portalen',
                         'django_extensions',
                         'pytz',
                         'pillow>=2.0.0',
-                        'django-nested-inline'
                         ],  # This should match requirements.txt!
       )
