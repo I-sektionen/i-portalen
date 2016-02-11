@@ -18,6 +18,7 @@ def show_result(question, user):
 def detailed(question, user):
     return question.detailed(user)
 
+
 @register.assignment_tag
 def get_menu_choices_user(user):
     menu_choices = []

@@ -17,7 +17,7 @@
         <table>
         <tr><th>Placering</th><th>Val</th><th>Antal röster</th></tr>
         {% for total in result.result %}
-            <tr><td>{{ forloop.counter }}</td><td>{{ total.option__name }}</td>
+            <tr><td>{{ total.place }}</td><td>{{ total.option__name }}</td>
                 <td>{% if show_detailed %}{{ total.total }} ({% percent_of_votes total.total result.has_voted %}){% else %}{% percent_of_votes total.total result.has_voted %}{% endif %}</td></tr>
         {% endfor %}
         {% if show_detailed %}
