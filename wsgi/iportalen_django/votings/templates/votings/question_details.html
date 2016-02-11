@@ -6,7 +6,8 @@
     <h1>{{ question.name }}</h1>
     {{ question.body|markdown }}
 
-    <p>Antal val: {{ question.nr_of_picks }}</p>
+    <p>Minsta antal val: {{ question.min_nr_of_picks }}</p>
+    <p>Max antal val: {{ question.nr_of_picks }}</p>
     <form action="" method="post">
     {% csrf_token %}
         <ul>

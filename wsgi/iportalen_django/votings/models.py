@@ -138,7 +138,9 @@ class Question(models.Model):
                     "Det går inte heller att göra ändringar på annat än status och "
                     "verifieringskod efter att draft läget lämnats.")
     )
-    nr_of_picks = models.IntegerField(verbose_name=_("Antal val en användare kan kryssa i på frågan."), default=1)
+    nr_of_picks = models.IntegerField(verbose_name=_("Max antal val en användare kan kryssa i på frågan."), default=1)
+    min_nr_of_picks = models.IntegerField(
+        verbose_name=_("Min antal val en användare kan kryssa i på frågan."), default=0)
     anonymous = models.BooleanField(verbose_name=_('anonym'), default=True)
     result_readers = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
@@ -248,6 +250,8 @@ class Question(models.Model):
             raise CouldNotVoteException(reason=_("Frågan är inte längre öppen för omröstning."))
         if len(options) > self.nr_of_picks:
             raise CouldNotVoteException(reason=_("Du har valt för många alternativ."))
+        if len(options) < self.min_nr_of_picks:
+            raise CouldNotVoteException(reason=_("Du har valt för få alternativ."))
         for option in options:
             Vote.objects.create(question=self, option_id=option, user=user)
         HasVoted.objects.create(question=self, user=user)
