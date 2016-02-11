@@ -21,8 +21,8 @@ def print_event(event):
                  "LAST-MODIFIED:{modified}\n"
                  "URL:{url}\n",
                  "END:VEVENT\n"]).format(
-        start=event.start.astimezone(timezone('Europe/Stockholm')).strftime(t_format),
-        end=event.end.astimezone(timezone('Europe/Stockholm')).strftime(t_format),
+        start=event.start.astimezone(timezone('Europe/Paris')).strftime(t_format),  # Switched to UTC instead.
+        end=event.end.astimezone(timezone('Europe/Paris')).strftime(t_format),  # Switched to UTC instead.
         summary=event.headline,
         location=event.location,
         desc=_descr(event),
