@@ -29,4 +29,4 @@ def get_menu_choices_user(user):
 
 @register.simple_tag
 def percent_of_votes(votes, voters):
-    return "{percent}%".format(percent=(votes/voters)*100)
+    return "{percent}%".format(percent=round(((votes/voters)*100), 2))
