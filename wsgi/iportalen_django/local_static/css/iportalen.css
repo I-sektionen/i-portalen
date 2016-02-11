@@ -1329,6 +1329,22 @@ label.required:after {
   font-weight: 800;
 }
 
+#speaker_list_admin_nonformat ol {
+  list-style-position: inside;
+}
+#speaker_list_admin_nonformat ol li {
+  margin-left: 1em;
+  color: gray;
+  font-size: 20pt;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.admin_speaker_input {
+  margin: 1em;
+  margin-left: 2em;
+}
+
 @media screen and (min-width: 900px) {
   #user-info-form-button {
     float: right;
