@@ -11,6 +11,8 @@ class VotingForm(forms.Form):
     def clean_options(self):
         if len(self.cleaned_data['options']) > Question.objects.get(pk=self.question_id).nr_of_picks:
             raise forms.ValidationError(_('Du har valt för många alternativ.'))
+        elif len(self.cleaned_data['options']) < Question.objects.get(pk=self.question_id).min_nr_of_picks:
+            raise forms.ValidationError(_('Du har valt för få alternativ.'))
         return self.cleaned_data['options']
 
     def clean_verification(self):
