@@ -507,6 +507,38 @@ function speaker_list_admin(url){
         });
         input_field.val('');
     });
+}
+
+
+function speaker_list_view_admin(url) {
+    init_csrf();
+
+    var s_list = $("#speaker_list_admin_nonformat").find("ol");
+    var t=setInterval(reload_list, 1000);
+    function reload_list() {
+
+        var data = {
+            'method': 'all'
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function (result) {
+                if (result.status === "ok") {
+                    var speakerlist = result.speaker_list;
+                    var arrayLength = speakerlist.length;
+                    s_list.empty();
+                    for (var i = 0; i < arrayLength; i++) {
+                        s_list.append('<li>' + speakerlist[i].first_name + ' ' + speakerlist[i].last_name + ' ' + speakerlist[i].speech_nr + '</li>');
+                    }
+                } else {
+                    console.log(result.status);
+                }
+            }
+        });
+    }
 };/**
  * Created by jonathan on 2015-11-09.
  */
@@ -4981,3 +5013,22 @@ function markdown_organisation_preview() {
         var editor = new Markdown.Editor(converter, "-body");
         editor.run();
     }
+;/**
+ * Created by jers on 11/02/16.
+ */
+
+function limit_max_choice(choices, max){
+    $(choices).on('change',function(evt){
+        if($(choices+':checked').length>max){
+            this.checked=false
+        }
+    });
+};$(function() {
+   $("#vote").click(function(){
+      if (confirm("Du är på väg att lämna din röst. Tryck ok för att bekräfta.")){
+         $('form#voting-form').submit();
+      } else {
+          event.preventDefault();
+      }
+   });
+});

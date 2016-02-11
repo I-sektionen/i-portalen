@@ -15,17 +15,26 @@
 <div id="speaker_list_admin">
 <form action="" method="post">
     {% csrf_token %}
-    <input id="id_speech_nr" type="number" name="speech_nr" autofocus>
-    <input id="post" type="submit" name="add" value="Lägg till i talarlistan">
-    <input id="remove" type="submit" name="remove" value="Tabort från talarlistan">
-    <input id="next" type="button" name="next" value="Nästa talare">
-    <input id="clear" type="button" name="clear" value="Rensa talarlistan">
+    <input class="admin_speaker_input" id="id_speech_nr" type="number" name="speech_nr" autofocus>
+    <input class="admin_speaker_input action-button" id="post" type="submit" name="add" value="Lägg till i talarlistan">
+    <input class="admin_speaker_input button" id="remove" type="submit" name="remove" value="Tabort från talarlistan">
+    <input class="admin_speaker_input action-button" id="next" type="button" name="next" value="Nästa talare">
+    <input class="admin_speaker_input button" id="clear" type="button" name="clear" value="Rensa talarlistan">
 </form>
+</div>
+<div id="speaker_list_admin_nonformat">
+<p>Nr. Förnamn Efternamn Talarnummer</p>
+    <ol>
+        {% for p in event.get_speaker_queue %}
+            <li>{{ p.user.first_name|capfirst }} {{ p.user.last_name|capfirst }}</li>
+        {% endfor %}
+    </ol>
 </div>
 {% include "scripts.html" %}
 <script>
     jQuery(document).ready(function(){
         speaker_list_admin("{% url "events:speaker api" event.pk %}");
+        speaker_list_view_admin("{% url "events:speaker api" event.pk %}");
     });
 </script>
 

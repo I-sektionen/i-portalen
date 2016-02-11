@@ -12,9 +12,12 @@
 </head>
 <body>
 {% csrf_token %}
+<h1>
+    {{ event.headline }}
+</h1>
 <div id="speaker_list">
     <ol>
-        {% for p in event.get_speaker_list %}
+        {% for p in event.get_speaker_queue %}
             <li>{{ p.user.first_name|capfirst }} {{ p.user.last_name|capfirst }}</li>
         {% endfor %}
     </ol>
