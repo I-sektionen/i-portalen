@@ -25,8 +25,8 @@ def print_event(event):
         # This timezone thing does not work. Now is it converted manually by subtracting one hour to UTC.
  #       start=event.start.astimezone(timezone('Europe/London')).strftime(t_format),  # Switched to UTC instead.
  #       end=event.end.astimezone(timezone('Europe/London')).strftime(t_format),  # Switched to UTC instead.
-        start=(event.start - timedelta(hours=1)).strftime(t_format),
-        end=(event.end - timedelta(hours=1)).strftime(t_format),
+        start=(event.start).strftime(t_format),
+        end=(event.end).strftime(t_format),
         summary=event.headline,
         location=event.location,
         desc=_descr(event),
