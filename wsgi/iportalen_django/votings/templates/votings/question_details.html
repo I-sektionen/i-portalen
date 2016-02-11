@@ -9,6 +9,11 @@
     <p>Minsta antal val: {{ question.min_nr_of_picks }}</p>
     <p>Max antal val: {{ question.nr_of_picks }}</p>
     <form action="" method="post">
+    {% for field, errors in form.errors.items %}
+    {% for error in errors %}
+        <p class="errorlist">{{ error }}</p>
+    {% endfor %}
+    {% endfor %}
     {% csrf_token %}
         <ul>
             {% for field in form.options %}
