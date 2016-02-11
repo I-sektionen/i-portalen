@@ -590,7 +590,7 @@ def administer_speaker_list(request, pk):
 
 
 def calendar_feed(request):
-    events = Event.objects.all()
+    events = Event.objects.published()
     response = render(request,
                       template_name='events/feed.ics',
                       context={'events': events},
