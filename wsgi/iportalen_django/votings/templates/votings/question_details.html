@@ -28,3 +28,8 @@
         <input class="button action-button" type="submit" name="vote" title="Rösta" value="Rösta">
     </form>
 {% endblock %}
+{% block after_scripts %}
+    <script>
+        limit_max_choice("input[name='options']", {{ question.nr_of_picks }})
+    </script>
+{% endblock %}
