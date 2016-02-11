@@ -34,7 +34,6 @@ event_patterns = [
     url(r'^calendar_view/$',                   view=views.event_calender_view,    name='calender_view'),
     url(r'^user_entries/$',                    view=views.registered_on_events,   name='registered on'),
     url(r'^my_events/$',                       view=views.events_by_user,         name='by user'),
-    url(r'^(?P<pk>[0-9]+)/download/$',         view=views.file_download,          name='download'),
     url(r'^feed/feed.ics$',                    view=views.calendar_feed,          name='calendar feed'),
     url(r'^feed/(?P<liu_id>[a-z]{4,5}\d{3})/feed.ics$',
         view=views.personal_calendar_feed, name='personal calendar feed'),
@@ -43,9 +42,8 @@ event_patterns = [
     url(r'^(?P<pk>[0-9]+)/user_view/$', view=views.user_view, name="user view"),
     url(r'^(?P<pk>[0-9]+)/attachments/$', view=views.upload_attachments, name='manage attachments'),
     url(r'^(?P<pk>[0-9]+)/images/$', view=views.upload_attachments_images, name='manage images'),
-    url(r'^attachments/other/(?P<pk>[0-9]+)/$', view=views.download_attachment, name='download attachment'),
     url(r'^(?P<pk>[0-9]+)/administer/', include(admin_patterns)),
-
+    url(r'no_shows/$',                           view=views.show_noshows, name="no_shows"),
 ]
 
 urlpatterns = [url(r'^', include(event_patterns, namespace=app_name))]

@@ -1,0 +1,90 @@
+#organisation-admin-panel
+  margin: 1em 0
+  +span-columns(12)
+
+#organisation-content
+  +outer-container()
+  margin-top: 2em
+  h1
+    margin: 0
+    font-size: 2em
+  #organisation-description
+    +span-columns(12)
+    +media($large-screen-up)
+      +span-columns(8 of 8)
+      +omega()
+
+  #organisation-members
+    +span-columns(12)
+    +media($large-screen-up)
+      +span-columns(8 of 8)
+      +omega()
+
+  #organisation-articles
+    +span-columns(12)
+    +media($large-screen-up)
+      +span-columns(8 of 8)
+      +omega()
+
+  #organisation-events
+    +span-columns(12)
+    +media($large-screen-up)
+      +span-columns(8 of 8)
+      +omega()
+
+  #organisation-suborg
+    +span-columns(12)
+    +media($large-screen-up)
+      +span-columns(8 of 8)
+      +omega()
+
+  #organisation-contact-info
+    +span-columns(12)
+    +media($large-screen-up)
+      +span-columns(8 of 8)
+      +omega()
+
+#organisation-hero
+  .hero
+    background-attachment: scroll
+    background-size: contain
+    height: 150px
+    background-color: white
+    position: relative
+    $base-border-radius: 3px !default
+    $action-color: #477DCA !default
+    $large-screen: em(860) !default
+    $hero-background-top: lighten($dark-gray, 30%)
+    $hero-background-bottom: black
+    $hero-color: white
+    $gradient-angle: 10deg
+    background-position: top
+    background-repeat: no-repeat
+    padding-bottom: 3em
+    border-radius: $base-border-radius
+    +media($large-screen)
+      height: 250px
+
+    .no-img
+      text-align: center
+      height: 150px
+      background-color: $dark-gray
+      vertical-align: middle
+      +media($large-screen)
+        height: 250px
+      .placeholder
+        +position(absolute)
+        top: 50%
+        left: 50%
+        +transform(translate(-50%,-50%))
+        h1
+          color: white
+          font-size: 1.6em
+          margin-bottom: 0.5em
+          font-weight: 700
+
+          @include media($large-screen)
+            font-size: 3.5em
+
+label.required:after
+  color: $red

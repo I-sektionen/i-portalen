@@ -1,0 +1,42 @@
+#message-box
+  +outer-container()
+  width: 100%
+  & > div
+    +span-columns(12)
+    @include border-bottom-radius(5px)
+    @include border-top-radius(5px)
+    box-shadow: 1px 1px 5px $light-gray
+    padding: 0.3em
+    margin: 0.3em
+    text-align: center
+
+    color: white
+    +display(flex)
+
+    & > span
+      position: relative
+      margin: auto
+      left: 20px
+
+    & > button
+      +background(rgba(0,0,0,0))
+      box-shadow: 0 0 0 0
+      justify-content: flex-start
+
+
+      &:hover
+        color: black
+
+
+
+  & > .info
+    background-color: $blue
+
+  & > .success
+    background-color: $isektionen-green
+
+  & > .warning
+    background-color: $isektionen-yellow
+
+  & > .error
+    background-color: $red

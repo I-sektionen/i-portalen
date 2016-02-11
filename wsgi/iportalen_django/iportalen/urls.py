@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'^faq/',               include('faq.urls')),
     url(r'^organisations/',     include('organisations.urls')),
     url(r'^user/',              include('user_managements.urls')),
+    url(r'^voting/',            include('votings.urls')),
 
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
@@ -49,7 +50,11 @@ urlpatterns = [
         view=TemplateView.as_view(template_name='acme.txt', content_type='text/plain')),
 
     # Om någon har sparat /student som favorit skickar vi dem till startsidan
-    url(r'^student', RedirectView.as_view(pattern_name='front page', permanent=True)),
+    url(r'^student', RedirectView.as_view(pattern_name='news feed', permanent=True)),
+    url(r'^soekande', view=views.isektionen_link),
+    url(r'^foeretag', view=views.isektionen_link),
+    url(r'^alumn', RedirectView.as_view(pattern_name='news feed', permanent=True)),
+    url(r'^utlandsportalen', RedirectView.as_view(pattern_name='news feed', permanent=True)),
 ]
 if not settings.ON_PASS:
     urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

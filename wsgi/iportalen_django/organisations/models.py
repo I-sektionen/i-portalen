@@ -1,6 +1,5 @@
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils.http import urlquote
 from django.contrib.auth.models import Group
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
@@ -67,6 +66,14 @@ class Organisation(models.Model):
                               related_name="group",
                               on_delete=models.SET_NULL)
 
+    modified_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='användare',
+        help_text="Ändrad av.",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name = "org_modified_by")
+
     class Meta:
         verbose_name = _("organisation")
         verbose_name_plural = _("organisationer")
@@ -75,8 +82,7 @@ class Organisation(models.Model):
         return self.name
 
     def get_absolute_url(self):
-
-        return reverse('organisations:organisation', kwargs={'organisation_name': urlquote(self.name)})
+        return reverse('organisations:organisation', kwargs={'organisation_name': self.name})
 
     def can_edit(self, user):
         if user == self.leader:
@@ -113,6 +119,15 @@ class OrganisationPost(models.Model):
                              null=False,
                              blank=False,
                              verbose_name=_("Användare"))
+
+    modified_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name='användare',
+        help_text="Ändrat av.",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="org_post_modified_by")
+
 
     class Meta:
         verbose_name = _("Organisations post")
