@@ -3045,4 +3045,10 @@ label.required:after {
   padding-left: 2em;
 }
 
+#voting-closed {
+  font-style: italic;
+  font-size: 8pt;
+  margin-bottom: 0em;
+}
+
 /*# sourceMappingURL=iportalen.css.map */
