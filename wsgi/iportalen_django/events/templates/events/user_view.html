@@ -1,16 +1,39 @@
 {% extends "master.html"%}
+{% load voting_tags %}
 {% block hero %}
 {% endblock %}
 {% block content %}
     <br>
-    <p>Efter att du klickat på "Lägg till dig på talarlistan" kan det kan ta några sekunder att få bekräftelse på att du är uppskriven på talarlistan.</p>
-    <a href="{% url "events:add user speech nr list" event.pk %}" class="action-button">Lägg till dig på talarlistan</a>
-    <a href="{% url "events:remove user speech nr list" event.pk %}" class="button">Ta bort dig från talarlistan</a>
-    <br><br>
-    {% if event.questiongroup_set.all %}
-        <a href="{% url "votings:get from event" event.pk %}" class="action-button">Visa omröstningar</a>
-        <br><br>
-    {% endif %}
+    <h1>{{ event.headline }}</h1>
+    <p>{{ event.lead|truncatewords_html:50 }}</p>
+    <hr>
+    <div>
+    <h2>Talarlista</h2>
+    <p><i>Efter att du klickat på "Lägg till dig på talarlistan" kan det kan ta några sekunder att få bekräftelse på att du är uppskriven på talarlistan.</i></p>
+    <a href="{% url "events:add user speech nr list" event.pk %}" class="action-button">Lägg till mig på talarlistan</a>
+    <a href="{% url "events:remove user speech nr list" event.pk %}" class="button">Ta bort mig från talarlistan</a>
+    <hr>
+    </div>
+    <div>
+    <h2>Omröstningar</h2>
+    <p><i>Här nedan ser du en lista med frågor som går att rösta på:</i></p>
+    {% if event.questiongroup_set.published %}
+        {% get_questions event as qg %}
+        <ul>
+            {% for q in qg.question_set.published %}
+                {% can_vote q request.user as show %}
+                {% show_result q request.user as result %}
+                <li>
+                    {% if show %}<a href="{{ q.get_absolute_url }}">{% endif %}{{ q }}{% if show %}</a>{% endif %}{% if not show %}<p id="voting-closed">Denna omröstning är stängd för dig</p>{% endif %}
+                    {% if result %}<li class="indent-me">- <a href="{{ q.get_absolute_result_url }}">resultat</a></li>{% endif %}
+                </li>
+            {% endfor %}
 
+
+
+        </ul>    {% endif %}
+
+    <hr>
+    </div>
     <a href="{% url "events:event" event.pk %}" class="button">Tillbaka till eventet</a>
 {% endblock %}

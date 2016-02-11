@@ -565,6 +565,7 @@ def speaker_list_user_add_self(request, pk):
     messages.success(request,"Du har skrivit upp dig på talarlistan!")
     return redirect(reverse('events:user view', kwargs={'pk': event.pk}))
 
+
 @login_required()
 def speaker_list_user_remove_self(request, pk):
     event = get_object_or_404(Event, pk=pk)
@@ -572,6 +573,7 @@ def speaker_list_user_remove_self(request, pk):
     speaker_number = EntryAsParticipant.objects.get(event=event, user=user).speech_nr
     event.remove_speaker_from_queue(speaker_number)
     return redirect(reverse('events:user view', kwargs={'pk': event.pk}))
+
 
 @login_required()
 def speaker_list_display(request, pk):
@@ -610,6 +612,7 @@ def personal_calendar_feed(request, liu_id):
     response['Filename'] = 'feed.ics'
     response['Content-Disposition'] = 'attachment; filename=feed.ics'
     return response
+
 
 @login_required()
 @permission_required('events.can_view_no_shows')

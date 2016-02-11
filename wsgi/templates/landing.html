@@ -49,7 +49,7 @@
                         <a class="pagenumber" href="?page={{ number }}">{{ number }}</a>
                     {% endif %}
                 {% endfor %}
-                {% if news_list.has_next %}
+                {% if content_feed_list.has_next %}
                     <span class="next"><a href="?page={{ content_feed_list.next_page_number }}">Next</a></span>
                 {% endif %}
             </span>
