@@ -111,7 +111,7 @@ function speaker_list_view_admin(url) {
                     var arrayLength = speakerlist.length;
                     s_list.empty();
                     for (var i = 0; i < arrayLength; i++) {
-                        s_list.append('<li>' + speakerlist[i].first_name + ' ' + speakerlist[i].last_name + '</li>');
+                        s_list.append('<li>' + speakerlist[i].first_name + ' ' + speakerlist[i].last_name + ' ' + speakerlist[i].speech_nr + '</li>');
                     }
                 } else {
                     console.log(result.status);

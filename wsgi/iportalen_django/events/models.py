@@ -536,11 +536,13 @@ class Event(models.Model):
             return []
 
         result = [{'first_name': first.user.first_name,
-                   'last_name': first.user.last_name}]
+                   'last_name': first.user.last_name,
+                   'speech_nr': first.user.entryasparticipant_set.get(event=self).speech_nr}]
         next_speaker = first.next_speaker
         while next_speaker is not None:
             result.append({'first_name': next_speaker.user.first_name,
-                           'last_name': next_speaker.user.last_name})
+                           'last_name': next_speaker.user.last_name,
+                           'speech_nr': next_speaker.user.entryasparticipant_set.get(event=self).speech_nr})
             next_speaker = next_speaker.next_speaker
         return result
 
