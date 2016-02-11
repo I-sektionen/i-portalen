@@ -12,6 +12,9 @@
 </head>
 <body>
 {% csrf_token %}
+<h1>
+    {{ event.headline }}
+</h1>
 <div id="speaker_list">
     <ol>
         {% for p in event.get_speaker_list %}

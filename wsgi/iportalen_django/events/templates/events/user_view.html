@@ -4,8 +4,8 @@
 {% block content %}
     <br>
     <p>Efter att du klickat på "Lägg till dig på talarlistan" kan det kan ta några sekunder att få bekräftelse på att du är uppskriven på talarlistan.</p>
-    <a href="{% url "events:add user speech nr list" event.pk %}" class="action-button">Lägg till dig på talarlistan</a>
-    <a href="{% url "events:remove user speech nr list" event.pk %}" class="button">Ta bort dig från talarlistan</a>
+    <a href="{% url "events:add user speech nr list" event.pk %}" class="action-button">Lägg till mig på talarlistan</a>
+    <a href="{% url "events:remove user speech nr list" event.pk %}" class="button">Ta bort mig från talarlistan</a>
     <br><br>
     {% if event.questiongroup_set.all %}
         <a href="{% url "votings:get from event" event.pk %}" class="action-button">Visa omröstningar</a>
