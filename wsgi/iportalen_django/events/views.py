@@ -17,7 +17,7 @@ from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticip
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
 from django.utils.translation import ugettext as _
-
+import mimetypes
 
 # Create your views here.
 from wsgi.iportalen_django.iportalen import settings
@@ -506,22 +506,6 @@ def upload_attachments_images(request, pk):
                         })
 
 
-def download_attachment(request, pk):
-    attachment = OtherAttachment.objects.get(pk=pk)
-    response = HttpResponse(attachment.file)
-    response['Content-Disposition'] = 'attachment; filename="{filename}"'.format(filename=attachment.file_name)
-    return response
-
-
-def file_download(request, pk):
-    event = Event.objects.get(pk=pk)
-    event_filename = event.attachment
-    response = HttpResponse(event_filename)
-    response['Content-Disposition'] = 'attachment; filename="{filename}"'.format(filename=event.filename)
-
-    return response
-
-
 @login_required()
 def speaker_list(request, pk):  # TODO: Reduce complexity
     if request.method == 'POST':
@@ -647,6 +631,4 @@ def show_noshows(request):
     if tempuser["user"]:
         result.append(tempuser)
 
-
-
-    return render(request, "events/show_noshows.html", {"user": user, "no_shows":result})
+    return render(request, "events/show_noshows.html", {"user": user, "no_shows": result})

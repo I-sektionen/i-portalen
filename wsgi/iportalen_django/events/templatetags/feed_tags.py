@@ -1,5 +1,6 @@
 from django.template.loader_tags import register
 from django.utils.translation import ugettext as _
+from pytz import timezone
 
 
 @register.simple_tag()
@@ -8,8 +9,7 @@ def print_event(event):
         s1 = e.lead
         s2 = _(" Eventet finns på: www.i-portalen.se") + e.get_absolute_url()
         return s1 + s2
-    t_format = "%Y%m%dT%H%M%S"  # Formating style used by the ics-file format.
-
+    t_format = "%Y%m%dT%H%M%SZ"  # Formating style used by the ics-file format.
     s = "".join(["BEGIN:VEVENT\n",
                  "DTSTART:{start}\n",
                  "DTEND:{end}\n",
@@ -19,8 +19,8 @@ def print_event(event):
                  "UID: {uid}\n",
                  "URL:{url}\n",
                  "END:VEVENT\n"]).format(
-        start=event.start.strftime(t_format),  # TODO: Add timezone information.
-        end=event.end.strftime(t_format),
+        start=event.start.astimezone(timezone('Europe/Stockholm')).strftime(t_format),
+        end=event.end.astimezone(timezone('Europe/Stockholm')).strftime(t_format),
         summary=event.headline,
         location=event.location,
         desc=_descr(event),
