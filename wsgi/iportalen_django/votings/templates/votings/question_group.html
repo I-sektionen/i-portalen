@@ -1,0 +1,25 @@
+{% extends "master.html"%}
+{% load voting_tags %}
+{% block hero %}
+{% endblock %}
+{% block content %}
+    <h1>{{ question_group }}</h1>
+    <p>Här nedan ser du en lista med frågor som går att rösta på:</p>
+    <ul>
+        {% for question in question_group.question_set.published %}
+            {% can_vote question request.user as show %}
+            {% show_result question request.user as result %}
+            <li>
+                {% if show %}<a href="{{ question.get_absolute_url }}">{% endif %}{{ question }}{% if show %}</a>{% endif %}
+                {% if result %}<li class="indent-me">- <a href="{{ question.get_absolute_result_url }}">resultat</a></li>{% endif %}
+            </li>
+        {% empty %}
+            <li>Det finns tyvärr inga frågor att rösta i för tillfället.</li>
+        {% endfor %}
+    </ul>
+    <br>
+    {% if question_group.event %}
+    <a href="{% url "events:event" question_group.event_id %}" class="action-button">Tillbaka till eventet</a>
+    {% endif %}
+    <a href="{% url 'votings:votings' %}" class="button">Visa alla öppna omröstningar</a>
+{% endblock %}
