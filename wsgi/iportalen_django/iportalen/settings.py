@@ -73,7 +73,8 @@ INSTALLED_APPS = (
     'django_extensions',
     'course_evaluations',
     'faq',
-    'django.contrib.sitemaps'
+    'django.contrib.sitemaps',
+    'votings',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -260,3 +261,5 @@ LOGGING = {
         },
     },
 }
+
+

@@ -108,13 +108,6 @@ class Event(models.Model):
         max_length=1, choices=STATUSES, default=DRAFT, blank=False, null=False)
     rejection_message = models.TextField(blank=True, null=True)
 
-    attachment = models.FileField(
-        verbose_name=_("Bifogad fil"),
-        help_text=_("Bifogad fil för event"),
-        upload_to="event_attachments",
-        null=True,
-        blank=True)
-
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
     replacing = models.ForeignKey('self', null=True, blank=True, default=None, on_delete=models.SET_NULL)
@@ -139,7 +132,7 @@ class Event(models.Model):
     class Meta:
         verbose_name = _("Arrangemang")
         verbose_name_plural = _("Arrangemang")
-        permissions = (('can_approve_event', 'Can approve event'),)
+        permissions = (('can_approve_event', 'Can approve event'), ('can_view_no_shows', 'Can view no shows'))
 
     ###########################################################################
     # Overridden and standard functions
@@ -451,7 +444,9 @@ class Event(models.Model):
                            "id",
                            "created",
                            "modified",
-                           "replacing"]
+                           "replacing",
+                           "imageattachment",
+                           "otherattachment"]
                 multi = ["tags", "organisations"]
                 for field in self.replacing._meta.get_fields():
                     if field.name not in exclude:

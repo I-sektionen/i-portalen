@@ -9,6 +9,7 @@ from django.utils.translation import ugettext as _
 from .models import Article
 from .forms import ArticleForm, RejectionForm
 from django.forms import modelformset_factory
+import mimetypes
 from .models import Article, OtherAttachment, ImageAttachment
 from .forms import ArticleForm, RejectionForm, AttachmentForm, ImageAttachmentForm
 from tags.models import Tag
@@ -153,13 +154,6 @@ def upload_attachments_images(request, article_pk):
                         })
 
 
-def download_attachment(request, pk):
-    attachment = OtherAttachment.objects.get(pk=pk)
-    response = HttpResponse(attachment.file)
-    response['Content-Disposition'] = 'attachment; filename="{filename}"'.format(filename=attachment.file_name)
-    return response
-
-
 def single_article(request, pk):
     article = Article.objects.get(pk=pk)
     if article.can_administer(request.user):
@@ -241,11 +235,3 @@ def delete_article(request, pk):
         return redirect('articles:by user')
     raise PermissionDenied
 
-
-def article_file_download(request, pk):
-    article = Article.objects.get(pk=pk)
-    article_filename = article.attachment
-    response = HttpResponse(article_filename)
-    response['Content-Disposition'] = 'attachment; filename="{filename}"'.format(filename=article.filename)
-
-    return response

@@ -1,0 +1,41 @@
+{% extends "master.html"%}
+{% load voting_tags %}
+{% load iportalen_tags %}
+{% block hero %}
+{% endblock %}
+{% block content %}
+    {% detailed question request.user as show_detailed %}
+
+    {% with question.get_result as result %}
+        <h1>Valresult:</h1>
+        <hr>
+        <p><strong>{{ question.name }}</strong></p>
+        {{ question.body|markdown }}
+        <p>Antal val: {{ question.nr_of_picks }}</p>
+        <hr>
+        <p>Valdeltagande: {{ result.attendance }}</p>
+        <table>
+        <tr><th>Plac</th><th>Val</th><th>Antal röster</th></tr>
+        {% for total in result.result %}
+            <tr><td>{{ forloop.counter }}</td><td>{{ total.option__name }}</td>
+                <td>{% if show_detailed %}{{ total.total }} ({% percent_of_votes total.total result.has_voted %}){% else %}{% percent_of_votes total.total result.has_voted %}{% endif %}</td></tr>
+        {% endfor %}
+        {% if show_detailed %}
+        <tr>
+            <td style="border-top: solid gray 2px">&nbsp;</td>
+            <td style="border-top: solid gray 2px"><strong>Blanka röster</strong></td>
+            <td style="border-top: solid gray 2px">{{ result.nr_of_blanks }}</td>
+        </tr>
+        <tr>
+            <td style="border-top: solid gray 2px; border-bottom: none">&nbsp;</td>
+            <td style="border-top: solid gray 2px; border-bottom: none"><strong>Summa</strong></td>
+            <td style="border-top: solid gray 2px; border-bottom: none"><strong>{{ result.nr_of_votes }}</strong></td>
+        </tr>
+        {% endif %}
+        </table>
+
+    <br>
+        <hr>
+    <a href="{% url 'votings:question group' question.question_group_id %}" class="button">Tillbaka</a>
+    {% endwith %}
+{% endblock %}

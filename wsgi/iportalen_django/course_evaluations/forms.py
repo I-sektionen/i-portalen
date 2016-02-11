@@ -18,6 +18,7 @@ class PeriodForm(forms.ModelForm):
 
 
 class YearForm(forms.Form):
+    required_css_class = 'required'
     year = forms.ChoiceField(label=_("år"), widget=forms.Select, choices=Year.YEAR_CHOICES)
     vt1_start = forms.DateField(label=_("VT1 start"))
     vt2_start = forms.DateField(label=_("VT2 start"))

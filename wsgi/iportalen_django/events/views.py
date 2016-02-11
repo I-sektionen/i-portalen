@@ -2,7 +2,7 @@ from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.contrib import messages
@@ -17,10 +17,11 @@ from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticip
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
 from django.utils.translation import ugettext as _
-
+import mimetypes
 
 # Create your views here.
 from wsgi.iportalen_django.iportalen import settings
+from utils.time import six_months_back
 
 
 @login_required()
@@ -505,22 +506,6 @@ def upload_attachments_images(request, pk):
                         })
 
 
-def download_attachment(request, pk):
-    attachment = OtherAttachment.objects.get(pk=pk)
-    response = HttpResponse(attachment.file)
-    response['Content-Disposition'] = 'attachment; filename="{filename}"'.format(filename=attachment.file_name)
-    return response
-
-
-def file_download(request, pk):
-    event = Event.objects.get(pk=pk)
-    event_filename = event.attachment
-    response = HttpResponse(event_filename)
-    response['Content-Disposition'] = 'attachment; filename="{filename}"'.format(filename=event.filename)
-
-    return response
-
-
 @login_required()
 def speaker_list(request, pk):  # TODO: Reduce complexity
     if request.method == 'POST':
@@ -605,7 +590,7 @@ def administer_speaker_list(request, pk):
 
 
 def calendar_feed(request):
-    events = Event.objects.all()
+    events = Event.objects.published()
     response = render(request,
                       template_name='events/feed.ics',
                       context={'events': events},
@@ -625,3 +610,25 @@ def personal_calendar_feed(request, liu_id):
     response['Filename'] = 'feed.ics'
     response['Content-Disposition'] = 'attachment; filename=feed.ics'
     return response
+
+@login_required()
+@permission_required('events.can_view_no_shows')
+def show_noshows(request):
+    user = request.user
+    no_shows = EntryAsPreRegistered.objects.filter(no_show = True, timestamp__gte= six_months_back).order_by("user")
+    result = []
+
+    tempuser = {"user": None, "count": 0, "no_shows": []}
+    for no_show in no_shows:
+        if tempuser["user"] == no_show.user:
+            tempuser["count"] += 1
+        else:
+            if tempuser["user"]:
+                result.append(tempuser)
+            tempuser = {"user": no_show.user, "count":1, "no_shows": []}
+
+        tempuser["no_shows"].append(no_show)
+    if tempuser["user"]:
+        result.append(tempuser)
+
+    return render(request, "events/show_noshows.html", {"user": user, "no_shows": result})
