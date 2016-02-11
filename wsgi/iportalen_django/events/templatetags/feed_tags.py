@@ -1,7 +1,7 @@
 from django.template.loader_tags import register
 from django.utils.translation import ugettext as _
 from pytz import timezone
-
+import socket
 
 @register.simple_tag()
 def print_event(event):
@@ -16,7 +16,7 @@ def print_event(event):
                  "SUMMARY:{summary}\n",
                  "LOCATION:{location}\n",
                  "DESCRIPTION:{desc}\n",
-                 "UID: {uid}\n",
+                 "UID:{uid}\n",
                  "DTSTAMP:{timestamp}\n",
                  "LAST-MODIFIED:{modified}\n"
                  "URL:{url}\n",
@@ -27,7 +27,7 @@ def print_event(event):
         location=event.location,
         desc=_descr(event),
         url="www.i-portalen.se" + event.get_absolute_url(),
-        uid="IPORTALEN_DJANGO_1337" + str(event.pk),  # Unique identifier
+        uid="IPORTALEN_DJANGO_1337" + str(event.pk) + "@" + socket.gethostname(),  # Unique identifier
         modified=event.modified.strftime(t_format),
         timestamp=event.created.strftime(t_format))
 
