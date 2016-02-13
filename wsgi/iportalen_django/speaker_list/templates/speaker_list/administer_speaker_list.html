@@ -19,7 +19,8 @@
     <input class="admin_speaker_input action-button" id="post" type="submit" name="add" value="Lägg till i talarlistan">
     <input class="admin_speaker_input button" id="remove" type="submit" name="remove" value="Tabort från talarlistan">
     <input class="admin_speaker_input action-button" id="next" type="button" name="next" value="Nästa talare">
-    <input class="admin_speaker_input button" id="clear" type="button" name="clear" value="Rensa talarlistan">
+    <input class="admin_speaker_input button" id="clear" type="button" name="clear" value="Rensa talarlistan / Nästa fråga">
+    <input class="admin_speaker_input button" id="shuffle" type="button" name="shuffle" value="Nästa talare och blanda listan">
 </form>
 </div>
 <div id="speaker_list_admin_nonformat">
@@ -33,8 +34,8 @@
 {% include "scripts.html" %}
 <script>
     jQuery(document).ready(function(){
-        speaker_list_admin("{% url "events:speaker api" event.pk %}");
-        speaker_list_view_admin("{% url "events:speaker api" event.pk %}");
+        speaker_list_admin("{% url "speaker_list:speaker api" event.pk %}");
+        speaker_list_view_admin("{% url "speaker_list:speaker api" event.pk %}");
     });
 </script>
 
