@@ -75,6 +75,7 @@ INSTALLED_APPS = (
     'faq',
     'django.contrib.sitemaps',
     'votings',
+    'speaker_list'
 )
 
 MIDDLEWARE_CLASSES = (

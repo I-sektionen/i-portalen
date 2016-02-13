@@ -6,9 +6,6 @@ app_name = 'events'
 
 admin_patterns = [
     url(r'^$',                           view=views.administer_event,          name="administer event"),
-    url(r'^speaker/$',                   view=views.administer_speaker_list,   name="administer speaker list"),
-    url(r'^speaker/display/$',           view=views.speaker_list_display,      name="speaker display"),
-    url(r'^speaker/api/$',               view=views.speaker_list,              name="speaker api"),
     url(r'^preregistrations/$',          view=views.preregistrations_list,     name="preregistrations"),
     url(r'^participants/$',              view=views.participants_list,         name="participants"),
     url(r'^import_preregistrations/$',   view=views.import_registrations,      name="import registrations"),
@@ -37,13 +34,12 @@ event_patterns = [
     url(r'^feed/feed.ics$',                    view=views.calendar_feed,          name='calendar feed'),
     url(r'^feed/(?P<liu_id>[a-z]{4,5}\d{3})/feed.ics$',
         view=views.personal_calendar_feed, name='personal calendar feed'),
-    url(r'^(?P<pk>[0-9]+)/user_add_self_speech_list/$', view=views.speaker_list_user_add_self, name="add user speech nr list"),
-    url(r'^(?P<pk>[0-9]+)/user_remove_self_speech_list/$', view=views.speaker_list_user_remove_self, name="remove user speech nr list"),
-    url(r'^(?P<pk>[0-9]+)/user_view/$', view=views.user_view, name="user view"),
-    url(r'^(?P<pk>[0-9]+)/attachments/$', view=views.upload_attachments, name='manage attachments'),
-    url(r'^(?P<pk>[0-9]+)/images/$', view=views.upload_attachments_images, name='manage images'),
+    url(r'^(?P<pk>[0-9]+)/user_view/$',        view=views.user_view,              name="user view"),
+    url(r'^(?P<pk>[0-9]+)/attachments/$',      view=views.upload_attachments,     name='manage attachments'),
+    url(r'^(?P<pk>[0-9]+)/images/$',           view=views.upload_attachments_images, name='manage images'),
+    url(r'no_shows/$',                         view=views.show_noshows,            name="no_shows"),
     url(r'^(?P<pk>[0-9]+)/administer/', include(admin_patterns)),
-    url(r'no_shows/$',                           view=views.show_noshows, name="no_shows"),
+
 ]
 
 urlpatterns = [url(r'^', include(event_patterns, namespace=app_name))]

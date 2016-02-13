@@ -3,21 +3,20 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required, permission_required
-from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
+from django.http import HttpResponseForbidden, HttpResponse
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.contrib import messages
 from django.utils import timezone
 from django.db import transaction
 import csv
 from utils.validators import liu_id_validator
-from .forms import EventForm, CheckForm, SpeakerForm, ImportEntriesForm, RejectionForm, AttachmentForm, \
+from .forms import EventForm, CheckForm, ImportEntriesForm, RejectionForm, AttachmentForm, \
     ImageAttachmentForm
 from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticipant, OtherAttachment, \
     ImageAttachment
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
 from django.utils.translation import ugettext as _
-import mimetypes
 
 # Create your views here.
 from wsgi.iportalen_django.iportalen import settings
@@ -507,44 +506,6 @@ def upload_attachments_images(request, pk):
 
 
 @login_required()
-def speaker_list(request, pk):  # TODO: Reduce complexity
-    if request.method == 'POST':
-        try:
-            event = Event.objects.get(pk=pk)
-            if not event.can_administer(request.user):
-                return HttpResponseForbidden()
-        except:
-            return JsonResponse({"status": _("Inget event med detta idnummer.")})
-        form = SpeakerForm(request.POST)
-        if form.is_valid():
-            if form.cleaned_data['method'] == "add":
-                speech_nr = form.cleaned_data['speech_nr']
-                try:
-                    event.add_speaker_to_queue(speech_nr)
-                    return JsonResponse({'status': 'ok'})
-                except:
-                    return JsonResponse({"status": _("Ingen användare med det talarnummret.")})
-            elif form.cleaned_data['method'] == "pop":
-                event.remove_first_speaker_from_queue()
-                return JsonResponse({'status': 'ok'})
-            elif form.cleaned_data['method'] == "remove":
-                speech_nr = form.cleaned_data['speech_nr']
-                try:
-                    event.remove_speaker_from_queue(speech_nr)
-                    return JsonResponse({'status': 'ok'})
-                except:
-                    return JsonResponse({"status": _("Ingen användare med det talarnummret.")})
-            elif form.cleaned_data['method'] == "clear":
-                event.clear_speaker_queue()
-                return JsonResponse({'status': 'ok'})
-            elif form.cleaned_data['method'] == "all":
-                return JsonResponse({"status": "ok", "speaker_list": event.get_speaker_queue()})
-            else:
-                return JsonResponse({"status": _("Ange ett korrekt kommando.")})
-    else:
-        return JsonResponse({})
-
-@login_required()
 def user_view(request, pk):
     event = get_object_or_404(Event, pk=pk)
     user = request.user
@@ -554,41 +515,6 @@ def user_view(request, pk):
     except EntryAsParticipant.DoesNotExist:
         raise PermissionDenied
     return render(request, "events/user_view.html", {'event': event})
-
-
-@login_required()
-def speaker_list_user_add_self(request, pk):
-    event = get_object_or_404(Event, pk=pk)
-    user = request.user
-    speaker_number = EntryAsParticipant.objects.get(event=event, user=user).speech_nr
-    event.add_speaker_to_queue(speaker_number)
-    messages.success(request,"Du har skrivit upp dig på talarlistan!")
-    return redirect(reverse('events:user view', kwargs={'pk': event.pk}))
-
-
-@login_required()
-def speaker_list_user_remove_self(request, pk):
-    event = get_object_or_404(Event, pk=pk)
-    user = request.user
-    speaker_number = EntryAsParticipant.objects.get(event=event, user=user).speech_nr
-    event.remove_speaker_from_queue(speaker_number)
-    return redirect(reverse('events:user view', kwargs={'pk': event.pk}))
-
-
-@login_required()
-def speaker_list_display(request, pk):
-    event = get_object_or_404(Event, pk=pk)
-    return render(request, 'events/display_speaker_list.html', {
-        'speaker_list': event.get_speaker_queue(), 'event': event
-    })
-
-
-@login_required()
-def administer_speaker_list(request, pk):
-    event = get_object_or_404(Event, pk=pk)
-    return render(request, 'events/administer_speaker_list.html', {
-        'event': event
-    })
 
 
 def calendar_feed(request):

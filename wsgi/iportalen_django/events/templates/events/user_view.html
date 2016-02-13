@@ -10,8 +10,8 @@
     <div>
     <h2>Talarlista</h2>
     <p><i>Efter att du klickat på "Lägg till dig på talarlistan" kan det kan ta några sekunder att få bekräftelse på att du är uppskriven på talarlistan.</i></p>
-    <a href="{% url "events:add user speech nr list" event.pk %}" class="action-button">Lägg till mig på talarlistan</a>
-    <a href="{% url "events:remove user speech nr list" event.pk %}" class="button">Ta bort mig från talarlistan</a>
+    <a href="{% url "speaker_list:add user speech nr list" event.pk %}" class="action-button">Lägg till mig på talarlistan</a>
+    <a href="{% url "speaker_list:remove user speech nr list" event.pk %}" class="button">Ta bort mig från talarlistan</a>
     <hr>
     </div>
     <div>
@@ -28,11 +28,8 @@
                     {% if result %}<li class="indent-me">- <a href="{{ q.get_absolute_result_url }}">resultat</a></li>{% endif %}
                 </li>
             {% endfor %}
-
-
-
-        </ul>    {% endif %}
-
+        </ul>
+    {% endif %}
     <hr>
     </div>
     <a href="{% url "events:event" event.pk %}" class="button">Tillbaka till eventet</a>
