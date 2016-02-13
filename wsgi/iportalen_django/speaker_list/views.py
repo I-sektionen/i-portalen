@@ -3,10 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
-
+from django.utils.translation import ugettext as _
 
 # Create your views here.
 from events.models import EntryAsParticipant, Event
+from speaker_list.exceptions import SpeakerListException
+from .models import SpeakerList
 from .forms import SpeakerForm
 
 
@@ -24,25 +26,34 @@ def speaker_list(request, pk):  # TODO: Reduce complexity
             if form.cleaned_data['method'] == "add":
                 speech_nr = form.cleaned_data['speech_nr']
                 try:
-                    event.add_speaker_to_queue(speech_nr)
+                    user = event.entryasparticipant_set.get(speech_nr=speech_nr).user
+                    SpeakerList.objects.add(event=event, user=user)
                     return JsonResponse({'status': 'ok'})
+                except SpeakerListException as e:
+                    return JsonResponse({"status": str(e.reason)})
                 except:
                     return JsonResponse({"status": _("Ingen användare med det talarnummret.")})
             elif form.cleaned_data['method'] == "pop":
-                event.remove_first_speaker_from_queue()
-                return JsonResponse({'status': 'ok'})
+                try:
+                    SpeakerList.objects.next(event=event)
+                    return JsonResponse({'status': 'ok'})
+                except SpeakerListException as e:
+                    return JsonResponse({"status": str(e.reason)})
             elif form.cleaned_data['method'] == "remove":
                 speech_nr = form.cleaned_data['speech_nr']
                 try:
-                    event.remove_speaker_from_queue(speech_nr)
+                    user = event.entryasparticipant_set.get(speech_nr=speech_nr).user
+                    SpeakerList.objects.remove(event=event, user=user)
                     return JsonResponse({'status': 'ok'})
+                except SpeakerListException as e:
+                    return JsonResponse({"status": str(e.reason)})
                 except:
                     return JsonResponse({"status": _("Ingen användare med det talarnummret.")})
             elif form.cleaned_data['method'] == "clear":
-                event.clear_speaker_queue()
+                SpeakerList.objects.clear(event=event)
                 return JsonResponse({'status': 'ok'})
             elif form.cleaned_data['method'] == "all":
-                return JsonResponse({"status": "ok", "speaker_list": event.get_speaker_queue()})
+                return JsonResponse({"status": "ok", "speaker_list": SpeakerList.objects.show_queue(event=event)})
             else:
                 return JsonResponse({"status": _("Ange ett korrekt kommando.")})
     else:
@@ -52,33 +63,36 @@ def speaker_list(request, pk):  # TODO: Reduce complexity
 @login_required()
 def speaker_list_user_add_self(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    user = request.user
-    speaker_number = EntryAsParticipant.objects.get(event=event, user=user).speech_nr
-    event.add_speaker_to_queue(speaker_number)
-    messages.success(request,"Du har skrivit upp dig på talarlistan!")
+    try:
+        SpeakerList.objects.add(event=event, user=request.user)
+        messages.success(request, "Du har skrivit upp dig på talarlistan!")
+    except SpeakerListException as e:
+        messages.error(request, str(e.reason))
     return redirect(reverse('events:user view', kwargs={'pk': event.pk}))
 
 
 @login_required()
 def speaker_list_user_remove_self(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    user = request.user
-    speaker_number = EntryAsParticipant.objects.get(event=event, user=user).speech_nr
-    event.remove_speaker_from_queue(speaker_number)
+    try:
+        SpeakerList.objects.remove(event=event, user=request.user)
+        messages.success(request, "Du har skrivit upp dig på talarlistan!")
+    except SpeakerListException as e:
+        messages.error(request, str(e.reason))
     return redirect(reverse('events:user view', kwargs={'pk': event.pk}))
 
 
 @login_required()
 def speaker_list_display(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    return render(request, 'events/templates/speaker_list/display_speaker_list.html', {
-        'speaker_list': event.get_speaker_queue(), 'event': event
+    return render(request, 'speaker_list/display_speaker_list.html', {
+        'speaker_list': SpeakerList.objects.show_queue(event=event), 'event': event
     })
 
 
 @login_required()
 def administer_speaker_list(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    return render(request, 'events/templates/speaker_list/administer_speaker_list.html', {
+    return render(request, 'speaker_list/administer_speaker_list.html', {
         'event': event
     })
