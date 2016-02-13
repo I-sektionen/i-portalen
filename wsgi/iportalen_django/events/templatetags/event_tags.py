@@ -38,9 +38,11 @@ def get_organisation_events(organisation_pk):
 def event_can_administer(event, user):
     return event.can_administer(user)
 
+
 @register.assignment_tag
 def event_is_checked_in(event, user):
     return event.is_checked_in(user)
+
 
 @register.assignment_tag
 def event_reserve(event, user):
