@@ -6,7 +6,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import ugettext as _
 
 from events.models import Event
-from speaker_list.exceptions import SpeakerListException
+from .exceptions import SpeakerListException
+from .utils import (
+    add_to_speakerlist,
+    next_speaker,
+    remove_from_speakerlist
+)
 from .models import SpeakerList
 from .forms import SpeakerForm
 
@@ -23,31 +28,11 @@ def speaker_list(request, pk):  # TODO: Reduce complexity
         form = SpeakerForm(request.POST)
         if form.is_valid():
             if form.cleaned_data['method'] == "add":
-                speech_nr = form.cleaned_data['speech_nr']
-                try:
-                    user = event.entryasparticipant_set.get(speech_nr=speech_nr).user
-                    SpeakerList.objects.add(event=event, user=user)
-                    return JsonResponse({'status': 'ok'})
-                except SpeakerListException as e:
-                    return JsonResponse({"status": str(e.reason)})
-                except:
-                    return JsonResponse({"status": _("Ingen användare med det talarnummret.")})
+                return add_to_speakerlist(event, form.cleaned_data['speech_nr'])
             elif form.cleaned_data['method'] == "pop":
-                try:
-                    SpeakerList.objects.next(event=event)
-                    return JsonResponse({'status': 'ok'})
-                except SpeakerListException as e:
-                    return JsonResponse({"status": str(e.reason)})
+                return next_speaker(event)
             elif form.cleaned_data['method'] == "remove":
-                speech_nr = form.cleaned_data['speech_nr']
-                try:
-                    user = event.entryasparticipant_set.get(speech_nr=speech_nr).user
-                    SpeakerList.objects.remove(event=event, user=user)
-                    return JsonResponse({'status': 'ok'})
-                except SpeakerListException as e:
-                    return JsonResponse({"status": str(e.reason)})
-                except:
-                    return JsonResponse({"status": _("Ingen användare med det talarnummret.")})
+                return remove_from_speakerlist(event, form.cleaned_data['speech_nr'])
             elif form.cleaned_data['method'] == "clear":
                 SpeakerList.objects.clear(event=event)
                 return JsonResponse({'status': 'ok'})

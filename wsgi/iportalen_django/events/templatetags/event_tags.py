@@ -57,7 +57,7 @@ def event_reserve_nr(event, user):
 @register.assignment_tag
 def get_menu_choices_event(user):
     menu_choices = []
-    if user.event_set.filter(end__gte=timezone.now()):
+    if Event.objects.user(user).count() != 0:
         menu_choices.append((_('Mina event'), reverse('events:by user')))
     menu_choices.append((_('Skapa ett event'), reverse('events:create')))
     if user.has_perm("events.can_approve_event"):

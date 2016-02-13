@@ -1,5 +1,6 @@
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required, permission_required
@@ -361,7 +362,7 @@ def registered_on_events(request):
 
 @login_required()
 def events_by_user(request):
-    user_events = Event.objects.filter(user=request.user, end__gte=timezone.now()).order_by('-visible_from')
+    user_events = Event.objects.user(request.user)
     return render(request, 'events/my_events.html', {
         'user_events': user_events
     })
