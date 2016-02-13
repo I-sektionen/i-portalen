@@ -63,13 +63,13 @@ class EvaluationForm(forms.ModelForm):
         model = Evaluation
         fields = ['course', 'reward']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, period=None, **kwargs):
         super(EvaluationForm, self).__init__(*args, **kwargs)
         self.fields['reward'].choices = [(None, "---------")] + [
             (a.pk, str(a)) for a in Reward.objects.filter(active=True)]
         try:
             self.fields['course'].choices = [(None, "---------")] + [
-                (a.pk, str(a)) for a in kwargs.get('period').get_free_courses()]
+                (a.pk, str(a)) for a in period.get_free_courses()]
         except:
             pass
 
