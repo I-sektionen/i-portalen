@@ -5,8 +5,7 @@ from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import ugettext as _
 
-# Create your views here.
-from events.models import EntryAsParticipant, Event
+from events.models import Event
 from speaker_list.exceptions import SpeakerListException
 from .models import SpeakerList
 from .forms import SpeakerForm
@@ -65,7 +64,7 @@ def speaker_list_user_add_self(request, pk):
     event = get_object_or_404(Event, pk=pk)
     try:
         SpeakerList.objects.add(event=event, user=request.user)
-        messages.success(request, "Du har skrivit upp dig på talarlistan!")
+        messages.success(request, _("Du har skrivit upp dig på talarlistan!"))
     except SpeakerListException as e:
         messages.error(request, str(e.reason))
     return redirect(reverse('events:user view', kwargs={'pk': event.pk}))
@@ -76,7 +75,7 @@ def speaker_list_user_remove_self(request, pk):
     event = get_object_or_404(Event, pk=pk)
     try:
         SpeakerList.objects.remove(event=event, user=request.user)
-        messages.success(request, "Du har skrivit upp dig på talarlistan!")
+        messages.success(request, _("Du har skrivit upp dig på talarlistan!"))
     except SpeakerListException as e:
         messages.error(request, str(e.reason))
     return redirect(reverse('events:user view', kwargs={'pk': event.pk}))
