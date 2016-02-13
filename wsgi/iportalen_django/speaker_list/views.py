@@ -51,6 +51,9 @@ def speaker_list(request, pk):  # TODO: Reduce complexity
             elif form.cleaned_data['method'] == "clear":
                 SpeakerList.objects.clear(event=event)
                 return JsonResponse({'status': 'ok'})
+            elif form.cleaned_data['method'] == "shuffle":
+                SpeakerList.objects.shuffle(event=event)
+                return JsonResponse({'status': 'ok'})
             elif form.cleaned_data['method'] == "all":
                 return JsonResponse({"status": "ok", "speaker_list": SpeakerList.objects.show_queue(event=event)})
             else:

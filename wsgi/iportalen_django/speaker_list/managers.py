@@ -1,4 +1,5 @@
-from django.core.exceptions import ObjectDoesNotExist
+import random
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -51,3 +52,14 @@ class SpeakerListManager(models.Manager):
             raise e
         except:
             raise SpeakerListException(reason=_('Listan är tom'))
+
+    def shuffle(self, event):
+        self.next(event)
+        speakers = self.filter(event=event, has_spoken=False).order_by('speech_id')
+        nr_of_speakers = ((speakers.count() * -1) - abs(speakers[0].speech_id) - 1)
+        speakers = sorted(list(speakers), key=lambda x: random.random())
+        for speaker in speakers:
+            speaker.nr_of_speeches = 1
+            speaker.speech_id = nr_of_speakers
+            speaker.save()
+            nr_of_speakers += 1

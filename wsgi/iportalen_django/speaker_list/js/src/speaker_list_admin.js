@@ -66,6 +66,26 @@ function speaker_list_admin(url){
             }
         });
     });
+    $("#shuffle").click(function(e) {
+        e.preventDefault();
+        s_list.empty();
+        var data = {
+            'method':'shuffle'
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function(result) {
+                if (result.status === "ok"){
+
+                } else {
+                    console.log(result.status);
+                }
+            }
+        });
+    });
     $("#remove").click(function(e) {
         e.preventDefault();
         var data = {
