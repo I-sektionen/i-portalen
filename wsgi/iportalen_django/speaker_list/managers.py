@@ -1,15 +1,17 @@
 import random
 
-from django.db import models
+from django.db import models, transaction
 from django.utils.translation import ugettext_lazy as _
 
 from .exceptions import SpeakerListException
 
 
 class SpeakerListManager(models.Manager):
+
     def clear(self, event):
         self.filter(event=event).delete()
 
+    @transaction.atomic
     def add(self, event, user):
         if self.filter(event=event, user=user, has_spoken=False).count() == 0:  # don't add if already on list
             try:
@@ -30,6 +32,7 @@ class SpeakerListManager(models.Manager):
                            'speech_nr': l.user.entryasparticipant_set.get(event=event).speech_nr})
         return result
 
+    @transaction.atomic
     def next(self, event):
         try:
             speakers = self.filter(event=event, has_spoken=False).order_by('nr_of_speeches', 'speech_id')
@@ -53,6 +56,7 @@ class SpeakerListManager(models.Manager):
         except:
             raise SpeakerListException(reason=_('Listan är tom'))
 
+    @transaction.atomic
     def shuffle(self, event):
         self.next(event)
         speakers = self.filter(event=event, has_spoken=False).order_by('speech_id')
