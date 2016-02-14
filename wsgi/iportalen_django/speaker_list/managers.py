@@ -18,7 +18,10 @@ class SpeakerListManager(models.Manager):
                 speech_id = self.filter(event=event).order_by('-speech_id')[0].speech_id + 1
             except:
                 speech_id = 1
-            nr_of_speeches = self.filter(event=event, user=user, has_spoken=True).count() + 1
+            if self.filter(event=event, has_spoken=False).count() == 0:
+                nr_of_speeches = 0
+            else:
+                nr_of_speeches = self.filter(event=event, user=user, has_spoken=True).count() + 1
             self.create(event=event, user=user, nr_of_speeches=nr_of_speeches, has_spoken=False, speech_id=speech_id)
         else:
             raise SpeakerListException(reason=_('Finns redan på listan.'))
