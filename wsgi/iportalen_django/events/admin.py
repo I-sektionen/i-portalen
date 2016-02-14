@@ -36,3 +36,11 @@ iportalen_admin_site.register(Event)
 iportalen_admin_site.register(EntryAsPreRegistered)
 iportalen_admin_site.register(EntryAsReserve)
 iportalen_admin_site.register(EntryAsParticipant)
+
+
+admin.site.register(ImageAttachment)
+admin.site.register(OtherAttachment)
+admin.site.register(Event)
+admin.site.register(EntryAsPreRegistered)
+admin.site.register(EntryAsReserve)
+admin.site.register(EntryAsParticipant)

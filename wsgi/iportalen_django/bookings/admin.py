@@ -126,3 +126,10 @@ iportalen_admin_site.register(Invoice, UserInvoiceAdmin)
 
 iportalen_admin_site.register(VariableCostTemplate)
 iportalen_admin_site.register(FixedCostTemplate)
+
+
+admin.site.register(Bookable)
+admin.site.register(Booking)
+admin.site.register(Invoice)
+admin.site.register(VariableCostTemplate)
+admin.site.register(FixedCostTemplate)
