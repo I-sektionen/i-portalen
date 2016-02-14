@@ -1,4 +1,6 @@
 from django.conf.urls import include, url
+from django.contrib import admin
+
 from utils.admin import iportalen_admin_site
 from django.views.generic import TemplateView, RedirectView
 from django.conf import settings
@@ -31,6 +33,7 @@ urlpatterns = [
     url(r'^file_storage/', view=views.glasscubes_link,           name="glasscubes storage"),
 
     url(r'^admin/',             include(iportalen_admin_site.urls)),
+    url(r'^superadmin/',        include(admin.site.urls)),
     url(r'^article/',           include('articles.urls')),
     url(r'^booking/',           include('bookings.urls')),
     url(r'^course_evaluation/', include('course_evaluations.urls')),

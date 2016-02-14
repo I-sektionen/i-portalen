@@ -32,3 +32,7 @@ class ArticleAdmin(HiddenModelAdmin):
 iportalen_admin_site.register(ImageAttachment, ImageAttachmentAdmin)
 iportalen_admin_site.register(Article, ArticleAdmin)
 iportalen_admin_site.register(OtherAttachment, OtherAttachmentAdmin)
+
+admin.site.register(ImageAttachment)
+admin.site.register(Article)
+admin.site.register(OtherAttachment)
