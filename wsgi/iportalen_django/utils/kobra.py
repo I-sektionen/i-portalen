@@ -1,4 +1,8 @@
 import json
+import os
+
+import requests
+from requests_toolbelt import SSLAdapter
 
 
 class LiuNotFoundError(Exception):
@@ -22,24 +26,20 @@ def get_user_by_rfid(rfid):
 
 
 def _make_call_to_kobra(payload):
-    ##############################################################################
-    # This is by far the ugliest hack I ever written! But since Kobra is using
-    # an unsupported ssl protocol and the whole API is a ugly hack. I'm going to
-    # leave this fuck-up while i still have some sanity left.
-    # Don't contact me when this breaks just rewrite it!
-    # How it works:
-    # It uses a flask server with some more permissions on another server to execute the request.
-    # Best regards Jonathan, Webmaster 2015-2016
-    ##############################################################################
-    # import requests
-    key = None
-    value = None
-    for k in payload:
-        key = k
-        value = payload[k]
 
-    import urllib3
-    http = urllib3.PoolManager()
-    r = http.request("GET", "http://tornet.isektionen.se:8443/{:}/{:}/".format(key, value))
-    result_dict = json.loads(r.data.decode('iso-8859-1'), encoding="iso-8859-1")
+    user = str(os.environ.get('KOBRA_USER'))
+    password = str(os.environ.get('KOBRA_PASSWORD'))
+    adapter = SSLAdapter('SSLv23')
+    s = requests.Session()
+    s.mount('https://', adapter)
+
+    r = s.post("https://kobra.ks.liu.se/students/api", auth=(user, password), data=payload)
+    if not r.status_code == requests.codes.ok:
+        if r.status_code == 404:
+            raise LiuNotFoundError
+        else:
+            raise LiuGetterError
+    r.encoding = "iso-8859-1"
+    result_dict = json.loads(r.text, encoding="iso-8859-1")
+
     return result_dict
