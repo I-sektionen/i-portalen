@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticipant, OtherAttachment, ImageAttachment
 from utils.admin import iportalen_admin_site, HiddenModelAdmin
 
+
 class OtherAttachmentInline(admin.StackedInline):
     model = OtherAttachment
     readonly_fields = ('file_name', 'file')

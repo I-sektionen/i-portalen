@@ -10,7 +10,7 @@
             {% can_vote question request.user as show %}
             {% show_result question request.user as result %}
             <li>
-                {% if show %}<a href="{{ question.get_absolute_url }}">{% endif %}{{ question }}{% if show %}</a>{% endif %}
+                {% if show %}<a href="{{ question.get_absolute_url }}">{% endif %}{{ question }}{% if show %}</a>{% endif %}{% if not show %}<p id="voting-closed">Denna omröstning är stängd för dig</p>{% endif %}
                 {% if result %}<li class="indent-me">- <a href="{{ question.get_absolute_result_url }}">resultat</a></li>{% endif %}
             </li>
         {% empty %}

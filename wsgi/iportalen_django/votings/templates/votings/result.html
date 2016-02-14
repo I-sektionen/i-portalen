@@ -7,7 +7,7 @@
     {% detailed question request.user as show_detailed %}
 
     {% with question.get_result as result %}
-        <h1>Valresult:</h1>
+        <h1>Valresulat:</h1>
         <hr>
         <p><strong>{{ question.name }}</strong></p>
         {{ question.body|markdown }}
@@ -15,9 +15,9 @@
         <hr>
         <p>Valdeltagande: {{ result.attendance }}</p>
         <table>
-        <tr><th>Plac</th><th>Val</th><th>Antal röster</th></tr>
+        <tr><th>Placering</th><th>Val</th><th>Antal röster</th></tr>
         {% for total in result.result %}
-            <tr><td>{{ forloop.counter }}</td><td>{{ total.option__name }}</td>
+            <tr><td>{{ total.place }}</td><td>{{ total.option__name }}</td>
                 <td>{% if show_detailed %}{{ total.total }} ({% percent_of_votes total.total result.has_voted %}){% else %}{% percent_of_votes total.total result.has_voted %}{% endif %}</td></tr>
         {% endfor %}
         {% if show_detailed %}
