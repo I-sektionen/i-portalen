@@ -66,6 +66,7 @@ function speaker_list_admin(url){
             }
         });
     });
+
     $("#shuffle").click(function(e) {
         e.preventDefault();
         s_list.empty();
@@ -86,6 +87,7 @@ function speaker_list_admin(url){
             }
         });
     });
+
     $("#remove").click(function(e) {
         e.preventDefault();
         var data = {

@@ -87,9 +87,9 @@ class Event(models.Model):
         null=True)
     # Dagar innan start för avanmälan. Räknas bakåt från 'start'
     deregister_delta = models.PositiveIntegerField(
-        verbose_name=_("Sista dag för använmälan"),
+        verbose_name=_("Sista dag för anmälan/avanmälan"),
         default=1,
-        help_text=_("Sista dag för avanmälan i antal dagar innan eventet"))
+        help_text=_("Sista dag för anmälan/avanmälan i antal dagar innan eventet"))
 
     visible_from = models.DateTimeField(
         verbose_name=_("Datum för publicering"))
