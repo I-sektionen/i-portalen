@@ -1,5 +1,6 @@
 from .models import Organisation, OrganisationPost
 from utils.admin import HiddenModelAdmin, iportalen_admin_site
+from django.contrib import admin
 
 
 class OrganisationsAdmin(HiddenModelAdmin):
@@ -11,3 +12,6 @@ class OrganisationsPostAdmin(HiddenModelAdmin):
 
 iportalen_admin_site.register(Organisation, OrganisationsAdmin)
 iportalen_admin_site.register(OrganisationPost, OrganisationsPostAdmin)
+
+admin.site.register(Organisation)
+admin.site.register(OrganisationPost)

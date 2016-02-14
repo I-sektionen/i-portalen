@@ -80,3 +80,7 @@ class QuestionAdmin(admin.ModelAdmin):
 iportalen_admin_site.register(Question, QuestionAdmin)
 iportalen_admin_site.register(Topic, TopicAdmin)
 iportalen_admin_site.register(FAQ, FAQAdmin)
+
+admin.site.register(Question)
+admin.site.register(Topic)
+admin.site.register(FAQ)
