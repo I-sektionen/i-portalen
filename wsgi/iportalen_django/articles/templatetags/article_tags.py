@@ -20,7 +20,7 @@ def get_organisation_articles(organisation_pk):
 @register.assignment_tag
 def get_menu_choices_article(user):
     menu_choices = []
-    if user.article_set.filter(visible_to__gte=timezone.now()):
+    if Article.objects.user(user).count() != 0:
         menu_choices.append((_("Mina Artiklar"), reverse('articles:by user')))
     menu_choices.append((_("Skapa en artikel"), reverse('articles:create')))
     if user.has_perm("articles.can_approve_article"):

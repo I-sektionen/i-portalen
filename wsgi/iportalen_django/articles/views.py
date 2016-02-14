@@ -216,12 +216,7 @@ def articles_by_tag(request, tag_name):
 
 @login_required()
 def articles_by_user(request):
-    user_articles = request.user.article_set.filter(visible_to__gte=timezone.now()).order_by('-visible_from')
-    user_org = request.user.get_organisations()
-
-    for o in user_org:
-        user_articles |= o.article_set.filter(visible_to__gte=timezone.now()).order_by('-visible_from')
-
+    user_articles = Article.objects.user(request.user)
     return render(request, 'articles/my_articles.html',
                   {'user_articles': user_articles.order_by('-visible_from').distinct()})
 
