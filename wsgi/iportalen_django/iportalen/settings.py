@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from socket import gethostname
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -22,10 +21,7 @@ ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 
 
 if ON_PASS:
-    ALLOWED_HOSTS = [
-        gethostname(),  # For internal OpenShift load balancer security purposes.
-        os.environ.get('OPENSHIFT_APP_DNS')  # Dynamically map to the OpenShift gear name.
-    ]
+    ALLOWED_HOSTS = ['*']
     DEBUG = False
 elif ON_JENKINS:
     ALLOWED_HOSTS = ['*']
