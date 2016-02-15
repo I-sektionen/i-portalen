@@ -88,7 +88,7 @@ def make_booking(request, bookable_id, weeks_forward=0):  # TODO: Reduce complex
     user = request.user
     nr_of_active_bookings = 0
     now = timezone.now()
-    for bookings_by_user in Booking.objects.filter(user=user):
+    for bookings_by_user in Booking.objects.filter(user=user, bookable=bookable):
         active = False
         for booking_by_user in bookings_by_user.bookings.all():
             if booking_by_user.date > now.date():
@@ -179,7 +179,7 @@ def api_view(request, bookable_id, weeks_forward=0):
     user = request.user
     nr_of_active_bookings = 0
     now = timezone.now()
-    for b in Booking.objects.filter(user=user):
+    for b in Booking.objects.filter(user=user, bookable=bookable):
         active = False
         for p in b.bookings.all():
             if p.date > now.date():
