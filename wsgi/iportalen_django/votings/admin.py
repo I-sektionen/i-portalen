@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.utils.safestring import mark_safe
 
 from . import models
-from utils.admin import iportalen_admin_site
+from utils.admin import iportalen_admin_site, iportalen_superadmin_site
 from django.db.models import Q, ManyToManyField
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
@@ -95,7 +95,7 @@ class QuestionInlineHidden(admin.TabularInline):
 
     def change_url(self):
         if self.id:
-            changeform_url = reverse('admin:votings_question_change', args=(self.id,))
+            changeform_url = reverse('iportalenadmin:votings_question_change', args=(self.id,))
             return '<a href="{url}" target="_blank">Ändra</a>'.format(url=changeform_url)
         return ''
     change_url.allow_tags = True
@@ -151,6 +151,6 @@ class QuestionGroupAdmin(admin.ModelAdmin):
 iportalen_admin_site.register(models.QuestionGroup, QuestionGroupAdmin)
 iportalen_admin_site.register(models.Question, QuestionAdmin)
 
-admin.site.register(models.QuestionGroup)
-admin.site.register(models.Question)
-admin.site.register(models.Option)
+iportalen_superadmin_site.register(models.QuestionGroup)
+iportalen_superadmin_site.register(models.Question)
+iportalen_superadmin_site.register(models.Option)

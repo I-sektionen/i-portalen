@@ -258,7 +258,7 @@ def create_invoice(request, booking_pk):
         i.save()
     else:
         i = q[0]  # take the first one.
-    return redirect(reverse("admin:bookings_invoice_change", args=[i.pk]))
+    return redirect(reverse("iportalenadmin:bookings_invoice_change", args=[i.pk]))
 
 
 @permission_required('bookings.manage_bookings')
@@ -276,4 +276,4 @@ def send_invoice_email(request, invoice_pk):
         i.save()
     messages.success(request, _("Ett email har skickats till användaren om fakturan, "
                                 "denna faktura har markerats som skickad."))
-    return redirect(reverse("admin:bookings_invoice_change", args=[i.pk]))
+    return redirect(reverse("iportalenadmin:bookings_invoice_change", args=[i.pk]))

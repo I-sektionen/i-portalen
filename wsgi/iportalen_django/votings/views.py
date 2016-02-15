@@ -49,7 +49,7 @@ def question_result(request, qg_pk, q_pk):
 
 
 def create(request):
-    return redirect(reverse('admin:app_list', args=('votings',)))
+    return redirect(reverse('iportalenadmin:app_list', args=('votings',)))
 
 
 @login_required()
@@ -60,7 +60,7 @@ def create_from_event(request, event_pk):
                                           question_status=QuestionGroup.EVENT,
                                           event=e,
                                           creator=request.user)
-        return redirect(reverse('admin:votings_questiongroup_change', args=(qg.pk,)))
+        return redirect(reverse('iportalenadmin:votings_questiongroup_change', args=(qg.pk,)))
     else:
         raise PermissionDenied()
 
@@ -69,7 +69,7 @@ def admin_from_event(request, event_pk):
     e = get_object_or_404(Event, pk=event_pk)
     if e.can_administer(request.user):
         qg = get_object_or_404(QuestionGroup, event_id=event_pk)
-        return redirect(reverse('admin:votings_questiongroup_change', args=(qg.pk,)))
+        return redirect(reverse('iportalenadmin:votings_questiongroup_change', args=(qg.pk,)))
     else:
         raise PermissionDenied()
 

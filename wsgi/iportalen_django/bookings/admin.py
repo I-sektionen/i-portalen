@@ -15,7 +15,7 @@ from .models import (
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from utils.admin import iportalen_admin_site
+from utils.admin import iportalen_admin_site, iportalen_superadmin_site
 
 
 class BookingSlotInline(admin.TabularInline):
@@ -134,8 +134,8 @@ iportalen_admin_site.register(VariableCostTemplate)
 iportalen_admin_site.register(FixedCostTemplate)
 
 
-admin.site.register(Bookable)
-admin.site.register(Booking)
-admin.site.register(Invoice)
-admin.site.register(VariableCostTemplate)
-admin.site.register(FixedCostTemplate)
+iportalen_superadmin_site.register(Bookable)
+iportalen_superadmin_site.register(Booking)
+iportalen_superadmin_site.register(Invoice)
+iportalen_superadmin_site.register(VariableCostTemplate)
+iportalen_superadmin_site.register(FixedCostTemplate)
