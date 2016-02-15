@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 from .models import (
     Bookable,
     Booking,
@@ -56,8 +57,8 @@ class BookingsAdmin(admin.ModelAdmin):
 
     @staticmethod
     def link_to_user(obj):
-        return "<a href={url} target='_blank'>{name}, {phone}</a>".format(
-            url=obj.user.get_absolute_url(), name=obj.user.get_full_name, phone=obj.user.phone)
+        return mark_safe("<a href={url} target='_blank'>{name}, {phone}</a>".format(
+            url=obj.user.get_absolute_url(), name=obj.user.get_full_name, phone=obj.user.phone))
     link_to_user.allow_tags = True
     link_to_user.short_description = _("Länk till användaren")
 
