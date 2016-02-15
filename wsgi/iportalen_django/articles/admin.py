@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Article, OtherAttachment, ImageAttachment
-from utils.admin import HiddenModelAdmin, iportalen_admin_site
+from utils.admin import HiddenModelAdmin, iportalen_admin_site, iportalen_superadmin_site
+
 
 class OtherAttachmentInline(admin.StackedInline):
     model = OtherAttachment
@@ -33,6 +34,6 @@ iportalen_admin_site.register(ImageAttachment, ImageAttachmentAdmin)
 iportalen_admin_site.register(Article, ArticleAdmin)
 iportalen_admin_site.register(OtherAttachment, OtherAttachmentAdmin)
 
-admin.site.register(ImageAttachment)
-admin.site.register(Article)
-admin.site.register(OtherAttachment)
+iportalen_superadmin_site.register(ImageAttachment)
+iportalen_superadmin_site.register(Article)
+iportalen_superadmin_site.register(OtherAttachment)
