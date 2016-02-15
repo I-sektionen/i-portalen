@@ -27,7 +27,7 @@ class Article(models.Model):
         (DRAFT, _("Utkast")),
         (BEING_REVIEWED, _("väntar på godkännande")),
         (REJECTED, _("Avslaget")),
-        (APPROVED, _("Godkännt"))
+        (APPROVED, _("Godkänt"))
     )
     headline = models.CharField(
         verbose_name=_("rubrik"),

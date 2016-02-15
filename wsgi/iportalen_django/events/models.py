@@ -43,7 +43,7 @@ class Event(models.Model):
         (DRAFT, _("utkast")),
         (BEING_REVIEWED, _("väntar på godkännande")),
         (REJECTED, _("Avslaget")),
-        (APPROVED, _("Godkännt"))
+        (APPROVED, _("Godkänt"))
     )
 
     #  Description:
