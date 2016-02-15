@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Question, Topic, FAQ
-from utils.admin import iportalen_admin_site
+from utils.admin import iportalen_admin_site, iportalen_superadmin_site
 
 
 class FAQAdmin(admin.ModelAdmin):
@@ -81,6 +81,6 @@ iportalen_admin_site.register(Question, QuestionAdmin)
 iportalen_admin_site.register(Topic, TopicAdmin)
 iportalen_admin_site.register(FAQ, FAQAdmin)
 
-admin.site.register(Question)
-admin.site.register(Topic)
-admin.site.register(FAQ)
+iportalen_superadmin_site.register(Question)
+iportalen_superadmin_site.register(Topic)
+iportalen_superadmin_site.register(FAQ)

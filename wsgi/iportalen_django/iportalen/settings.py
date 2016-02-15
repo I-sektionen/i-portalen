@@ -207,6 +207,8 @@ LOGIN_URL = 'login_view'
 # Email settings:
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # This is a dummy backend which prints emails as a
                                                                   # normal print() statement (i.e. to stdout)
+EMAIL_HOST_USER = 'noreply@i-portalen.se'
+
 if ON_PASS:
     send_email = False
     try:
@@ -220,7 +222,6 @@ if ON_PASS:
         EMAIL_USE_TLS = True
         EMAIL_HOST = 'smtp.gmail.com'
         EMAIL_PORT = 587
-        EMAIL_HOST_USER = 'noreply@i-portalen.se'
         EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
 SITE_ID = 2

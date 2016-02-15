@@ -27,7 +27,7 @@ class Article(models.Model):
         (DRAFT, _("Utkast")),
         (BEING_REVIEWED, _("väntar på godkännande")),
         (REJECTED, _("Avslaget")),
-        (APPROVED, _("Godkännt"))
+        (APPROVED, _("Godkänt"))
     )
     headline = models.CharField(
         verbose_name=_("rubrik"),
@@ -126,6 +126,12 @@ class Article(models.Model):
 
     type = property(_type)
 
+    @property
+    def show_article_before_experation(self):
+        """Returns the end date to hinder people from accesing the article through URL, unless admin"""
+        if (self.visible_to) > timezone.now():
+            return True
+        return False
     ###########################################################################
     # Member function
     ###########################################################################

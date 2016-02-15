@@ -88,7 +88,7 @@ def make_booking(request, bookable_id, weeks_forward=0):  # TODO: Reduce complex
     user = request.user
     nr_of_active_bookings = 0
     now = timezone.now()
-    for bookings_by_user in Booking.objects.filter(user=user):
+    for bookings_by_user in Booking.objects.filter(user=user, bookable=bookable):
         active = False
         for booking_by_user in bookings_by_user.bookings.all():
             if booking_by_user.date > now.date():
@@ -179,7 +179,7 @@ def api_view(request, bookable_id, weeks_forward=0):
     user = request.user
     nr_of_active_bookings = 0
     now = timezone.now()
-    for b in Booking.objects.filter(user=user):
+    for b in Booking.objects.filter(user=user, bookable=bookable):
         active = False
         for p in b.bookings.all():
             if p.date > now.date():
@@ -258,7 +258,7 @@ def create_invoice(request, booking_pk):
         i.save()
     else:
         i = q[0]  # take the first one.
-    return redirect(reverse("admin:bookings_invoice_change", args=[i.pk]))
+    return redirect(reverse("iportalenadmin:bookings_invoice_change", args=[i.pk]))
 
 
 @permission_required('bookings.manage_bookings')
@@ -276,4 +276,4 @@ def send_invoice_email(request, invoice_pk):
         i.save()
     messages.success(request, _("Ett email har skickats till användaren om fakturan, "
                                 "denna faktura har markerats som skickad."))
-    return redirect(reverse("admin:bookings_invoice_change", args=[i.pk]))
+    return redirect(reverse("iportalenadmin:bookings_invoice_change", args=[i.pk]))
