@@ -53,7 +53,7 @@ def summarise_noshow(request,pk):
 
 def view_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    if event.status == Event.APPROVED or event.can_administer(request.user):
+    if (event.status == Event.APPROVED and event.show_event_before_experation) or event.can_administer(request.user):
         return render(request, "events/event.html", {"event": event})
     else:
         return HttpResponseForbidden()
