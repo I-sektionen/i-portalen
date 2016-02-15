@@ -38,9 +38,11 @@ def get_organisation_events(organisation_pk):
 def event_can_administer(event, user):
     return event.can_administer(user)
 
+
 @register.assignment_tag
 def event_is_checked_in(event, user):
     return event.is_checked_in(user)
+
 
 @register.assignment_tag
 def event_reserve(event, user):
@@ -55,7 +57,7 @@ def event_reserve_nr(event, user):
 @register.assignment_tag
 def get_menu_choices_event(user):
     menu_choices = []
-    if user.event_set.filter(end__gte=timezone.now()):
+    if Event.objects.user(user).count() != 0:
         menu_choices.append((_('Mina event'), reverse('events:by user')))
     menu_choices.append((_('Skapa ett event'), reverse('events:create')))
     if user.has_perm("events.can_approve_event"):

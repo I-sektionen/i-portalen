@@ -6,8 +6,14 @@
     <h1>{{ question.name }}</h1>
     {{ question.body|markdown }}
 
-    <p>Antal val: {{ question.nr_of_picks }}</p>
-    <form action="" method="post">
+    <p>Minsta antal val: {{ question.min_nr_of_picks }}</p>
+    <p>Max antal val: {{ question.nr_of_picks }}</p>
+    <form id="voting-form" action="" method="post">
+    {% for field, errors in form.errors.items %}
+    {% for error in errors %}
+        <p class="errorlist">{{ error }}</p>
+    {% endfor %}
+    {% endfor %}
     {% csrf_token %}
         <ul>
             {% for field in form.options %}
@@ -19,6 +25,11 @@
         {% endif %}
         <br>
         <a href="{% url 'votings:question group' question.question_group_id %}" class="button">Tillbaka</a>
-        <input class="button action-button" type="submit" name="vote" title="Rösta" value="Rösta">
+        <input id="vote" class="button action-button" type="submit" name="vote" title="Rösta" value="Rösta">
     </form>
+{% endblock %}
+{% block after_scripts %}
+    <script>
+        limit_max_choice("input[name='options']", {{ question.nr_of_picks }})
+    </script>
 {% endblock %}

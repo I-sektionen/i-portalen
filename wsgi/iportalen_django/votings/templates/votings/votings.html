@@ -4,6 +4,8 @@
 {% block content %}
     <h1>Öppna omröstningar</h1>
 {% for qg in question_groups %}
-    <a href="{{ qg.get_absolute_url }}">{{ qg }}</a>
+    <ul>
+        <li><a href="{{ qg.get_absolute_url }}">{{ qg }}</a></li>
+    </ul>
 {% endfor %}
 {% endblock %}
