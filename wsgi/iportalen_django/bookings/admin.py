@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.db.models.aggregates import Max
+from django.db.models.aggregates import Max, Min
 from django.utils.safestring import mark_safe
 from .models import (
     Bookable,
@@ -58,7 +58,7 @@ class BookingsAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super(BookingsAdmin, self).get_queryset(request)
-        return qs.annotate(start = Max("bookings__date")).order_by("-start")
+        return qs.annotate(start = Min("bookings__date")).order_by("-start")
 
     @staticmethod
     def link_to_user(obj):
