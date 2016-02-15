@@ -202,26 +202,24 @@ def add_users_to_white_list(request):  # TODO: Reduce complexity
                         "".join([_("Det uppstod ett fel för användaren med Liu-id:"),
                                  " {:}.\n{:}"]).format(liu_id, str_error))
                     continue
-                temp_user.save()
                 try:
-                    user = IUser.objects.get(username=liu_id)
                     kobra_dict = get_user_by_liu_id(liu_id)
-                    user.email = kobra_dict['email'].lower()
-                    user.last_name = kobra_dict['last_name'].lower()
-                    user.first_name = kobra_dict['first_name'].lower()
+                    temp_user.email = kobra_dict['email'].lower()
+                    temp_user.last_name = kobra_dict['last_name'].lower()
+                    temp_user.first_name = kobra_dict['first_name'].lower()
 
                     while len(kobra_dict['rfid_number']) < 10:
                         kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
 
-                    user.rfid_number = kobra_dict['rfid_number']
-                    user.p_nr = kobra_dict['personal_number']
-                    user.save()
+                    temp_user.rfid_number = kobra_dict['rfid_number']
+                    temp_user.p_nr = kobra_dict['personal_number']
+                    temp_user.save()
                 except IUser.DoesNotExist:
                     messages.error(request, "".join([_("Användaren"),
                                                      " {:} ",
                                                      _("sparades inte som den skulle.")]).format(liu_id))
                 except LiuNotFoundError:
-                    messages.error(request, _("Kan inte ansluta till kobra."))
+                    messages.error(request, "".join([_("Ingen användare med liu-id:"), " {:}".format(liu_id)]))
                 except LiuGetterError:
                     messages.error(request, _("Fel i anslutingen till kobra."))
             if errors:

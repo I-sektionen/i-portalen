@@ -19,6 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
 ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 
+
 if ON_PASS:
     ALLOWED_HOSTS = ['*']
     DEBUG = False
@@ -75,6 +76,7 @@ INSTALLED_APPS = (
     'faq',
     'django.contrib.sitemaps',
     'votings',
+    'speaker_list'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -203,11 +205,23 @@ if ON_PASS:
 LOGIN_URL = 'login_view'
 
 # Email settings:
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'noreply@i-portalen.se'
-EMAIL_HOST_PASSWORD = '***REMOVED***'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # This is a dummy backend which prints emails as a
+                                                                  # normal print() statement (i.e. to stdout)
+if ON_PASS:
+    send_email = False
+    try:
+        s = str(os.environ.get('SEND_EMAIL'))
+        if s == str('TRUE'):
+            send_email = True
+    except:
+        pass
+    if send_email:
+        EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+        EMAIL_USE_TLS = True
+        EMAIL_HOST = 'smtp.gmail.com'
+        EMAIL_PORT = 587
+        EMAIL_HOST_USER = 'noreply@i-portalen.se'
+        EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
 SITE_ID = 2
 

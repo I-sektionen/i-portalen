@@ -150,3 +150,7 @@ class QuestionGroupAdmin(admin.ModelAdmin):
 
 iportalen_admin_site.register(models.QuestionGroup, QuestionGroupAdmin)
 iportalen_admin_site.register(models.Question, QuestionAdmin)
+
+admin.site.register(models.QuestionGroup)
+admin.site.register(models.Question)
+admin.site.register(models.Option)

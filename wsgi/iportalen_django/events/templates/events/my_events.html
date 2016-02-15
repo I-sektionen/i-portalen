@@ -25,7 +25,7 @@
                     </td>
                     <td>{{ event.visible_from|date:"Y-m-d" }}</td>
                     <td colspan="2"><a href="{% url "events:administer event" event.pk %}"><button>Administrera</button></a></td>
-                    <td colspan="2">{{ event.user }}</td>
+                    <td colspan="2">{% if event.organisations.all %}{{ event.organisations.all|safeseq|join:", " }}{% else %}{{ event.user }}{% endif %}</td>
                     <td>
                         {% if event.status == "r" %}
                             <span class="rejected">Avslaget:<br>{{ event.rejection_message }}</span>

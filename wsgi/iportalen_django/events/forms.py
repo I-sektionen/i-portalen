@@ -75,11 +75,6 @@ class CheckForm(forms.Form):
         self.fields['user'].widget.attrs['autofocus'] = "true"
 
 
-class SpeakerForm(forms.Form):
-    speech_nr = forms.CharField(required=False)
-    method = forms.CharField()
-
-
 class ImportEntriesForm(forms.Form):
     users = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 15, "placeholder": "abcde123\nfghij456\nklmno789\n..."}),
