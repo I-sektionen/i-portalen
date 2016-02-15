@@ -58,7 +58,9 @@ class BookingsAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super(BookingsAdmin, self).get_queryset(request)
-        return qs.annotate(start = Min("bookings__date")).order_by("-start")
+        return qs.annotate(
+            start_date=Min("bookings__date")
+        ).order_by("-start_date", "-bookings__slot__start_time")
 
     @staticmethod
     def link_to_user(obj):
@@ -70,7 +72,7 @@ class BookingsAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return False
 
-    list_display = ('user', 'link_to_user', 'bookable', 'start_time', _get_invoice_status_display,)
+    list_display = ('user', 'link_to_user', 'bookable', 'start_time', 'end_time', _get_invoice_status_display,)
     readonly_fields = ('create_invoice_url', _get_invoice_status_display)
 
     @staticmethod
