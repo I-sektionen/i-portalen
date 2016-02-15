@@ -8,7 +8,7 @@
 
     <ul class="accordion-tabs">
         <li class ="tab-header-and-content">
-            <a href="javascript:void(0)" class="is-active tab-link">Event info</a>
+            <a href="javascript:void(0)" class="is-active tab-link">Ändra beskrivning</a>
             <div class="tab-content">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -49,17 +49,11 @@
 
                     </div>
 
-
-                    <div id="article-create-form-buttons">
-
-                        <button class="action-button" type="submit">Publicera eventet</button>
-                        <p>OBS! Eventuella bilder samt bilagor laddas upp under "Administrera evenemang" efter att du tryckt "Publicera eventet".</p>
-                    </div>
                 </form>
             </div>
         </li>
         <li class ="tab-header-and-content">
-            <a href="javascript:void(0)" class="tab-link">Tid och Plats</a>
+            <a href="javascript:void(0)" class="tab-link">Ändra tid och plats</a>
             <div class="tab-content">
                 <div>
                     {{ form.start.label_tag }}
@@ -103,7 +97,7 @@
             </div>
         </li>
         <li class ="tab-header-and-content">
-            <a href="javascript:void(0)" class="tab-link">Extra</a>
+            <a href="javascript:void(0)" class="tab-link">Ändra extra</a>
             <div class="tab-content">
                 <div id="event-create-form-other-details">
                     {{ form.organisations.errors }}
@@ -207,8 +201,13 @@
                 <p class="extra_registration_preview"></p>
                 <a href="#"><button class="enable_registration_preview">Anmäl mig</button></a>
                 <hr>
+                <div id="article-create-form-buttons">
 
+                    <button class="action-button" type="submit">Publicera eventet</button>
+                    <p>OBS! Eventuella bilder samt bilagor laddas upp under "Administrera evenemang" efter att du tryckt "Publicera eventet".</p>
+                </div>
             </div>
+
         </li>
 
     </ul>

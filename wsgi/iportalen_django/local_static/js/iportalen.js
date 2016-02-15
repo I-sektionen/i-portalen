@@ -422,8 +422,8 @@ var event_preview = function () {
  * Created by jers on 15/02/16.
  */
 function next_button() {
-    console.log('hej');
     var $tabs = $('.accordion-tabs li');
+    console.log("hej " + $tabs);
     $tabs.filter('.active').next('li').tab('show');
 }
 
