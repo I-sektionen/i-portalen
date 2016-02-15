@@ -32,7 +32,7 @@ def create_or_modify_article(request, pk=None):  # TODO: Reduce complexity
                 extra_tags='safe')
         article = get_object_or_404(Article, pk=pk)
         if not article.can_administer(request.user):
-            return HttpResponseForbidden()
+            raise PermissionDenied
         form = ArticleForm(request.POST or None, request.FILES or None, instance=article)
     else:  # new article.
         form = ArticleForm(request.POST or None, request.FILES or None)
@@ -73,7 +73,7 @@ def create_or_modify_article(request, pk=None):  # TODO: Reduce complexity
 def upload_attachments(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     if not article.can_administer(request.user):
-        return HttpResponseForbidden()
+        raise PermissionDenied
     AttachmentFormset = modelformset_factory(OtherAttachment,
                                              form=AttachmentForm,
                                              max_num=30,
@@ -114,7 +114,7 @@ def upload_attachments(request, article_pk):
 def upload_attachments_images(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     if not article.can_administer(request.user):
-        return HttpResponseForbidden()
+        raise PermissionDenied
     AttachmentFormset = modelformset_factory(ImageAttachment,
                                              form=ImageAttachmentForm,
                                              max_num=30,
@@ -160,7 +160,7 @@ def single_article(request, pk):
         admin = True
     else:
         admin = False
-    if article.status == Article.APPROVED or admin:
+    if (article.status == Article.APPROVED and article.show_article_before_experation) or admin:
         attachments = article.otherattachment_set
         image_attachments = article.imageattachment_set
         return render(request, 'articles/article.html', {

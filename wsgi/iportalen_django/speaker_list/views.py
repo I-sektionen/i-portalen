@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
@@ -22,7 +23,7 @@ def speaker_list(request, pk):  # TODO: Reduce complexity
         try:
             event = Event.objects.get(pk=pk)
             if not event.can_administer(request.user):
-                return HttpResponseForbidden()
+                raise PermissionDenied
         except:
             return JsonResponse({"status": _("Inget event med detta idnummer.")})
         form = SpeakerForm(request.POST)
