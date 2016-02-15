@@ -20,7 +20,7 @@ import io
 from tags.models import Tag
 from organisations.models import Organisation
 from .managers import EventManager, EntryAsPreRegisteredManager
-from datetime import timedelta, datetime
+from datetime import timedelta
 
 
 # A user can register and deregister
