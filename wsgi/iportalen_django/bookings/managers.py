@@ -24,7 +24,7 @@ class BookingManager(models.Manager):
             raise InvalidInput(_("Start time must be before end time."))
         if self.filter(user=user).exists():
             nr_of_active_bookings = 0
-            for b in self.filter(user=user):
+            for b in self.filter(user=user, bookable=bookable):
                 active = False
                 for p in b.bookings.all():
                     if p.date > now.date():

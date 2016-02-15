@@ -53,10 +53,9 @@ def summarise_noshow(request,pk):
 
 def view_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    if event.status == Event.APPROVED or event.can_administer(request.user):
+    if (event.status == Event.APPROVED and event.show_event_before_experation) or event.can_administer(request.user):
         return render(request, "events/event.html", {"event": event})
-    else:
-        return HttpResponseForbidden()
+    raise PermissionDenied
 
 
 @login_required()
@@ -122,7 +121,7 @@ def administer_event(request, pk):
             'event': event,
         })
     else:
-        return HttpResponseForbidden()  # Nope.
+        raise PermissionDenied  # Nope.
 
 
 @login_required()
@@ -133,7 +132,7 @@ def preregistrations_list(request, pk):
             'event': event,
         })
     else:
-        return HttpResponseForbidden()  # Nope.
+        raise PermissionDenied  # Nope.
 
 
 @login_required()
@@ -144,7 +143,7 @@ def participants_list(request, pk):
             'event': event,
         })
     else:
-        return HttpResponseForbidden()  # Nope.
+        raise PermissionDenied  # Nope.
 
 
 @login_required()
@@ -155,7 +154,7 @@ def speech_nr_list(request, pk):
             'event': event,
         })
     else:
-        return HttpResponseForbidden()  # Nope.
+        raise PermissionDenied  # Nope.
 
 
 @login_required()
@@ -168,7 +167,7 @@ def reserves_list(request, pk):
             'event_reserves': event_reserves,
         })
     else:
-        return HttpResponseForbidden()  # Nope.
+        raise PermissionDenied  # Nope.
 
 
 @login_required()
@@ -384,7 +383,7 @@ def create_or_modify_event(request, pk=None):  # TODO: Reduce complexity
                            extra_tags='safe')
         event = get_object_or_404(Event, pk=pk)
         if not event.can_administer(request.user):
-            return HttpResponseForbidden()
+            raise PermissionDenied
         form = EventForm(request.POST or None, request.FILES or None, instance=event)
     else:  # new event.
         form = EventForm(request.POST or None, request.FILES or None)
@@ -410,6 +409,8 @@ def create_or_modify_event(request, pk=None):  # TODO: Reduce complexity
             if event.status == Event.DRAFT:
                 messages.success(request, _("Dina ändringar har sparats i ett utkast."))
             elif event.status == Event.BEING_REVIEWED:
+                body = "<h1>Hej!</h1><br><br><p>Det finns nya artiklar att godkänna på i-Portalen.<br><a href='https://www.i-portalen.se/article/unapproved/'>Klicka här!</a></p><br><br><p>Med vänliga hälsningar, <br><br>Admins @ webgroup"
+                send_mail('Ny artikel att godkänna', '', settings.EMAIL_HOST_USER, ['info@isektionen.se'], fail_silently=False, html_message=body)
                 messages.success(request, _("Dina ändringar har skickats för granskning."))
             return redirect('events:by user')
         else:
@@ -425,7 +426,7 @@ def create_or_modify_event(request, pk=None):  # TODO: Reduce complexity
 def upload_attachments(request, pk):
     event = get_object_or_404(Event, pk=pk)
     if not event.can_administer(request.user):
-        return HttpResponseForbidden()
+        raise PermissionDenied
     AttachmentFormset = modelformset_factory(OtherAttachment,
                                              form=AttachmentForm,
                                              max_num=30,
@@ -466,7 +467,7 @@ def upload_attachments(request, pk):
 def upload_attachments_images(request, pk):
     event = get_object_or_404(Event, pk=pk)
     if not event.can_administer(request.user):
-        return HttpResponseForbidden()
+        raise PermissionDenied
     AttachmentFormset = modelformset_factory(ImageAttachment,
                                              form=ImageAttachmentForm,
                                              max_num=30,

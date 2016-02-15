@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.db.models.aggregates import Max, Min
+from django.utils.safestring import mark_safe
 from .models import (
     Bookable,
     Booking,
@@ -13,7 +15,7 @@ from .models import (
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from utils.admin import iportalen_admin_site
+from utils.admin import iportalen_admin_site, iportalen_superadmin_site
 
 
 class BookingSlotInline(admin.TabularInline):
@@ -54,17 +56,23 @@ def _get_invoice_status_display(obj):
 
 class BookingsAdmin(admin.ModelAdmin):
 
+    def get_queryset(self, request):
+        qs = super(BookingsAdmin, self).get_queryset(request)
+        return qs.annotate(
+            start_date=Min("bookings__date")
+        ).order_by("-start_date", "-bookings__slot__start_time")
+
     @staticmethod
     def link_to_user(obj):
-        return "<a href={url} target='_blank'>{name}, {phone}</a>".format(
-            url=obj.user.get_absolute_url(), name=obj.user.get_full_name, phone=obj.user.phone)
+        return mark_safe("<a href={url} target='_blank'>{name}, {phone}</a>".format(
+            url=obj.user.get_absolute_url(), name=obj.user.get_full_name, phone=obj.user.phone))
     link_to_user.allow_tags = True
     link_to_user.short_description = _("Länk till användaren")
 
     def has_add_permission(self, request):
         return False
 
-    list_display = ('user', 'link_to_user', 'bookable', 'start_time', _get_invoice_status_display,)
+    list_display = ('user', 'link_to_user', 'bookable', 'start_time', 'end_time', _get_invoice_status_display,)
     readonly_fields = ('create_invoice_url', _get_invoice_status_display)
 
     @staticmethod
@@ -128,8 +136,8 @@ iportalen_admin_site.register(VariableCostTemplate)
 iportalen_admin_site.register(FixedCostTemplate)
 
 
-admin.site.register(Bookable)
-admin.site.register(Booking)
-admin.site.register(Invoice)
-admin.site.register(VariableCostTemplate)
-admin.site.register(FixedCostTemplate)
+iportalen_superadmin_site.register(Bookable)
+iportalen_superadmin_site.register(Booking)
+iportalen_superadmin_site.register(Invoice)
+iportalen_superadmin_site.register(VariableCostTemplate)
+iportalen_superadmin_site.register(FixedCostTemplate)
