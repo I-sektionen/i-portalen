@@ -18,6 +18,7 @@ from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticip
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
 from django.utils.translation import ugettext as _
+from datetime import datetime, date, timedelta
 
 # Create your views here.
 from wsgi.iportalen_django.iportalen import settings
@@ -53,7 +54,7 @@ def summarise_noshow(request,pk):
 
 def view_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
-    if event.status == Event.APPROVED or event.can_administer(request.user):
+    if (event.status == Event.APPROVED and event.show_event_before_experation) or event.can_administer(request.user):
         return render(request, "events/event.html", {"event": event})
     else:
         return HttpResponseForbidden()

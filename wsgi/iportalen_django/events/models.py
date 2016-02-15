@@ -20,6 +20,7 @@ import io
 from tags.models import Tag
 from organisations.models import Organisation
 from .managers import EventManager, EntryAsPreRegisteredManager
+from datetime import timedelta, datetime
 
 
 # A user can register and deregister
@@ -236,6 +237,13 @@ class Event(models.Model):
     def can_deregister(self):
         """Check if register deadline have passed"""
         return self.start - timezone.timedelta(days=self.deregister_delta) > timezone.now()
+
+    @property
+    def show_event_before_experation(self):
+        """Returns the end date + three dates to hinder people from accesing the event through URL, unless admin"""
+        if (self.end + timedelta(days=3)) > timezone.now():
+            return True
+        return False
 
     ###########################################################################
     # Member function
