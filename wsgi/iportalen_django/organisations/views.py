@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
@@ -26,7 +27,7 @@ def edit_organisation(request, organisation_name):
 
     # Only the leader can change a organization.
     if not my_organisation.can_edit(request.user):
-        return HttpResponseForbidden()
+        raise PermissionDenied
 
     if request.method == 'POST':
         form = OrganisationForm(request.POST, request.FILES, instance=my_organisation)
@@ -50,7 +51,7 @@ def edit_memebers(request, organisation_name):
 
     # Only the leader can change a organization.
     if not my_organisation.can_edit(request.user):
-        return HttpResponseForbidden()
+        raise PermissionDenied
 
     OrgPostFormSet = modelformset_factory(OrganisationPost,
                                           fields=('post', 'user', 'email'),
@@ -99,7 +100,7 @@ def edit_memebers(request, organisation_name):
 @transaction.atomic
 def add_organisation(request):
     if not request.user.has_perm('organisations.add organisation'):
-        return HttpResponseForbidden()
+        raise PermissionDenied
     if request.method == 'POST':
         form = AddOrganisationForm(request.POST)
         if form.is_valid():
