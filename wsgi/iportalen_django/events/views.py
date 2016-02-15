@@ -18,7 +18,6 @@ from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticip
 from .exceptions import CouldNotRegisterException
 from user_managements.models import IUser
 from django.utils.translation import ugettext as _
-from datetime import datetime, date, timedelta
 
 # Create your views here.
 from wsgi.iportalen_django.iportalen import settings
