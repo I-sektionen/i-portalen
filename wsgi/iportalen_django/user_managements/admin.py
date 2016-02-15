@@ -4,14 +4,14 @@ from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from django.contrib.auth.models import Permission, Group
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from .models import IUser, MasterProfile, BachelorProfile, IpikureSubscriber
-from utils.admin import iportalen_admin_site
+from utils.admin import iportalen_admin_site, iportalen_superadmin_site
 from django.db import models
 from django.core.urlresolvers import reverse
 
 
 def persons(self):
     return ', '.join(['<a href="{url}">{name}</a>'.format(
-        url=reverse('admin:user_managements_iuser_change', args=(x.pk,)),
+        url=reverse('iportalenadmin:user_managements_iuser_change', args=(x.pk,)),
         name=x.username) for x in self.user_set.all().order_by('username')])
 
 persons.allow_tags = True
@@ -19,7 +19,7 @@ persons.allow_tags = True
 
 def groups(self):
     return ', '.join(['<a href="{url}">{name}</a>'.format(
-        url=reverse('admin:auth_group_change', args=(x.pk,)),
+        url=reverse('iportalenadmin:auth_group_change', args=(x.pk,)),
         name=x.name) for x in self.group_set.all().order_by('name')])
 
 groups.allow_tags = True
@@ -92,8 +92,8 @@ iportalen_admin_site.register(BachelorProfile)
 iportalen_admin_site.register(Permission, CustomPermission)
 iportalen_admin_site.register(IpikureSubscriber)
 
-admin.site.register(IUser)
-admin.site.register(MasterProfile)
-admin.site.register(BachelorProfile)
-admin.site.register(Permission)
-admin.site.register(IpikureSubscriber)
+iportalen_superadmin_site.register(IUser)
+iportalen_superadmin_site.register(MasterProfile)
+iportalen_superadmin_site.register(BachelorProfile)
+iportalen_superadmin_site.register(Permission)
+iportalen_superadmin_site.register(IpikureSubscriber)

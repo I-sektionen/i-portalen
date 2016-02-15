@@ -10,6 +10,7 @@ class MyAdminSite(AdminSite):
         return request.user.is_active
 
 iportalen_admin_site = MyAdminSite(name='iportalenadmin')
+iportalen_superadmin_site = MyAdminSite(name='superiportalenadmin')
 
 
 class HiddenModelAdmin(admin.ModelAdmin):

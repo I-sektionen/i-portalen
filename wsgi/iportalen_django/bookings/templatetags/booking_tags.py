@@ -14,5 +14,5 @@ def get_all_bookables():
 def get_menu_choices_bookings(user):
     menu_choices = []
     if user.has_perm("bookings.add_invoice"):
-        menu_choices.append((_("Administrera bokningar"), reverse('admin:app_list', args=('bookings',))))
+        menu_choices.append((_("Administrera bokningar"), reverse('iportalenadmin:app_list', args=('bookings',))))
     return menu_choices

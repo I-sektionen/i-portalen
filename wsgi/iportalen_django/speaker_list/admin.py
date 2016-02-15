@@ -2,5 +2,6 @@ from django.contrib import admin
 
 # Register your models here.
 from speaker_list.models import SpeakerList
+from utils.admin import iportalen_superadmin_site
 
-admin.site.register(SpeakerList)
+iportalen_superadmin_site.register(SpeakerList)
