@@ -510,8 +510,6 @@ class ImageAttachment(models.Model):
         related_name='event_image_uploader')
 
     def _set_thumbnail(self):
-        if self.thumbnail:
-            return  # This means no updates! (Otherwise it double saves.)
         path = self.img.path
         try:
             image = Image.open(path)
@@ -538,16 +536,20 @@ class ImageAttachment(models.Model):
         image.save(temp_thumb, FTYPE)
         temp_thumb.seek(0)
 
-        self.thumbnail.save(thumb_file_name, ContentFile(temp_thumb.read()), save=True)
+        self.thumbnail.save(thumb_file_name, ContentFile(temp_thumb.read()), save=False)
         temp_thumb.close()
         return True
 
     def save(self, *args, **kwargs):
-        super(ImageAttachment, self).save(*args, **kwargs)  # It saves first to set the main img.
-        self._set_thumbnail()  # Then it generates the thumbnail, and saves again.
-        #  It seems the model must be saved once in order to open the img and generate the thumbnail.
-        #  This means that a thumbnail only cna be generated once. Since if it is set the _set_thumbnail method
-        #  Wont run.
+        super(ImageAttachment, self).save(*args, **kwargs)
+        self._set_thumbnail()
+        super(ImageAttachment, self).save(*args, **kwargs)
+        # It first saves the model to set and save the main img.
+        # Then it generates the thumbnail _without_ saving. The instance holds the thumbnail.
+        # Then it it saves again. So the new field is saved also.
+        # This is because it seems the model must be saved once in order to open the img and generate the thumbnail.
+        #
+        #  There is probably a much nicer way to do this. (This is replicated in articles)
 
     def __str__(self):
         return os.path.basename(self.img.name) + " (Event: " + str(self.article.pk) + ")"
