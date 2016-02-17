@@ -9,7 +9,7 @@ $hero-text-color: $light-gray;
 
 .top-hero {
   display: none;
-  min-height: 50vh;
+  //min-height: 50vh;
   @include position(relative);
 
   @include media($large-screen) {

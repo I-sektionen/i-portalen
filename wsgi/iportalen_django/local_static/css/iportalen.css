@@ -1850,7 +1850,6 @@ header.navigation .navigation-tools .user-nav-tools li i {
 
 .top-hero, .hero-top {
   display: none;
-  min-height: 50vh;
   position: relative;
 }
 @media screen and (min-width: 900px) {
