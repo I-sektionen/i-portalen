@@ -64,7 +64,7 @@ def speaker_list_user_remove_self(request, pk):
     event = get_object_or_404(Event, pk=pk)
     try:
         SpeakerList.objects.remove(event=event, user=request.user)
-        messages.success(request, _("Du har skrivit upp dig på talarlistan!"))
+        messages.success(request, _("Du har strukit dig från talarlistan!"))
     except SpeakerListException as e:
         messages.error(request, str(e.reason))
     return redirect(reverse('events:user view', kwargs={'pk': event.pk}))
