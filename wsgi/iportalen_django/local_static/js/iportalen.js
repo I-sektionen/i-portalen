@@ -418,7 +418,18 @@ var event_preview = function () {
 
 
 
-;"use strict";
+;
+function next_button() {
+    var $tabs = $('.accordion-tabs li');
+    console.log("hej " + $tabs);
+    $tabs.filter('.active').next('li').tab('show');
+}
+
+function prev_button() {
+    var $tabs = $('.accordion-tabs li');
+
+    $tabs.filter('.active').prev('li').tab('show');
+};"use strict";
 var Markdown;
 
 if (typeof exports === "object" && typeof require === "function") // we're in a CommonJS (e.g. Node.js) module
@@ -4777,7 +4788,7 @@ catch(err) {
     });
   });
 });
-;/**
+;;/**
  * Created by jonathan on 2015-10-20.
  */
     var shuffle_sponsors = function () {

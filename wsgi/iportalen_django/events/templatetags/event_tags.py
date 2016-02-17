@@ -66,3 +66,11 @@ def get_menu_choices_event(user):
         menu_choices.append((_('Visa No Shows'), reverse('events:no_shows')))
     return menu_choices
 
+
+@register.assignment_tag
+def _or(*args):
+    temp = False
+    for v in args:
+        if v:
+            temp = True
+    return temp
