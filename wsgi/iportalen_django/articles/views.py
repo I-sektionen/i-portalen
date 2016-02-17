@@ -13,6 +13,8 @@ import mimetypes
 from .models import Article, OtherAttachment, ImageAttachment
 from .forms import ArticleForm, RejectionForm, AttachmentForm, ImageAttachmentForm
 from tags.models import Tag
+from django.core.mail import send_mail
+from wsgi.iportalen_django.iportalen import settings
 
 
 @login_required()
@@ -32,7 +34,7 @@ def create_or_modify_article(request, pk=None):  # TODO: Reduce complexity
                 extra_tags='safe')
         article = get_object_or_404(Article, pk=pk)
         if not article.can_administer(request.user):
-            return HttpResponseForbidden()
+            raise PermissionDenied
         form = ArticleForm(request.POST or None, request.FILES or None, instance=article)
     else:  # new article.
         form = ArticleForm(request.POST or None, request.FILES or None)
@@ -58,6 +60,8 @@ def create_or_modify_article(request, pk=None):  # TODO: Reduce complexity
             if article.status == Article.DRAFT:
                 messages.success(request, _("Dina ändringar har sparats i ett utkast."))
             elif article.status == Article.BEING_REVIEWED:
+                body = "<h1>Hej!</h1><br><br><p>Det finns nya artiklar att godkänna på i-Portalen.<br><a href='https://www.i-portalen.se/article/unapproved/'>Klicka här!</a></p><br><br><p>Med vänliga hälsningar, <br><br>Admins @ webgroup"
+                send_mail('Ny artikel att godkänna', '', settings.EMAIL_HOST_USER, ['info@isektionen.se'], fail_silently=False, html_message=body)
                 messages.success(request, _("Dina ändringar har skickats för granskning."))
             return redirect('articles:article', pk=article.pk)
         else:
@@ -73,7 +77,7 @@ def create_or_modify_article(request, pk=None):  # TODO: Reduce complexity
 def upload_attachments(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     if not article.can_administer(request.user):
-        return HttpResponseForbidden()
+        raise PermissionDenied
     AttachmentFormset = modelformset_factory(OtherAttachment,
                                              form=AttachmentForm,
                                              max_num=30,
@@ -114,7 +118,7 @@ def upload_attachments(request, article_pk):
 def upload_attachments_images(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     if not article.can_administer(request.user):
-        return HttpResponseForbidden()
+        raise PermissionDenied
     AttachmentFormset = modelformset_factory(ImageAttachment,
                                              form=ImageAttachmentForm,
                                              max_num=30,
@@ -160,7 +164,7 @@ def single_article(request, pk):
         admin = True
     else:
         admin = False
-    if article.status == Article.APPROVED or admin:
+    if (article.status == Article.APPROVED and article.show_article_before_experation) or admin:
         attachments = article.otherattachment_set
         image_attachments = article.imageattachment_set
         return render(request, 'articles/article.html', {
