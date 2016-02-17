@@ -464,6 +464,7 @@ def upload_attachments(request, pk):
                         })
 
 
+@login_required()
 def upload_attachments_images(request, pk):
     event = get_object_or_404(Event, pk=pk)
     if not event.can_administer(request.user):
