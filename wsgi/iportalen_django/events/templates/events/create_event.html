@@ -5,13 +5,16 @@
 {% block hero %}
 {% endblock %}
 {% block content %}
+    {% _or form.headline.errors form.location.errors form.enable_registration.errors form.registration_limit.errors form.lead.errors form.body.errors as first %}
+    {% _or form.start.errors form.end.errors form.deregister_delta.errors form.extra_deadline.errors form.extra_deadline_text.errors form.visible_from.errors as second %}
+    {% _or form.organisations.errors or form.tags.errors or form.draft.errors or form.sponsored.errors as third %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <ul class="accordion-tabs">
+            <li class ="tab-header-and-content">
+                <a href="javascript:void(0)" class="{% if first or not first and not second and not third %}is-active {% endif %}tab-link">1. Beskrivning {% if first %} <span class="errorlist fa fa-warning"></span> {% endif %}</a>
+                <div class="tab-content">
 
-    <ul class="accordion-tabs">
-        <li class ="tab-header-and-content">
-            <a href="javascript:void(0)" class="is-active tab-link">Ändra beskrivning</a>
-            <div class="tab-content">
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
                     <div id="event">
                         {{ form.non_field_errors }}
                         {{ form.non_field_errors }}
@@ -23,6 +26,12 @@
                         {{ form.location.errors }}
                         {{ form.location }}
                         <hr>
+                        <div>
+                            {{ form.enable_registration.label_tag }}
+                            {{ form.enable_registration.errors }}
+                            {{ form.enable_registration.help_text }}
+                            {{ form.enable_registration }}
+                        </div>
                         <div>
                             {{ form.registration_limit.label_tag }}
                             {{ form.registration_limit.errors }}
@@ -49,168 +58,166 @@
 
                     </div>
 
-                </form>
-            </div>
-        </li>
-        <li class ="tab-header-and-content">
-            <a href="javascript:void(0)" class="tab-link">Ändra tid och plats</a>
-            <div class="tab-content">
-                <div>
-                    {{ form.start.label_tag }}
-                    {{ form.start.errors }}
-                    {{ form.start }}
                 </div>
-                <div>
-                    {{ form.end.label_tag }}
-                    {{ form.end.errors }}
-                    {{ form.end }}
-                </div>
-                <hr>
-                <div>
-                    {{ form.deregister_delta.label_tag }} <em>{{ form.deregister_delta.help_text }}</em>
-                    {{ form.deregister_delta.errors }}
-                    {{ form.deregister_delta }}
-                </div>
-                <div>
-                    {{ form.extra_deadline.label_tag }}
-                    {{ form.extra_deadline.errors }}
-                    {{ form.extra_deadline }}
-                    {{ form.extra_deadline_text.label_tag }}
-                    {{ form.extra_deadline_text.errors }}
-                    {{ form.extra_deadline_text }}
-                </div>
-                <hr>
-
-                <div>
-                    {{ form.visible_from.label_tag }}
-                    {{ form.visible_from.errors }}
-                    {{ form.visible_from.help_text }}
-                    {{ form.visible_from }}
-                </div>
-                <div>
-                    {{ form.enable_registration.label_tag }}
-                    {{ form.enable_registration.errors }}
-                    {{ form.enable_registration.help_text }}
-                    {{ form.enable_registration }}
-                </div>
-
-            </div>
-        </li>
-        <li class ="tab-header-and-content">
-            <a href="javascript:void(0)" class="tab-link">Ändra extra</a>
-            <div class="tab-content">
-                <div id="event-create-form-other-details">
-                    {{ form.organisations.errors }}
-                    {{ form.organisations.label_tag }}
-                    {{ form.organisations.help_text }}
-                    {{ form.organisations }}
-
-                    {{ form.tags.label_tag }}
-                    {{ form.tags.errors }}
-                    {{ form.tags.help_text }}
-                    {{ form.tags }}
-
-                    {{ form.draft.label_tag }}
-                    {{ form.draft.errors }}
-                    {{ form.draft.help_text }}
-                    {{ form.draft }}
-
-                    <br>
-                    <br>
-                    {{ form.sponsored.label_tag }}
-                    {{ form.sponsored.errors }}
-                    {{ form.sponsored.help_text }}
-                    {{ form.sponsored }}
-                </div>
-            </div>
-        </li>
-        <li class ="tab-header-and-content">
-            <a href="javascript:void(0)" class="tab-link">Förhandsvisning</a>
-            <div class="tab-content">
-                <h4>Förhandsvisning kompakt format:</h4>
-                <hr>
-                <article class="news-feed-content">
-                    <div class="article-type-and-date">
-                        <i class="fa fa-calendar large"></i>
-                        <div class="article-preview-time-organisation">
-                            <p class="article-preview-type author_preview"></p>
-                            <p class="article-preview-type time-since">34 minuter sedan</p>
-                        </div>
+            </li>
+            <li class ="tab-header-and-content">
+                <a href="javascript:void(0)" class="{% if not first and second %}is-active {% else %}{% endif %}tab-link">2. Tid och plats{% if second %} <span class="errorlist fa fa-warning"></span> {% endif %}</a>
+                <div class="tab-content">
+                    <div>
+                        {{ form.start.label_tag }}
+                        {{ form.start.errors }}
+                        {{ form.start }}
                     </div>
-                    <h1 class="headline_preview"></h1>
-                    <p class="meta">
-                        <i class="fa fa-calendar"></i>
-                        <span class="start_preview_date"></span>
+                    <div>
+                        {{ form.end.label_tag }}
+                        {{ form.end.errors }}
+                        {{ form.end }}
+                    </div>
+                    <hr>
 
-                        <i class="fa fa-clock-o"></i>
-                        <span class="start_preview_time"></span>
+                    <div>
+                        {{ form.deregister_delta.label_tag }} <em>{{ form.deregister_delta.help_text }}</em>
+                        {{ form.deregister_delta.errors }}
+                        {{ form.deregister_delta }}
+                    </div>
 
-                        <i class="fa fa-map-marker"></i>
-                        <span class="place_preview"></span>
+                    <div>
+                        {{ form.extra_deadline.label_tag }}
+                        {{ form.extra_deadline.errors }}
+                        {{ form.extra_deadline }}
+                        {{ form.extra_deadline_text.label_tag }}
+                        {{ form.extra_deadline_text.errors }}
+                        {{ form.extra_deadline_text }}
+                    </div>
+                    <hr>
 
-                        <i class="fa fa-users"></i>
-                        <span class="registration_limit_preview"></span>
+                    <div>
+                        {{ form.visible_from.label_tag }}
+                        {{ form.visible_from.errors }}
+                        {{ form.visible_from.help_text }}
+                        {{ form.visible_from }}
+                    </div>
+
+
+                </div>
+            </li>
+            <li class ="tab-header-and-content">
+                <a href="javascript:void(0)" class="{% if not first and not second and third%}is-active {% else %}{% endif %}tab-link">3. Extra {% if third %}<span class="errorlist fa fa-warning"></span>{% endif %}</a>
+                <div class="tab-content">
+                    <div id="event-create-form-other-details">
+                        {{ form.organisations.errors }}
+                        {{ form.organisations.label_tag }}
+                        {{ form.organisations.help_text }}
+                        {{ form.organisations }}
+
+                        {{ form.tags.label_tag }}
+                        {{ form.tags.errors }}
+                        {{ form.tags.help_text }}
+                        {{ form.tags }}
+
+                        {{ form.draft.label_tag }}
+                        {{ form.draft.errors }}
+                        {{ form.draft.help_text }}
+                        {{ form.draft }}
+
+                        <br>
+                        <br>
+                        {{ form.sponsored.label_tag }}
+                        {{ form.sponsored.errors }}
+                        {{ form.sponsored.help_text }}
+                        {{ form.sponsored }}
+                    </div>
+                </div>
+            </li>
+            <li class ="tab-header-and-content">
+                <a href="javascript:void(0)" class="tab-link">4. Förhandsvisning</a>
+                <div class="tab-content">
+                    <h4>Förhandsvisning kompakt format:</h4>
+                    <hr>
+                    <article class="news-feed-content">
+                        <div class="article-type-and-date">
+                            <i class="fa fa-calendar large"></i>
+                            <div class="article-preview-time-organisation">
+                                <p class="article-preview-type author_preview"></p>
+                                <p class="article-preview-type time-since">34 minuter sedan</p>
+                            </div>
+                        </div>
+                        <h1 class="headline_preview"></h1>
+                        <p class="meta">
+                            <i class="fa fa-calendar"></i>
+                            <span class="start_preview_date"></span>
+
+                            <i class="fa fa-clock-o"></i>
+                            <span class="start_preview_time"></span>
+
+                            <i class="fa fa-map-marker"></i>
+                            <span class="place_preview"></span>
+
+                            <i class="fa fa-users"></i>
+                            <span class="registration_limit_preview"></span>
 
                             <span title="Tid innan anmälan stänger">
                                 <i class="fa fa-exclamation-circle"></i>
                                 <span>(Här visas tid kvar)</span>
                             </span>
-                        <i class="fa fa-tags"></i>
-                        <span class="tags_preview"></span>
-                        <span class="sponsor_preview"></span>
-                    </p>
-                    <h2 class="lead_preview"></h2>
-                </article>
-                <hr>
-                <h4>Förhandsvisning av fullt event</h4>
-                <hr>
-                <article class="news-feed-content">
-                    <div class="article-type-and-date">
-                        <i class="fa fa-calendar large"></i>
-                        <div class="article-preview-time-organisation">
-                            <p class="article-preview-type author_preview"></p>
-                            <p class="article-preview-type time-since">34 minuter sedan</p>
+                            <i class="fa fa-tags"></i>
+                            <span class="tags_preview"></span>
+                            <span class="sponsor_preview"></span>
+                        </p>
+                        <h2 class="lead_preview"></h2>
+                    </article>
+                    <hr>
+                    <h4>Förhandsvisning av fullt event</h4>
+                    <hr>
+                    <article class="news-feed-content">
+                        <div class="article-type-and-date">
+                            <i class="fa fa-calendar large"></i>
+                            <div class="article-preview-time-organisation">
+                                <p class="article-preview-type author_preview"></p>
+                                <p class="article-preview-type time-since">34 minuter sedan</p>
+                            </div>
                         </div>
-                    </div>
-                    <h1 class="headline_preview"></h1>
-                    <p class="meta">
-                        <i class="fa fa-calendar"></i>
-                        <span class="start_preview_date"></span>
+                        <h1 class="headline_preview"></h1>
+                        <p class="meta">
+                            <i class="fa fa-calendar"></i>
+                            <span class="start_preview_date"></span>
 
-                        <i class="fa fa-clock-o"></i>
-                        <span class="start_preview_time"></span>
+                            <i class="fa fa-clock-o"></i>
+                            <span class="start_preview_time"></span>
 
-                        <i class="fa fa-map-marker"></i>
-                        <span class="place_preview"></span>
+                            <i class="fa fa-map-marker"></i>
+                            <span class="place_preview"></span>
 
-                        <i class="fa fa-users"></i>
-                        <span class="registration_limit_preview"></span>
+                            <i class="fa fa-users"></i>
+                            <span class="registration_limit_preview"></span>
 
                             <span title="Tid innan anmälan stänger">
                                 <i class="fa fa-exclamation-circle"></i>
                                 <span>(Här visas tid kvar)</span>
                             </span>
-                        <i class="fa fa-tags"></i>
-                        <span class="tags_preview"></span>
-                        <span class="sponsor_preview"></span>
-                    </p>
-                    <h2 class="lead_preview"></h2>
-                    <p class="wmd-panel wmd-preview" id="wmd-preview-body"></p>
-                </article>
-                <p class="registration_stop"></p>
-                <p class="extra_registration_preview"></p>
-                <a href="#"><button class="enable_registration_preview">Anmäl mig</button></a>
-                <hr>
-                <div id="article-create-form-buttons">
+                            <i class="fa fa-tags"></i>
+                            <span class="tags_preview"></span>
+                            <span class="sponsor_preview"></span>
+                        </p>
+                        <h2 class="lead_preview"></h2>
+                        <p class="wmd-panel wmd-preview" id="wmd-preview-body"></p>
+                    </article>
+                    <p class="registration_stop"></p>
+                    <p class="extra_registration_preview"></p>
+                    <a href="#"><button class="enable_registration_preview">Anmäl mig</button></a>
+                    <hr>
+                    <div id="article-create-form-buttons">
 
-                    <button class="action-button" type="submit">Publicera eventet</button>
-                    <p>OBS! Eventuella bilder samt bilagor laddas upp under "Administrera evenemang" efter att du tryckt "Publicera eventet".</p>
+                        <button class="action-button" type="submit">Publicera eventet</button>
+                        <p>OBS! Eventuella bilder samt bilagor laddas upp under "Administrera evenemang" efter att du tryckt "Publicera eventet".</p>
+                    </div>
                 </div>
-            </div>
 
-        </li>
+            </li>
 
-    </ul>
+        </ul>
+    </form>
+
 {% endblock %}
 
 {% block after_scripts %}

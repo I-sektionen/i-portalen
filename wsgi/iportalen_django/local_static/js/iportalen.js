@@ -418,9 +418,7 @@ var event_preview = function () {
 
 
 
-;/**
- * Created by jers on 15/02/16.
- */
+;
 function next_button() {
     var $tabs = $('.accordion-tabs li');
     console.log("hej " + $tabs);
@@ -4790,7 +4788,7 @@ catch(err) {
     });
   });
 });
-;/**
+;;/**
  * Created by jonathan on 2015-10-20.
  */
     var shuffle_sponsors = function () {
