@@ -806,18 +806,6 @@ picture {
   text-align: center;
 }
 
-.hero-top {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://iportalen-us.s3.amazonaws.com/static/iportalen/HERO.jpg");
-  background-position: center center;
-  background-attachment: scroll;
-  background-size: cover;
-}
-@media screen and (min-width: 900px) {
-  .hero-top {
-    background-attachment: fixed;
-  }
-}
-
 #news-feed {
   float: left;
   display: block;
@@ -1869,6 +1857,9 @@ header.navigation .navigation-tools .user-nav-tools li i {
   .top-hero, .hero-top {
     display: block;
   }
+}
+.top-hero img, .hero-top img {
+  max-width: 100%;
 }
 .top-hero .hero-content, .hero-top .hero-content {
   padding: 2em;
