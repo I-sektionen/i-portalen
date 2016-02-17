@@ -453,7 +453,8 @@ class Event(models.Model):
                            "modified",
                            "replacing",
                            "imageattachment",
-                           "otherattachment"]
+                           "otherattachment",
+                           "questiongroup"]
                 multi = ["tags", "organisations"]
                 for field in self.replacing._meta.get_fields():
                     if field.name not in exclude:
