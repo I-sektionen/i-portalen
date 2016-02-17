@@ -24,7 +24,7 @@
         <ul>
             <li><a href="{% url "articles:edit" article.pk %}">Ändra artikel</a></li>
             <li><a href="{% url "articles:manage attachments" article.pk %}">Hantera bilagor</a></li>
-            {% comment %}<li><a href="{% url "articles:manage images" article.pk %}">Hantera bilder</a></li>{% endcomment %}
+            <li><a href="{% url "articles:manage images" article.pk %}">Hantera bilder</a></li>
         </ul>
     {% endif %}
 {% endblock %}

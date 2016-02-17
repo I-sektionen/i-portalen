@@ -74,6 +74,7 @@ def create_or_modify_article(request, pk=None):  # TODO: Reduce complexity
     })
 
 
+@login_required()
 def upload_attachments(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     if not article.can_administer(request.user):
