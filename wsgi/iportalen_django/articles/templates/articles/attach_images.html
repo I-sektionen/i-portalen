@@ -2,21 +2,24 @@
 {% block hero %}{% endblock %}
 {% block content %}
     <div>
+        <h1>Bilder</h1>
+        <p>Här kan du ladda upp och hantera bilder. Dessa visas mellan artikelns ingress och huvudinnehåll som
+            klickbara miniatyrer</p>
+        <p>För att lägga till flera bilder använd de tomma fälten och spara!</p>
+        <p>För att ta bort bilder klicka i rutan till vänster på respektive rad och spara.</p>
         <form method="post" action="" enctype="multipart/form-data" data-ajax="false">
-            <p>Ladda upp bilder.</p>
             <table>
             <thead>
             <tr>
-                <th>Fil</th><td>Visningsnamn</td><th>Radera?</th>
+                <th>Fil</th><th>Rubrikbild</th><th>Radera?</th>
             </tr>
             </thead>
                 {{ formset.management_form }}
                 {% for form in formset %}
                     {% csrf_token %}
                     <tr>
-                    {{ form.errors }}
-                        <td>{{ form.img }}</td>
-                        <td>{{ form.caption }}</td>
+                        <td>{{ form.img.errors }} {{ form.img }}</td>
+                        <td>{{ form.caption.errors }} {{ form.caption }}</td>
                         {% if formset.can_delete %}
                             <td>{{ form.DELETE }}</td>
                         {% endif %}

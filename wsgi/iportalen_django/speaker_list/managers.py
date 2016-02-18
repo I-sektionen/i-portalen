@@ -13,6 +13,8 @@ class SpeakerListManager(models.Manager):
 
     @transaction.atomic
     def add(self, event, user):
+        if not event.is_checked_in(user):
+            raise SpeakerListException(reason=_('Ej incheckad.'))
         if self.filter(event=event, user=user, has_spoken=False).count() == 0:  # don't add if already on list
             try:
                 speech_id = self.filter(event=event).order_by('-speech_id')[0].speech_id + 1
@@ -27,7 +29,7 @@ class SpeakerListManager(models.Manager):
             raise SpeakerListException(reason=_('Finns redan på listan.'))
 
     def show_queue(self, event):
-        speaker_list = self.filter(event=event, has_spoken=False).order_by('nr_of_speeches', 'speech_id')
+        speaker_list = self.filter(event=event, has_spoken=False)
         result = []
         for l in speaker_list:
             result.append({'first_name': l.user.first_name,
@@ -38,13 +40,17 @@ class SpeakerListManager(models.Manager):
     @transaction.atomic
     def next(self, event):
         try:
-            speakers = self.filter(event=event, has_spoken=False).order_by('nr_of_speeches', 'speech_id')
+            speakers = self.filter(event=event, has_spoken=False)
             speaker = speakers[0]
-            next_speaker = speakers[1]
+            try:
+                next_speaker = speakers[1]
+                next_speaker.nr_of_speeches = 0
+                next_speaker.save()
+            except IndexError:
+                # No next speaker
+                pass
             speaker.has_spoken = True
             speaker.save()
-            next_speaker.nr_of_speeches = 0
-            next_speaker.save()
         except:
             raise SpeakerListException(reason=_('Listan är tom'))
 
