@@ -78,6 +78,9 @@ INSTALLED_APPS = (
     'votings',
     'speaker_list'
 )
+if not ON_PASS:
+    INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
