@@ -180,7 +180,7 @@ class Question(models.Model):
 
     def voters(self):
         if self.question_group.question_status == QuestionGroup.EVENT:
-            return self.question_group.event.entryasparticipant_set.values_list('user')
+            return self.question_group.event.entryasparticipant_set.values_list('user', flat=True)
         elif self.question_group.question_status == QuestionGroup.ALL:
             return settings.AUTH_USER_MODEL.objects.all()
 
@@ -209,12 +209,18 @@ class Question(models.Model):
         else:
             return False
 
-    def show_result(self, user):
+    def _internal_result_status(self, user):
         if self.result == Question.PUBLIC_DETAILED or self.result == Question.PUBLIC_LIMITED:
-            return self._internal_timing_of_result(user)
+            return True
         elif self.result == Question.PRIVATE and self.question_group.can_administer(user):
-            return self._internal_timing_of_result(user)
+            return True
         elif self.result == Question.SUPER_PRIVATE and user in self.result_readers.all():
+            return True
+        else:
+            return False
+
+    def show_result(self, user):
+        if self._internal_result_status(user):
             return self._internal_timing_of_result(user)
         else:
             return False
