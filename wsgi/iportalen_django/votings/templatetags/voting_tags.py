@@ -20,7 +20,7 @@ def detailed(question, user):
 
 
 @register.assignment_tag
-def get_menu_choices_user(user):
+def get_menu_choices_votings(user):
     menu_choices = []
 
     if user.has_perm("votings.add_questiongroup"):
