@@ -44,7 +44,7 @@
     {% if event.imageattachment_set %}
         {% for attachment in event.imageattachment_set.all %}
             <a class="fancybox" rel="event_gallery" href="{{ attachment.img.url }}" title="{{ attachment.caption }}">
-                <img src="{{ attachment.thumbnail.url }}" alt=""/>
+                <!--<img src="{#  #}{ attachment.thumbnail.url }}" alt=""/>-->
             </a>
         {% endfor %}
     {% endif %}
