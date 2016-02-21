@@ -14,9 +14,9 @@ from django.utils.translation import ugettext as _
 
 @login_required
 def evaluate_course(request):
-    settings = CourseEvaluationSettings.objects.all()
-    if settings.exists():
-        settings = settings[0]
+    setting = CourseEvaluationSettings.objects.all()
+    if setting.exists():
+        settings = setting[0]
     else:
         settings = None
     try:
@@ -52,7 +52,7 @@ def evaluate_course(request):
                 course=evaluation.course)
             subject_org = _("Viktig information till dig som är utvärderingsansvarig!!")
             body_org = markdown_to_html(settings.mail_to_organisation).format(
-                user=request.user.get_full_name(),
+                user=request.user.get_full_name,
                 user_email=request.user.email,
                 period=p.name,
                 year=p.get_year,

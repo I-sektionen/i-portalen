@@ -18,7 +18,7 @@ class SpeakerListManager(models.Manager):
         if self.filter(event=event, user=user, has_spoken=False).count() == 0:  # don't add if already on list
             try:
                 speech_id = self.filter(event=event).order_by('-speech_id')[0].speech_id + 1
-            except:
+            except IndexError:
                 speech_id = 1
             if self.filter(event=event, has_spoken=False).count() == 0:
                 nr_of_speeches = 0
