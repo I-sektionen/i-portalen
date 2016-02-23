@@ -160,7 +160,7 @@ def upload_attachments_images(request, article_pk):
 
 
 def single_article(request, pk):
-    article = Article.objects.get(pk=pk)
+    article = get_object_or_404(Article, pk=pk)
     if article.can_administer(request.user):
         admin = True
     else:
