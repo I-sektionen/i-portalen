@@ -11,9 +11,9 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <ul class="accordion-tabs">
-            <li class ="tab-header-and-content">
+            <li class ="tab-header-and-content" id="tab1">
                 <a href="javascript:void(0)" class="{% if first or not first and not second and not third %}is-active {% endif %}tab-link">1. Beskrivning {% if first %} <span class="errorlist fa fa-warning"></span> {% endif %}</a>
-                <div class="tab-content">
+                <div class="tab-content" id="content1">
 
                     <div id="event">
                         {{ form.non_field_errors }}
@@ -51,18 +51,15 @@
                             {{ form.body }}
                         </div>
                     </div>
-
-
-                    <div id="event-create-form-member-details">
-
-
+                    <div id="event-next-button">
+                        <div class="button" onclick="next_button('1')">Till Steg 2</div>
                     </div>
-
                 </div>
+
             </li>
-            <li class ="tab-header-and-content">
+            <li class ="tab-header-and-content" id="tab2">
                 <a href="javascript:void(0)" class="{% if not first and second %}is-active {% else %}{% endif %}tab-link">2. Tid och plats{% if second %} <span class="errorlist fa fa-warning"></span> {% endif %}</a>
-                <div class="tab-content">
+                <div class="tab-content" id="content2">
                     <div>
                         {{ form.start.label_tag }}
                         {{ form.start.errors }}
@@ -97,13 +94,17 @@
                         {{ form.visible_from.help_text }}
                         {{ form.visible_from }}
                     </div>
-
-
-                </div>
+                        <span id="event-prev-button">
+                            <div class="button" onclick="prev_button('2')">Föregående</div>
+                        </span>
+                        <span id="event-next-button">
+                            <div class="button" onclick="next_button('2')">Till Steg 3</div>
+                        </span>
+                    </div>
             </li>
-            <li class ="tab-header-and-content">
+            <li class ="tab-header-and-content" id="tab3">
                 <a href="javascript:void(0)" class="{% if not first and not second and third%}is-active {% else %}{% endif %}tab-link">3. Extra {% if third %}<span class="errorlist fa fa-warning"></span>{% endif %}</a>
-                <div class="tab-content">
+                <div class="tab-content" id="content3">
                     <div id="event-create-form-other-details">
                         {{ form.organisations.errors }}
                         {{ form.organisations.label_tag }}
@@ -127,11 +128,17 @@
                         {{ form.sponsored.help_text }}
                         {{ form.sponsored }}
                     </div>
+                    <span id="prev-next-button">
+                        <div class="button" onclick="prev_button('3')">Föregående</div>
+                    </span>
+                    <span id="event-next-button">
+                        <div class="button" onclick="next_button('3')">Till Förhandsvisning</div>
+                    </span>
                 </div>
             </li>
-            <li class ="tab-header-and-content">
+            <li class ="tab-header-and-content" id="tab4">
                 <a href="javascript:void(0)" class="tab-link">4. Förhandsvisning</a>
-                <div class="tab-content">
+                <div class="tab-content" id="content4">
                     <h4>Förhandsvisning kompakt format:</h4>
                     <hr>
                     <article class="news-feed-content">
@@ -206,8 +213,10 @@
                     <p class="extra_registration_preview"></p>
                     <a href="#"><button class="enable_registration_preview">Anmäl mig</button></a>
                     <hr>
+                    <div id="event-prev-button">
+                        <div class="button" onclick="prev_button('4')">Föregående</div>
+                    </div>
                     <div id="article-create-form-buttons">
-
                         <button class="action-button" type="submit">Publicera eventet</button>
                         <p>OBS! Eventuella bilder samt bilagor laddas upp under "Administrera evenemang" efter att du tryckt "Publicera eventet".</p>
                     </div>

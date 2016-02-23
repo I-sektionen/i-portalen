@@ -419,16 +419,18 @@ var event_preview = function () {
 
 
 ;
-function next_button() {
-    var $tabs = $('.accordion-tabs li');
-    console.log("hej " + $tabs);
-    $tabs.filter('.active').next('li').tab('show');
+function next_button(tab_no) {
+    var next_tab_no = parseInt(tab_no, 10)+1;
+    var next ='#tab'+next_tab_no+' a';
+    $(next).click();
+    scroll(0,0)
 }
 
-function prev_button() {
-    var $tabs = $('.accordion-tabs li');
-
-    $tabs.filter('.active').prev('li').tab('show');
+function prev_button(tab_no) {
+    var prev_tab_no = parseInt(tab_no, 10)-1;
+    var prev ='#tab'+prev_tab_no+' a';
+    $(prev).click();
+    scroll(0,0)
 };"use strict";
 var Markdown;
 
