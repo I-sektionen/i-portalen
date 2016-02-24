@@ -3036,14 +3036,7 @@ label.required:after {
   content: "Talar: ";
 }
 
-#event-next-button {
-  float: right;
-}
-
-div#article-create-form-buttons {
-  margin-top: 30px;
-}
-div#article-create-form-buttons button {
+.event-next-button {
   float: right;
 }
 
