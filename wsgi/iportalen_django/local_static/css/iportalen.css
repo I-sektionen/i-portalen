@@ -2941,6 +2941,7 @@ div.booking-container .third-container .third .center {
   display: block;
   margin-right: 2.35765%;
   width: 100%;
+  margin-bottom: 15px;
 }
 #event-create-form-other-details:last-child {
   margin-right: 0;
@@ -3033,6 +3034,10 @@ label.required:after {
 }
 #speaker_list li:first-child::before {
   content: "Talar: ";
+}
+
+.event-next-button {
+  float: right;
 }
 
 .indent-me {
