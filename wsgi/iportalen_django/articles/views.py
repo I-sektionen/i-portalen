@@ -61,7 +61,7 @@ def create_or_modify_article(request, pk=None):  # TODO: Reduce complexity
                 messages.success(request, _("Dina ändringar har sparats i ett utkast."))
             elif article.status == Article.BEING_REVIEWED:
                 body = "<h1>Hej!</h1><br><br><p>Det finns nya artiklar att godkänna på i-Portalen.<br><a href='https://www.i-portalen.se/article/unapproved/'>Klicka här!</a></p><br><br><p>Med vänliga hälsningar, <br><br>Admins @ webgroup"
-                send_mail('Ny artikel att godkänna', '', settings.EMAIL_HOST_USER, ['info@isektionen.se'], fail_silently=False, html_message=body)
+                send_mail('Ny artikel att godkänna', '', settings.EMAIL_HOST_USER, ['utgivare@isektionen.se'], fail_silently=False, html_message=body)
                 messages.success(request, _("Dina ändringar har skickats för granskning."))
             return redirect('articles:article', pk=article.pk)
         else:
