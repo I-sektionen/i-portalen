@@ -13,7 +13,7 @@
 
     <meta property="og:site_name" content="I-portalen" />
     <meta property="og:image" content="https://s3.eu-central-1.amazonaws.com/isektionen-bildbank/mailfooter/isektionen_logo.png" />
-
+    <meta name="theme-color" content="#2D701E"><!-- Very nice feature on newish android phones where the color is shown on the chrome menu. -->
     {% include "stylesheets.html" %}
     <link rel="shortcut icon" type="image/png" href="{% static "iportalen/favicon.ico" %}"/>
     <title>I-portalen: {% block page_subtitle %}Originalet sedan 1969.{% endblock %}</title>
@@ -37,11 +37,8 @@
 {% block hero %}
     {% load static from staticfiles %}
     <section class="hero-top">
+        <img src="https://s3.amazonaws.com/iportalen-us/static/iportalen/hero-karriarveckan.jpg">
         <div class="hero-content">
-            <h1 class="hero-heading">NYA I-PORTALEN ÄR HÄR</h1>
-            <hr class="hero-divider">
-            <p class="hero-text">Nu är den nya I-portalen lanserad med helt ny design och funktionalitet som ska göra det enklare och roligare att engagera sig i sektionslivet
-            </p>
         </div>
     </section>
 

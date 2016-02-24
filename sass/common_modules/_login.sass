@@ -1,57 +1,61 @@
 +media($large-screen-up)
-  #outer-content
-    .outer-form-div
-      +span-columns(7)
-      +shift(3)
+  .outer-form-div
+    +span-columns(7)
+    +shift(2)
+    width: auto
+    position: relative
 
-      .form-div
-        position: static
-        margin: 100px
-        padding: 20px 20px 20px
-        max-width: 350px
-        background: white
-        border: 1px black solid
-        box-shadow: 5px 5px 2.5px 0 rgba(0,0,0,0.75)
-
-        h4
-          margin: -20px -20px 21px
-          line-height: 40px
-          text-align: center
-          text-shadow: 0 1px white
-          background: #f3f3f3
-          border-bottom: 1px solid #cfcfcf
-          border-radius: 3px 3px 0 0
-          linear-gradient: top, whiteffd, #eef2f5
-          box-shadow: 0 1px #f5f5f5
-
-        &:before
-          content: ''
-          position: relative
-          top: -8px
-          right: -8px
-          bottom: -8px
-          left: -8px
-          z-index: -1
-          background: rgba(black, .08)
-          border-radius: 4px
+    .form-div
+      position: static
+      margin: 100px
+      padding: 20px 20px 20px
+      max-width: 400px
+      background: white
+      border: 1px gray solid
 
 
-        .login-form
-          +display(flex)
-          +flex-direction(column)
-          input
-            border: 1px solid black
-            margin: 10px
-            padding: 0 10px
-            width: 200px
-            height: 34px
-            &:focus
-              outline-offset: 0
-          /*.username-holder
-            margin: 20px
-          /*.password-holder
-            margin: 20px
-          .submit-holder
-            max-width: 10.0em
-            border: none
-            outline: none
+    .form-field-wrapper
+      width: auto
+      h4
+        margin: -20px -20px 21px
+        line-height: 100px
+        text-align: center
+        text-shadow: 0 1px white
+        background: #f3f3f3
+        border-bottom: 1px solid #cfcfcf
+        border-radius: 3px 3px 0 0
+        linear-gradient: top, whiteffd, #eef2f5
+        box-shadow: 0 1px #f5f5f5
+
+      &:before
+        content: ''
+        position: relative
+        top: -8px
+        right: -8px
+        bottom: -8px
+        left: -8px
+        z-index: -1
+        background: rgba(black, .08)
+        border-radius: 4px
+
+      .login-form
+        +display(flex)
+        +flex-direction(column)
+        input
+          border: 1px solid black
+          margin: 10px
+          padding: 0 10px
+          width: 200px
+          height: 34px
+          &:focus
+            outline-offset: 0
+        /*.username-holder
+          margin: 20px
+        /*.password-holder
+          margin: 20px
+        .submit-holder
+          max-width: 10.0em
+          border: none
+          outline: none
+
+     

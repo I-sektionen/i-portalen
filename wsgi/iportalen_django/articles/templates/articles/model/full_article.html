@@ -26,7 +26,7 @@
     {% if image_attachments %}
         {% for attachment in image_attachments.all %}
             <a class="fancybox" rel="article_gallery" href="{{ attachment.img.url }}" title="{{ attachment.caption }}">
-                <img src="{{ attachment.thumbnail.url }}" alt=""/>
+                <!--<img src="{#  #}{ attachment.thumbnail.url }}" alt=""/>-->
             </a>
         {% endfor %}
     {% endif %}

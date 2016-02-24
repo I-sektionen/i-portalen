@@ -71,7 +71,6 @@ INSTALLED_APPS = (
     'events',
     'organisations',
     'bookings',
-    'django_extensions',
     'course_evaluations',
     'faq',
     'django.contrib.sitemaps',

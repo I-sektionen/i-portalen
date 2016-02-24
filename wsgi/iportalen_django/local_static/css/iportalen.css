@@ -806,18 +806,6 @@ picture {
   text-align: center;
 }
 
-.hero-top {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://iportalen-us.s3.amazonaws.com/static/iportalen/HERO.jpg");
-  background-position: center center;
-  background-attachment: scroll;
-  background-size: cover;
-}
-@media screen and (min-width: 900px) {
-  .hero-top {
-    background-attachment: fixed;
-  }
-}
-
 #news-feed {
   float: left;
   display: block;
@@ -1862,13 +1850,15 @@ header.navigation .navigation-tools .user-nav-tools li i {
 
 .top-hero, .hero-top {
   display: none;
-  min-height: 50vh;
   position: relative;
 }
 @media screen and (min-width: 900px) {
   .top-hero, .hero-top {
     display: block;
   }
+}
+.top-hero img, .hero-top img {
+  max-width: 100%;
 }
 .top-hero .hero-content, .hero-top .hero-content {
   padding: 2em;
@@ -2212,28 +2202,32 @@ header.navigation .navigation-tools .user-nav-tools li i {
 }
 
 @media screen and (min-width: 900px) {
-  #outer-content .outer-form-div {
+  .outer-form-div {
     float: left;
     display: block;
     margin-right: 3.57866%;
     width: 87.05267%;
-    margin-left: 38.842%;
+    margin-left: 25.89467%;
+    width: auto;
+    position: relative;
   }
-  #outer-content .outer-form-div:last-child {
+  .outer-form-div:last-child {
     margin-right: 0;
   }
-  #outer-content .outer-form-div .form-div {
+  .outer-form-div .form-div {
     position: static;
     margin: 100px;
     padding: 20px 20px 20px;
-    max-width: 350px;
+    max-width: 400px;
     background: white;
-    border: 1px black solid;
-    box-shadow: 5px 5px 2.5px 0 rgba(0, 0, 0, 0.75);
+    border: 1px gray solid;
   }
-  #outer-content .outer-form-div .form-div h4 {
+  .outer-form-div .form-field-wrapper {
+    width: auto;
+  }
+  .outer-form-div .form-field-wrapper h4 {
     margin: -20px -20px 21px;
-    line-height: 40px;
+    line-height: 100px;
     text-align: center;
     text-shadow: 0 1px white;
     background: #f3f3f3;
@@ -2242,7 +2236,7 @@ header.navigation .navigation-tools .user-nav-tools li i {
     linear-gradient: top, whiteffd, #eef2f5;
     box-shadow: 0 1px #f5f5f5;
   }
-  #outer-content .outer-form-div .form-div:before {
+  .outer-form-div .form-field-wrapper:before {
     content: "";
     position: relative;
     top: -8px;
@@ -2253,7 +2247,7 @@ header.navigation .navigation-tools .user-nav-tools li i {
     background: rgba(0, 0, 0, 0.08);
     border-radius: 4px;
   }
-  #outer-content .outer-form-div .form-div .login-form {
+  .outer-form-div .form-field-wrapper .login-form {
     display: -webkit-box;
     display: -moz-box;
     display: box;
@@ -2276,17 +2270,17 @@ header.navigation .navigation-tools .user-nav-tools li i {
     /*.password-holder
      * margin: 20px */
   }
-  #outer-content .outer-form-div .form-div .login-form input {
+  .outer-form-div .form-field-wrapper .login-form input {
     border: 1px solid black;
     margin: 10px;
     padding: 0 10px;
     width: 200px;
     height: 34px;
   }
-  #outer-content .outer-form-div .form-div .login-form input:focus {
+  .outer-form-div .form-field-wrapper .login-form input:focus {
     outline-offset: 0;
   }
-  #outer-content .outer-form-div .form-div .login-form .submit-holder {
+  .outer-form-div .form-field-wrapper .login-form .submit-holder {
     max-width: 10em;
     border: none;
     outline: none;
