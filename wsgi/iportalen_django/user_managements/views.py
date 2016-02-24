@@ -115,7 +115,7 @@ def become_member(request):
             user.is_member = False
             user.save()
             messages.info(request, _("Vad tråkigt att du inte vill vara medlem i sektionen. "
-                                     "Om du ångrar dig kan du kontakta info@isektionen.se"))
+                                     "Om du ångrar dig kan du kontakta utgivare@isektionen.se"))
             return redirect("/")
         else:
             messages.error(request, _("Fel Liu-id eller lösenord."))
@@ -248,7 +248,7 @@ def reset_confirm(request, uidb64=None, token=None):
 def reset_done(request):
     messages.info(request, _("Ett mail kommer inom kort skickas till mailadressen som angavs. "
                              "I den finns en länk för att skapa ett nytt lösenord. "
-                             "Om det inte kommer något mail, vänligen kontakta info@isektionen.se"))
+                             "Om det inte kommer något mail, vänligen kontakta utgivare@isektionen.se"))
     return redirect("/")
 
 
