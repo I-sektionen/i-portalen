@@ -1,0 +1,31 @@
+.expander {
+
+  .expander-trigger {
+    @include user-select(none);
+
+    &:before {
+      content: "\25BC";
+      margin-right: 0.5em;
+    }
+  }
+
+  .expander-content {
+    padding-top: 1em;
+    button {
+      float: right;
+    }
+    .tag-container{
+
+    }
+  }
+
+  .expander-hidden {
+    &:before {
+      content: "\25BA";
+    }
+  }
+
+  .expander-hidden + .expander-content {
+    display: none;
+  }
+}

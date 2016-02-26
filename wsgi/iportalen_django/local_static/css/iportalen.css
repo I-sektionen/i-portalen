@@ -812,6 +812,13 @@ picture {
   margin-right: 2.35765%;
   width: 100%;
 }
+#news-feed hr {
+  border-bottom: 1px solid #c4c4c4;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  margin: 1.5em 0;
+}
 #news-feed #content-select-nav {
   margin-bottom: 2em;
 }
@@ -2657,6 +2664,29 @@ label.required:after {
   #admin-menu .sub-menu:last-child {
     margin-right: 0;
   }
+}
+
+.expander .expander-trigger {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.expander .expander-trigger:before {
+  content: "\25BC";
+  margin-right: 0.5em;
+}
+.expander .expander-content {
+  padding-top: 1em;
+}
+.expander .expander-content button {
+  float: right;
+}
+.expander .expander-hidden:before {
+  content: "\25BA";
+}
+.expander .expander-hidden + .expander-content {
+  display: none;
 }
 
 /* All app specific sass */
