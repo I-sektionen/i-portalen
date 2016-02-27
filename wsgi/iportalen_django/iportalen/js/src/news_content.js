@@ -8,11 +8,14 @@ function get_news_content(url) {
     $('input[name="tags"]:checked').each(function(){
         tags.push(this.value);
     });
-    console.log(tags);
+    var articles = $('#article-filter:checked').length;
+    var events = $('#event-filter:checked').length;
+    var sponsored = $('#sponsor-filter:checked').length;
+
     $.ajax({
         "type": "POST",
         "url": url,
-        "data": {'tags[]': tags},
+        "data": {'tags[]': tags, articles: articles, events: events, sponsored: sponsored },
         "success": function (result) {
             container.html(result);
         }

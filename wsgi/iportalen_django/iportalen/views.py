@@ -28,16 +28,28 @@ def landing(request):
 def news_content(request):
     if request.is_ajax():
         tags = request.POST.getlist('tags[]')
-        articles = Article.objects.published()
-        events = Event.objects.published()
+        if int(request.POST.get('articles')) == 1:
+            articles = Article.objects.published()
+        else:
+            articles = Article.objects.none()
+
+        if int(request.POST.get('events')) == 1:
+            events = Event.objects.published()
+        else:
+            events = Event.objects.none()
+
+        if int(request.POST.get('sponsored')) == 1:
+            articles = articles.filter(sponsored=True)
+            events = events.filter(sponsored=True)
+
         if tags:
             articles = articles.filter(tags__in=tags)
             events = events.filter(tags__in=tags)
-        content_feed_list = list(articles.order_by('-visible_from'))
-        content_feed_list += list(events.order_by('-visible_from'))
+        content_feed_list = list(articles.distinct().order_by('-visible_from'))
+        content_feed_list += list(events.distinct().order_by('-visible_from'))
 
         content_feed_list = sorted(content_feed_list, key=lambda contents: contents.visible_from, reverse=True)
-        paginator = Paginator(content_feed_list, 14)
+        paginator = Paginator(content_feed_list, 20)
 
         page = request.GET.get('page')
 

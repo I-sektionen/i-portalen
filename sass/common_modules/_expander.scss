@@ -15,7 +15,14 @@
       float: right;
     }
     .tag-container{
+      @include display(flex);
+      @include flex-wrap(wrap);
+      clear: both;
 
+      .tag{
+        @include flex(2 2 15em);
+
+      }
     }
   }
 
