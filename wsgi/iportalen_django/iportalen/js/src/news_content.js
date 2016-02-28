@@ -17,6 +17,7 @@ function get_news_content(url) {
         "url": url,
         "data": {'tags[]': tags, articles: articles, events: events, sponsored: sponsored },
         "success": function (result) {
+            $('.expander-trigger').addClass("expander-hidden");
             container.html(result);
         }
     });
