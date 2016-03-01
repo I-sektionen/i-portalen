@@ -819,6 +819,10 @@ picture {
   border-top: none;
   margin: 1.5em 0;
 }
+#news-feed .thin {
+  margin-bottom: 0.25em;
+  margin-top: 0.25em;
+}
 #news-feed #content-select-nav {
   margin-bottom: 2em;
 }
