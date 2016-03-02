@@ -78,7 +78,7 @@ class BookingsAdmin(admin.ModelAdmin):
     @staticmethod
     def create_invoice_url(obj):
         s = reverse("bookings:create custom invoice", args=[obj.pk])
-        return "<a href=\"{url}\">{text}</a>".format(url=s, text=_("Skapa/Se befintlig"))
+        return mark_safe("<a href=\"{url}\">{text}</a>".format(url=s, text=_("Skapa/Se befintlig")))
 
     create_invoice_url.allow_tags = True
     create_invoice_url.short_description = _("Länk till faktura")
@@ -111,7 +111,7 @@ class UserInvoiceAdmin(admin.ModelAdmin):
     def send_invoice_email(obj):
         try:
             s = reverse("bookings:send invoice email", args=[obj.pk])
-            return "<a href=\"{url}\">{text}</a>".format(url=s, text=_("Skicka email till användare"))
+            return mark_safe("<a href=\"{url}\">{text}</a>".format(url=s, text=_("Skicka email till användare")))
         except:
             return _("Ej tillgängligt")
     send_invoice_email.short_description = _("Skicka faktura")

@@ -1,71 +1,56 @@
 {% extends "master.html" %}
 {# This file defines the front page and is a own kind of master page #}
 {% load iportalen_tags %}
+{% load tag_tags %}
 {% include "header.html" %}
 
 {% block content %}
     {# gets all articles via template tag #}
     <section id="news-feed">
-        <div id="content-select-nav">
-            <a href="{% url "news feed" %}" class="content-type-nav active">Allt</a>
-            <a href="{% url "articles:articles" %}" class="content-type-nav">Nyheter</a>
-            <a href="{% url "events:calender" %}" class="content-type-nav">Event</a>
-            <a href="{% url "sponsored" %}" class="content-type-nav">Näringsliv</a>
-        </div>
+
 {% load iportalen_tags %}
 {% get_sponsored_content as sponsored_content %}
-    <div class="sponsored_container">
-        <div class="sponsored_feed_container">
-            <div class="sponsored_feed_headline"><a href="{% url "sponsored" %}" class="content-type-nav">Senaste:</a></div>
-            <div id="sponsored_feed_content">
-                <ul style="display: block; overflow: hidden">
-                    {% for c in sponsored_content %}
-                        <li><strong><a href="{{ c.get_absolute_url }}">{{ c.headline|truncatechars:62 }}</a></strong></li>
+        <div class="sponsored_container">
+            <div id="sponsored_feed_container" class="sponsored_feed_container" style="display: none;" >
+                <div class="sponsored_feed_headline"><a href="{% url "sponsored" %}" class="content-type-nav">Senaste:</a></div>
+                <div id="sponsored_feed_content">
+                    <ul style="display: block; overflow: hidden">
+                        {% for c in sponsored_content %}
+                            <li><strong><a href="{{ c.get_absolute_url }}">{{ c.headline|truncatechars:62 }}</a></strong></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="expander">
+            <a href="javascript:void(0)" class="expander-trigger expander-hidden content-type-nav">Filtrera</a>
+            <div class="expander-content">
+                <div class="tag-container">
+                    <div class="tag"><label><input id="article-filter" type="checkbox" name="articles" value="true" checked> Artiklar</label></div>
+                    <div class="tag"><label><input id="event-filter" type="checkbox" name="events" value="true" checked> Arrangemang</label></div>
+                    <div class="tag"><label title="Visa endast sponsrat innehåll"><input id="sponsor-filter" type="checkbox" name="sponsored" value="true"> Endast näringsliv</label></div>
+                </div>
+                <hr class="thin">
+                <div class="tag-container">
+                    {% get_tags as tags %}
+                    {% for tag in tags %}
+                        <div class="tag"><label><input type="checkbox" name="tags" value="{{ tag.pk }}"> {{ tag.name }}</label></div>
                     {% endfor %}
-                </ul>
+                </div>
+                <button class="action-button" onclick="get_news_content('{% url 'news api' %}')">Filtrera</button>
+                <div style="clear: both"></div>
             </div>
         </div>
         <hr>
-    </div>
-        {% for content in content_feed_list %}
-            {% if content.type == "article" %}
-                {% include "articles/model/small_article.html" with article=content %}
-            {% endif %}
-            {% if content.type == "event" %}
-                {% include "events/model/small_event.html" with event=content %}
-            {% endif %}
+       <div id="news-content">
 
-        {% endfor %}
-        <div class="pagination">
-            <span class="step-links">
-            <span class="meta">
-                {% if content_feed_list.has_previous %}
-                    <span class="prev"><a href="?page={{ content_feed_list.previous_page_number }}">Prev</a></span>
-                {% endif %}
-                {% for number in content_feed_list.paginator.page_range|slice:":10" %}
-                    {% if number == content_feed_list.number %}
-                        <a class="pagenumber active" href="">{{ number }}</a>
-                    {%  else %}
-                        <a class="pagenumber" href="?page={{ number }}">{{ number }}</a>
-                    {% endif %}
-                {% endfor %}
-                {% if content_feed_list.has_next %}
-                    <span class="next"><a href="?page={{ content_feed_list.next_page_number }}">Next</a></span>
-                {% endif %}
-            </span>
-            </span>
-        </div>
+           <div class="loading-spinner"></div><p>Laddar ditt innehåll</p>
+       </div>
     </section>
 
 {% endblock %}
-{% block after_scripts %}
-    <script>
-    jQuery(document).ready(function () {
-
-        $(function() {
-            $('#sponsored_feed_content').vTicker();
-        });
-    });
-</script>
+{% block document_ready %}
+        expander_trigger_news_page('{% url 'news api' %}')
 {% endblock %}
 
