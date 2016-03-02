@@ -27,11 +27,14 @@ sitemaps = {
 }
 
 urlpatterns = [
-    url(r'^$',             view=views.landing,         name="news feed"),
-    url(r'^news_api$',     view=views.news_content,         name="news api"),
+    url(r'^$',             view=views.landing,                   name="news feed"),
+    url(r'^news_api$',     view=views.news_content,              name="news api"),
     url(r'^sponsored/$',   view=views.display_sponsored_content, name="sponsored"),
     url(r'^placeholder/',  view=views.placeholder,               name="placeholder"),
-    url(r'^file_storage/', view=views.glasscubes_link,           name="glasscubes storage"),
+    url(r'^file_storage/$', view=views.glasscubes_link,           name="glasscubes storage"),
+
+    url(r'^file_storage/course_evaluations$', view=views.glasscubes_link_course, name="glasscubes storage course"),
+    url(r'^file_storage/i-bibles$',           view=views.glasscubes_link_bible, name="glasscubes storage bible"),
 
     url(r'^admin/',             include(iportalen_admin_site.urls)),
     url(r'^superadmin/',        include(iportalen_superadmin_site.urls)),

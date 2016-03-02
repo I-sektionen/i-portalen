@@ -17,6 +17,16 @@ def glasscubes_link(request):
     return redirect("https://industriellekonomi.glasscubes.com/share/s/d6msv3iv5a4g36o8d5q1ct2uvm")
 
 
+@login_required()
+def glasscubes_link_course(request):
+    return redirect("https://industriellekonomi.glasscubes.com/share/s/q8sm9jp2ngqisrojo8l2p29g05?1")
+
+
+@login_required()
+def glasscubes_link_bible(request):
+    return redirect("https://industriellekonomi.glasscubes.com/share/s/h7dg16qh44viman4o5ej1kkt2h?1")
+
+
 def isektionen_link(request):
     return redirect("https://www.isektionen.se/")
 
