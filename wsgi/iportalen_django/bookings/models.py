@@ -111,11 +111,11 @@ class Invoice(models.Model):
             return checksum % 10
 
         # Number based on primary key
-        num = str(self.pk)
-        num = "1337" + num
-        while len(num) < 9:
+        pk_str = str(self.pk)
+        num = "1337"
+        while len(num)+len(pk_str) < 9:
             num += "0"
-        print(len(num))
+        num += pk_str
         num += "10"  # Should be 10 long now, eleven wih check number.
         check_num = check_sum(num)
         if check_num != 0:
