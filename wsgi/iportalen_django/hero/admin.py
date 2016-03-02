@@ -5,7 +5,6 @@ from utils.admin import iportalen_admin_site, iportalen_superadmin_site
 
 class HeroAdmin(admin.ModelAdmin):
     readonly_fields = ('file_name', 'modified_by')
-    list_display = ('file_name',)
 
     def save_model(self, request, obj, form, change):
         """

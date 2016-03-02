@@ -21,6 +21,7 @@ class Hero(models.Model):
         null=False,
         blank=False,
         verbose_name='Hero',
+        help_text=_("Filstorleken bör inte vara större än 0,5mb. Bilden bör vara ungefär 2500*350 för bästa utseende."),
     )
     file_name = models.CharField(max_length=300, null=False, blank=True)
     visible_from = models.DateTimeField(
@@ -39,7 +40,7 @@ class Hero(models.Model):
     class Meta:
         verbose_name = _("Hero")
         verbose_name_plural = _("Herosarna")  # Det ska stavas så! :P
-        ordering = ['modified']
+        ordering = ['visible_from']
 
     def save(self, *args, **kwargs):
         self.file_name = os.path.basename(self.file.name)
@@ -47,7 +48,7 @@ class Hero(models.Model):
         super(Hero, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.file_name
+        return "{file} {date}".format(file=self.file_name, date=self.visible_from.strftime('%Y-%m-%d %H:%M:%S'))
 
 
 #  This receiver part here makes sure to remove files if the model instance is deleted.

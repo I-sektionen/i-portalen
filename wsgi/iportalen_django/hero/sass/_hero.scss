@@ -19,7 +19,9 @@ $hero-text-color: $light-gray;
   }
 
   img {
-
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     max-width: 100%;
 
   }
@@ -39,32 +41,6 @@ $hero-text-color: $light-gray;
       width: auto;
 
     }
-  }
-
-  .hero-heading {
-    color: $hero-heading-color;
-    font-size: 2em;
-    text-transform: uppercase;
-    margin-bottom: 0;
-    @include  media ($large-screen) {
-      font-size: 3em;
-    }
-
-  }
-    .hero-divider {
-      border: none;
-      background-color: $hero-divider-color;
-      height: $hero-divider-height;
-      margin: 5px;
-    }
-
-  .hero-text {
-    font-size: 1.5em;
-    color: $hero-text-color;
-    @include media ($large-screen) {
-      text-align: justify;
-    }
-
   }
 
 }
