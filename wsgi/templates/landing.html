@@ -49,19 +49,7 @@
     </section>
 
 {% endblock %}
-{% block after_scripts %}
-    <script>
-        jQuery(document).ready(function () {
-            $('.expander-trigger').click(function(){
-                $('.expander-content').slideToggle( "slow" );
-                $(this).toggleClass("expander-hidden");
-            });
-            get_news_content('{% url 'news api' %}');
-            $('#sponsored_feed_container').show();
-            $(function() {
-                $('#sponsored_feed_content').vTicker();
-            });
-        });
-    </script>
+{% block document_ready %}
+        expander_trigger_news_page('{% url 'news api' %}')
 {% endblock %}
 

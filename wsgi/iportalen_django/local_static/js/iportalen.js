@@ -4812,6 +4812,18 @@ function get_news_content(url) {
             container.html(result);
         }
     });
+}
+
+function expander_trigger_news_page(url) {
+    $('.expander-trigger').click(function(){
+        $('.expander-content').slideToggle( "fast" );
+        $(this).toggleClass("expander-hidden");
+    });
+    get_news_content(url);
+    $('#sponsored_feed_container').show();
+    $(function() {
+        $('#sponsored_feed_content').vTicker();
+    });
 };;/**
  * Created by jonathan on 2015-10-20.
  */
