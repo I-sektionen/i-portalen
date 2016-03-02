@@ -234,4 +234,3 @@ def delete_article(request, pk):
         article.delete()
         return redirect('articles:by user')
     raise PermissionDenied
-
