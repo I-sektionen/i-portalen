@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^user/',              include('user_managements.urls')),
     url(r'^voting/',            include('votings.urls')),
     url(r'^speaker/',           include('speaker_list.urls')),
+    url(r'^utlandsportalen/',   include('utlandsportalen.urls')),
 
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
@@ -58,7 +59,6 @@ urlpatterns = [
     url(r'^soekande', view=views.isektionen_link),
     url(r'^foeretag', view=views.isektionen_link),
     url(r'^alumn', RedirectView.as_view(pattern_name='news feed', permanent=True)),
-    url(r'^utlandsportalen', RedirectView.as_view(pattern_name='news feed', permanent=True)),
 ]
 if not settings.ON_PASS:
     urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
