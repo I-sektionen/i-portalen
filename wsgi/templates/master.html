@@ -36,8 +36,9 @@
     {% endif %}
 {% block hero %}
     {% load static from staticfiles %}
+    {% load hero_tags %}
     <section class="hero-top">
-        <img src="https://s3.amazonaws.com/iportalen-us/static/iportalen/hero-karriarveckan.jpg">
+        <img src="{% get_hero_url %}">
         <div class="hero-content">
         </div>
     </section>
