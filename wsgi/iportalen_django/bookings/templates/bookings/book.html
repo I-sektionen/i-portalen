@@ -5,6 +5,14 @@
 {% block content %}
     <div class="booking-container">
 
+{% get_all_bookables as bookables %}
+        <div class="bookable_menu">
+            {% for tmp_bookable in bookables %}
+                {% if bookable != tmp_bookable %}
+                <a href="{{ tmp_bookable.get_absolute_url }}">Boka {{ tmp_bookable.name|title }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
         <div class="booking">
         <h1>{{ bookable.name|capfirst }}</h1>
         <p>Välkommen till boknings sidan för {{ bookable.name }}! Nedan ser du tillgängliga block som går att boka. </p>

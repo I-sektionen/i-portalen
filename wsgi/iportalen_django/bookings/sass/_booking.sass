@@ -1,4 +1,26 @@
 div.booking-container
+  .bookable_menu
+    box-shadow: 2px 2px 8px #919191
+    border-radius: 3px
+    font-family: $base-font-family
+    font-size: $base-font-size
+    -webkit-font-smoothing: antialiased
+    font-weight: 600
+    line-height: 1
+    padding-top: $small-spacing
+    padding-bottom: $small-spacing
+    text-decoration: none
+    text-transform: uppercase
+    transition: background-color $base-duration $base-timing
+    user-select: none
+    vertical-align: middle
+
+    a
+      padding-left: $base-spacing
+      padding-right: $base-spacing
+      line-height: 1.5
+      white-space: nowrap
+
   div.booking
     .info
       ul
@@ -25,6 +47,7 @@ div.booking-container
           background-color: lightcoral
         .available
           background-color: lightgreen
+          cursor: pointer
         .choosen
           background-color: lightblue
         .blocked

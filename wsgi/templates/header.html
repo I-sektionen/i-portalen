@@ -39,27 +39,24 @@
                             </div>
                     </ul>
                 </li>
-                <li class="nav-link more"><a href="javascript:void(0)">Tjänster</a>
+                <li class="nav-link more"><a href="javascript:void(0)">Tjänster & Studier</a>
                     <ul class="submenu">
                         <div class="submenu-column">
+                            <li><a href="javascript:void(0)" class="heading">Tjänster</a></li>
                             <li><a href="{% url "glasscubes storage" %}">Filarkiv <i class="fa fa-external-link"></i></a></li>
-                            <li><a href="{% url 'course_evaluations:evaluate course' %}">Utvärdera en kurs</a></li>
                             <li><a href="http://shop.i-portalen.se">I-butiken <i class="fa fa-external-link"></i></a></li>
                             <li><a href="http://ipikure.se">ipikuré <i class="fa fa-external-link"></i></a></li>
-                            <li><a href="{% url "faq:faq_topic_list" %}">FAQs</a></li>
                             <li><a href="https://www.isektionen.se">Isektionen.se <i class="fa fa-external-link"></i></a></li>
+                            {% with bookables|first as bookable %}
+                            <li><a href="{{ bookable.get_absolute_url }}">Boka I-Bilen mm.</a></li>
+                            {% endwith %}
                         </div>
                         <div class="submenu-column">
-                            {% for bookable in bookables %}
-                                <li><a href="{{ bookable.get_absolute_url }}">Boka {{ bookable.name|title }}</a></li>
-                                {% cycle 'False' 'False' 'False' 'False' 'False' 'True' as new_col silent %}
-                                {% if new_col == 'True' %}
-                                    </div>
-                                    <div class="submenu-column">
-                                {% endif %}
-                            {% endfor %}
-
-                            <li><a href="http://old.i-portalen.se">Gamla i-portalen <i class="fa fa-external-link"></i></a></li>
+                            <li><a href="javascript:void(0)" class="heading">Studier</a></li>
+                            <li><a href="{% url 'course_evaluations:evaluate course' %}">Utvärdera en kurs</a></li>
+                            <li><a href="{% url "glasscubes storage course" %}">Kursutvärderingar <i class="fa fa-external-link"></i></a></li>
+                            <li><a href="{% url "glasscubes storage bible" %}">I-biblar <i class="fa fa-external-link"></i></a></li>
+                            <li><a href="{% url "faq:faq_topic_list" %}">Studievägledningens FAQ</a></li>
                         </div>
                     </ul>
                 </li>
