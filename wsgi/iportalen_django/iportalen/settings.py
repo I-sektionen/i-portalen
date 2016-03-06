@@ -76,7 +76,9 @@ INSTALLED_APPS = (
     'django.contrib.sitemaps',
     'votings',
     'speaker_list',
-    'utlandsportalen'
+    'utlandsportalen',
+    'hero'
+
 )
 
 MIDDLEWARE_CLASSES = (

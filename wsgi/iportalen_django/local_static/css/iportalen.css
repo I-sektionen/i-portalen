@@ -731,6 +731,75 @@ picture {
   background-color: #edc624;
 }
 
+@-webkit-keyframes rotate-forever {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes rotate-forever {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotate-forever {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+.loading-spinner {
+  -webkit-animation-duration: 0.75s;
+  -moz-animation-duration: 0.75s;
+  animation-duration: 0.75s;
+  -webkit-animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-name: rotate-forever;
+  -moz-animation-name: rotate-forever;
+  animation-name: rotate-forever;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-timing-function: linear;
+  animation-timing-function: linear;
+  height: 30px;
+  width: 30px;
+  border: 8px solid #2D701E;
+  border-right-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 #container {
   max-width: 1200px;
   margin-left: auto;
@@ -811,6 +880,17 @@ picture {
   display: block;
   margin-right: 2.35765%;
   width: 100%;
+}
+#news-feed hr {
+  border-bottom: 1px solid #c4c4c4;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  margin: 1.5em 0;
+}
+#news-feed .thin {
+  margin-bottom: 0.25em;
+  margin-top: 0.25em;
 }
 #news-feed #content-select-nav {
   margin-bottom: 2em;
@@ -1717,6 +1797,14 @@ header.navigation ul.submenu {
     text-align: center;
   }
 }
+header.navigation ul.submenu .submenu-column .heading {
+  text-decoration: none;
+  text-transform: uppercase;
+}
+header.navigation ul.submenu .submenu-column .heading:hover {
+  cursor: default;
+  color: #333;
+}
 header.navigation ul.submenu li {
   display: block;
   padding-right: 0;
@@ -1846,63 +1934,6 @@ header.navigation .navigation-tools .user-nav-tools li i {
   height: 150px;
   width: 100%;
   border: 1px solid black;
-}
-
-.top-hero, .hero-top {
-  display: none;
-  position: relative;
-}
-@media screen and (min-width: 900px) {
-  .top-hero, .hero-top {
-    display: block;
-  }
-}
-.top-hero img, .hero-top img {
-  max-width: 100%;
-}
-.top-hero .hero-content, .hero-top .hero-content {
-  padding: 2em;
-  text-align: center;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  width: 100%;
-}
-@media screen and (min-width: 900px) {
-  .top-hero .hero-content, .hero-top .hero-content {
-    width: auto;
-  }
-}
-.top-hero .hero-heading, .hero-top .hero-heading {
-  color: #f7f7f7;
-  font-size: 2em;
-  text-transform: uppercase;
-  margin-bottom: 0;
-}
-@media screen and (min-width: 900px) {
-  .top-hero .hero-heading, .hero-top .hero-heading {
-    font-size: 3em;
-  }
-}
-.top-hero .hero-divider, .hero-top .hero-divider {
-  border: none;
-  background-color: #f7f7f7;
-  height: 5px;
-  margin: 5px;
-}
-.top-hero .hero-text, .hero-top .hero-text {
-  font-size: 1.5em;
-  color: #f7f7f7;
-}
-@media screen and (min-width: 900px) {
-  .top-hero .hero-text, .hero-top .hero-text {
-    text-align: justify;
-  }
 }
 
 .modal label {
@@ -2659,6 +2690,55 @@ label.required:after {
   }
 }
 
+.expander .expander-trigger {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.expander .expander-trigger:before {
+  content: "\25BC";
+  margin-right: 0.5em;
+}
+.expander .expander-content {
+  padding-top: 1em;
+}
+.expander .expander-content button {
+  float: right;
+}
+.expander .expander-content .tag-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-lines: multiple;
+  -moz-box-lines: multiple;
+  box-lines: multiple;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  clear: both;
+}
+.expander .expander-content .tag-container .tag {
+  -webkit-box-flex: 2;
+  -moz-box-flex: 2;
+  box-flex: 2;
+  -webkit-flex: 2 2 15em;
+  -moz-flex: 2 2 15em;
+  -ms-flex: 2 2 15em;
+  flex: 2 2 15em;
+}
+.expander .expander-hidden:before {
+  content: "\25BA";
+}
+.expander .expander-hidden + .expander-content {
+  display: none;
+}
+
 /* All app specific sass */
 /*This is where all app specific sass is imported through. */
 #article-create-form-text p, #article-create-small p {
@@ -2803,6 +2883,28 @@ label.required:after {
   color: #e33c3c;
 }
 
+div.booking-container .bookable_menu {
+  box-shadow: 2px 2px 8px #919191;
+  border-radius: 3px;
+  font-family: "Lato", sans-serif;
+  font-size: 1em;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 600;
+  line-height: 1;
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 150ms ease;
+  user-select: none;
+  vertical-align: middle;
+}
+div.booking-container .bookable_menu a {
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  line-height: 1.5;
+  white-space: nowrap;
+}
 div.booking-container div.booking .info ul {
   list-style-type: disc;
   padding-bottom: 0.5em;
@@ -2841,6 +2943,7 @@ div.booking-container div.booking div#days div.single_day .unavailable {
 }
 div.booking-container div.booking div#days div.single_day .available {
   background-color: lightgreen;
+  cursor: pointer;
 }
 div.booking-container div.booking div#days div.single_day .choosen {
   background-color: lightblue;
@@ -3048,6 +3151,40 @@ label.required:after {
   font-style: italic;
   font-size: 8pt;
   margin-bottom: 0em;
+}
+
+.top-hero, .hero-top {
+  display: none;
+  position: relative;
+}
+@media screen and (min-width: 900px) {
+  .top-hero, .hero-top {
+    display: block;
+  }
+}
+.top-hero img, .hero-top img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+}
+.top-hero .hero-content, .hero-top .hero-content {
+  padding: 2em;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+@media screen and (min-width: 900px) {
+  .top-hero .hero-content, .hero-top .hero-content {
+    width: auto;
+  }
 }
 
 /*# sourceMappingURL=iportalen.css.map */

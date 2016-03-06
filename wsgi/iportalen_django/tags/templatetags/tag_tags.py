@@ -1,6 +1,8 @@
 from django import template
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
+from tags.models import Tag
+
 register = template.Library()
 
 
@@ -10,3 +12,8 @@ def get_menu_choices_tag(user):
     if user.has_perm("tags.add_tag"):
         menu_choices.append((_("Administrera taggar"), reverse('iportalenadmin:app_list', args=('tags',))))
     return menu_choices
+
+
+@register.assignment_tag
+def get_tags():
+    return Tag.objects.all()

@@ -1,0 +1,28 @@
+{% for content in content_feed_list %}
+    {% if content.type == "article" %}
+        {% include "articles/model/small_article.html" with article=content %}
+    {% endif %}
+    {% if content.type == "event" %}
+        {% include "events/model/small_event.html" with event=content %}
+    {% endif %}
+
+{% endfor %}
+<div class="pagination">
+    <span class="step-links">
+    <span class="meta">
+        {% if content_feed_list.has_previous %}
+            <span class="prev" onclick="get_news_content('{% url 'news api' %}?page={{ content_feed_list.previous_page_number }}')">Föregående</span>
+        {% endif %}
+        {% for number in content_feed_list.paginator.page_range|slice:":10" %}
+            {% if number == content_feed_list.number %}
+                <span class="pagenumber active" onclick="get_news_content('{% url 'news api' %}?page={{ number }}')">{{ number }}</span>
+            {%  else %}
+                <span class="pagenumber" onclick="get_news_content('{% url 'news api' %}?page={{ number }}')">{{ number }}</span>
+            {% endif %}
+        {% endfor %}
+        {% if content_feed_list.has_next %}
+            <span class="next" onclick="get_news_content('{% url 'news api' %}?page={{ content_feed_list.next_page_number }}')">Nästa</span>
+        {% endif %}
+    </span>
+    </span>
+</div>

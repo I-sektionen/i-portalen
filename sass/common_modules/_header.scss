@@ -273,7 +273,14 @@ header.navigation {
       @include media($horizontal-bar-mode) {
         text-align: center;
       }
-
+      .heading {
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+      .heading:hover {
+        cursor: default;
+        color: $dark-gray;
+      }
     }
 
     li {

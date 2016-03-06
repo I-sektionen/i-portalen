@@ -13,6 +13,7 @@
             <li><a href="{% url "events:import registrations" event.pk %}">Importera anmälningar</a></li>
             <li><a href="{% url "events:check in" event.pk %}">Starta incheckning</a></li>
             {% if not event.finished %}
+                <br> {# Medveten placering efter att någon haft för tjocka fingrar och tryckt här istället för på starta incheckning #}
             <li><a href="{% url "events:no show" event.pk %}">Rapportera eventet</a> <i>(Klicka här när incheckningen är klar för att rapportera in vilka som kom på eventet.)</i></li>
             {% endif %}
         </ul>
