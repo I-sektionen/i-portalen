@@ -39,12 +39,17 @@ class Event(models.Model):
     BEING_REVIEWED = 'b'
     REJECTED = 'r'
     APPROVED = 'a'
+    CANCEL = 'c'
+    BEING_CANCELD = 'e'
     STATUSES = (
         (DRAFT, _("utkast")),
         (BEING_REVIEWED, _("väntar på godkännande")),
         (REJECTED, _("Avslaget")),
-        (APPROVED, _("Godkänt"))
+        (APPROVED, _("Godkänt")),
+        (CANCEL, _("Inställt")),
+        (BEING_CANCELD, _("väntar på att bli inställd"))
     )
+
 
     #  Description:
     headline = models.CharField(
