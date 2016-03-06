@@ -3143,6 +3143,10 @@ label.required:after {
   float: right;
 }
 
+.no_show_button {
+  cursor: pointer;
+}
+
 .indent-me {
   padding-left: 2em;
 }
