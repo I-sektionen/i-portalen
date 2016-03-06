@@ -40,6 +40,11 @@
             <span>Sponsrat innehåll</span>
         {% endif %}
     </p>
+    {% if event.status == "c" %}
+       <p class="cancel_event">
+           {{ event.cancel }}
+       </p>
+    {% endif %}
     <h2>{{ event.lead|truncatewords_html:50 }}</h2>
     {% if event.imageattachment_set %}
         {% for attachment in event.imageattachment_set.all %}
@@ -69,14 +74,18 @@
                     <form method="post" action="{% url "events:register to" event.pk %}">
                         {% csrf_token %}
                         <label>
-                            <button class="button-group-item"  type="submit" title="snälla">Anmäl mig</button>
+                            {% if event.status != "c" %}
+                                 <button class="button-group-item"  type="submit" title="snälla">Anmäl mig</button>
+                            {% endif %}
                         </label>
                     </form>
                 {% else %}
                     <form method="post" action="{% url "events:register as reserve" event.pk %}">
                         {% csrf_token %}
                         <label>
-                            <button class="button-group-item" type="submit" title="snälla">Anmäl mig som reserv</button>
+                            {% if event.status != "c" %}
+                                <button class="button-group-item" type="submit" title="snälla">Anmäl mig som reserv</button>
+                            {% endif %}
                         </label>
                     </form>
                 {% endif %}

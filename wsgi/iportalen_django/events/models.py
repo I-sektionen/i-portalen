@@ -128,6 +128,13 @@ class Event(models.Model):
 
     finished = models.BooleanField(verbose_name='Avsluta event', default=False, help_text="Kryssa i om eventet ska avslutas")
 
+    cancel = models.CharField(
+        blank=True,
+        null=True,
+        verbose_name=_("Beskrivning för inställt event"),
+        help_text=_("Motivera varför eventet blivit inställt"),
+        max_length=255)
+
     objects = EventManager()
 
     ###########################################################################

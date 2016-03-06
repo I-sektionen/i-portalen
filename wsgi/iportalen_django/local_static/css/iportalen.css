@@ -2428,6 +2428,9 @@ article.news-feed-content {
   font-family: "Lato", sans-serif;
   text-align: left;
 }
+article.news-feed-content .cancel_event {
+  color: red;
+}
 article.news-feed-content::after {
   clear: both;
   content: "";
@@ -3145,6 +3148,22 @@ label.required:after {
 
 .no_show_button {
   cursor: pointer;
+}
+
+#calender td {
+  position: relative;
+}
+#calender tr.strikeout td:before {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-bottom: 1px solid #a0a0a0;
+  width: 100%;
+}
+#calender tr.strikeout td:after {
+  content: "·";
+  font-size: 1px;
 }
 
 .indent-me {
