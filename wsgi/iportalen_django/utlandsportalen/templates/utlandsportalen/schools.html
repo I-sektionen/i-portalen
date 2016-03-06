@@ -1,0 +1,18 @@
+{% extends "master.html" %}
+
+{% load staticfiles %}
+{% block head %}
+{% endblock %}
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+    <h1>Dessa skolor finns:</h1>
+    {% for school in schools %}
+        <p> {{ school.name }}</p>
+    {% endfor %}
+    <h1>Med dessa kurser:</h1>
+    {% for course in courses %}
+        <p>{{ course.name }} - {{ course.course_code }} - {{ course.technical_profile }} - {{ course.corresponding_liu_course }}</p>
+    {% endfor %}
+{% endblock %}
