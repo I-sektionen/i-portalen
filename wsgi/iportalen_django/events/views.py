@@ -1,6 +1,7 @@
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.http.response import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required, permission_required
@@ -564,3 +565,28 @@ def show_noshows(request):
         result.append(tempuser)
 
     return render(request, "events/show_noshows.html", {"user": user, "no_shows": result})
+
+
+@login_required()
+@permission_required('events.can_remove_no_shows')
+def remove_noshow(request):
+    user = request.user
+    if request.method == 'POST':
+        try:
+            user_id=request.POST.get('user_id')
+            event_id=request.POST.get('event_id')
+        except:
+            return JsonResponse({'status': 'fel request'})
+        no_shows = EntryAsPreRegistered.objects.filter(user_id=user_id, event_id=event_id, no_show=True)
+        print(no_shows)
+        if len(no_shows)==1:
+            no_shows[0].no_show=False
+            no_shows[0].save()
+            return JsonResponse({'status': 'OK'})
+        elif len(no_shows)==0:
+            return JsonResponse({'status': 'Ingen no show hittades'})
+        else:
+            return JsonResponse({'status': 'Error: fler än ett no show hittades'})
+
+    return JsonResponse({'status': 'fel request'})
+

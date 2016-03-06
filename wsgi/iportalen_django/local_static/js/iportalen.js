@@ -418,7 +418,44 @@ var event_preview = function () {
 
 
 
-;
+;/**
+ * Created by elonbrange on 16-03-06.
+ */
+
+/**
+ * Created by jonathan on 2015-11-09.
+ */
+function remove_noshow(button, url, user_id, event_id) {
+    init_csrf();
+
+        console.log(user_id, event_id)
+        var data = {
+            'user_id': user_id,
+            'event_id': event_id
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function (result) {
+
+                if(result.status==='OK'){
+                    $(button).closest('li').remove()
+                     message_iportalen('success', 'No show borttagen');
+                }
+                else{
+                     message_iportalen('error', result.status);
+
+                }
+
+            },
+            error: function (request, status, error) {
+                message_iportalen('error', request.responseText);
+            }
+        });
+
+};
 function next_button(tab_no) {
     var next_tab_no = parseInt(tab_no, 10)+1;
     var next ='#tab'+next_tab_no+' a';
@@ -4757,6 +4794,14 @@ catch(err) {
 
 	return init(function () {});
 }));;/**
+ * Created by elonbrange on 16-03-06.
+ */
+
+function message_iportalen(message_type, message){
+    var message = '<div class="'+message_type+'"><span>'+message+'</span> <button type="button" onclick="closeMessage(this)">&times;</button> </div>'
+    $('#message-box').append(message);
+    console.log(message)
+};/**
  * Created by MagnusForzelius on 2015-10-31.
  */
 

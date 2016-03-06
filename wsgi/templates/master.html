@@ -24,16 +24,16 @@
     {% block navbar %}
     {% include "header.html" %}
     {% endblock %}
+    <div id="message-box">
     {% if messages %}
-        <div id="message-box">
             {% for message in messages %}
                 <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>
                     <span>{% if 'safe' in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}</span>
                     <button type="button" onclick="closeMessage(this)">&times;</button>
                 </div>
             {% endfor %}
-        </div>
     {% endif %}
+    </div>
 {% block hero %}
     {% load static from staticfiles %}
     {% load hero_tags %}

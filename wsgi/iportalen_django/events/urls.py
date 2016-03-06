@@ -37,8 +37,9 @@ event_patterns = [
     url(r'^(?P<pk>[0-9]+)/user_view/$',        view=views.user_view,              name="user view"),
     url(r'^(?P<pk>[0-9]+)/attachments/$',      view=views.upload_attachments,     name='manage attachments'),
     url(r'^(?P<pk>[0-9]+)/images/$',           view=views.upload_attachments_images, name='manage images'),
-    url(r'no_shows/$',                         view=views.show_noshows,            name="no_shows"),
+    url(r'^no_shows/$',                         view=views.show_noshows,            name="no_shows"),
     url(r'^(?P<pk>[0-9]+)/administer/', include(admin_patterns)),
+    url(r'^no_shows/remove$',                         view=views.remove_noshow,            name="remove_noshow"),
 
 ]
 
