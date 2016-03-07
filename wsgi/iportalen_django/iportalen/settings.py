@@ -77,8 +77,10 @@ INSTALLED_APPS = (
     'course_evaluations',
     'faq',
     'django.contrib.sitemaps',
-
 )
+
+if not ON_PASS:
+    INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
