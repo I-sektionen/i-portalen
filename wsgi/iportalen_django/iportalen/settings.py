@@ -63,7 +63,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'speaker_list',
     'iportalen',
+    'votings',
+    'hero',
     'storages',
     'tags',
     'user_managements',
@@ -74,9 +77,7 @@ INSTALLED_APPS = (
     'course_evaluations',
     'faq',
     'django.contrib.sitemaps',
-    'votings',
-    'speaker_list',
-    'hero'
+
 )
 
 MIDDLEWARE_CLASSES = (

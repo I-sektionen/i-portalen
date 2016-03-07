@@ -1,9 +1,9 @@
-# [I-portalen](http://master.i-portalen.se)
+# [I-portalen](http://www.i-portalen.se)
 
-## [Backlog/Kanban board/Scrum board](https://waffle.io/I-sektionen/i-portalen)
-
-## Viktig info 
-- [Guide för att sätt upp utvecklingsmiljön](https://github.com/I-sektionen/i-portalen/wiki/Installerings-Guide)
+## Viktig info
+- [Vill du bidra?](https://github.com/I-sektionen/i-portalen/blob/master/CONTRIBUTING.md)
+- [Guide för att sätt upp utvecklingsmiljön](https://github.com/I-sektionen/i-portalen/wiki/Installeringsguide)
+- [Backlog/Kanban board/Scrum board](https://waffle.io/I-sektionen/i-portalen)
 
 ## Länkar
 
@@ -12,5 +12,5 @@
 - [I-portalen](https://www.i-portalen.se)
 - [Användar manual I-portalen](http://i-sektionen.github.io/i-portalen/index.html)
 
-##Nya dependecies:
-sudo apt-get install libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk
+## License
+I-portalen är släppt under [MIT License](http://www.opensource.org/licenses/MIT).

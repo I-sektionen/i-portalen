@@ -36,7 +36,7 @@ def landing(request):
 
 
 def news_content(request):
-    if request.is_ajax():
+    if request.method == "POST":
         tags = request.POST.getlist('tags[]')
         if int(request.POST.get('articles')) == 1:
             articles = Article.objects.published()

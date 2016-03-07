@@ -28,7 +28,7 @@
         <ul>
             {% for event in no_show.no_shows %}
                 <li>
-
+                <span class="fa fa-minus-square no_show_button" onclick="remove_noshow(this,'{% url 'events:remove_noshow' %}', '{{ no_show.user.pk }}', '{{ event.event.pk }}')"></span>
             {{ event.event }},
             {{ event.timestamp|date:"Y-m-d" }}
                 </li>

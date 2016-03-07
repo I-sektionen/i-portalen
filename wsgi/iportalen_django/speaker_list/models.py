@@ -1,7 +1,7 @@
 from django.db import models
 from events.models import Event
 from iportalen import settings
-from speaker_list.managers import SpeakerListManager
+from .managers import SpeakerListManager
 from django.utils.translation import ugettext_lazy as _
 
 
