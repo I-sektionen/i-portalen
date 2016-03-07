@@ -6,6 +6,15 @@
 
 * Om du inte hittar ett öppet issue som behandlar buggen, [öppna ett nytt issue](https://github.com/I-sektionen/i-portalen/issues/new). Försök vara så tydlig som möjligt och använd den färdiga templaten när du skapar ett issue.
 
+#### **Vill du skriva en patch för en bug eller feature?**
+* [Gör en fork av repot](https://help.github.com/articles/fork-a-repo/)
+
+* Skapa en ny branch från development branchen
+ 
+* Skriv kod
+
+* [Lägg en pull request mot development branchen](https://help.github.com/articles/using-pull-requests/)
+
 #### **Har du skrivit en patch som fixar en bug?**
 
 * Öppna en GitHub pull request mad din patch.
