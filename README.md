@@ -1,6 +1,7 @@
 # [I-portalen](http://www.i-portalen.se)
 
-## Viktig info 
+## Viktig info
+- [Vill du bidra?](https://github.com/I-sektionen/i-portalen/blob/master/CONTRIBUTING.md)
 - [Guide för att sätt upp utvecklingsmiljön](https://github.com/I-sektionen/i-portalen/wiki/Installeringsguide)
 - [Backlog/Kanban board/Scrum board](https://waffle.io/I-sektionen/i-portalen)
 
