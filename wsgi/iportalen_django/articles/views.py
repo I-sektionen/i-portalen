@@ -14,7 +14,7 @@ from .models import Article, OtherAttachment, ImageAttachment
 from .forms import ArticleForm, RejectionForm, AttachmentForm, ImageAttachmentForm
 from tags.models import Tag
 from django.core.mail import send_mail
-from wsgi.iportalen_django.iportalen import settings
+from iportalen import settings
 
 
 @login_required()

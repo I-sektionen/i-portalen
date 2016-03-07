@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.utils import timezone
 
 from events.models import Event
-from speaker_list.exceptions import SpeakerListException
+from .exceptions import SpeakerListException
 from .models import SpeakerList
 from user_managements.models import IUser
 
