@@ -4,6 +4,7 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from articles.models import Article
 from events.models import Event
 
@@ -35,6 +36,7 @@ def landing(request):
     return render(request, 'landing.html')
 
 
+@csrf_exempt
 def news_content(request):
     if request.method == "POST":
         tags = request.POST.getlist('tags[]')
