@@ -19,5 +19,5 @@ setup(name='I-Portalen',
                         'pillow>=2.0.0',
                         'requests==2.6.0',
                         'requests-toolbelt'
-                        ],  # This should match requirements.txt!
+                        ], # This should match requirements.txt!
       )
