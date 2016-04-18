@@ -77,6 +77,7 @@ INSTALLED_APPS = (
     'course_evaluations',
     'faq',
     'django.contrib.sitemaps',
+    'rest_framework',
 )
 
 if not ON_PASS:
@@ -206,6 +207,17 @@ if ON_PASS:
     }
 
 LOGIN_URL = 'login_view'
+
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
+}
 
 # Email settings:
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # This is a dummy backend which prints emails as a
