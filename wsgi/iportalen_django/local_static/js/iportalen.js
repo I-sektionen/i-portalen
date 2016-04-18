@@ -265,6 +265,11 @@ function printDiv(divName) {
      window.print();
 
      document.body.innerHTML = originalContents;
+};/**
+ * Created by elonbrange on 16-04-18.
+ */
+function cancel_write(){
+
 };//This function initiates the markdown engine. It is called on by event_preview below.
 function markdown_event_preview() {
         var converter = Markdown.getSanitizingConverter();

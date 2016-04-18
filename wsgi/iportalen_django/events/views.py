@@ -13,7 +13,7 @@ from django.db import transaction
 import csv
 from utils.validators import liu_id_validator
 from .forms import EventForm, CheckForm, ImportEntriesForm, RejectionForm, AttachmentForm, \
-    ImageAttachmentForm
+    ImageAttachmentForm, CancelForm
 from .models import Event, EntryAsPreRegistered, EntryAsReserve, EntryAsParticipant, OtherAttachment, \
     ImageAttachment
 from .exceptions import CouldNotRegisterException
@@ -589,4 +589,26 @@ def remove_noshow(request):
             return JsonResponse({'status': 'Error: fler än ett no show hittades'})
 
     return JsonResponse({'status': 'fel request'})
+
+@login_required()
+def cancel(request, pk=None):
+    event = get_object_or_404(Event, pk=pk)
+    form = CancelForm(request.POST or None, request.FILES or None, instance=event)
+    event.status = Event.BEING_CANCELD
+    body = "<h1>Hej!</h1><br><br><p>Det finns nya event att ställa in på i-Portalen.<br><a href='https://www.i-portalen.se/article/unapproved/'>Klicka här!</a></p><br><br><p>Med vänliga hälsningar, <br><br>Admins @ webgroup" + form
+    send_mail('Nytt event att ställa in', '', settings.EMAIL_HOST_USER, ['utgivare@isektionen.se'], fail_silently=False, html_message=body)
+    messages.success(request, _("Dina ändringar har skickats för granskning."))
+
+    return render(request, 'events/administer_event.html', {'event': event, 'form':form})
+
+@login_required()
+def confirm_cancel(request, pk=None):
+    event = get_object_or_404(Event, pk=pk)
+    form = CancelForm(request.POST or None, request.FILES or None, instance=event)
+
+    return render(request, 'events/administer_event.html', {'event': event, 'form':form})
+
+
+
+
 

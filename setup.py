@@ -18,6 +18,7 @@ setup(name='I-Portalen',
                         'pytz',
                         'pillow>=2.0.0',
                         'requests==2.6.0',
-                        'requests-toolbelt'
+                        'requests-toolbelt',
+                        'django-debug-toolbar'
                         ],  # This should match requirements.txt!
       )
