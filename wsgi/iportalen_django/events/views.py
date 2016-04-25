@@ -117,9 +117,10 @@ def register_as_reserve(request, pk):
 @login_required()
 def administer_event(request, pk):
     event = get_object_or_404(Event, pk=pk)
+    form = CancelForm(request.POST or None, request.FILES or None, instance=event)
     if event.can_administer(request.user):
         return render(request, 'events/administer_event.html', {
-            'event': event,
+            'event': event, 'form':form,
         })
     else:
         raise PermissionDenied  # Nope.
@@ -593,20 +594,17 @@ def remove_noshow(request):
 @login_required()
 def cancel(request, pk=None):
     event = get_object_or_404(Event, pk=pk)
-    form = CancelForm(request.POST or None, request.FILES or None, instance=event)
     event.status = Event.BEING_CANCELD
-    body = "<h1>Hej!</h1><br><br><p>Det finns nya event att ställa in på i-Portalen.<br><a href='https://www.i-portalen.se/article/unapproved/'>Klicka här!</a></p><br><br><p>Med vänliga hälsningar, <br><br>Admins @ webgroup" + form
-    send_mail('Nytt event att ställa in', '', settings.EMAIL_HOST_USER, ['utgivare@isektionen.se'], fail_silently=False, html_message=body)
-    messages.success(request, _("Dina ändringar har skickats för granskning."))
+    if request.method == 'POST':
+        form = CheckForm(request.POST)
+        if form.is_valid():
+            form_user = form.cleaned_data["cancel"]
+            body = "<h1>Hej!</h1><br><br><p>Det finns nya event att ställa in på i-Portalen.<br><a href='https://www.i-portalen.se/article/unapproved/'>Klicka här!</a></p><br><br><p>Med vänliga hälsningar, <br><br>Admins @ webgroup" + form_user
+            send_mail('Nytt event att ställa in', '', settings.EMAIL_HOST_USER, ['utgivare@isektionen.se'], fail_silently=False, html_message=body)
+            messages.success(request, _("Dina ändringar har skickats för granskning."))
+    return render(request, 'events/administer_event.html', {'event': event, 'form':form, 'form_user':form_user, })
 
-    return render(request, 'events/administer_event.html', {'event': event, 'form':form})
 
-@login_required()
-def confirm_cancel(request, pk=None):
-    event = get_object_or_404(Event, pk=pk)
-    form = CancelForm(request.POST or None, request.FILES or None, instance=event)
-
-    return render(request, 'events/administer_event.html', {'event': event, 'form':form})
 
 
 

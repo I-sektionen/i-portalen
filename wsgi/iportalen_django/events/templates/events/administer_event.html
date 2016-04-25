@@ -2,48 +2,53 @@
 {% block hero %}
 {% endblock %}
 {% block content %}
-    <h1>Administration</h1>
-    <p>Detta är en kontrollpanel för arrangören av ett event.</p>
-    <h2>Deltagare</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h1>Administration</h1>
+        <p>Detta är en kontrollpanel för arrangören av ett event.</p>
+        <h2>Deltagare</h2>
 
-    <ul>
-        <li><a href="{% url "events:preregistrations" event.pk %}">Se anmälningar</a></li>
-        <li><a href="{% url "events:participants" event.pk %}">Se deltagare</a></li>
-        <li><a href="{% url "events:reserves" event.pk %}">Se reserver</a></li>
-        <li><a href="{% url "events:import registrations" event.pk %}">Importera anmälningar</a></li>
-        <li><a href="{% url "events:check in" event.pk %}">Starta incheckning</a></li>
-        {% if not event.finished %}
-            <br> {# Medveten placering efter att någon haft för tjocka fingrar och tryckt här istället för på starta incheckning #}
-            <li><a href="{% url "events:no show" event.pk %}">Rapportera eventet</a> <i>(Klicka här när incheckningen är klar för att rapportera in vilka som kom på eventet.)</i></li>
-        {% endif %}
-    </ul>
-    <p></p>
-    <h2>Hantera talarlista</h2>
-    <ul>
-        <li><a href="{% url "events:speech nr list" event.pk %}">Se lista över talarnummer</a></li>
-        <li><a href="{% url "speaker_list:administer speaker list" event.pk %}">Admin Talarlistan</a></li>
-        <li><a href="{% url "speaker_list:speaker display" event.pk %}">Se Talarlistan</a></li>
-    </ul>
-    <p></p>
-    <h2>Ändra eventets information</h2>
-    <ul>
-        <li><a href="{% url "events:edit" event.pk %}">Ändra event</a></li>
-        <li><a href="{% url "events:manage attachments" event.pk %}">Hantera bilagor</a></li>
-        <!--<li><a href="{% url "events:manage images" event.pk %}">Hantera bilder</a></li>-->
-        <li>
-             <a href="{% url "events:cancel" event.pk %}">Ställ in event</a>
-            {{ form.cancel }}
-        </li>
-    </ul>
-    <p></p>
-    <h2>Hantera omröstningar</h2>
-    <ul>
-        {% if not event.questiongroup_set.all %}
-            <li><a href="{% url "votings:create from event" event.pk %}">Skapa omröstningar</a></li>
-        {% else %}
-            <li><a href="{% url "votings:admin from event" event.pk %}">Administrera omröstningar</a></li>
-            <li><a href="{% url "votings:get from event" event.pk %}">Visa omröstningar</a></li>
-        {% endif %}
-    </ul>
+        <ul>
+            <li><a href="{% url "events:preregistrations" event.pk %}">Se anmälningar</a></li>
+            <li><a href="{% url "events:participants" event.pk %}">Se deltagare</a></li>
+            <li><a href="{% url "events:reserves" event.pk %}">Se reserver</a></li>
+            <li><a href="{% url "events:import registrations" event.pk %}">Importera anmälningar</a></li>
+            <li><a href="{% url "events:check in" event.pk %}">Starta incheckning</a></li>
+            {% if not event.finished %}
+                <br> {# Medveten placering efter att någon haft för tjocka fingrar och tryckt här istället för på starta incheckning #}
+                <li><a href="{% url "events:no show" event.pk %}">Rapportera eventet</a> <i>(Klicka här när incheckningen är klar för att rapportera in vilka som kom på eventet.)</i></li>
+            {% endif %}
+        </ul>
+        <p></p>
+        <h2>Hantera talarlista</h2>
+        <ul>
+            <li><a href="{% url "events:speech nr list" event.pk %}">Se lista över talarnummer</a></li>
+            <li><a href="{% url "speaker_list:administer speaker list" event.pk %}">Admin Talarlistan</a></li>
+            <li><a href="{% url "speaker_list:speaker display" event.pk %}">Se Talarlistan</a></li>
+        </ul>
+        <p></p>
+        <h2>Ändra eventets information</h2>
+        <ul>
+            <li><a href="{% url "events:edit" event.pk %}">Ändra event</a></li>
+            <li><a href="{% url "events:manage attachments" event.pk %}">Hantera bilagor</a></li>
+            <!--<li><a href="{% url "events:manage images" event.pk %}">Hantera bilder</a></li>-->
+            <li>
+                <span><a onclick="cancel_write()">Ställa in event</a></span>
+                <div id="canceltext" style="visibility: hidden;">{{ form.cancel }}</div>
+                <a href="{% url "events:cancel" event.pk %}">test</a>
+                <button id="sendtext" style="visibility: hidden;">Skicka</button>
+            </li>
+        </ul>
+        <p></p>
+        <h2>Hantera omröstningar</h2>
+        <ul>
+            {% if not event.questiongroup_set.all %}
+                <li><a href="{% url "votings:create from event" event.pk %}">Skapa omröstningar</a></li>
+            {% else %}
+                <li><a href="{% url "votings:admin from event" event.pk %}">Administrera omröstningar</a></li>
+                <li><a href="{% url "votings:get from event" event.pk %}">Visa omröstningar</a></li>
+            {% endif %}
+        </ul>
+    </form>
 
 {% endblock %}

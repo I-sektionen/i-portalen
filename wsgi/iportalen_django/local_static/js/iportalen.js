@@ -269,7 +269,10 @@ function printDiv(divName) {
  * Created by elonbrange on 16-04-18.
  */
 function cancel_write(){
-
+    var show = document.getElementById("canceltext");
+    show.style.visibility = "visible";
+    var showsend = document.getElementById("sendtext");
+    showsend.style.visibility = "visible";
 };//This function initiates the markdown engine. It is called on by event_preview below.
 function markdown_event_preview() {
         var converter = Markdown.getSanitizingConverter();

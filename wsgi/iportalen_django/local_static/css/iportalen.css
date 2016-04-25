@@ -3170,6 +3170,10 @@ h1 span {
   color: red;
 }
 
+li span a:hover {
+  cursor: pointer;
+}
+
 .indent-me {
   padding-left: 2em;
 }
