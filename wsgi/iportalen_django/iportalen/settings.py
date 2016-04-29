@@ -78,6 +78,7 @@ INSTALLED_APPS = (
     'course_evaluations',
     'faq',
     'django.contrib.sitemaps',
+    'django_nose'
 )
 
 if not ON_PASS:
@@ -116,6 +117,7 @@ TEMPLATES = [
     },
 ]
 
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 WSGI_APPLICATION = 'iportalen.wsgi.application'
 
 if ON_PASS:
