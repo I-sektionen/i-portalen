@@ -118,6 +118,11 @@ TEMPLATES = [
 ]
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+NOSE_ARGS = [
+    '--with-coverage'
+]
+
 WSGI_APPLICATION = 'iportalen.wsgi.application'
 
 if ON_PASS:
