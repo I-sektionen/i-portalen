@@ -1,3 +1,7 @@
+general:
+  artifacts:
+    - "wsgi/iportalen_django"
+
 machine:
   python:
     version: 3.4.3
