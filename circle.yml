@@ -1,7 +1,10 @@
+general:
+  build_dir: wsgi/iportalen_django
+
+dependencies:
+  pre:
+    - pip install -r ~/i-portalen/requirements.txt
+
 machine:
   python:
     version: 3.4.3
-
-test:
-  override:
-    - python wsgi/iportalen_django/manage.py test --noinput

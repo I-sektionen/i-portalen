@@ -145,12 +145,7 @@ elif ON_CIRCLE:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'circle_test',
-            'USER': 'ubuntu',
-            'HOST': 'localhost',
-            'PORT': '3306',
-            'TEST': {
-                'NAME': 'circle_test'
-            },
+            'USER': 'ubuntu'
         }
     }
 else:
