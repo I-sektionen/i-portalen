@@ -19,6 +19,7 @@ setup(name='I-Portalen',
                         'pillow>=2.0.0',
                         'requests==2.6.0',
                         'requests-toolbelt',
-                        'django-nose'
+                        'django-nose',
+                        'coverage'
                         ], # This should match requirements.txt!
       )

@@ -13,3 +13,4 @@ requests==2.6.0
 requests-toolbelt
 django-debug-toolbar
 django-nose
+coverage
