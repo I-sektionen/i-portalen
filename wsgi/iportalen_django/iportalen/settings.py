@@ -147,7 +147,10 @@ elif ON_CIRCLE:
             'NAME': 'circle_test',
             'USER': 'ubuntu',
             'HOST': 'localhost',
-            'PORT': '3306'
+            'PORT': '3306',
+            'TEST': {
+                'NAME': 'circle_test',
+            },
         }
     }
 else:
