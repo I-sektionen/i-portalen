@@ -150,6 +150,7 @@ elif ON_CIRCLE:
             'PORT': '3306',
             'TEST': {
                 'NAME': 'circle_test',
+                'CREATE_DB': False
             },
         }
     }
