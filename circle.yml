@@ -1,6 +1,5 @@
 general:
-  artifacts:
-    - "wsgi/iportalen_django"
+  build_dir: wsgi/iportalen_django
 
 machine:
   python:
