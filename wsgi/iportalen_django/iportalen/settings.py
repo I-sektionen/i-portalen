@@ -149,8 +149,7 @@ elif ON_CIRCLE:
             'HOST': 'localhost',
             'PORT': '3306',
             'TEST': {
-                'NAME': 'circle_test',
-                'CREATE_DB': False
+                'NAME': 'circle_test'
             },
         }
     }
