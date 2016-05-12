@@ -113,10 +113,10 @@ class Invoice(models.Model):
         # Number based on primary key
         pk_str = str(self.pk)
         num = "1337"
-        while len(num)+len(pk_str) < 9:
+        while len(num)+len(pk_str) < 8:
             num += "0"
         num += pk_str
-        num += "10"  # Should be 10 long now, eleven wih check number.
+        num += "10"  # Should be 9 long now, ten wih check number.
         check_num = check_sum(num)
         if check_num != 0:
             num = num[:-1]
