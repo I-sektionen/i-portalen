@@ -1475,6 +1475,10 @@ label.required:after {
   height: 70px;
 }
 
+#tb-s3objects_length > label > select {
+  display: inline;
+}
+
 .footer {
   background: #f7f7f7;
   padding: 1.95em 1.618em;

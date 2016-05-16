@@ -1,0 +1,41 @@
+{% extends "master.html" %}
+{# This file defines the front page and is a own kind of master page #}
+{% load iportalen_tags %}
+{% load tag_tags %}
+{% include "header.html" %}
+{% load staticfiles %}
+{% block content %}
+
+    <div id="file_archive" class="panel panel-primary">
+        <!-- Panel including bucket/folder information and controls -->
+        <div class="panel-heading clearfix">
+            <!-- Bucket selection and breadcrumbs -->
+            <div class="btn-group pull-left">
+                <!-- Bucket breadcrumbs -->
+                <div class="btn pull-right">
+                    <ul id="breadcrumb" class="btn breadcrumb pull-right">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel including S3 object table -->
+        <div class="panel-body">
+            <table class="table table-bordered table-hover table-striped" id="tb-s3objects">
+                <thead>
+                    <tr>
+                        <th width="60%">Objekt</th>
+                        <th width="20%">Senast ändrad</th>
+                        <th width="20%">Storlek</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-s3objects"></tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+{% block document_ready %}
+    load_file_archive();
+{% endblock %}
