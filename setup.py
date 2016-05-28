@@ -18,6 +18,8 @@ setup(name='I-Portalen',
                         'pytz',
                         'pillow>=2.0.0',
                         'requests==2.6.0',
-                        'requests-toolbelt'
-                        ],  # This should match requirements.txt!
+                        'requests-toolbelt',
+                        'django-nose',
+                        'coverage'
+                        ], # This should match requirements.txt!
       )
