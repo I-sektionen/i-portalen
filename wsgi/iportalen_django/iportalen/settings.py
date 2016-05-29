@@ -79,7 +79,7 @@ INSTALLED_APPS = (
     'faq',
     'django.contrib.sitemaps',
     'rest_framework',
-    'django_nose'
+    'django_nose',
 
 )
 
