@@ -16,3 +16,5 @@ django-filter
 djangorestframework
 django-nose
 coverage
+django-cors-headers
+

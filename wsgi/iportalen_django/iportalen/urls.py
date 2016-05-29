@@ -29,7 +29,7 @@ sitemaps = {
 }
 
 router = DefaultRouter()
-router.register(r'user', user_managements_api_views.IUserViewSet)
+router.register(r'iusers', user_managements_api_views.IUserViewSet)
 router.register(r'bachelor_profile', user_managements_api_views.BachelorProfileViewSet)
 router.register(r'master_profile', user_managements_api_views.MasterProfileViewSet)
 

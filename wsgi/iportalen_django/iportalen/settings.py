@@ -80,6 +80,7 @@ INSTALLED_APPS = (
     'django.contrib.sitemaps',
     'rest_framework',
     'django_nose',
+    'corsheaders',
 
 )
 
@@ -88,6 +89,7 @@ if not ON_PASS:
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -309,4 +311,14 @@ LOGGING = {
     },
 }
 
+CORS_ORIGIN_ALLOW_ALL = False
+if ON_PASS:
+    CORS_ORIGIN_WHITELIST = (
+        'utlandsportalen-ember.heroku.com',
+    )
+else:
+    CORS_ORIGIN_WHITELIST = (
+        '127.0.0.1:4200',
+        '127.0.0.1:1337'
+    )
 
