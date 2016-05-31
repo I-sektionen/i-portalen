@@ -25,5 +25,6 @@ setup(name='I-Portalen',
                         'django-debug-toolbar',
                         'djangorestframework',
                         'djang-cors-headers',
+                        'reversion',
                         ], # This should match requirements.txt!
       )
