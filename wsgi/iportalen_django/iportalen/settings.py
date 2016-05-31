@@ -312,11 +312,12 @@ LOGGING = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = False
+
 if ON_PASS:
     CORS_ORIGIN_WHITELIST = (
         'utlandsportalen-ember.heroku.com',
     )
-else:
+if not ON_PASS:
     CORS_ORIGIN_WHITELIST = (
         '127.0.0.1:4200',
         '127.0.0.1:1337',
