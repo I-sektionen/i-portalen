@@ -315,7 +315,8 @@ CORS_ORIGIN_ALLOW_ALL = False
 
 if ON_PASS:
     CORS_ORIGIN_WHITELIST = (
-        'utlandsportalen-ember.heroku.com',
+        'http://utlandsportalen-ember.herokuapp.com/',
+        'http://utlandsportalen-ember.herokuapp.com/ember-admin',
     )
 if not ON_PASS:
     CORS_ORIGIN_WHITELIST = (
