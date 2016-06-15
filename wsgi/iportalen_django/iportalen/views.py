@@ -20,12 +20,12 @@ def glasscubes_link(request):
 
 @login_required()
 def glasscubes_link_course(request):
-    return redirect("https://www.dropbox.com/sh/ah2wws4hsu1p184/AAD_UxPQZLROrKO53m8ALQela/Studien%C3%A4mnden%3A%20Kursutv%C3%A4rderingar?dl=0")
+    return redirect("https://www.dropbox.com/sh/8n3t8om0rkqlkem/AAA0igQbQB_C7q4LLbGwUKPaa?dl=0")
 
 
 @login_required()
 def glasscubes_link_bible(request):
-    return redirect("https://www.dropbox.com/sh/ah2wws4hsu1p184/AACYygGsxiFTz610yEQfADTda/Studien%C3%A4mnden%3A%20I-biblar?dl=0")
+    return redirect("https://www.dropbox.com/sh/rd3rcmfepq036uq/AABtg4JSpCxWVmLjJ2NGM0L0a?dl=0")
 
 
 def isektionen_link(request):
