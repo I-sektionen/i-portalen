@@ -15,17 +15,17 @@ def placeholder(request):
 
 @login_required()
 def glasscubes_link(request):
-    return redirect("https://industriellekonomi.glasscubes.com/share/s/d6msv3iv5a4g36o8d5q1ct2uvm")
+    return redirect("https://www.dropbox.com/sh/ah2wws4hsu1p184/AAAhfa1l-AvbBGzKPNS3AYQUa?dl=0")
 
 
 @login_required()
 def glasscubes_link_course(request):
-    return redirect("https://industriellekonomi.glasscubes.com/share/s/q8sm9jp2ngqisrojo8l2p29g05?1")
+    return redirect("https://www.dropbox.com/sh/ah2wws4hsu1p184/AAD_UxPQZLROrKO53m8ALQela/Studien%C3%A4mnden%3A%20Kursutv%C3%A4rderingar?dl=0")
 
 
 @login_required()
 def glasscubes_link_bible(request):
-    return redirect("https://industriellekonomi.glasscubes.com/share/s/h7dg16qh44viman4o5ej1kkt2h?1")
+    return redirect("https://www.dropbox.com/sh/ah2wws4hsu1p184/AACYygGsxiFTz610yEQfADTda/Studien%C3%A4mnden%3A%20I-biblar?dl=0")
 
 
 def isektionen_link(request):
