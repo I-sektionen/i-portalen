@@ -7,7 +7,7 @@ setup(name='I-Portalen',
       author='Webgroup',
       author_email='webmaster@isektionen.se',
       url='http://www.i-portalen.se',
-      install_requires=['django>=1.8.5,<1.8.99  ',
+      install_requires=['django>=1.8.5,<1.8.99',
                         'PyMySQL',
                         'dj-static',
                         'markdown',
@@ -25,6 +25,5 @@ setup(name='I-Portalen',
                         'django-debug-toolbar',
                         'djangorestframework',
                         'django-cors-headers',
-                        'reversion',
-                        ], # This should match requirements.txt!
+                        'reversion'],  # This should match requirements.txt!
       )
