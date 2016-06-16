@@ -1,5 +1,4 @@
 from django.conf.urls import include, url
-from django.contrib import admin
 
 from utils.admin import iportalen_admin_site, iportalen_superadmin_site
 from django.views.generic import TemplateView, RedirectView
@@ -16,9 +15,7 @@ from .sitemaps import (
     OrganisationSitemap,
     StaticViewSitemapMedium
 )
-from rest_framework.routers import DefaultRouter
 
-from user_managements import api_views as user_managements_api_views
 sitemaps = {
     'static': StaticViewSitemapHigh,
     'event': EventSitemap,
@@ -27,11 +24,6 @@ sitemaps = {
     'static_low': StaticViewSitemapLow,
     'static_mid': StaticViewSitemapMedium,
 }
-
-router = DefaultRouter()
-router.register(r'iusers', user_managements_api_views.IUserViewSet)
-router.register(r'bachelor_profile', user_managements_api_views.BachelorProfileViewSet)
-router.register(r'master_profile', user_managements_api_views.MasterProfileViewSet)
 
 
 urlpatterns = [
@@ -73,7 +65,7 @@ urlpatterns = [
     url(r'^utlandsportalen', RedirectView.as_view(pattern_name='news feed', permanent=True)),
     url(r'^i-profilen', RedirectView.as_view(pattern_name='user_management:my page', permanent=True)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^api/v1/', include(router.urls)),
+    url(r'^api/v1/', include("user_managements.api_urls")),
 
 ]
 if not settings.ON_PASS:
