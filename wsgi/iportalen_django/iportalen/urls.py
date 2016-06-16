@@ -1,5 +1,4 @@
 from django.conf.urls import include, url
-from django.contrib import admin
 
 from utils.admin import iportalen_admin_site, iportalen_superadmin_site
 from django.views.generic import TemplateView, RedirectView
@@ -25,6 +24,7 @@ sitemaps = {
     'static_low': StaticViewSitemapLow,
     'static_mid': StaticViewSitemapMedium,
 }
+
 
 urlpatterns = [
     url(r'^$',             view=views.landing,                   name="news feed"),
@@ -64,6 +64,9 @@ urlpatterns = [
     url(r'^alumn', RedirectView.as_view(pattern_name='news feed', permanent=True)),
     url(r'^utlandsportalen', RedirectView.as_view(pattern_name='news feed', permanent=True)),
     url(r'^i-profilen', RedirectView.as_view(pattern_name='user_management:my page', permanent=True)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/v1/', include("user_managements.api_urls")),
+
 ]
 if not settings.ON_PASS:
     urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

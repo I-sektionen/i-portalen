@@ -20,6 +20,10 @@ setup(name='I-Portalen',
                         'requests==2.6.0',
                         'requests-toolbelt',
                         'django-nose',
-                        'coverage'
-                        ], # This should match requirements.txt!
+                        'coverage',
+                        'django-filter',
+                        'django-debug-toolbar',
+                        'djangorestframework==3.3.2',
+                        'django-cors-headers',
+                        'reversion'],  # This should match requirements.txt!
       )

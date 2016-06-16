@@ -78,7 +78,10 @@ INSTALLED_APPS = (
     'course_evaluations',
     'faq',
     'django.contrib.sitemaps',
-    'django_nose'
+    'rest_framework',
+    'django_nose',
+    'corsheaders',
+
 )
 
 if not ON_PASS:
@@ -86,6 +89,7 @@ if not ON_PASS:
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -223,6 +227,17 @@ if ON_PASS:
 
 LOGIN_URL = 'login_view'
 
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
+}
+
 # Email settings:
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # This is a dummy backend which prints emails as a
                                                                   # normal print() statement (i.e. to stdout)
@@ -296,4 +311,15 @@ LOGGING = {
     },
 }
 
+CORS_ORIGIN_ALLOW_ALL = False
+
+if ON_PASS:
+    CORS_ORIGIN_WHITELIST = (
+        'utlandsportalen-ember.herokuapp.com',
+    )
+if not ON_PASS:
+    CORS_ORIGIN_WHITELIST = (
+        '127.0.0.1:4200',
+        '127.0.0.1:1337',
+    )
 
