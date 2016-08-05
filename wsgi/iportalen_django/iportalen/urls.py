@@ -54,7 +54,7 @@ urlpatterns = [
     url(r'^cookies/$',   view=TemplateView.as_view(template_name="cookies.html"), name="cookies"),
     url(r'^robots.txt$', view=TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
 
-    url(r'^.well-known/acme-challenge/wi-FNNcg2LWlNuyqZP3w8SpuJQ5Z7VTimJn9O6rzgkE',
+    url(r'^.well-known/acme-challenge/VFN4nJjt2i-lyd3e2A66e3XAUiDW5Nu5q6HLGn8Ci4A',
         view=TemplateView.as_view(template_name='acme.txt', content_type='text/plain')),
 
     # Om någon har sparat /student som favorit skickar vi dem till startsidan
