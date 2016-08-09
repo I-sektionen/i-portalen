@@ -81,7 +81,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'django_nose',
     'corsheaders',
-
+    'letsencrypt'
 )
 
 if not ON_PASS:
