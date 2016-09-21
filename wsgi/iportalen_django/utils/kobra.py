@@ -35,8 +35,10 @@ def _convert_new_to_old(new_kobra):
 
 def _make_call_to_kobra(payload):
     p = None
+    liuid=None
     if 'liu_id' in payload:
         p = payload['liu_id']
+        liuid = p
     elif 'rfid_number' in payload:
         p = payload['rfid_number']
     if p is None:
@@ -60,6 +62,8 @@ def _make_call_to_kobra(payload):
         if 'Invalid token' in person['detail']:
             raise LiuGetterError(person['detail'])
         raise LiuNotFoundError(person['detail'])
+    if person['email'] == "None" and liuid:
+        person['email'] = "{liuid}@student.liu.se".format(liuid=liuid)
     return _convert_new_to_old(person)
 
 
@@ -83,4 +87,4 @@ def _make_call_to_kobra(payload):
 #     return result_dict
 
 if __name__ == "__main__":
-    print(get_user_by_liu_id("jonan099"))
+    print(get_user_by_liu_id("antre986"))
