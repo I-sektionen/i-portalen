@@ -47,6 +47,7 @@ urlpatterns = [
     url(r'^user/',              include('user_managements.urls')),
     url(r'^voting/',            include('votings.urls')),
     url(r'^speaker/',           include('speaker_list.urls')),
+    url(r'^fika_penalty/',      include('fika_penalty.urls')),
 
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 

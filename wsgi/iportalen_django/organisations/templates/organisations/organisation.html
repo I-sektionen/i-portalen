@@ -30,6 +30,12 @@
                 <button>Hantera medlemmar</button>
             </a>
         {% endif %}
+    {% is_in_organisation request.user organisation as is_member %}
+    {% if is_member %}
+    <a href="{% url "fika_penalty:organisation penalties" organisation.name %}">
+        <button>Fikakassan</button>
+    </a>
+    {% endif %}
     </div>
     <div id="organisation-content">
         <section id="organisation-description">
