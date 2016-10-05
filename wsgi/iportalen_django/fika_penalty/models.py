@@ -2,6 +2,7 @@
 from django.db import models
 
 # Create your models here.
+from fika_penalty.managers import FikaPenaltyManager
 from organisations.models import Organisation
 from user_managements.models import IUser
 
@@ -14,9 +15,12 @@ class FikaPenalty(models.Model):
     reason = models.TextField(verbose_name="Anledning", null=True, blank=True)
     paid = models.BooleanField(default=False, verbose_name="Betald")
 
+    objects = FikaPenaltyManager()
+
     def __str__(self):
         return "{name} - {org}".format(name=self.user.get_full_name, org=str(self.organisation))
 
     def pay(self):
         self.paid = True
         self.save()
+
