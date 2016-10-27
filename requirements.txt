@@ -3,7 +3,7 @@ Django>=1.8.5,<1.8.99
 dj-static
 mysqlclient
 markdown
-django-storages-redux
+django-storages==1.5.1
 boto
 urllib3
 django_extensions
