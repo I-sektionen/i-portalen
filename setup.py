@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(name='I-Portalen',
-      version='1.0',
+      version='1.1.0',
       description='I-sektionens anslagstavla tillika hemsida',
       author='Webgroup',
       author_email='webmaster@isektionen.se',
