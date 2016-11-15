@@ -20,9 +20,9 @@
         <p> {{ u.allergies|default:"Du har inte angett någon information"}}</p>
         <h3>ipikuré:</h3>
         {% if u.ipikuresubscriber %}
-        <p>Du prenumererar på ipikure sedan {{ u.ipikuresubscriber.date_subscribed|date:"Y-m-d" }} glöm inte att uppdatera din prenumeration efter sommaruppehållet. <a href="{% url "user_management:subscribe to ipikure" %}">Uppdatera prenumerationen på ipikuré</a></p>
+            <p>Du prenumererar på ipikure sedan {{ u.ipikuresubscriber.date_subscribed|date:"Y-m-d" }} glöm inte att uppdatera din prenumeration efter sommaruppehållet. <a href="{% url "user_management:subscribe to ipikure" %}">Uppdatera prenumerationen på ipikuré</a></p>
         {% else %}
-        <p>Du prenumererar inte på ipikure. <a href="{% url "user_management:subscribe to ipikure" %}">Anmälan Ipikuré</a></p>
+            <p>Du prenumererar inte på ipikure. <a href="{% url "user_management:subscribe to ipikure" %}">Anmälan Ipikuré</a></p>
         {% endif %}
     {% endwith %}
 </div>
@@ -31,6 +31,7 @@
     <a href="javascript:void(0)" class="tab-link {{ tab2 }}">Ändra uppgifter</a>
     <div class="tab-content">
         <form action="" method="post" autocomplete="on">
+            <input type="hidden" name="type" id="id_type" value="update">
             {% csrf_token %}
             {{ form.non_field_errors }}
             {% for field in form %}
@@ -65,6 +66,24 @@
         <p>En eller båda länkarna ovan kopieras in i ditt kalenderprogram. I Google Calendar tillexempel väljs
             alternativet <em>lägg till en webbadress</em> under menyn <em>andra kalendrar</em>, i andra programvaror
             kan <em>prenumerera</em> vara rätt ställe att lägga till kalendern.</p>
+    </div>
+</li>
+    <li class="tab-header-and-content">
+    <a href="javascript:void(0)" class="tab-link {{ tab5 }}">Avsluta konto</a>
+    <div class="tab-content">
+        <form action="" method="post" autocomplete="off">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="form-field-wrapper">
+                <input type="hidden" name="type" id="id_type" value="close">
+            </div>
+            <div class="form-field-wrapper">
+                <input type="checkbox" name="is_active" id="id_is_active" checked >
+                <p>Bocka ur rutan ifall du är säker på att du vill avsluta ditt konto.</p>
+            </div>
+            <hr>
+            <button id="user-info-form-button" class="action-button-red" type="submit">Avsluta konto</button>
+        </form>
     </div>
 </li>
 </ul>

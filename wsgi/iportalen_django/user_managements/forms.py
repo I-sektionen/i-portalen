@@ -81,6 +81,17 @@ class ChangeUserInfoForm(forms.ModelForm):
                   'start_year', 'klass', 'current_year', 'bachelor_profile', 'master_profile', 'phone',)
 
 
+class CloseAccountForm(forms.ModelForm):
+    required_css_class = 'required'
+
+    def __init__(self, *args, **kwargs):
+        super(CloseAccountForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = IUser
+        fields = ('is_active',)
+
+
 class AddWhiteListForm(forms.Form):
     users = forms.CharField(
         widget=forms.Textarea(attrs={"rows": 15, "placeholder": "abcde123\nfghij456\nklmno789\n..."}),

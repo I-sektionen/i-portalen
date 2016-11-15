@@ -44,6 +44,10 @@ button, .button {
   $action-button-shadow-color: darken($action-button-background-color, 10%);
   $action-button-shadow: 0px 3px 0px darken($action-button-background-color, 10%);
   $action-button-text-color: #fff;
+  $action-button-background-color-red: red;
+  $action-button-shadow-color-red: darken($action-button-background-color-red, 25%);
+  $action-button-shadow-red: 0px 3px 0px darken($action-button-background-color-red, 25%);
+  $action-button-text-color-red: #fff;
 
 .action-button {
     @extend .button;
@@ -68,3 +72,24 @@ button, .button {
 
   }
 
+.action-button-red{
+  @extend .button;
+    background-color: $action-button-background-color-red;
+    box-shadow: $action-button-shadow-red;
+    color: $action-button-text-color-red;
+
+    &:hover,
+  &:focus {
+    background-color: $action-button-shadow-color-red;
+    color: $action-button-text-color-red;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    &:hover {
+      background-color: $action-button-shadow-color-red;
+    }
+  }
+}
