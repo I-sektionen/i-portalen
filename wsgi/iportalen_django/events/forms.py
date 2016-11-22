@@ -101,10 +101,18 @@ class ImageAttachmentForm(forms.ModelForm):
         model = ImageAttachment
         fields = ('img', 'caption')
 
+
+class DeleteForm(forms.Form):
+    cancel = forms.CharField(
+        widget=forms.Textarea(attrs={"rows": 3, "placeholder": "Ange anledning till varför detta event ska raderas."}),\
+    )
+
+
 class CancelForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = ('cancel',)
+
     def __init__(self, *args, **kwargs):
         super(CancelForm, self).__init__(*args, **kwargs)
         self.fields['cancel'].widget.attrs['placeholder'] = self.fields['cancel'].help_text

@@ -40,7 +40,7 @@ event_patterns = [
     url(r'^no_shows/$',                        view=views.show_noshows,           name="no_shows"),
     url(r'^(?P<pk>[0-9]+)/administer/', include(admin_patterns)),
     url(r'^no_shows/remove$',                  view=views.remove_noshow,          name="remove_noshow"),
-    url(r'^(?P<pk>[0-9]+)/cancel/$',           view=views.cancel,                 name="cancel"),
+    url(r'^(?P<pk>[0-9]+)/cancel/$',           view=views.cancel,                 name="cancel_event"),
 ]
 
 urlpatterns = [url(r'^', include(event_patterns, namespace=app_name))]
