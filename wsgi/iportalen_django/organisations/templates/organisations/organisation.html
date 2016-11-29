@@ -6,146 +6,167 @@
 {% block hero %}
 {% endblock %}
 {% block content %}
-<div id="organisation-hero">
-    {% if organisation.image %}
-        <div class="hero" style="background-image: url({{ MEDIA_URL }}{{ organisation.image }})">
-
-        </div>
-    {% else %}
-        <div class="hero">
-            <div class="no-img">
-                <div class="placeholder"><h1>{{ organisation.name|capfirst }}</h1></div>
-
+    {% ifequal organisation.name|capfirst 'Sektionens vänner' %}
+        <!--Special page-->
+        <div id="organisation-hero">
+            <div class="hero">
+                    <h1 style="text-align:center">Sektionens vänner</h1>
+                    <br>
+                    <div>
+                        <a href="http://elin.se/">
+                            <img title="Ekonomföreningen vid Linköpings Universitet" style="display:block;margin:0 auto" src="https://s3.eu-central-1.amazonaws.com/isektionen-bildbank/ELIN.jpg">
+                        </a>
+                    </div>
+                    <br>
+                    <div>
+                        <a href="http://www.borsgruppen.se/">
+                            <img title="Börsgruppen vid Linköpings Universitet" style="display:block;margin:0 auto" src="https://s3.eu-central-1.amazonaws.com/isektionen-bildbank/borsgruppen.png">
+                        </a>
+                    </div>
             </div>
         </div>
-    {% endif %}
-</div>
-    <div id="organisation-admin-panel">
-    {% can_edit_organisation request.user organisation as can_edit %}
-        {% if can_edit %}
-            <a href="{% url "organisations:edit" organisation.name %}">
-                <button>Ändra info</button>
-            </a>
-            <a href="{% url "organisations:edit organisation members" organisation.name %}">
-                <button>Hantera medlemmar</button>
-            </a>
-        {% endif %}
-    </div>
-    <div id="organisation-content">
-        <section id="organisation-description">
-            <h1 {% ifequal organisation.name|capfirst 'Webgroup' %}
-            title="Vi jobbar med kod, inte personer!"
-            {% endifequal %}>Om {{ organisation.name }}</h1>
+    {% else %}
+        <div id="organisation-hero">
+            {% if organisation.image %}
+                <div class="hero" style="background-image: url({{ MEDIA_URL }}{{ organisation.image }})">
 
-            {{ organisation.description|markdown }}
+                </div>
+            {% else %}
+                <div class="hero">
+                    <div class="no-img">
+                        <div class="placeholder"><h1>{{ organisation.name|capfirst }}</h1></div>
 
-        </section>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div id="organisation-admin-panel">
+        {% can_edit_organisation request.user organisation as can_edit %}
+            {% if can_edit %}
+                <a href="{% url "organisations:edit" organisation.name %}">
+                    <button>Ändra info</button>
+                </a>
+                <a href="{% url "organisations:edit organisation members" organisation.name %}">
+                    <button>Hantera medlemmar</button>
+                </a>
+            {% endif %}
+        </div>
+        <div id="organisation-content">
+            <section id="organisation-description">
+                <h1 {% ifequal organisation.name|capfirst 'Webgroup' %}
+                title="Vi jobbar med kod, inte personer!"
+                {% endifequal %}>Om {{ organisation.name }}</h1>
 
-            {% get_child_organisations organisation.pk as children %}
-                {% if children %}
-                    <section id="organisation-suborg">
-                        <h1>Arbetsgrupper</h1>
-                        <table>
-                            {% for c in children %}
-                                <tr><td><a href="{{ c.get_absolute_url }}">{{ c.name|capfirst }}</a></td></tr>
-                            {% endfor %}
-                        </table>
-                    </section>
-                {% endif %}
+                {{ organisation.description|markdown }}
 
-        <section id="organisation-members">
-            <h1>Medlemmar</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Namn</th>
-                        <th>Post</th>
-                        <th>Kontaktuppgifter</th>
-                    </tr>
-                </thead>
-                <tbody>{% get_organisation_leader organisation as leader %}
-                    <tr>
-                        <td>
-                            {{ organisation.leader.first_name|capfirst }} {{ organisation.leader.last_name|capfirst }}
-                        </td>
-                        <td>{{ leader.post }}</td>
-                        {% if leader.email %}
-                        <td>{{ leader.email|urlize }}</td>
-                        {% else %}
-                        <td>{{ organisation.leader.email|urlize }}</td>
-                        {% endif %}
-                    </tr>
-                    {% for member in members %}
+            </section>
+
+                {% get_child_organisations organisation.pk as children %}
+                    {% if children %}
+                        <section id="organisation-suborg">
+                            <h1>Arbetsgrupper</h1>
+                            <table>
+                                {% for c in children %}
+                                    <tr><td><a href="{{ c.get_absolute_url }}">{{ c.name|capfirst }}</a></td></tr>
+                                {% endfor %}
+                            </table>
+                        </section>
+                    {% endif %}
+
+            <section id="organisation-members">
+                <h1>Medlemmar</h1>
+                <table>
+                    <thead>
                         <tr>
-                            {% ifnotequal organisation.leader.pk member.user.pk %}
-                                {% if member.user.first_name and member.user.last_name %}
-                                    <td>
-                                        {{ member.user.first_name|capfirst }} {{ member.user.last_name|capfirst }}
-                                    </td>
-                                    <td>{{ member.post }}</td>
-                                    {% if member.email %}
-                                    <td>{{ member.email }}</td>
-                                    {% else %}
-                                    <td></td>
+                            <th>Namn</th>
+                            <th>Post</th>
+                            <th>Kontaktuppgifter</th>
+                        </tr>
+                    </thead>
+                    <tbody>{% get_organisation_leader organisation as leader %}
+                        <tr>
+                            <td>
+                                {{ organisation.leader.first_name|capfirst }} {{ organisation.leader.last_name|capfirst }}
+                            </td>
+                            <td>{{ leader.post }}</td>
+                            {% if leader.email %}
+                            <td>{{ leader.email|urlize }}</td>
+                            {% else %}
+                            <td>{{ organisation.leader.email|urlize }}</td>
+                            {% endif %}
+                        </tr>
+                        {% for member in members %}
+                            <tr>
+                                {% ifnotequal organisation.leader.pk member.user.pk %}
+                                    {% if member.user.first_name and member.user.last_name %}
+                                        <td>
+                                            {{ member.user.first_name|capfirst }} {{ member.user.last_name|capfirst }}
+                                        </td>
+                                        <td>{{ member.post }}</td>
+                                        {% if member.email %}
+                                        <td>{{ member.email }}</td>
+                                        {% else %}
+                                        <td></td>
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            {% endifnotequal %}
+                                {% endifnotequal %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+            {% get_organisation_articles organisation.pk as articles %}
+            {% if articles %}
+            <section id="organisation-articles">
+                <h1>Artiklar</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2">Titel</th>
+                            <th>Publicerad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for article in articles %}
+                        <tr>
+                            <td colspan="2"><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></td>
+                            <td>{{ article.created|date:"Y-m-d" }}</td>
+
                         </tr>
                     {% endfor %}
-                </tbody>
-            </table>
-        </section>
-        {% get_organisation_articles organisation.pk as articles %}
-        {% if articles %}
-        <section id="organisation-articles">
-            <h1>Artiklar</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="2">Titel</th>
-                        <th>Publicerad</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for article in articles %}
-                    <tr>
-                        <td colspan="2"><a href="{{ article.get_absolute_url }}">{{ article.headline }}</a></td>
-                        <td>{{ article.created|date:"Y-m-d" }}</td>
-
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </section>
-        {% endif %}
-        {% get_organisation_events organisation.pk as events %}
-        {% if events %}
-        <section id="organisation-events">
-            <h1>Event</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="2">Titel</th>
-                        <th>Publicerad</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for event in events %}
-                    <tr>
-                        <td colspan="2"><a href="{% url "events:event" event.pk %}">{{ event.headline }}</a></td>
-                        <td>{{ event.created|date:"Y-m-d" }}</td>
-
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </section>
-        {% endif %}
-        {% if organisation.contact_info %}
-            <section id="organisation-contact-info">
-                <h1>Kontaktinfo</h1>
-                <p>{{ organisation.contact_info }}</p>
+                    </tbody>
+                </table>
             </section>
-        {% endif %}
-    </div>
+            {% endif %}
+            {% get_organisation_events organisation.pk as events %}
+            {% if events %}
+            <section id="organisation-events">
+                <h1>Event</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2">Titel</th>
+                            <th>Publicerad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for event in events %}
+                        <tr>
+                            <td colspan="2"><a href="{% url "events:event" event.pk %}">{{ event.headline }}</a></td>
+                            <td>{{ event.created|date:"Y-m-d" }}</td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+            {% endif %}
+            {% if organisation.contact_info %}
+                <section id="organisation-contact-info">
+                    <h1>Kontaktinfo</h1>
+                    <p>{{ organisation.contact_info }}</p>
+                </section>
+            {% endif %}
+        </div>
+    {% endifequal %}
 {% endblock %}
