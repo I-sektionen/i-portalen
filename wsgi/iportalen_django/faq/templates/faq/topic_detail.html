@@ -1,11 +1,11 @@
 {% extends "master.html" %}
-
+{% load iportalen_tags %}
 {% block content %}
 <h3>{{ topic }}</h3>
 <dl>
 {% for question in questions %}
   <dt>{{ question.text }}</dt>
-  <dd class="answer">{{ question.answer }}</dd>
+  <dd class="answer">{{ question.answer|markdown }}</dd>
 {% endfor %}
 </dl>
 
