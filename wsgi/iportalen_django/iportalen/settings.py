@@ -31,6 +31,8 @@ else:
     ALLOWED_HOSTS = ['*']
     DEBUG = True
 
+ADMINS = [('Webmaster', 'webmaster@isektionen.se')]
+MANAGERS = ADMINS
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
