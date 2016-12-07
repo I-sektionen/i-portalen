@@ -21,7 +21,7 @@ from user_managements.models import IUser
 from django.utils.translation import ugettext as _
 
 # Create your views here.
-from wsgi.iportalen_django.iportalen import settings
+from iportalen import settings
 from utils.time import six_months_back
 
 

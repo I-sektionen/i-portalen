@@ -17,6 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Used to determined if being run on Openshift, Jenkins or local. Determines DB-connection settings.
 ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
+ON_CIRCLE = 'ON_CIRCLE' in os.environ
 ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 
 
@@ -30,6 +31,8 @@ else:
     ALLOWED_HOSTS = ['*']
     DEBUG = True
 
+ADMINS = [('Webmaster', 'webmaster@isektionen.se')]
+MANAGERS = ADMINS
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -63,7 +66,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'speaker_list',
     'iportalen',
+    'votings',
+    'hero',
     'storages',
     'tags',
     'user_managements',
@@ -74,13 +80,18 @@ INSTALLED_APPS = (
     'course_evaluations',
     'faq',
     'django.contrib.sitemaps',
-    'votings',
-    'speaker_list',
-    'hero'
+    'rest_framework',
+    'django_nose',
+    'corsheaders',
+    'letsencrypt'
 )
+
+if not ON_PASS:
+    INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -112,6 +123,12 @@ TEMPLATES = [
     },
 ]
 
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+NOSE_ARGS = [
+    '--with-coverage'
+]
+
 WSGI_APPLICATION = 'iportalen.wsgi.application'
 
 if ON_PASS:
@@ -134,6 +151,14 @@ elif ON_JENKINS:
             'PASSWORD': '123123123HEJJE',  # Securely generated password.
             'HOST': 'localhost',
             'PORT': '3306'
+        }
+    }
+elif ON_CIRCLE:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'circle_test',
+            'USER': 'ubuntu'
         }
     }
 else:
@@ -203,6 +228,17 @@ if ON_PASS:
     }
 
 LOGIN_URL = 'login_view'
+
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
+}
 
 # Email settings:
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # This is a dummy backend which prints emails as a
@@ -277,4 +313,15 @@ LOGGING = {
     },
 }
 
+CORS_ORIGIN_ALLOW_ALL = False
+
+if ON_PASS:
+    CORS_ORIGIN_WHITELIST = (
+        'utlandsportalen-ember.herokuapp.com',
+    )
+if not ON_PASS:
+    CORS_ORIGIN_WHITELIST = (
+        '127.0.0.1:4200',
+        '127.0.0.1:1337',
+    )
 
