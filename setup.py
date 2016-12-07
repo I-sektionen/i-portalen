@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(name='I-Portalen',
-      version='1.1.1',
+      version='1.1.2',
       description='I-sektionens anslagstavla tillika hemsida',
       author='Webgroup',
       author_email='webmaster@isektionen.se',
@@ -25,7 +25,7 @@ setup(name='I-Portalen',
           'pytz==2016.6.1',
           'requests==2.6.0',
           'requests-toolbelt==0.7.0',
-          'reversion==0.2',
+          'django-reversion==2.0.0',
           'sqlparse==0.2.1',
           'urllib3==1.17'],  # This should match requirements.txt!
       )
