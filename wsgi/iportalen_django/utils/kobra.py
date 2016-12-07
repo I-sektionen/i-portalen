@@ -56,7 +56,7 @@ def _make_call_to_kobra(payload):
 
     response = requests.request("GET", url, data=payload, headers=headers)
 
-    person = json.loads(response.text)
+    person = json.loads(response.text, encoding="iso-8859-1")
     if 'detail' in person:
         print(person['detail'])
         if 'Invalid token' in person['detail']:
@@ -87,4 +87,4 @@ def _make_call_to_kobra(payload):
 #     return result_dict
 
 if __name__ == "__main__":
-    print(get_user_by_liu_id("antre986"))
+    print(get_user_by_liu_id("jonan099"))
