@@ -112,6 +112,7 @@ class Event(models.Model):
     status = models.CharField(
         max_length=1, choices=STATUSES, default=DRAFT, blank=False, null=False)
     rejection_message = models.TextField(blank=True, null=True)
+    cancel_message = models.TextField(blank=True, null=True)
 
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)

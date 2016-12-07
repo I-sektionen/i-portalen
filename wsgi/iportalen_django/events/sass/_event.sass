@@ -18,8 +18,18 @@
 
 div#events-to-approve
   +outer-container(12)
-
+  padding-bottom: 2em
   .event-to-approve
+    padding: 2em
+    border-color: black
+    border-width: 2px
+    border-style: solid
+    +span-columns(12)
+
+div#events-to-delete
+  +outer-container(12)
+
+  .event-to-delete
     padding: 2em
     border-color: black
     border-width: 2px
@@ -28,6 +38,7 @@ div#events-to-approve
 
 div.events-to-approve-options
   +span-columns(12)
+  padding-bottom: 2em
 
 article.event-preview-organisation
   padding: 0 15px 0 15px

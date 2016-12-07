@@ -104,7 +104,7 @@ class ImageAttachmentForm(forms.ModelForm):
 
 class DeleteForm(forms.Form):
     cancel = forms.CharField(
-        widget=forms.Textarea(attrs={"rows": 3, "placeholder": "Ange anledning till varför detta event ska raderas."}),\
+        widget=forms.Textarea(attrs={"rows": 1, "placeholder": "Ange anledning till varför detta event ska raderas."}),\
     )
 
 

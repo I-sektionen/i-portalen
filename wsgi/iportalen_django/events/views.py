@@ -256,7 +256,8 @@ def check_in(request, pk):  # TODO: Reduce complexity
 def all_unapproved_events(request):
     if request.user.has_perm("events.can_approve_event"):
         events = Event.objects.filter(status=Event.BEING_REVIEWED, end__gte=timezone.now())
-        return render(request, 'events/approve_event.html', {'events': events})
+        events_to_delete = Event.objects.filter(status=Event.BEING_CANCELD, end__gte=timezone.now())
+        return render(request, 'events/approve_event.html', {'events': events, 'events_to_delete': events_to_delete})
     else:
         raise PermissionDenied
 
@@ -594,8 +595,6 @@ def remove_noshow(request):
 @login_required()
 def cancel(request, pk=None):
     event = get_object_or_404(Event, pk=pk)
-    event.status = Event.BEING_CANCELD
-    event.save()
     print('steg1')
     if request.method == 'POST':
         form = DeleteForm(request.POST)
@@ -603,10 +602,19 @@ def cancel(request, pk=None):
         print(form.errors)
         if form.is_valid():
             print('steg3')
+            event.status = Event.BEING_CANCELD
+            event.cancel_message = form.cleaned_data["cancel"]
+            event.save()
             form_user = form.cleaned_data["cancel"]
             body = "<h1>Hej!</h1><br><br><p>Det finns nya event att ställa in på i-Portalen.<br><a href='https://www.i-portalen.se/article/unapproved/'>Klicka här!</a></p><br><br><p>Med vänliga hälsningar, <br><br>Admins @ webgroup" + form_user
             send_mail('Nytt event att ställa in', '', settings.EMAIL_HOST_USER, ['utgivare@isektionen.se'], fail_silently=False, html_message=body)
             messages.success(request, _("Dina ändringar har skickats för granskning."))
+        #     vill låsa radera knapp
+        else:
+            messages.error(request, _("Det har ej fyllts i varför eventet önskas raderas."))
+            return redirect("events:administer event", pk=pk)
+    #         vill stanna kvar på sidan
+
     return render(request, 'events/administer_event.html', {'event': event, 'form':form, 'form_user':form_user, })
 
 
