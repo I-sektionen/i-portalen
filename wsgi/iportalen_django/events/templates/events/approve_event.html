@@ -2,6 +2,7 @@
 {% load iportalen_tags %}
 
 {% block content %}
+    <h2>Event som väntar på godkännande ({{ events.count }})</h2>
     <div id="events-to-approve">
         {% for event in events %}
             <div class="event-to-approve">
@@ -37,6 +38,30 @@
             </div>
             {% empty %}
             <p>Inga event väntar på att godkännas, bra jobbat! :)</p>
+
+        {% endfor %}
+    </div>
+
+    <h2>Event som väntar på att raderas ({{ events_to_delete.count }})</h2>
+    <div id="events-to-approve">
+        {% for event in events_to_delete %}
+            <div class="event-to-approve">
+                {% include "events/model/full_event.html" with pk=event.pk preview=True %}
+                <p>
+                    Eventet skapades av: {{ event.user.first_name }} {{ event.user.last_name }} ({{ event.user }})
+
+                </p>
+                <p>
+                    Anledning för radering:
+                    {{ event.cancel_message }}
+                </p>
+
+            </div>
+            <div class="events-to-approve-options">
+                <a href="{% url "events:unapprove" event.pk %}"><button class="btn-read-more">Avslå</button></a>
+            </div>
+            {% empty %}
+            <p>Inga event väntar på att raderas, bra jobbat! :)</p>
         {% endfor %}
     </div>
 {% endblock %}
