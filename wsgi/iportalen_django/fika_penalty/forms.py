@@ -6,7 +6,7 @@ from fika_penalty.models import FikaPenalty
 class FikaPenaltyForm(forms.ModelForm):
     class Meta:
         model = FikaPenalty
-        exclude = ['paid', 'date', 'organisation']
+        exclude = ['date', 'organisation']
 
     def __init__(self, *args, **kwargs):
         org = None

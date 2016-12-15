@@ -12,7 +12,7 @@
     </table>
     {% if request.user == organisation.leader %}
             <a href="{% url "fika_penalty:add organisation penalty" organisation.name %}">
-                <button>Lägg till straff</button>
+                <button>Lägg till straff/betalning</button>
             </a>
     {% endif %}
     <a href="{% url "fika_penalty:history organisation penalties" organisation.name %}">

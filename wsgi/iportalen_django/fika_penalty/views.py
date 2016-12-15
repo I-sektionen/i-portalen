@@ -36,7 +36,7 @@ def add_penalty_per_organisation(request, organisation_name):
                 fika.date = timezone.now()
                 fika.save()
                 form = FikaPenaltyForm(None, organisation=organisation)
-                messages.success(request, "WOHOOO!!")
+                messages.success(request, "Kostnaden är bokförd!")
                 return redirect(reverse('fika_penalty:organisation penalties', args=[organisation_name]))
         return render(request, "fika_penalty/penalty_form.html", {"form": form, "organisation": organisation})
     raise PermissionDenied
