@@ -39,12 +39,17 @@ class Event(models.Model):
     BEING_REVIEWED = 'b'
     REJECTED = 'r'
     APPROVED = 'a'
+    CANCEL = 'c'
+    BEING_CANCELD = 'e'
     STATUSES = (
         (DRAFT, _("utkast")),
         (BEING_REVIEWED, _("väntar på godkännande")),
         (REJECTED, _("Avslaget")),
-        (APPROVED, _("Godkänt"))
+        (APPROVED, _("Godkänt")),
+        (CANCEL, _("Inställt")),
+        (BEING_CANCELD, _("väntar på att bli inställd"))
     )
+
 
     #  Description:
     headline = models.CharField(
@@ -107,6 +112,7 @@ class Event(models.Model):
     status = models.CharField(
         max_length=1, choices=STATUSES, default=DRAFT, blank=False, null=False)
     rejection_message = models.TextField(blank=True, null=True)
+    cancel_message = models.TextField(blank=True, null=True)
 
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
@@ -122,6 +128,13 @@ class Event(models.Model):
         verbose_name=_("sponsrat"), default=False, help_text=_("Kryssa i om innehållet är sponsrat"))
 
     finished = models.BooleanField(verbose_name='Avsluta event', default=False, help_text="Kryssa i om eventet ska avslutas")
+
+    cancel = models.CharField(
+        blank=True,
+        null=True,
+        verbose_name=_("Beskrivning för inställt event"),
+        help_text=_("Motivera varför eventet blivit inställt"),
+        max_length=255)
 
     objects = EventManager()
 

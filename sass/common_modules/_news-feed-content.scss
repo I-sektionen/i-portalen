@@ -14,6 +14,10 @@ article.news-feed-content {
   $sans-serif: $base-font-family;
   $sans-serif-2:$base-font-family;
 
+  .cancel_event{
+    color: red;
+  }
+
   @include clearfix;
   font-family: $sans-serif;
   text-align: left;

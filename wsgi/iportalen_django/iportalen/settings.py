@@ -13,7 +13,11 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DJ_PROJECT_DIR = os.path.dirname(__file__)
+BASE_DIR = os.path.dirname(DJ_PROJECT_DIR)
+WSGI_DIR = os.path.dirname(BASE_DIR)
+REPO_DIR = os.path.dirname(WSGI_DIR)
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Used to determined if being run on Openshift, Jenkins or local. Determines DB-connection settings.
 ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
@@ -31,6 +35,8 @@ else:
     ALLOWED_HOSTS = ['*']
     DEBUG = True
 
+ADMINS = [('Webmaster', 'webmaster@isektionen.se')]
+MANAGERS = ADMINS
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -131,6 +137,12 @@ NOSE_ARGS = [
 WSGI_APPLICATION = 'iportalen.wsgi.application'
 
 if ON_PASS:
+    try:
+        import pymysql
+        pymysql.install_as_MySQLdb()
+    except ImportError:
+        print("CANT FIND - PyMySQL")
+        pass
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',

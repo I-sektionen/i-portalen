@@ -3,42 +3,11 @@
 import os
 import sys
 
-# GETTING-STARTED: make sure the next line points to your settings.py:
 os.environ['DJANGO_SETTINGS_MODULE'] = 'iportalen.settings'
 
-# GETTING-STARTED: make sure the next line points to your django project dir:
 sys.path.append(os.path.join(os.environ['OPENSHIFT_REPO_DIR'], 'wsgi', 'iportalen_django'))
-virtenv = os.environ['OPENSHIFT_PYTHON_DIR'] + '/virtenv/'
-
-# GETTING-STARTED: make sure the next line has the right python version:
-os.environ['PYTHON_EGG_CACHE'] = os.path.join(virtenv, 'lib/python3.3/site-packages')
-virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
-
-try:
-    exec_namespace = dict(__file__=virtualenv)
-    with open(virtualenv, 'rb') as exec_file:
-        file_contents = exec_file.read()
-        compiled_code = compile(file_contents, virtualenv, 'exec')
-        exec(compiled_code, exec_namespace)
-except IOError:
-    print("ERROR!")  # Not sure where or if this shows up?
-    pass
+from distutils.sysconfig import get_python_lib
+os.environ['PYTHON_EGG_CACHE'] = get_python_lib()
 
 import django.core.wsgi
-
-"""
-This part here imports pymysql and uses it instead of MySQLdb which is not proted to python3 yet.
-
-It might cause problems with advanced mysql-operations.
-
-The same trick is done in manage.py.
-
-//Isac
-"""
-try:
-    import pymysql
-    pymysql.install_as_MySQLdb()
-except ImportError:
-    pass
-
 application = django.core.wsgi.get_wsgi_application()
