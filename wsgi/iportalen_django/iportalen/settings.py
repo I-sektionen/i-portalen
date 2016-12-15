@@ -136,6 +136,12 @@ NOSE_ARGS = [
 WSGI_APPLICATION = 'iportalen.wsgi.application'
 
 if ON_PASS:
+    try:
+        import pymysql
+        pymysql.install_as_MySQLdb()
+    except ImportError:
+        print("CANT FIND - PyMySQL")
+        pass
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
