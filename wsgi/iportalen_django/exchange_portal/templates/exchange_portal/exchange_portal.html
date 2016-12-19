@@ -10,4 +10,11 @@
         <li>{{ c.name|capfirst }}</li>
     {% endfor %}
 
+
+    <form class="search-form" action="{{ request.get_full_path }}" method="post">
+            {% csrf_token %}
+            <input class="search-holder" type="text" name="search" placeholder="Sök universitet eller land">
+            <input class="submit-holder primary action-button" type="submit" value="Sök">
+            </form>
+
 {% endblock %}
