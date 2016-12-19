@@ -1,0 +1,13 @@
+{% extends "master.html" %}
+{% load iportalen_tags %}
+{% load staticfiles %}
+{% block hero %}{% endblock %}
+{% block title %}Utlandsportalen{% endblock %}
+{% block content %}
+    Vet ej, men jag antar att vi hörs!
+
+    {% for c in country_list %}
+        <li>{{ c.name|capfirst }}</li>
+    {% endfor %}
+
+{% endblock %}
