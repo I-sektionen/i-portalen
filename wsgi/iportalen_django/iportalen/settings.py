@@ -88,7 +88,8 @@ INSTALLED_APPS = (
     'django_nose',
     'corsheaders',
     'letsencrypt',
-    'exchange_portal'
+    'exchange_portal',
+    'liu_crawler'
 )
 
 if not ON_PASS:

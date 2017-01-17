@@ -48,6 +48,7 @@ urlpatterns = [
     url(r'^voting/',            include('votings.urls')),
     url(r'^speaker/',           include('speaker_list.urls')),
     url(r'^exchange_portal/',   include('exchange_portal.urls')),
+    url(r'^liu-crawler/',       include('liu_crawler.urls')),
 
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
@@ -62,7 +63,7 @@ urlpatterns = [
     url(r'^soekande', view=views.isektionen_link),
     url(r'^foeretag', view=views.isektionen_link),
     url(r'^alumn', RedirectView.as_view(pattern_name='news feed', permanent=True)),
-    #url(r'^utlandsportalen', RedirectView.as_view(pattern_name='news feed', permanent=True)),
+    url(r'^utlandsportalen', RedirectView.as_view(pattern_name='news feed', permanent=True)),
     url(r'^i-profilen', RedirectView.as_view(pattern_name='user_management:my page', permanent=True)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/v1/', include("user_managements.api_urls")),
