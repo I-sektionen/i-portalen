@@ -1,7 +1,5 @@
 {% extends "master.html" %}
-{% load iportalen_tags %}
-{% load staticfiles %}
-{% block hero %}{% endblock %}
+
 {% block title %}Utlandsportalen{% endblock %}
 {% block content %}
     Vet ej, men jag antar att vi hörs!
@@ -12,9 +10,9 @@
 
 
     <form class="search-form" action="{{ request.get_full_path }}" method="post">
-            {% csrf_token %}
-            <input class="search-holder" type="text" name="search" placeholder="Sök universitet eller land">
-            <input class="submit-holder primary action-button" type="submit" value="Sök">
-            </form>
+        {% csrf_token %}
+        <input class="search-holder" type="text" name="search" placeholder="Sök universitet eller land">
+        <input class="submit-holder primary action-button" type="submit" value="Sök">
+    </form>
 
 {% endblock %}
