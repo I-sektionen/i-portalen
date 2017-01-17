@@ -1,0 +1,29 @@
+{% extends "master.html" %}
+
+{% block title %}Utlandsportalen{% endblock %}
+{% block content %}
+
+    Vet ej, men jag antar att vi hörs!
+
+    <form class="search-form" action="/exchange_portal/search/" method="post">
+        {% csrf_token %}
+        <input class="search-holder" type="text" name="q" placeholder="Sök universitet eller land">
+        <input class="submit-holder primary action-button" type="submit" value="Sök">
+    </form>
+
+    {% if country_list.count != 0 %}Länder: <br> {% endif %}
+    {% for country in country_list %}
+        <li>{{ country.name|capfirst }}</li>
+    {% endfor %}
+
+    {% if city_list.count != 0 %}Städer: <br> {% endif %}
+    {% for city in city_list %}
+        <li>{{ city.name|capfirst }}</li>
+    {% endfor %}
+
+    {% if school_list.count != 0 %}Skolor: <br> {% endif %}
+    {% for school in school_list %}
+        <li>{{ school.name|capfirst }}</li>
+    {% endfor %}
+
+{% endblock %}

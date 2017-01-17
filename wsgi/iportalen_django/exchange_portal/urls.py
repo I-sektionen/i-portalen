@@ -6,6 +6,7 @@ app_name = 'exchange_portal'
 
 exchange_portal_patterns = [
     url(r'^$',                           view=views.Exchange_Portal,          name="exchange_portal"),
+    url(r'^search/$',                    view=views.Search,          name='search'),
 ]
 
 

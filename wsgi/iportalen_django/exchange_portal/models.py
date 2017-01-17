@@ -16,9 +16,21 @@ class Country(models.Model):
     def get_country_list(self):
         return self.objects.all()
 
-class School(models.Model):
+class City(models.Model):
     name = models.CharField(max_length=50)
     in_country = models.ForeignKey(Country, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _("Stad")
+        verbose_name_plural = _("Städer")
+
+    def __str__(self):
+        return self.name
+
+
+class School(models.Model):
+    name = models.CharField(max_length=50)
+    in_city = models.ForeignKey(City, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Skola")
@@ -66,7 +78,7 @@ class Exchange_Course(models.Model):
 
 
 class Travel_Story(models.Model):
-     upload = models.FileField(upload_to='travler_stories/%Y%m%d/')
+     upload = models.FileField(upload_to='travel_stories/%Y%m%d/')
      about_school = models.ForeignKey(School, on_delete=models.CASCADE)
      added_by_user = models.CharField(verbose_name=_("liu-id"), max_length=10)
 
