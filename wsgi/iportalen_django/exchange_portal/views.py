@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db import transaction
 from django.utils.translation import ugettext as _
-from .models import Exchange_Course, Liu_Course, School, Country, City
+from .models import Exchange_Course, Liu_Course, School, Country, City, Travel_Story
 from django.forms import modelformset_factory
 import mimetypes
 
@@ -23,3 +23,26 @@ def Search (request):
     school_list = School.objects.filter(name__icontains=query)
     return render(request, 'exchange_portal/search_result.html', {'country_list': country_list, 'city_list': city_list,
                                                                   'school_list': school_list})
+
+def View_Story (request):
+
+    travel_story = get_object_or_404(Travel_Story, pk=1)
+    #travel_story = get_travel_story.travel_story_set
+    #print (travel_story.about_school)
+    return render(request, 'exchange_portal/travel_story.html', {'travel_story': travel_story })
+
+'''def single_article(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    if article.can_administer(request.user):
+        admin = True
+    else:
+        admin = False
+    if (article.status == Article.APPROVED and article.show_article_before_experation) or admin:
+        attachments = article.otherattachment_set
+        image_attachments = article.imageattachment_set
+        return render(request, 'articles/article.html', {
+            'article': article,
+            'attachments': attachments,
+            'image_attachments': image_attachments,
+            'can_administer': admin})
+    raise PermissionDenied'''
