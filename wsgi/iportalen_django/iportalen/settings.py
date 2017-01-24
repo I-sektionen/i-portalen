@@ -88,6 +88,7 @@ INSTALLED_APPS = (
     'django_nose',
     'corsheaders',
     'letsencrypt',
+    'fika_penalty',
     'liu_crawler'
 )
 
