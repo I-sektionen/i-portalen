@@ -131,6 +131,8 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
     phone = models.CharField(verbose_name=_("Telefon"), max_length=255, null=True, blank=True)
 
+    modified = models.DateTimeField(editable=False)
+
     objects = IUserManager()
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = []
@@ -154,6 +156,11 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+
+    def save(self, *args, **kwargs):
+        """Override save to set created and modifed date before saving."""
+        self.modified = timezone.now()
+        super(IUser, self).save(*args, **kwargs)
 
     @property
     def update_from_kobra_url(self):
