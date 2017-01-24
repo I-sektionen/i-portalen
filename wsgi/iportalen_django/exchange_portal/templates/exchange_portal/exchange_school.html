@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends "master.html" %}
 
-</body>
-</html>
+{% block title %}Utlandsportalen{% endblock %}
+{% block content %}
+
+    <h1>{{ school.name }}</h1>
+
+    <p>Land: {{ school.in_city.in_country.name }} </p> <br>
+    <p>Stad: {{ school.in_city.name }} </p>
+
+    {% for course in course_list %}
+        <li>{{ course.name|capfirst }} som ersätter kursen {{ course.corresponding_liu_course.course_code|capfirst }} {{ course.corresponding_liu_course.name|capfirst }}</li>
+    {% endfor %}
+
+{% endblock %}
