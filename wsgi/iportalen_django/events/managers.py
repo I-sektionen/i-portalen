@@ -8,7 +8,6 @@ class EventManager(models.Manager):
     def published(self):
         return self.filter(
                 Q(status=self.model.APPROVED)|
-                Q(status=self.model.CANCEL)|
                 Q(status=self.model.BEING_CANCELD),
 
                 visible_from__lte=timezone.now(),
