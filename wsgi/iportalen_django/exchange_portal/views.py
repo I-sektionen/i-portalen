@@ -9,6 +9,7 @@ from django.utils.translation import ugettext as _
 from .models import Exchange_Course, Liu_Course, School, Country, City
 from django.forms import modelformset_factory
 import mimetypes
+from django.db.models import Q
 
 
 # Create your views here.
@@ -19,11 +20,9 @@ def Exchange_Portal(request):
 
 def Search (request):
     query = request.POST.get('q')
-    country_list = Country.objects.filter(name__icontains=query)
-    city_list = City.objects.filter(name__icontains=query)
-    school_list = School.objects.filter(name__icontains=query)
-    return render(request, 'exchange_portal/search_result.html', {'country_list': country_list, 'city_list': city_list,
-                                                                  'school_list': school_list})
+    school_list = School.objects.filter(Q(name__icontains=query) | Q(in_city__name__icontains=query) |
+                                        Q(in_city__in_country__name__icontains=query))
+    return render(request, 'exchange_portal/search_result.html', {'school_list': school_list})
 
 
 def Exchange_School(request, pk):

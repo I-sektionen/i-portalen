@@ -11,16 +11,6 @@
         <input class="submit-holder primary action-button" type="submit" value="Sök">
     </form>
 
-    {% if country_list.count != 0 %}Länder: <br> {% endif %}
-    {% for country in country_list %}
-        <li>{{ country.name|capfirst }}</li>
-    {% endfor %}
-
-    {% if city_list.count != 0 %}Städer: <br> {% endif %}
-    {% for city in city_list %}
-        <li>{{ city.name|capfirst }}</li>
-    {% endfor %}
-
     {% if school_list.count != 0 %}Skolor: <br> {% endif %}
     {% for school in school_list %}
         <li><a href="/exchange_portal/school/{{ school.id }}">{{ school.name|capfirst }}, {{ school.in_city|capfirst }}, {{ school.in_city.in_country|capfirst }}</a></li>
