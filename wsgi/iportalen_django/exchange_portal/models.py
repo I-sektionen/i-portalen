@@ -2,6 +2,7 @@ __author__ = 'Magnus Forzelius'
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from utils.validators import liu_id_validator
+import os
 
 class Country(models.Model):
     name = models.CharField(max_length=50)
@@ -77,8 +78,13 @@ class Exchange_Course(models.Model):
         return self.name
 
 
+def _file_path(instance, filename):
+    return os.path.join(
+        'travel_stories', str(instance.about_school.pk), filename
+    )
+
 class Travel_Story(models.Model):
-     upload = models.FileField(upload_to='travel_stories/%Y%m%d/')
+     file = models.FileField(upload_to=_file_path)
      about_school = models.ForeignKey(School, on_delete=models.CASCADE)
      added_by_user = models.CharField(verbose_name=_("liu-id"), max_length=10)
 

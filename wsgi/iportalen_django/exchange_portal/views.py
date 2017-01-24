@@ -24,10 +24,10 @@ def Search (request):
     return render(request, 'exchange_portal/search_result.html', {'country_list': country_list, 'city_list': city_list,
                                                                   'school_list': school_list})
 
-def View_Story (request):
+def View_Story (request, school_pk):
 
-    travel_story = get_object_or_404(Travel_Story, pk=1)
-    #travel_story = get_travel_story.travel_story_set
+    school = get_object_or_404(School, pk=school_pk)
+    travel_story = school.travel_story_set.all()
     #print (travel_story.about_school)
     return render(request, 'exchange_portal/travel_story.html', {'travel_story': travel_story })
 
