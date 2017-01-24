@@ -1,0 +1,17 @@
+{% extends "master.html" %}
+
+{% block title %}Utlandsportalen{% endblock %}
+{% block content %}
+
+    En liten travelstory?
+
+    {% if travel_story %}
+         {% for story in travel_story.all %}
+            <p>Bifogad fil: <a href="{{ story.file.url }}">{{ story.about_school}}</a></p>
+        {% endfor %}
+
+            <!--<p>Bifogad fil: <a href="{{ travel_story.file.url }}">{{ travel_story.about_school }}</a></p>-->
+    {% endif %}
+
+{% endblock %}
+
