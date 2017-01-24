@@ -23,7 +23,7 @@
 
     {% if school_list.count != 0 %}Skolor: <br> {% endif %}
     {% for school in school_list %}
-        <li>{{ school.name|capfirst }}</li>
+        <li><a href="/exchange_portal/school/{{ school.id }}">{{ school.name|capfirst }}, {{ school.in_city|capfirst }}, {{ school.in_city.in_country|capfirst }}</a></li>
     {% endfor %}
 
 {% endblock %}

@@ -19,7 +19,6 @@ def Exchange_Portal(request):
 
 def Search (request):
     query = request.POST.get('q')
-    print(query)
     country_list = Country.objects.filter(name__icontains=query)
     city_list = City.objects.filter(name__icontains=query)
     school_list = School.objects.filter(name__icontains=query)

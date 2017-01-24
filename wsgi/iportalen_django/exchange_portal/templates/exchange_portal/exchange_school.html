@@ -8,6 +8,7 @@
     <p>Land: {{ school.in_city.in_country.name }} </p> <br>
     <p>Stad: {{ school.in_city.name }} </p>
 
+    Kurser:
     {% for course in course_list %}
         <li>{{ course.name|capfirst }} som ersätter kursen {{ course.corresponding_liu_course.course_code|capfirst }} {{ course.corresponding_liu_course.name|capfirst }}</li>
     {% endfor %}
