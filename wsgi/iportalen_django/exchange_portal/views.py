@@ -27,21 +27,29 @@ def Search (request):
 
 
 def Exchange_School(request, pk):
+    print("hörs")
     school = get_object_or_404(School, pk=pk)
     course_list = Exchange_Course.objects.filter(in_school=pk)
-    return render(request, 'exchange_portal/exchange_school.html', {'school': school, 'course_list': course_list})
+
+    school = get_object_or_404(School, pk=pk)
+    travel_story = school.travel_story_set.all()
+    print(travel_story)
+
+    return render(request, 'exchange_portal/exchange_school.html', {'school': school, 'course_list': course_list, 'travel_story': travel_story})
 
     print(query)
     country_list = Country.objects.filter(name__icontains=query)
     city_list = City.objects.filter(name__icontains=query)
     school_list = School.objects.filter(name__icontains=query)
-    return render(request, 'exchange_portal/search_result.html', {'country_list': country_list, 'city_list': city_list,
-                                                                  'school_list': school_list})
 
-def View_Story (request, school_pk):
+
+    return render(request, 'exchange_portal/search_result.html', {'country_list': country_list, 'city_list': city_list,
+                                                                  'school_list': school_list, 'travel_story': travel_story})
+
+'''def View_Story (request, school_pk):
 
     school = get_object_or_404(School, pk=school_pk)
     travel_story = school.travel_story_set.all()
     #print (travel_story.about_school)
-    return render(request, 'exchange_portal/travel_story.html', {'travel_story': travel_story })
+    return render(request, 'exchange_portal/travel_story.html', {'travel_story': travel_story })'''
 

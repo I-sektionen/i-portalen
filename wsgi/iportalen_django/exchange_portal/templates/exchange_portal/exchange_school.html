@@ -13,4 +13,14 @@
         <li>{{ course.name|capfirst }} som ersätter kursen {{ course.corresponding_liu_course.course_code|capfirst }} {{ course.corresponding_liu_course.name|capfirst }}</li>
     {% endfor %}
 
+    <p>En liten travelstory?</p>
+
+    {% if travel_story %}
+         {% for story in travel_story.all %}
+            <p>Reseberättelse nr {{ forloop.counter }}: <a href="{{ story.file.url }}">{{ story.about_school}}</a></p>
+        {% endfor %}
+
+            <!--<p>Bifogad fil: <a href="{{ travel_story.file.url }}">{{ travel_story.about_school }}</a></p>-->
+    {% endif %}
+
 {% endblock %}
