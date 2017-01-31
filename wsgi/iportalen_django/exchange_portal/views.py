@@ -10,7 +10,7 @@ from .models import Exchange_Course, Liu_Course, School, Country, City, Travel_S
 from django.forms import modelformset_factory
 import mimetypes
 from django.db.models import Q
-
+from dal import autocomplete
 
 # Create your views here.
 def Exchange_Portal(request):
@@ -37,14 +37,30 @@ def Exchange_School(request, pk):
 
     return render(request, 'exchange_portal/exchange_school.html', {'school': school, 'course_list': course_list, 'travel_story': travel_story})
 
-    print(query)
+    '''print(query)
     country_list = Country.objects.filter(name__icontains=query)
     city_list = City.objects.filter(name__icontains=query)
     school_list = School.objects.filter(name__icontains=query)
 
 
     return render(request, 'exchange_portal/search_result.html', {'country_list': country_list, 'city_list': city_list,
-                                                                  'school_list': school_list, 'travel_story': travel_story})
+                                                                  'school_list': school_list, 'travel_story': travel_story})'''
+
+
+class Search_Autocomplete (autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        #Can have a filter for non authenticades users here if needed
+
+        qs = School.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+
+        return qs
+
+
+
+
 
 '''def View_Story (request, school_pk):
 
