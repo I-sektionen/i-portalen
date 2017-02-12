@@ -70,6 +70,9 @@ class Exchange_Course(models.Model):
     in_school = models.ForeignKey(School, on_delete=models.CASCADE)
     corresponding_liu_course = models.ForeignKey(Liu_Course, on_delete=models.CASCADE)
 
+    #Add attribute "credits", and att the credits/hp quota in school model
+    #A course can be required in several tech profile
+
     class Meta:
         verbose_name = _("Utlandskurs")
         verbose_name_plural = _("Utlandskurser")
