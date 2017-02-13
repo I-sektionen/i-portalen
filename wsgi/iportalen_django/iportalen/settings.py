@@ -63,6 +63,8 @@ if ON_PASS:
 
 # Application definition
 INSTALLED_APPS = (
+    'dal',
+    'dal_select2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -89,7 +91,7 @@ INSTALLED_APPS = (
     'corsheaders',
     'letsencrypt',
     'exchange_portal',
-    'liu_crawler'
+    'liu_crawler',
 )
 
 if not ON_PASS:
