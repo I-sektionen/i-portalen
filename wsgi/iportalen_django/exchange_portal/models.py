@@ -33,7 +33,7 @@ class School(models.Model):
     name = models.CharField(max_length=50)
     in_city = models.ForeignKey(City, on_delete=models.CASCADE)
 
-    
+
 
     class Meta:
         verbose_name = _("Skola")
