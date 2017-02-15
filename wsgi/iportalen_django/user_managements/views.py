@@ -269,8 +269,8 @@ def update_user_from_kobra(request, liu_id):
         user = IUser.objects.get(username=liu_id)
         kobra_dict = get_user_by_liu_id(liu_id)
         user.email = kobra_dict['email'].lower()
-        user.last_name = kobra_dict['last_name'].lower()
-        user.first_name = kobra_dict['first_name'].lower()
+        user.last_name = kobra_dict['last_name']
+        user.first_name = kobra_dict['first_name']
         if kobra_dict['rfid_number']:
             while len(kobra_dict['rfid_number']) < 10:
                 kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
