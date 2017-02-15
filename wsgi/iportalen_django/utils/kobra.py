@@ -58,7 +58,6 @@ def _make_call_to_kobra(payload):
     response = requests.request("GET", url, data=payload, headers=headers)
     response.encoding = "utf-8"
     person = json.loads(response.text, encoding="utf-8")
-    print(person)
 
     if 'detail' in person:
         if 'Invalid token' in person['detail']:
