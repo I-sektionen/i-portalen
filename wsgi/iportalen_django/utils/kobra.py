@@ -61,7 +61,6 @@ def _make_call_to_kobra(payload):
     print(person)
 
     if 'detail' in person:
-        print(person['detail'])
         if 'Invalid token' in person['detail']:
             raise LiuGetterError(person['detail'])
         raise LiuNotFoundError(person['detail'])
