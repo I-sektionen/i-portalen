@@ -1,4 +1,20 @@
-function markdown_article_preview() {
+/**
+ * Created by jers on 11/04/16.
+ */
+
+function next_button(tab_no) {
+    var next_tab_no = parseInt(tab_no, 10)+1;
+    var next ='#tab'+next_tab_no+' a';
+    $(next).click();
+    scroll(0,0)
+}
+
+function prev_button(tab_no) {
+    var prev_tab_no = parseInt(tab_no, 10)-1;
+    var prev ='#tab'+prev_tab_no+' a';
+    $(prev).click();
+    scroll(0,0)
+};function markdown_article_preview() {
         var converter = Markdown.getSanitizingConverter();
         converter.hooks.chain("preConversion", function (text) {
             return text.replace(/[&<"'\/]/g, function (s) {
@@ -265,6 +281,14 @@ function printDiv(divName) {
      window.print();
 
      document.body.innerHTML = originalContents;
+};/**
+ * Created by elonbrange on 16-04-18.
+ */
+function cancel_write(){
+    var show = document.getElementById("canceltext");
+    show.style.visibility = "visible";
+    var showsend = document.getElementById("sendtext");
+    showsend.style.visibility = "visible";
 };//This function initiates the markdown engine. It is called on by event_preview below.
 function markdown_event_preview() {
         var converter = Markdown.getSanitizingConverter();

@@ -3,123 +3,136 @@
 {% get_event event request.user as res %}
 {% event_is_checked_in event request.user as is_checked_in %}
 {% with res.can_administer as can_administer %}
-{% with res.registered as registered %}
-<article class="news-feed-content">
-    <div class="article-type-and-date">
-        <!-- <p class="type">Nyhet</p>-->
-        <i class="fa fa-calendar large"></i>
-        <div class="article-preview-time-organisation">
-            {% if event.organisations.all %}
-            <p class="article-preview-type">{{ event.organisations.all|safeseq|join:", " }}</p>
-            {% else %}
-            <p class="article-preview-type">{{ event.user.get_full_name }}</p>
-            {% endif %}
-            <p class="article-preview-type time-since">{{ event.visible_from|timesince}}</p>
-        </div>
-    </div>
-    <h1>{{ event.headline }}</h1>
-    <p class="meta">
-        <i class="fa fa-calendar"></i>
-        <span>{{ event.start|date:"d N Y" }}</span>
-        <i class="fa fa-clock-o"></i>
-        <span>{{ event.start|time:"H:i" }}</span>
-        <i class="fa fa-map-marker"></i>
-        <span>{{ event.location }}</span>
-        {% if event.enable_registration %}
-            <i class="fa fa-users"></i>
-            <span>{{ event.number_of_preregistrations }} ({{ event.registration_limit }})</span>
-            <span title="Tid innan anmälan stänger"><i class="fa fa-exclamation-circle"></i>
-            <span>{% if event.can_deregister %}{{ event.entry_deadline|timeuntil }}{% else %}Anmälan är stängd{% endif %}</span></span>
-        {% endif %}
-
-        {% if event.tags.all  %}
-            <i class="fa fa-tags"></i>
-            <span>{{ event.tags.all|safeseq|join:", " }}</span>
-        {% endif %}
-        {% if event.sponsored  %}
-            <span>Sponsrat innehåll</span>
-        {% endif %}
-    </p>
-    <h2>{{ event.lead|truncatewords_html:50 }}</h2>
-    {% if event.imageattachment_set %}
-        {% for attachment in event.imageattachment_set.all %}
-            <a class="fancybox" rel="event_gallery" href="{{ attachment.img.url }}" title="{{ attachment.caption }}">
-                <!--<img src="{#  #}{ attachment.thumbnail.url }}" alt=""/>-->
-            </a>
-        {% endfor %}
-    {% endif %}
-    {{ event.body|markdown }}
-    {% if event.otherattachment_set.all %}
-        {% for attachment in event.otherattachment_set.all %}
-            <p>Bifogad fil: <a href="{{ attachment.file.url }}">{{ attachment.display_name }}</a></p>
-        {% endfor %}
-    {% endif %}
-
-</article>
-<p>Anmälningsstopp: {{ event.entry_deadline|date:"Y-m-d H:i:s" }}</p>
-{% if event.extra_deadline %}
-    <p>Anmälningsstopp för att {{ event.extra_deadline_text }}: {{ event.extra_deadline|date:"Y-m-d H:i:s" }}</p>
-{% endif %}
-<div class="button-group">
-    {% if not preview %}
-    {% if event.enable_registration %}
-        {% if not registered %}
-            {% if event.can_deregister %}
-                {% if not event.full %}
-                    <form method="post" action="{% url "events:register to" event.pk %}">
-                        {% csrf_token %}
-                        <label>
-                            <button class="button-group-item"  type="submit" title="snälla">Anmäl mig</button>
-                        </label>
-                    </form>
-                {% else %}
-                    <form method="post" action="{% url "events:register as reserve" event.pk %}">
-                        {% csrf_token %}
-                        <label>
-                            <button class="button-group-item" type="submit" title="snälla">Anmäl mig som reserv</button>
-                        </label>
-                    </form>
+    {% with res.registered as registered %}
+        <article class="news-feed-content">
+            <div class="article-type-and-date">
+                <!-- <p class="type">Nyhet</p>-->
+                <i class="fa fa-calendar large"></i>
+                <div class="article-preview-time-organisation">
+                    {% if event.organisations.all %}
+                        <p class="article-preview-type">{{ event.organisations.all|safeseq|join:", " }}</p>
+                    {% else %}
+                        <p class="article-preview-type">{{ event.user.get_full_name }}</p>
+                    {% endif %}
+                    <p class="article-preview-type time-since">{{ event.visible_from|timesince}}</p>
+                </div>
+            </div>
+            <h1>{{ event.headline }}
+                {% if event.status == "c" %}
+                    <span>Inställt</span>
                 {% endif %}
-            {% else %}
-                <p>Det är för sent att anmäla sig nu.</p>
+            </h1>
+            <p class="meta">
+                <i class="fa fa-calendar"></i>
+                <span>{{ event.start|date:"d N Y" }}</span>
+                <i class="fa fa-clock-o"></i>
+                <span>{{ event.start|time:"H:i" }}</span>
+                <i class="fa fa-map-marker"></i>
+                <span>{{ event.location }}</span>
+                {% if event.enable_registration %}
+                    <i class="fa fa-users"></i>
+                    <span>{{ event.number_of_preregistrations }} ({{ event.registration_limit }})</span>
+                    <span title="Tid innan anmälan stänger"><i class="fa fa-exclamation-circle"></i>
+            <span>{% if event.can_deregister %}{{ event.entry_deadline|timeuntil }}{% else %}Anmälan är stängd{% endif %}</span></span>
+                {% endif %}
+
+                {% if event.tags.all  %}
+                    <i class="fa fa-tags"></i>
+                    <span>{{ event.tags.all|safeseq|join:", " }}</span>
+                {% endif %}
+                {% if event.sponsored  %}
+                    <span>Sponsrat innehåll</span>
+                {% endif %}
+            </p>
+            {% if event.status == "c" %}
+                <p class="cancel_event">
+                    {{ event.cancel }}
+                </p>
+            {% endif %}
+            <h2>{{ event.lead|truncatewords_html:50 }}</h2>
+            {% if event.imageattachment_set %}
+                {% for attachment in event.imageattachment_set.all %}
+                    <a class="fancybox" rel="event_gallery" href="{{ attachment.img.url }}" title="{{ attachment.caption }}">
+                        <!--<img src="{#  #}{ attachment.thumbnail.url }}" alt=""/>-->
+                    </a>
+                {% endfor %}
+            {% endif %}
+            {{ event.body|markdown }}
+            {% if event.otherattachment_set.all %}
+                {% for attachment in event.otherattachment_set.all %}
+                    <p>Bifogad fil: <a href="{{ attachment.file.url }}">{{ attachment.display_name }}</a></p>
+                {% endfor %}
             {% endif %}
 
-        {% else %}
-            {% event_reserve event request.user as reserve %}
-            {% if reserve %}
-                {% event_reserve_nr event request.user as reserve_nr %}
-                <p><i class="fa fa-check-circle-o"></i> Du är anmäld som reserv nr {{ reserve_nr }}.</p>
-            {% else %}
-                <p><i class="fa fa-check-circle-o"></i> Du är anmäld.</p>
-            {% endif %}
+        </article>
+        <p>Anmälningsstopp: {{ event.entry_deadline|date:"Y-m-d H:i:s" }}</p>
+        {% if event.extra_deadline %}
+            <p>Anmälningsstopp för att {{ event.extra_deadline_text }}: {{ event.extra_deadline|date:"Y-m-d H:i:s" }}</p>
+        {% endif %}
+        <div class="button-group">
+            {% if not preview %}
+                {% if event.enable_registration %}
+                    {% if not registered %}
+                        {% if event.can_deregister %}
+                            {% if not event.full %}
+                                <form method="post" action="{% url "events:register to" event.pk %}">
+                                    {% csrf_token %}
+                                    <label>
+                                        {% if event.status != "c" %}
+                                            <button class="button-group-item"  type="submit" title="snälla">Anmäl mig</button>
+                                        {% endif %}
+                                    </label>
+                                </form>
+                            {% else %}
+                                <form method="post" action="{% url "events:register as reserve" event.pk %}">
+                                    {% csrf_token %}
+                                    <label>
+                                        {% if event.status != "c" %}
+                                            <button class="button-group-item" type="submit" title="snälla">Anmäl mig som reserv</button>
+                                        {% endif %}
+                                    </label>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            <p>Det är för sent att anmäla sig nu.</p>
+                        {% endif %}
 
-            {% if event.can_deregister %}
-                <form method="post" action="{% url "events:unregister" event.pk %}">
-                    {% csrf_token %}
-                    <label>
-                        <button class="button-group-item" type="submit" title="snälla">Avanmäl mig</button>
-                    </label>
-                </form>
-            {% else %}
-                <p>Det är för sent att avanmäla sig nu.</p>
+                    {% else %}
+                        {% event_reserve event request.user as reserve %}
+                        {% if reserve %}
+                            {% event_reserve_nr event request.user as reserve_nr %}
+                            <p><i class="fa fa-check-circle-o"></i> Du är anmäld som reserv nr {{ reserve_nr }}.</p>
+                        {% else %}
+                            <p><i class="fa fa-check-circle-o"></i> Du är anmäld.</p>
+                        {% endif %}
+
+                        {% if event.can_deregister %}
+                            <form method="post" action="{% url "events:unregister" event.pk %}">
+                                {% csrf_token %}
+                                <label>
+                                    <button class="button-group-item" type="submit" title="snälla">Avanmäl mig</button>
+                                </label>
+                            </form>
+                        {% else %}
+                            <p>Det är för sent att avanmäla sig nu.</p>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
             {% endif %}
-        {% endif %}
-    {% endif %}
-    {% endif %}
-    {% if not preview %}
-    <div class="admin-event">
-        {% if is_checked_in %}
-            <a class="button" href="{% url "events:user view" event.pk %}">Användarsida</a>
-        {% endif %}
-        {% if can_administer %}
-            <label>
-                <a class="button action-button-group-item" href="{% url "events:administer event" event.pk %}">
-                    Administrera evenemang
-                </a>
-            </label>
-        {% endif %}
-    </div>
-    {% endif %}
-</div>
-{% endwith %}
+            {% if not preview %}
+                <div class="admin-event">
+                    {% if is_checked_in %}
+                        <a class="button" href="{% url "events:user view" event.pk %}">Användarsida</a>
+                    {% endif %}
+                    {% if can_administer %}
+                        <label>
+                            <a class="button action-button-group-item" href="{% url "events:administer event" event.pk %}">
+                                Administrera evenemang
+                            </a>
+                        </label>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    {% endwith %}
 {% endwith %}

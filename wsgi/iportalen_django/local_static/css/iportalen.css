@@ -2428,6 +2428,9 @@ article.news-feed-content {
   font-family: "Lato", sans-serif;
   text-align: left;
 }
+article.news-feed-content .cancel_event {
+  color: red;
+}
 article.news-feed-content::after {
   clear: both;
   content: "";
@@ -3054,6 +3057,7 @@ div#events-to-approve {
   max-width: 12;
   margin-left: auto;
   margin-right: auto;
+  padding-bottom: 2em;
 }
 div#events-to-approve::after {
   clear: both;
@@ -3074,11 +3078,36 @@ div#events-to-approve .event-to-approve:last-child {
   margin-right: 0;
 }
 
+div#events-to-delete {
+  max-width: 12;
+  margin-left: auto;
+  margin-right: auto;
+}
+div#events-to-delete::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+div#events-to-delete .event-to-delete {
+  padding: 2em;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%;
+}
+div#events-to-delete .event-to-delete:last-child {
+  margin-right: 0;
+}
+
 div.events-to-approve-options {
   float: left;
   display: block;
   margin-right: 2.35765%;
   width: 100%;
+  padding-bottom: 2em;
 }
 div.events-to-approve-options:last-child {
   margin-right: 0;
@@ -3144,6 +3173,30 @@ label.required:after {
 }
 
 .no_show_button {
+  cursor: pointer;
+}
+
+#calender td {
+  position: relative;
+}
+#calender tr.strikeout td:before {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-bottom: 1px solid #a0a0a0;
+  width: 100%;
+}
+#calender tr.strikeout td:after {
+  content: "·";
+  font-size: 1px;
+}
+
+h1 span {
+  color: red;
+}
+
+li span a:hover {
   cursor: pointer;
 }
 

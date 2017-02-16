@@ -35,6 +35,10 @@
                             Väntar på godkännande
                         {% elif event.status == "d" %}
                             Utkast
+                        {% elif event.status == "c" %}
+                            Inställt
+                        {% elif event.status == "e" %}
+                            Väntar på att bli inställd
                         {% endif %}
                     </td>
                 </tr>
