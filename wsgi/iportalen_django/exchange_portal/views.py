@@ -42,15 +42,6 @@ def Exchange_School(request, pk):
 
     return render(request, 'exchange_portal/exchange_school.html', {'school': school, 'course_list': course_list, 'travel_story': travel_story})
 
-    '''print(query)
-    country_list = Country.objects.filter(name__icontains=query)
-    city_list = City.objects.filter(name__icontains=query)
-    school_list = School.objects.filter(name__icontains=query)
-
-
-    return render(request, 'exchange_portal/search_result.html', {'country_list': country_list, 'city_list': city_list,
-                                                                  'school_list': school_list, 'travel_story': travel_story})'''
-
 
 class Search_Autocomplete (autocomplete.Select2QuerySetView):
     def get_queryset(self):
