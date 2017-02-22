@@ -131,7 +131,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
 
     phone = models.CharField(verbose_name=_("Telefon"), max_length=255, null=True, blank=True)
 
-    modified = models.DateTimeField(editable=False)
+    #modified = models.DateTimeField(editable=False)
 
     objects = IUserManager()
     USERNAME_FIELD = "username"

@@ -87,6 +87,11 @@ class Article(models.Model):
         verbose_name=_("sponsrat"),
         default=False,
         help_text=_("Kryssa i om innehållet är sponsrat"))
+    job_advert = models.BooleanField(
+        verbose_name=_("jobbannons"),
+        default=False,
+        help_text=_("Kryssa i om innehållet är en jobbannons"))
+
     objects = ArticleManager()  # Manager
 
     ###########################################################################

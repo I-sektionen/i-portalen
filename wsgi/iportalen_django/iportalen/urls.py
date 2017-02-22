@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^$',             view=views.landing,                   name="news feed"),
     url(r'^news_api$',     view=views.news_content,              name="news api"),
     url(r'^sponsored/$',   view=views.display_sponsored_content, name="sponsored"),
+    url(r'^job_adverts/$',   view=views.display_job_advert_content, name="job_adverts"),
     url(r'^placeholder/',  view=views.placeholder,               name="placeholder"),
     url(r'^file_storage/$', view=views.glasscubes_link,           name="glasscubes storage"),
 
