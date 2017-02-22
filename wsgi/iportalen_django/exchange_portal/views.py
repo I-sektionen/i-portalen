@@ -34,15 +34,6 @@ def Contact(request):
     return render(request, 'exchange_portal/contact.html')
 
 
-def Search (request):
-    query = request.POST.get('q')
-
-    school_list = School.objects.filter(Q(name__icontains=query) | Q(in_city__name__icontains=query) |
-                                        Q(in_city__in_country__name__icontains=query))
-    #return render(request, 'exchange_portal/search_result.html', {'school_list': school_list})
-    return Exchange_Portal(request, school_list)
-
-
 def Exchange_School(request, pk):
     school = get_object_or_404(School, pk=pk)
     course_list = Exchange_Course.objects.filter(in_school=pk)
