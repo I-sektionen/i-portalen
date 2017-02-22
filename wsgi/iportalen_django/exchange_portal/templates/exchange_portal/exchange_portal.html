@@ -2,15 +2,18 @@
 
 {% block title %}Utlandsportalen{% endblock %}
 {% block content %}
+{%  include "exchange_portal/exchange_portal_header.html" %}
 
-    {% for c in country_list %}
-        <li>{{ c.name|capfirst }}</li>
-    {% endfor %}
 
-    <form class="search-form" action="/exchange_portal/search/" method="post">
+    <form class="search-form" action="/exchange_portal/" method="post">
         {% csrf_token %}
         <input class="search-holder" type="text" name="q" placeholder="Sök universitet eller land">
         <input class="submit-holder primary action-button" type="submit" value="Sök">
     </form>
+
+    {% if school_list.count != 0 %}Skolor: <br> {% endif %}
+    {% for school in school_list %}
+        <li><a href="/exchange_portal/school/{{ school.id }}">{{ school.name|capfirst }}, {{ school.in_city|capfirst }}, {{ school.in_city.in_country|capfirst }}</a></li>
+    {% endfor %}
 
 {% endblock %}

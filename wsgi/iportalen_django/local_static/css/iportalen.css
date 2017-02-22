@@ -1929,6 +1929,13 @@ header.navigation .navigation-tools .user-nav-tools li i {
   }
 }
 
+header.ep-navigation {
+  max-height: 40px;
+}
+header.ep-navigation .ep-navigation-wrapper {
+  margin-bottom: 50px;
+}
+
 #sponsors .sponsor-placeholder {
   margin: 5px auto;
   height: 150px;

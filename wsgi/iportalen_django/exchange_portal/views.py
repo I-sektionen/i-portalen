@@ -14,8 +14,24 @@ from django.db.models import Q
 
 # Create your views here.
 def Exchange_Portal(request):
-    country_list = Country.objects.all()
-    return render(request, 'exchange_portal/exchange_portal.html', {'country_list': country_list})
+
+
+    query = request.POST.get('q')
+    if query != None:
+        school_list = School.objects.filter(Q(name__icontains=query) | Q(in_city__name__icontains=query) |
+                                        Q(in_city__in_country__name__icontains=query))
+    else:
+        school_list = None
+
+    return render(request, 'exchange_portal/exchange_portal.html', {'school_list': school_list})
+
+
+def Important_Dates(request):
+    return render(request, 'exchange_portal/important_dates.html')
+
+
+def Contact(request):
+    return render(request, 'exchange_portal/contact.html')
 
 
 def Search (request):
@@ -23,7 +39,8 @@ def Search (request):
 
     school_list = School.objects.filter(Q(name__icontains=query) | Q(in_city__name__icontains=query) |
                                         Q(in_city__in_country__name__icontains=query))
-    return render(request, 'exchange_portal/search_result.html', {'school_list': school_list})
+    #return render(request, 'exchange_portal/search_result.html', {'school_list': school_list})
+    return Exchange_Portal(request, school_list)
 
 
 def Exchange_School(request, pk):

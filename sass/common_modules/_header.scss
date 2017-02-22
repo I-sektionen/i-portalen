@@ -381,3 +381,11 @@ header.navigation {
     }
   }
 }
+
+header.ep-navigation {
+
+  max-height: 40px;
+  .ep-navigation-wrapper{
+    margin-bottom: 50px;
+  }
+}
