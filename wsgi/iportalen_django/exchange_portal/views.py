@@ -14,8 +14,6 @@ from dal import autocomplete
 
 # Create your views here.
 def Exchange_Portal(request):
-
-
     query = request.POST.get('q')
     if query != None:
         school_list = School.objects.filter(Q(name__icontains=query) | Q(in_city__name__icontains=query) |
@@ -35,7 +33,6 @@ def Contact(request):
 
 
 def Exchange_School(request, pk):
-    print("hörs")
     school = get_object_or_404(School, pk=pk)
     course_list = Exchange_Course.objects.filter(in_school=pk)
 
