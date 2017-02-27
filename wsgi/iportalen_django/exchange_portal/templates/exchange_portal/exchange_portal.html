@@ -2,7 +2,7 @@
 
 {% block title %}Utlandsportalen{% endblock %}
 {% block content %}
-{%  include "exchange_portal/exchange_portal_header.html" %}
+{%  include "exchange_portal/exchange_portal_header.html" %} <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
 
 
     <form class="search-form" action="/exchange_portal/" method="post">
