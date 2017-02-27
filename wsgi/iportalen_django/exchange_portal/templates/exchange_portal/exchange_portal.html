@@ -11,7 +11,7 @@
         <input class="submit-holder primary action-button" type="submit" value="Sök">
     </form>
 
-    {% if school_list.count != 0 %}Skolor: <br> {% endif %}
+    {% if school_list.count != 0 %}Sökresultat <i>(Skolnamn, Stad, Land)</i>: <br> {% endif %}
     {% for school in school_list %}
         <li><a href="/exchange_portal/school/{{ school.id }}">{{ school.name|capfirst }}, {{ school.in_city|capfirst }}, {{ school.in_city.in_country|capfirst }}</a></li>
     {% endfor %}
