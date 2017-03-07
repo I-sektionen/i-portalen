@@ -38,7 +38,6 @@ def Exchange_School(request, pk):
 
     school = get_object_or_404(School, pk=pk)
     travel_story = school.travel_story_set.all()
-    print(travel_story)
 
     return render(request, 'exchange_portal/exchange_school.html', {'school': school, 'course_list': course_list, 'travel_story': travel_story})
 
@@ -53,15 +52,4 @@ class Search_Autocomplete (autocomplete.Select2QuerySetView):
             qs = qs.filter(name__istartswith=self.q)
 
         return qs
-
-
-
-
-
-'''def View_Story (request, school_pk):
-
-    school = get_object_or_404(School, pk=school_pk)
-    travel_story = school.travel_story_set.all()
-    #print (travel_story.about_school)
-    return render(request, 'exchange_portal/travel_story.html', {'travel_story': travel_story })'''
 

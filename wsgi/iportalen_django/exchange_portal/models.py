@@ -1,4 +1,4 @@
-__author__ = 'Magnus Forzelius'
+__author__ = 'Magnus Forzelius & Jesper Lehtonen'
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from utils.validators import liu_id_validator
@@ -32,6 +32,8 @@ class City(models.Model):
 class School(models.Model):
     name = models.CharField(max_length=50)
     in_city = models.ForeignKey(City, on_delete=models.CASCADE)
+    freemover = models.BooleanField(default=False)
+    exchange_with_liu = models.BooleanField(default=False)
 
 
 
