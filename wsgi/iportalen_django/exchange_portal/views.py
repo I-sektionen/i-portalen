@@ -43,6 +43,46 @@ def Exchange_School(request, pk):
     return render(request, 'exchange_portal/exchange_school.html', {'school': school, 'course_list': course_list, 'travel_story': travel_story})
 
 
+def Add_Country_View(request):
+    return render(request, 'exchange_portal/add_country.html')
+
+
+def Add_Country(request):
+    return render(request, 'exchange_portal/add_country.html')
+
+
+def Add_City_View(request):
+    return render(request, 'exchange_portal/add_city.html')
+
+
+def Add_City(request):
+    return render(request, 'exchange_portal/add_country.html')
+
+
+def Add_School_View(request):
+    return render(request, 'exchange_portal/add_school.html')
+
+
+def Add_School(request):
+    return render(request, 'exchange_portal/add_country.html')
+
+
+def Add_Liu_Course_View(request):
+    return render(request, 'exchange_portal/add_liu_course.html')
+
+
+def Add_Liu_Course(request):
+    return render(request, 'exchange_portal/add_country.html')
+
+
+def Add_Exchange_Course_View(request):
+    return render(request, 'exchange_portal/add_exchange_course.html')
+
+
+def Add_Exchange_Course(request):
+    return render(request, 'exchange_portal/add_country.html')
+
+
 class Search_Autocomplete (autocomplete.Select2QuerySetView):
     def get_queryset(self):
         #Can have a filter for non authenticades users here if needed
