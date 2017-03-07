@@ -1,0 +1,22 @@
+{% extends "master.html" %}
+{% load user_management_tags %}
+{% block content %}
+    <table>
+        <tr><th>Namn</th><th>Summa</th></tr>
+        {% for penalty in penalties %}
+            {% get_user_from_id penalty.user as user%}
+            <tr><td>{{ user.get_full_name }}</td><td>{{ penalty.sum }} Kr</td></tr>
+        {% endfor %}
+        <tr><td>Summa</td><td>{{ sum.cost__sum }}Kr</td></tr>
+
+    </table>
+    {% if request.user == organisation.leader %}
+            <a href="{% url "fika_penalty:add organisation penalty" organisation.name %}">
+                <button>Lägg till straff/betalning</button>
+            </a>
+    {% endif %}
+    <a href="{% url "fika_penalty:history organisation penalties" organisation.name %}">
+        <button>Historik</button>
+    </a>
+
+{% endblock %}

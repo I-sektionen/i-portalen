@@ -44,3 +44,8 @@ def get_menu_choices_organisation(user):
         menu_choices.append((_("Lägg till en organisation"), reverse('organisations:create')))
 
     return menu_choices
+
+
+@register.assignment_tag
+def is_in_organisation(user, org):
+    return org.user_in_organisation(user)

@@ -92,6 +92,7 @@ INSTALLED_APPS = (
     'letsencrypt',
     'exchange_portal',
     'liu_crawler',
+    'fika_penalty',
 )
 
 if not ON_PASS:
