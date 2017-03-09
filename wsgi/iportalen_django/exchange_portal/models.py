@@ -33,8 +33,6 @@ class School(models.Model):
     name = models.CharField(max_length=50)
     in_city = models.ForeignKey(City, on_delete=models.CASCADE)
 
-
-
     class Meta:
         verbose_name = _("Skola")
         verbose_name_plural = _("Skolor")
@@ -45,7 +43,7 @@ class School(models.Model):
 class Liu_Course(models.Model):
     name = models.CharField(max_length=50)
     course_code = models.CharField(max_length=20)
-    is_compulsary = models.BooleanField()
+    is_compulsary = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = _("Liukurs")

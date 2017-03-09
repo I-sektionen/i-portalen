@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends "master.html" %}
 
-</body>
-</html>
+{% block title %}Utlandsportalen{% endblock %}
+
+{% block content %}
+
+<h1>Lägg till en stad till Utlandsportalen</h1>
+
+    <form class="search-form" action="" method="post">
+        {% csrf_token %}
+        <input class="search-holder" type="text" name="city_name" placeholder="Lägg till stad">
+        <select name="country_id">
+            {% for country in country_list %}
+                <option value={{country.id}}>{{ country.name }}</option>
+            {% endfor %}
+        </select>
+        <input class="submit-holder primary action-button" type="submit" value="Lägg till">
+    </form>
+
+{% endblock %}

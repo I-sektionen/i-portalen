@@ -2,4 +2,14 @@
 
 {% block title %}Utlandsportalen{% endblock %}
 
-<h1>Lägg till land till utlandsportalen</h1>
+{% block content %}
+
+<h1>Lägg till ett land till Utlandsportalen</h1>
+
+    <form class="search-form" action="" method="post">
+        {% csrf_token %}
+        <input class="search-holder" type="text" name="q" placeholder="Lägg till land">
+        <input class="submit-holder primary action-button" type="submit" value="Lägg till">
+    </form>
+
+{% endblock %}
