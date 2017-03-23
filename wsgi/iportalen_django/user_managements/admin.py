@@ -55,7 +55,6 @@ class IUserAdmin(UserAdmin):
             'password',
             'first_name',
             'last_name',
-            'p_nr',
             'address',
             'zip_code',
             'city',
