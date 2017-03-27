@@ -97,7 +97,6 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False, null=False)
 
     # our fields
-    p_nr = models.CharField(verbose_name=_("personnummer"), max_length=255, null=True, blank=True)
     address = models.CharField(verbose_name=_("adress"), max_length=255, null=True, blank=True)
     zip_code = models.CharField(verbose_name=_("postnummer"), max_length=255, null=True, blank=True)
     city = models.CharField(verbose_name=_("ort"), max_length=255, null=True, blank=True)

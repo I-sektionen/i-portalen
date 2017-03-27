@@ -51,6 +51,7 @@ var article_preview = function () {
     var from = $("#id_visible_from");
     var tags = $("#id_tags");
     var sponsor = $("#id_sponsored");
+    var job_advert = $("#id_job_advert");
 
     //This is the elements where the results are printed to.
     var headline_preview = $(".headline_preview");
@@ -59,6 +60,7 @@ var article_preview = function () {
     var from_preview_date = $(".date_preview");
     var tags_preview = $(".tags_preview");
     var sponsor_preview = $(".sponsor_preview");
+    var job_advert_preview = $(".job_advert_preview");
 
     listened_to.push(
                     [headline, headline_preview],
@@ -66,7 +68,8 @@ var article_preview = function () {
                     [organisation, author_preview],
                     [from, from_preview_date],
                     [tags, tags_preview],
-                    [sponsor, sponsor_preview]
+                    [sponsor, sponsor_preview],
+                    [job_advert,job_advert_preview]
     );
 
     var render = function (){
@@ -95,6 +98,12 @@ var article_preview = function () {
                     sponsor_preview.text("Sponsrat innehåll");
                 } else {
                     sponsor_preview.text("");
+                }
+            } else if(element[0].is(job_advert)){
+                if (job_advert.prop('checked')) {
+                    job_advert_preview.text("Jobbannons");
+                } else {
+                    job_advert_preview.text("");
                 }
             } else if(element[0].is(organisation)) {
                 var selected_org = organisation.children().filter(":selected");
