@@ -76,6 +76,14 @@
                         {{ form.sponsored.errors }}
                         {{ form.sponsored.label_tag }}
                         {{ form.sponsored }}
+
+                        {{ form.sponsored.help_text }}
+                        <br>
+                        {{ form.job_advert.errors }}
+                        {{ form.job_advert.label_tag }}
+                        {{ form.job_advert }}
+                        {{ form.job_advert.help_text }}
+                        <br>
                     </div>
                      <span class="prev-next-button">
                         <span class="button" onclick="prev_button('2')">Föregående</span>
@@ -104,6 +112,7 @@
                             </i>
                             <span class="tags_preview"></span>
                             <span class="sponsor_preview"></span>
+                            <span class="job_advert_preview"></span>
                         </p>
                         <p class="lead_preview"></p>
                         <p class="read-more-fake">Läs mer</p>
@@ -125,6 +134,7 @@
                             </i>
                             <span class="tags_preview"></span>
                             <span class="sponsor_preview"></span>
+                            <span class="job_advert_preview"></span>
                         </p>
                         <p id="wmd-preview-body" class="wmd-panel wmd-preview"></p>
                         <p>
