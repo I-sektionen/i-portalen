@@ -27,7 +27,7 @@ ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 
 if ON_PASS:
     ALLOWED_HOSTS = ['*']
-    DEBUG = False
+    DEBUG = True
 elif ON_JENKINS:
     ALLOWED_HOSTS = ['*']
     DEBUG = False
