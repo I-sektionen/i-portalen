@@ -73,7 +73,6 @@ class CheckForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(CheckForm, self).__init__(*args, **kwargs)
         self.fields['user'].widget.attrs['autofocus'] = "true"
-        self.fields['force_check_in'].widget.attrs['style'] = "true"
 
 
 class ImportEntriesForm(forms.Form):
