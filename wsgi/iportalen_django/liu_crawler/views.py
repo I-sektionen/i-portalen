@@ -8,6 +8,7 @@ from .models import Result
 
 
 def assets(request, url):
+    url = str(url).replace("https://", "https:/").replace("https:/", "https://")  # This is stupid
     request = urllib.request.Request(url)
     response = urllib.request.urlopen(request)
     info = response.info()
