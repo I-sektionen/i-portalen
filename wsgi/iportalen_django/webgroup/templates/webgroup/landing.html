@@ -31,6 +31,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: "monospace";
 }
 </style> {% endblock %}
+{% block hero %}{% endblock %}
 {% block content %}
     <pre style="font-size: 6pt">{% include "asciiart.html" %}</pre>
     <br>
@@ -39,6 +40,7 @@ h1, h2, h3, h4, h5, h6 {
     <p>Här presenterar vi de små skojigheterna vi gjort i Web&nbsp;&nbsp;&nbsp;&nbsp;group!</p>
     <ul>
     <li><a href="{% url "liu_crawler:liu_crawler" %}">Liu crawler</a> </li>
+    <li><a href="{% url "webgroup:github" %}">Github stats</a> </li>
     </ul>
 {% endblock %}
 
