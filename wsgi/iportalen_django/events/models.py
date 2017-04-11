@@ -680,6 +680,3 @@ class EntryAsParticipant(models.Model):
                                  0].speech_nr + 1
         except:
             self.speech_nr = 1
-        self.save()
-
-
