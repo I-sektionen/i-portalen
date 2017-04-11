@@ -74,7 +74,7 @@ h1, h2, h3, h4, h5, h6 {
     <form action="" method="get">
         <label>
             Kurskod:
-            <input type="text" name="course" value="{{ filter.course|upper }}">
+            <input type="text" name="course" value="{% if filter.course %}{{ filter.course|upper }}{% endif %}">
         </label>
         <label>
             Tentakod:
