@@ -1,0 +1,129 @@
+{% extends "master.html" %}
+{# Det finns inget som heter fulkod på denna sidan, Här är det fritt fram att skriva inline styling och javascript, SASS och SCSS är strikt förbjudet! #}
+{% load iportalen_tags %}
+{% load tag_tags %}
+{% include "header.html" %}
+{% block head %}<style>
+body, header.navigation, footer.footer {
+    background-color: black;
+    color: #00dd1c;
+    font-family: "monospace";
+}
+header.navigation ul li.nav-link a {
+    background-color: black;
+    color: #00dd1c;
+}
+header.navigation .navigation-tools .user-nav-tools a {
+    background-color: black;
+    color: #00dd1c;
+}
+h1, h2, h3, h4, h5, h6 {
+    background-color: black;
+    color: #00dd1c;
+    font-family: "monospace";
+}
+.sponsor{
+    background-color: white;
+}
+.footer li a, .footer li h3 {
+    background-color: black;
+    color: #00dd1c;
+    font-family: "monospace";
+}
+</style>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+    </script>
+{% endblock %}
+{% block hero %}{% endblock %}
+{% block content %}
+    <pre style="font-size: 6pt">{% include "asciiart.html" %}</pre>
+    <br>
+    <br>
+    <h2>Github stats</h2>
+    <h3>I-portalen</h3>
+<div id="chart_div"></div>
+    <br>
+    <br>
+    <h3>Isektionen</h3>
+<div id="chart_div2"></div>
+    <br>
+    <br>
+    <h3>De 10 senaste commitsen till I-portalens Master branch:</h3>
+    <ul id="masterbranch"></ul>
+
+{% endblock %}
+{% block document_ready %}
+    $.ajax({
+        url: "https://api.github.com/repos/I-sektionen/i-portalen/commits",
+        success: function(data){
+            let mb = $("#masterbranch");
+            for(let i=0; i<data.length; i++){
+                mb.append("<li>" + data[i]["commit"]["message"] + " : <i>"+data[i]["author"]["login"] +"</i></li>");
+                if(i == 9){
+                    break;
+                }
+            }
+            drawChart()
+        }
+    });
+    google.charts.setOnLoadCallback(drawChart);
+
+
+
+      function drawChart() {
+
+    $.ajax({
+        url: "https://api.github.com/repos/I-sektionen/i-portalen/contributors?anon=true",
+        success: function(rawdata){
+            let gh_data = [];
+            for(let i=0; i<rawdata.length; i++){
+                gh_data.push([rawdata[i]['login'], rawdata[i]['contributions']]);
+            }
+            // Create the data table.
+            let data = new google.visualization.DataTable();
+            data.addColumn('string', 'Namn');
+            data.addColumn('number', 'Contributions');
+            data.addRows(gh_data);
+
+            // Set chart options
+            let options = {'title':'Contributions',
+                           'width': "100%",
+                           'height': 900};
+
+            // Instantiate and draw our chart, passing in some options.
+            let chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    });
+    var gh_data_isektionen = [];
+    $.ajax({
+        url: "https://api.github.com/repos/I-sektionen/isektionen/contributors?anon=true",
+        success: function(rawdata){
+            let gh_data = [];
+            for(let i=0; i<rawdata.length; i++){
+                gh_data.push([rawdata[i]['login'], rawdata[i]['contributions']]);
+            }
+            // Create the data table.
+            let data = new google.visualization.DataTable();
+            data.addColumn('string', 'Namn');
+            data.addColumn('number', 'Contributions');
+            data.addRows(gh_data);
+
+            // Set chart options
+            let options = {'title':'Contributions',
+                           'width': "100%",
+                           'height': 900};
+
+            // Instantiate and draw our chart, passing in some options.
+            let chart = new google.visualization.BarChart(document.getElementById('chart_div2'));
+            chart.draw(data, options);
+        }
+    });
+
+
+    }
+
+{% endblock %}
