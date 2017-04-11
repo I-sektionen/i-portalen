@@ -1,6 +1,34 @@
 {% extends "master.html" %}
 {% load staticfiles %}
 {% block hero %}{% endblock %}
+{% block head %}<style>
+body, header.navigation, footer.footer {
+    background-color: black;
+    color: #00dd1c;
+    font-family: "monospace";
+}
+header.navigation ul li.nav-link a {
+    background-color: black;
+    color: #00dd1c;
+}
+header.navigation .navigation-tools .user-nav-tools a {
+    background-color: black;
+    color: #00dd1c;
+}
+h1, h2, h3, h4, h5, h6 {
+    background-color: black;
+    color: #00dd1c;
+    font-family: "monospace";
+}
+.sponsor{
+    background-color: white;
+}
+.footer li a, .footer li h3 {
+    background-color: black;
+    color: #00dd1c;
+    font-family: "monospace";
+}
+</style> {% endblock %}
 {% block content %}
 
   <div id="awesome-game" class="game"></div>

@@ -89,7 +89,8 @@ INSTALLED_APPS = (
     'corsheaders',
     'letsencrypt',
     'fika_penalty',
-    'liu_crawler'
+    'liu_crawler',
+    'webgroup'
 )
 
 if not ON_PASS:
