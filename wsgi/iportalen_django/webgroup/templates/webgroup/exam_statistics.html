@@ -30,9 +30,7 @@ h1, h2, h3, h4, h5, h6 {
     color: #00dd1c;
     font-family: "monospace";
 }
-</style>
-    <style>
-    .dropdown-menu {
+.dropdown-menu {
   position: absolute;
   top: 100%;
   left: 0;
@@ -74,19 +72,19 @@ h1, h2, h3, h4, h5, h6 {
     <form action="" method="get">
         <label>
             Kurskod:
-            <input type="text" name="course" value="{% if filter.course %}{{ filter.course|upper }}{% endif %}">
+            <input style="background-color: #333333;" type="text" name="course" value="{% if filter.course %}{{ filter.course|upper }}{% endif %}">
         </label>
         <label>
             Tentakod:
-        <input type="text" name="exam" value="{% if filter.exam %}{{ filter.exam|upper }}{% endif %}">
+        <input style="background-color: #333333;" type="text" name="exam" value="{% if filter.exam %}{{ filter.exam|upper }}{% endif %}">
 
         </label>
         <label>
             Datumspann:
-        <input type="text" name="daterange">
+        <input style="background-color: #333333;" type="text" name="daterange">
 
         </label>
-        <input type="submit" value="Hämta statistik!">
+        <input class="button" style="background-color: #333333; color: #00dd1c" type="submit" value="Hämta statistik!">
     </form>
     <br>
     <div>
@@ -96,7 +94,7 @@ h1, h2, h3, h4, h5, h6 {
         <br>
     <form method="get" action="{% url "webgroup:exam_statistics_update" %}">
         <input type="hidden" name="course" value="{% if result %}{{ result.course_code|upper }}{% endif %}">
-        <input type="submit" value="Kolla om det finns nyare statistik!">
+        <input class="button" style="background-color: #333333; color: #00dd1c"  type="submit" value="Kolla om det finns nyare statistik!">
     </form>
     </div>
 {% endblock %}
@@ -127,7 +125,7 @@ h1, h2, h3, h4, h5, h6 {
         let data = new google.visualization.arrayToDataTable({{ google_chart|safe }});
 
         // Set chart options
-        let options = {title:'Contributions',
+        let options = {title:'Betygsfördelning',
                        width: "100%",
                        height: 900,
                        legend: { position: 'top', maxLines: 3 },
