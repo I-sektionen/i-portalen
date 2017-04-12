@@ -2,8 +2,17 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
+import urllib.request
 
 from .models import Result
+
+
+def assets(request, url):
+    url = str(url).replace("https://", "https:/").replace("https:/", "https://")  # This is stupid
+    request = urllib.request.Request(url)
+    response = urllib.request.urlopen(request)
+    info = response.info()
+    return HttpResponse(response.read(), content_type=info.get_content_type())
 
 
 def liu_crawler(request):
