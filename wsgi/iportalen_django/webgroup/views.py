@@ -50,7 +50,8 @@ def exam_statistics(request):
                 else:
                     messages.error(request, "Sökningen gav ingen träff.")
                     return render(request, "webgroup/exam_statistics.html", {"result": None, "filter": url_filter})
-            return render(request, "webgroup/exam_statistics.html", {"result": tmp, "filter": url_filter, "google_chart": tmp.google_chart(exam, date_from, date_to)})
+            data = tmp.google_chart(exam, date_from, date_to)
+            return render(request, "webgroup/exam_statistics.html", {"result": tmp, "filter": url_filter, "google_chart": data['json']})
         else:
             messages.error(request, "Kurskoden gav inte en unik träff i sökningen.")
     except TypeError:

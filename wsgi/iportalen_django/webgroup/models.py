@@ -6,6 +6,14 @@ from django.db import models
 from utils.liu_student import exam_result
 
 
+class Groupings(models.Model):
+    name = models.CharField(max_length=255, verbose_name="Kursnamn")
+    courses = models.ManyToManyField("Course")
+
+    def __str__(self):
+        return self.name
+
+
 class Course(models.Model):
     course_code = models.CharField(max_length=10, verbose_name="Kurskod", unique=True)
     name = models.CharField(max_length=255, verbose_name="Kursnamn")
@@ -19,7 +27,7 @@ class Course(models.Model):
             if r['course_code'] == self.course_code:
                 exam, created = Exam.objects.get_or_create(
                     course=self,
-                    exam_code=r['exam_code'],
+                    exam_code=r['exam_code'].upper(),
                     name=r['exam_name'],
                     date=datetime.datetime.strptime(r['date'], "%Y-%m-%d")
                 )
@@ -34,7 +42,7 @@ class Course(models.Model):
         grade_set = []
         kw = {}
         if exam:
-            kw["exam_code__contains"] = exam
+            kw["exam_code__contains"] = exam.upper()
         if date_from and date_to:
             kw["date__gte"] = date_from
             kw["date__lte"] = date_to
@@ -44,18 +52,35 @@ class Course(models.Model):
         for e in exam_set:
             grade_set += e.grades()
         grade_set = sorted(list(set(grade_set)), key=lambda x: (x[0].isdigit(), x))
-        label = ["Betyg", ] + grade_set
+        fgh = []
+        total = {'summed': 0}
+        for cp in grade_set:
+            total[cp] = 0
         res = []
+
         for e in exam_set:
             tmp = [e.exam_code + " " + datetime.datetime.strftime(e.date, "%Y-%m-%d")]
-            for l in label[1:]:
+            summed = 0
+            exam_results = {}
+            for l in grade_set:
                 try:
-                    tmp.append(e.examresult_set.get(name=l).amount)
+                    exam_results[l] = e.examresult_set.get(name=l).amount
                 except ExamResult.DoesNotExist:
-                    tmp.append(0)
+                    exam_results[l] = 0
+
+                summed += int(exam_results[l])
+            for j in grade_set:
+                total[j] += exam_results[j]
+                tmp.append(exam_results[j])
+                tmp.append("<div style='margin: 5px; color: black;'><p>Betyg:&nbsp;{0}</p><p>Antal:&nbsp;{1}</p><p>Procent:&nbsp;{2:.1f}%</p></div>".format(str(j), str(exam_results[j]), (exam_results[j]*100/summed)))
+            total['summed'] += summed
             res.append(tmp)
+        for cp in grade_set:
+            fgh.append("{0}, {1:.1f}%".format(str(cp), (total[cp]*100/total["summed"])))
+            fgh.append({'type': 'string', 'role': 'tooltip', 'p': {'html': True}})
+        label = ["Betyg", ] + fgh
         result = [label, ] + res
-        return json.dumps(result)
+        return {"json": json.dumps(result), "total": total}
 
     def __str__(self):
         return self.course_code
