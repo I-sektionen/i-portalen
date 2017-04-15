@@ -54,14 +54,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
     </style>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
-    </script>
+
     <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-
-
 {% endblock %}
 {% block hero %}{% endblock %}
 {% block content %}
@@ -71,14 +65,14 @@ h1, h2, h3, h4, h5, h6 {
     <h3>Tentastatistik</h3>
     <form action="" method="get">
         <label>
-            Kurskod:
-            <input style="background-color: #333333;" type="text" name="course" value="{% if filter.course %}{{ filter.course|upper }}{% endif %}">
+            Grupp:
+            <select style="background-color: #333333;" name="group" >
+            {% for g in groups %}
+                <option value="{{ g.id }}" {% if filter.group == g.id  %}selected{% endif %} >{{ g.name }}</option>
+            {% endfor %}
+                </select>
         </label>
-        <label>
-            Tentakod:
-        <input style="background-color: #333333;" type="text" name="exam" value="{% if filter.exam %}{{ filter.exam|upper }}{% endif %}">
 
-        </label>
         <label>
             Datumspann:
         <input style="background-color: #333333;" type="text" name="daterange">
@@ -93,14 +87,44 @@ h1, h2, h3, h4, h5, h6 {
     </form>
     <br>
     <div>
-    <h2>{{ result.course_code|upper }} {{ result.name|title }}</h2>
+    <br>
+    <p>
+        GGK<sup>*</sup>: {{ ggk }}%
+    </p>
+    <p>
+        GU<sub>MAX</sub><sup>**</sup>: {{ gu }}%
+    </p>
+    <p>
+        G4<sup>***</sup>: {{ g4 }}%
+    </p>
+    <p>
+        G5<sup>****</sup>: {{ g5 }}%
+    </p>
+    <br>
+    <table>
+
+    <tr><th width="10%">Kurskod</th><th width="24%">Kursnamn</th><th style="color: #ff1493;" width="11%">Antal</th><th style="color: #ff0505;"  width="11%">U</th><th  style="color: #00b4ff" width="11%">G</th><th  style="color: #FFE403;" width="11%">3</th><th  style="color: #81FF02;" width="11%">4</th><th  style="color: #02ff00;" width="11%">5</th></tr>
+    {% for c in courses %}
+        <tr><td>{{ c.course_code }}</td><td colspan="7">{{ c.course_name|title }}<br> GK<sup>*****</sup>: {{ c.course_pass_avg }}%<br>  U<sub>MAX</sub>: {{ c.course_highest_kugg }}%</td></tr>
+            {% for k, v in c.items %}{% if k != "course_code" and k != "course_name" and k != "course_pass_avg"  and k != "course_highest_kugg"%}
+                <tr style="color: #ff1493;">
+                    <td></td>
+                    <td>{{ k }}</td>
+                    <td>{{ v.summed }}</td>
+                    <td style="color: #ff0505;">{{ v.kugg }}%</td>
+                    <td style="color: #00b4ff">{% if v.pass %}{{ v.pass }}%{% endif %}</td>
+                    <td style="color: #FFE403">{% if v.3or or v.4or or v.5or %}{{ v.3or }}%{% endif %}</td>
+                    <td style="color: #81FF02">{% if v.3or or v.4or or v.5or %}{{ v.4or }}%{% endif %}</td>
+                    <td style="color: #02ff00">{% if v.3or or v.4or or v.5or %}{{ v.5or }}%{% endif %}</td></tr>
+            {% endif %}{%  endfor %}
+    {% endfor %}
+    </table>
         <br>
-<div id="chart_div"></div>
-        <br>
-    <form method="get" action="{% url "webgroup:exam_statistics_update" %}">
-        <input type="hidden" name="course" value="{% if result %}{{ result.course_code|upper }}{% endif %}">
-        <input class="button" style="background-color: #333333; color: #00dd1c"  type="submit" value="Kolla om det finns nyare statistik!">
-    </form>
+    <p>* Genomsnittligt GK på alla kurser.</p>
+    <p>** Genomsnittligt U<sub>MAX</sub> på alla kurser.</p>
+    <p>*** Genomsnittligt andel 4:or på alla delmoment med betygsteget 4.</p>
+    <p>**** Genomsnittligt andel 5:or på alla delmoment med betygsteget 5.</p>
+    <p>***** Genomsnittligt kugg på alla delmoment.</p>
     </div>
 {% endblock %}
 {% block document_ready %}
@@ -124,24 +148,7 @@ h1, h2, h3, h4, h5, h6 {
         }
     );
     //$(".daterangepicker")
-    google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
-        let data = new google.visualization.arrayToDataTable({{ google_chart|safe }});
-
-        // Set chart options
-        let options = {title:'Betygsfördelning',
-                       width: "100%",
-                       height: 900,
-                       legend: { position: 'top', maxLines: 3 },
-                       bar: { groupWidth: '75%' },
-                       isStacked: true,
-                       tooltip: {isHtml: true}};
-
-        // Instantiate and draw our chart, passing in some options.
-        let chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-    }
 {% endblock %}
 
 {% block after_scripts %}
