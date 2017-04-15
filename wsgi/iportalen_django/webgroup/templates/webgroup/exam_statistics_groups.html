@@ -88,21 +88,43 @@ h1, h2, h3, h4, h5, h6 {
     <br>
     <div>
     <br>
+    <p>
+        GGK<sup>*</sup>: {{ ggk }}%
+    </p>
+    <p>
+        GU<sub>MAX</sub><sup>**</sup>: {{ gu }}%
+    </p>
+    <p>
+        G4<sup>***</sup>: {{ g4 }}%
+    </p>
+    <p>
+        G5<sup>****</sup>: {{ g5 }}%
+    </p>
+    <br>
     <table>
 
-    <tr><th width="10%">Kurskod</th><th width="24%">Kursnamn</th><th width="11%">Antal</th><th width="11%">U</th><th width="11%">G</th><th width="11%">3</th><th width="11%">4</th><th width="11%">5</th></tr>
+    <tr><th width="10%">Kurskod</th><th width="24%">Kursnamn</th><th style="color: #ff1493;" width="11%">Antal</th><th style="color: #ff0505;"  width="11%">U</th><th  style="color: #00b4ff" width="11%">G</th><th  style="color: #FFE403;" width="11%">3</th><th  style="color: #81FF02;" width="11%">4</th><th  style="color: #02ff00;" width="11%">5</th></tr>
     {% for c in courses %}
-        <tr><td>{{ c.course_code }}</td><td colspan="7">{{ c.course_name|title }}</td></tr>
-            {% for k, v in c.items %}{% if k != "course_code" and k != "course_name" %}
-                <tr><td></td><td>{{ k }}</td><td>{{ v.summed }}</td><td>{{ v.kugg }}%</td><td>{% if v.pass %}{{ v.pass }}%{% endif %}</td><td>{% if v.3or or v.4or or v.5or %}{{ v.3or }}%{% endif %}</td><td>{% if v.3or or v.4or or v.5or %}{{ v.4or }}%{% endif %}</td><td>{% if v.3or or v.4or or v.5or %}{{ v.5or }}%{% endif %}</td></tr>
+        <tr><td>{{ c.course_code }}</td><td colspan="7">{{ c.course_name|title }}<br> GK<sup>*****</sup>: {{ c.course_pass_avg }}%<br>  U<sub>MAX</sub>: {{ c.course_highest_kugg }}%</td></tr>
+            {% for k, v in c.items %}{% if k != "course_code" and k != "course_name" and k != "course_pass_avg"  and k != "course_highest_kugg"%}
+                <tr style="color: #ff1493;">
+                    <td></td>
+                    <td>{{ k }}</td>
+                    <td>{{ v.summed }}</td>
+                    <td style="color: #ff0505;">{{ v.kugg }}%</td>
+                    <td style="color: #00b4ff">{% if v.pass %}{{ v.pass }}%{% endif %}</td>
+                    <td style="color: #FFE403">{% if v.3or or v.4or or v.5or %}{{ v.3or }}%{% endif %}</td>
+                    <td style="color: #81FF02">{% if v.3or or v.4or or v.5or %}{{ v.4or }}%{% endif %}</td>
+                    <td style="color: #02ff00">{% if v.3or or v.4or or v.5or %}{{ v.5or }}%{% endif %}</td></tr>
             {% endif %}{%  endfor %}
     {% endfor %}
     </table>
         <br>
-    <form method="get" action="{% url "webgroup:exam_statistics_update" %}">
-        <input type="hidden" name="course" value="{% if result %}{{ result.course_code|upper }}{% endif %}">
-        <input class="button" style="background-color: #333333; color: #00dd1c"  type="submit" value="Kolla om det finns nyare statistik!">
-    </form>
+    <p>* Genomsnittligt GK på alla kurser.</p>
+    <p>** Genomsnittligt U<sub>MAX</sub> på alla kurser.</p>
+    <p>*** Genomsnittligt andel 4:or på alla delmoment med betygsteget 4.</p>
+    <p>**** Genomsnittligt andel 5:or på alla delmoment med betygsteget 5.</p>
+    <p>***** Genomsnittligt kugg på alla delmoment.</p>
     </div>
 {% endblock %}
 {% block document_ready %}
