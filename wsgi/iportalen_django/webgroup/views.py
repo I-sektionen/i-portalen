@@ -157,4 +157,10 @@ def exam_statistics_groups(request):
             courses.append(tmp)
     except Groupings.DoesNotExist:
         pass
-    return render(request, "webgroup/exam_statistics_groups.html", {"result": None, "filter": url_filter, "groups": Groupings.objects.all(), "courses": courses, "ggk": (round(gk * 10 / gkc) / 10), "gu": (round(gu * 10 / gkc) / 10), "g4": (round(g4 * 10 / g4c) / 10), "g5": (round(g5 * 10 / g5c) / 10)})
+    try:
+        res = {"result": None, "filter": url_filter, "groups": Groupings.objects.all(), "courses": courses,
+         "ggk": (round(gk * 10 / gkc) / 10), "gu": (round(gu * 10 / gkc) / 10), "g4": (round(g4 * 10 / g4c) / 10),
+         "g5": (round(g5 * 10 / g5c) / 10)}
+    except (KeyError, ZeroDivisionError):
+        res = {"result": None, "filter": url_filter, "groups": Groupings.objects.all(), "courses": courses}
+    return render(request, "webgroup/exam_statistics_groups.html", res)
