@@ -81,45 +81,87 @@
 
             <section id="organisation-members">
                 <h1>Medlemmar</h1>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Namn</th>
-                            <th>Post</th>
-                            <th>Kontaktuppgifter</th>
-                        </tr>
-                    </thead>
-                    <tbody>{% get_organisation_leader organisation as leader %}
-                        <tr>
-                            <td>
-                                {{ organisation.leader.first_name|capfirst }} {{ organisation.leader.last_name|capfirst }}
-                            </td>
-                            <td>{{ leader.post }}</td>
-                            {% if leader.email %}
-                            <td>{{ leader.email|urlize }}</td>
-                            {% else %}
-                            <td>{{ organisation.leader.email|urlize }}</td>
-                            {% endif %}
-                        </tr>
-                        {% for member in members %}
+                <div id="two_col">
+                    <table>
+                        <thead>
                             <tr>
-                                {% ifnotequal organisation.leader.pk member.user.pk %}
-                                    {% if member.user.first_name and member.user.last_name %}
-                                        <td>
-                                            {{ member.user.first_name|capfirst }} {{ member.user.last_name|capfirst }}
-                                        </td>
-                                        <td>{{ member.post }}</td>
-                                        {% if member.email %}
-                                        <td>{{ member.email }}</td>
-                                        {% else %}
-                                        <td></td>
-                                        {% endif %}
-                                    {% endif %}
-                                {% endifnotequal %}
+                                <th>Namn</th>
+                                <th>Kontaktuppgifter</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>{% get_organisation_leader organisation as leader %}
+                            <tr>
+                                <td>
+                                    {{ organisation.leader.first_name|capfirst }} {{ organisation.leader.last_name|capfirst }}
+                                    <br>{{ leader.post }}
+                                </td>
+                                {% if leader.email %}
+                                <td>{{ leader.email|urlize }}</td>
+                                {% else %}
+                                <td>{{ organisation.leader.email|urlize }}</td>
+                                {% endif %}
+                            </tr>
+                            {% for member in members %}
+                                <tr>
+                                    {% ifnotequal organisation.leader.pk member.user.pk %}
+                                        {% if member.user.first_name and member.user.last_name %}
+                                            <td class="name">
+                                                {{ member.user.first_name|capfirst }} {{ member.user.last_name|capfirst }}
+                                            <br>{{ member.post }}
+                                            </td>
+                                            {% if member.email %}
+                                            <td class="mail">{{ member.email }}</td>
+                                            {% else %}
+                                            <td></td>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endifnotequal %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="three_col">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Namn</th>
+                                <th>Post</th>
+                                <th>Kontaktuppgifter</th>
+                            </tr>
+                        </thead>
+                        <tbody>{% get_organisation_leader organisation as leader %}
+                            <tr>
+                                <td>
+                                    {{ organisation.leader.first_name|capfirst }} {{ organisation.leader.last_name|capfirst }}
+                                </td>
+                                <td>{{ leader.post }}</td>
+                                {% if leader.email %}
+                                <td>{{ leader.email|urlize }}</td>
+                                {% else %}
+                                <td>{{ organisation.leader.email|urlize }}</td>
+                                {% endif %}
+                            </tr>
+                            {% for member in members %}
+                                <tr>
+                                    {% ifnotequal organisation.leader.pk member.user.pk %}
+                                        {% if member.user.first_name and member.user.last_name %}
+                                            <td class="name">
+                                                {{ member.user.first_name|capfirst }} {{ member.user.last_name|capfirst }}
+                                            </td>
+                                            <td class="post">{{ member.post }}</td>
+                                            {% if member.email %}
+                                            <td class="mail">{{ member.email }}</td>
+                                            {% else %}
+                                            <td></td>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endifnotequal %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </section>
             {% get_organisation_articles organisation.pk as articles %}
             {% if articles %}

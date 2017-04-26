@@ -1075,6 +1075,40 @@ picture {
   #organisation-content #organisation-members:last-child {
     margin-right: 0;
   }
+  #organisation-content #organisation-members #three_col {
+    display: inline !important;
+  }
+  #organisation-content #organisation-members #two_col {
+    display: none;
+  }
+}
+@media screen and (min-width: 600px) {
+  #organisation-content #organisation-members {
+    float: left;
+    display: block;
+    margin-right: 7.42297%;
+    width: 100%;
+  }
+  #organisation-content #organisation-members:last-child {
+    margin-right: 0;
+  }
+  #organisation-content #organisation-members #three_col {
+    display: none;
+  }
+}
+@media screen and (max-width: 599px) {
+  #organisation-content #organisation-members {
+    float: left;
+    display: block;
+    margin-right: 16.03631%;
+    width: 100%;
+  }
+  #organisation-content #organisation-members:last-child {
+    margin-right: 0;
+  }
+  #organisation-content #organisation-members #three_col {
+    display: none;
+  }
 }
 #organisation-content #organisation-articles {
   float: left;

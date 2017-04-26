@@ -23,7 +23,6 @@
             {% for form in formset %}
                 {% csrf_token %}
                 <tr>
-
                     <td>{{ form.user }}</td>
                     <td>{{ form.post }}</td>
                     <td>{{ form.email }}</td>
