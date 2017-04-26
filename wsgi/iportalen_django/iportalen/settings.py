@@ -93,6 +93,8 @@ INSTALLED_APPS = (
     'exchange_portal',
     'liu_crawler',
     'fika_penalty',
+    'webgroup'
+
 )
 
 if not ON_PASS:

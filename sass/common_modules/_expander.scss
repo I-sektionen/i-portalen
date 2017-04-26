@@ -36,3 +36,22 @@
     display: none;
   }
 }
+
+.expander-trigger {
+   @include user-select(none);
+
+   &:before {
+     content: "\25BC"; /* 25BC */
+     margin-right: 0.5em;
+   }
+ }
+
+ .expander-hidden {
+   &:before {
+     content: "\25BA"; /* 25BA */
+   }
+ }
+
+ .expander-hidden + #expander-content {
+   display:none;
+ }

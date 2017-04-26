@@ -1,0 +1,47 @@
+{% extends "master.html" %}
+{# Det finns inget som heter fulkod på denna sidan, Här är det fritt fram att skriva inline styling och javascript, SASS och SCSS är strikt förbjudet! #}
+{% load iportalen_tags %}
+{% load tag_tags %}
+{% include "header.html" %}
+{% block head %}<style>
+body, header.navigation, footer.footer {
+    background-color: black;
+    color: #00dd1c;
+    font-family: "monospace";
+}
+header.navigation ul li.nav-link a {
+    background-color: black;
+    color: #00dd1c;
+}
+header.navigation .navigation-tools .user-nav-tools a {
+    background-color: black;
+    color: #00dd1c;
+}
+h1, h2, h3, h4, h5, h6 {
+    background-color: black;
+    color: #00dd1c;
+    font-family: "monospace";
+}
+.sponsor{
+    background-color: white;
+}
+.footer li a, .footer li h3 {
+    background-color: black;
+    color: #00dd1c;
+    font-family: "monospace";
+}
+</style> {% endblock %}
+{% block hero %}{% endblock %}
+{% block content %}
+    <pre style="font-size: 6pt">{% include "asciiart.html" %}</pre>
+    <br>
+    <br>
+    <h3>Välkommen till en värld av särskrivningar och fulkod!</h3>
+    <p>Här presenterar vi de små skojigheterna vi gjort i Web&nbsp;&nbsp;&nbsp;&nbsp;group!</p>
+    <ul>
+    <li><a href="{% url "liu_crawler:liu_crawler" %}">Liu crawler</a> </li>
+    <li><a href="{% url "webgroup:github" %}">Github stats</a> </li>
+    <li><a href="{% url "webgroup:exam_statistics" %}">Tentastatistik</a> </li>
+    </ul>
+{% endblock %}
+

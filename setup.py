@@ -27,6 +27,10 @@ setup(name='I-Portalen',
           'requests-toolbelt==0.7.0',
           'django-reversion==2.0.0',
           'sqlparse==0.2.1',
+<<<<<<< .merge_file_8XRNCN
           'urllib3==1.17',
           'django-autocomplete-light' # This should match requirements.txt!
+=======
+          'urllib3'],  # This should match requirements.txt!
+>>>>>>> .merge_file_SIto4a
       )

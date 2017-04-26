@@ -51,6 +51,7 @@ var article_preview = function () {
     var from = $("#id_visible_from");
     var tags = $("#id_tags");
     var sponsor = $("#id_sponsored");
+    var job_advert = $("#id_job_advert");
 
     //This is the elements where the results are printed to.
     var headline_preview = $(".headline_preview");
@@ -59,6 +60,7 @@ var article_preview = function () {
     var from_preview_date = $(".date_preview");
     var tags_preview = $(".tags_preview");
     var sponsor_preview = $(".sponsor_preview");
+    var job_advert_preview = $(".job_advert_preview");
 
     listened_to.push(
                     [headline, headline_preview],
@@ -66,7 +68,8 @@ var article_preview = function () {
                     [organisation, author_preview],
                     [from, from_preview_date],
                     [tags, tags_preview],
-                    [sponsor, sponsor_preview]
+                    [sponsor, sponsor_preview],
+                    [job_advert,job_advert_preview]
     );
 
     var render = function (){
@@ -95,6 +98,12 @@ var article_preview = function () {
                     sponsor_preview.text("Sponsrat innehåll");
                 } else {
                     sponsor_preview.text("");
+                }
+            } else if(element[0].is(job_advert)){
+                if (job_advert.prop('checked')) {
+                    job_advert_preview.text("Jobbannons");
+                } else {
+                    job_advert_preview.text("");
                 }
             } else if(element[0].is(organisation)) {
                 var selected_org = organisation.children().filter(":selected");
@@ -289,7 +298,41 @@ function cancel_write(){
     show.style.visibility = "visible";
     var showsend = document.getElementById("sendtext");
     showsend.style.visibility = "visible";
-};//This function initiates the markdown engine. It is called on by event_preview below.
+};/**
+ * Created by jonathan on 2015-11-09.
+ */
+function check_in_admin(url){
+    init_csrf();
+    var input_field = $("#id_user");
+    var force_field = $("#id_force_check_in");
+    var s_list = $("#list").find("ol");
+    var submit_btn = $("#submit-button");
+    var msg_box = $("#message-box");
+
+    submit_btn.click(function(e) {
+        submit_btn.prop("disabled", true);
+        e.preventDefault();
+        var data = {
+            'user': input_field.val(),
+            'force_check_in': force_field.is(":checked")
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function(result) {
+                msg_box.empty();
+                message_iportalen(result.status, result.message);
+                force_field.prop('checked', false);
+                submit_btn.prop("disabled", false);
+            }
+        });
+        input_field.val('');
+    });
+}
+
+;//This function initiates the markdown engine. It is called on by event_preview below.
 function markdown_event_preview() {
         var converter = Markdown.getSanitizingConverter();
         converter.hooks.chain("preConversion", function (text) {
@@ -4824,7 +4867,6 @@ catch(err) {
 function message_iportalen(message_type, message){
     var message = '<div class="'+message_type+'"><span>'+message+'</span> <button type="button" onclick="closeMessage(this)">&times;</button> </div>'
     $('#message-box').append(message);
-    console.log(message)
 };/**
  * Created by MagnusForzelius on 2015-10-31.
  */

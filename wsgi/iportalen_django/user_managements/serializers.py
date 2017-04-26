@@ -33,9 +33,6 @@ class IUserSerializer(serializers.ModelSerializer):
                   'must_edit',
                   'phone')
 
-    def get_p_nr(self, obj):
-        return obj.p_nr
-
 
 class MasterProfileSerializer(serializers.ModelSerializer):
     class Meta:

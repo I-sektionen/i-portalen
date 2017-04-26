@@ -21,6 +21,9 @@
         {% if article.sponsored  %}
             <span>Sponsrat innehåll</span>
         {% endif %}
+        {% if article.job_advert %}
+            <span>Jobbannons</span>
+        {%  endif %}
     </p>
     <h2>{{ article.lead|truncatewords_html:50 }}</h2>
     <a href="{{ article.get_absolute_url }}">Läs mer</a>

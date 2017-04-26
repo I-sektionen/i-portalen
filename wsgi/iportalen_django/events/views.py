@@ -173,83 +173,85 @@ def reserves_list(request, pk):
 
 
 @login_required()
-def check_in(request, pk):  # TODO: Reduce complexity
+def check_in(request, pk):
     event = get_object_or_404(Event, pk=pk)
     can_administer = event.can_administer(request.user)
+    if can_administer:
+        form = CheckForm()
+        return render(request, 'events/event_check_in.html', {
+            'form': form, 'event': event, "can_administer": can_administer,
+        })
+    else:
+        raise PermissionDenied
+
+
+@login_required()
+def check_in_api(request, pk):
     if request.method == 'POST':
+        try:
+            event = Event.objects.get(pk=pk)
+            if not event.can_administer(request.user):
+                raise PermissionDenied
+        except:
+            return JsonResponse({"status": "error", "message": _("Inget event med detta idnummer.")})
         form = CheckForm(request.POST)
         if form.is_valid():
             form_user = form.cleaned_data["user"]
             try:
-                liu_id_validator(form_user)
-                is_liu_id = True
-            except:
-                is_liu_id = False
-
-            try:
-                if is_liu_id:
-                    event_user = IUser.objects.get(username=form_user)
-                else:
-                    event_user = IUser.objects.get(rfid_number=form_user)
+                event_user = IUser.objects.get(username=form_user)
             except ObjectDoesNotExist:
-                messages.error(request, _("Användaren finns inte i databasen"))
-                form = CheckForm()
-                return render(request, 'events/event_check_in.html', {
-                    'form': form, 'event': event, "can_administer": can_administer,
-                })
-            if event_user in event.preregistrations or form.cleaned_data["force_check_in"]:
                 try:
-                    event.check_in(event_user)
-                    if event.extra_deadline:
-                        try:
-                            extra = event.entryaspreregistered_set.get(user=event_user).timestamp < event.extra_deadline
-                        except:
-                            extra = False
-                        if extra:
-                            extra_str = _("<br>Anmälde sig i tid för att ") + event.extra_deadline_text + "."
-                        else:
-                            extra_str = _("<br><span class='errorlist'>Anmälde sig ej i tid för att ") + \
-                                        event.extra_deadline_text + ".</span>"
+                    event_user = IUser.objects.get(rfid_number=form_user)
+                except ObjectDoesNotExist:
+                    return JsonResponse({"status": "error", "message": _("Inget event med detta idnummer.")})
+            prereg = None
+            try:
+                # Preregistered
+                prereg = EntryAsPreRegistered.objects.get(event=event, user=event_user)
+            except ObjectDoesNotExist:
+                try:
+                    prereg = EntryAsReserve.objects.get(event=event, user=event_user)
+                    if not form.cleaned_data["force_check_in"]:
+                        return JsonResponse({"status": "error", "message": "".join(["{0} {1} ", _("är anmäld som reserv")]).format(
+                            event_user.first_name.capitalize(), event_user.last_name.capitalize())})
+
+                except ObjectDoesNotExist:
+                    if not form.cleaned_data["force_check_in"]:
+                        return JsonResponse({"status": "error", "message": "".join(["{0} {1} ", _("är inte anmäld på eventet")]).format(
+                            event_user.first_name.capitalize(), event_user.last_name.capitalize())})
+            try:
+                EntryAsParticipant.objects.get(event=event, user=event_user)
+                return JsonResponse({"status": "error", "message": _("Redan incheckad.")})
+            except ObjectDoesNotExist:
+                pass
+            participant = EntryAsParticipant(user=event_user, event=event)
+            participant.add_speech_nr()
+            participant.save()
+            while EntryAsParticipant.objects.filter(event=event, speech_nr=participant.speech_nr).count() > 1:
+                participant.add_speech_nr()
+                participant.save()
+            if event.extra_deadline:
+                try:
+                    if prereg.timestamp < event.extra_deadline:
+                        extra_str = _("<br>Anmälde sig i tid för att ") + event.extra_deadline_text + "."
                     else:
-                        extra_str = ""
-                    messages.success(request, "".join(["{0} {1} ",
-                                                       _("checkades in med talarnummer:"),
-                                                       " {2}{3}"]).format(
-                        event_user.first_name.capitalize(),
-                        event_user.last_name.capitalize(),
-                        event.entryasparticipant_set.get(user=event_user).speech_nr,
-                        extra_str
-                    ), extra_tags='safe')
-                    form = CheckForm()
-                    return render(request, 'events/event_check_in.html', {
-                        'form': form, 'event': event, "can_administer": can_administer,
-                    })
+                        extra_str = _("<br><span class='errorlist'>Anmälde sig ej i tid för att ") + \
+                                    event.extra_deadline_text + ".</span>"
                 except:
-                    messages.error(request, "".join(["{0} {1} ",_("är redan incheckad")]).format(
-                        event_user.first_name.capitalize(), event_user.last_name.capitalize()))
-
+                    extra_str = ""
             else:
-                if event_user in event.reserves:
-                    messages.error(
-                        request,
-                        "".join(["{0} {1} ", _("är anmäld som reserv")]).format(
-                            event_user.first_name.capitalize(), event_user.last_name.capitalize()))
-                else:
-                    messages.error(request, "".join(["{0} {1} ", _("är inte anmäld på eventet")]).format(
-                        event_user.first_name.capitalize(), event_user.last_name.capitalize()))
-                reserve = True
-                return render(request, 'events/event_check_in.html',
-                              {'form': form, 'event': event, 'reserve': reserve, "can_administer": can_administer, })
+                extra_str = ""
+            return JsonResponse({"status": "success", "message": "".join(["{0} {1} ",
+                                               _("checkades in med talarnummer:"),
+                                               " {2}{3}"]).format(
+                event_user.first_name.capitalize(),
+                event_user.last_name.capitalize(),
+                participant.speech_nr,
+                extra_str
+            )})
+        return JsonResponse({"status": "error", "message": _("Fyll i Liu-id eller RFID.")})
+    return JsonResponse({})
 
-        else:
-            return render(request, 'events/event_check_in.html', {
-                'form': form, 'event': event, "can_administer": can_administer,
-            })
-
-    form = CheckForm()
-    return render(request, 'events/event_check_in.html', {
-        'form': form, 'event': event, "can_administer": can_administer,
-    })
 
 
 @login_required()
@@ -413,7 +415,7 @@ def create_or_modify_event(request, pk=None):  # TODO: Reduce complexity
                 messages.success(request, _("Dina ändringar har sparats i ett utkast."))
             elif event.status == Event.BEING_REVIEWED:
                 body = "<h1>Hej!</h1><br><br><p>Det finns nya artiklar att godkänna på i-Portalen.<br><a href='https://www.i-portalen.se/article/unapproved/'>Klicka här!</a></p><br><br><p>Med vänliga hälsningar, <br><br>Admins @ webgroup"
-                send_mail('Ny artikel att godkänna', '', settings.EMAIL_HOST_USER, ['utgivare@isektionen.se'], fail_silently=False, html_message=body)
+                send_mail('Ny artikel att godkänna', '', settings.EMAIL_HOST_USER, ['admin@isektionen.se'], fail_silently=False, html_message=body)
                 messages.success(request, _("Dina ändringar har skickats för granskning."))
             return redirect('events:by user')
         else:
@@ -604,7 +606,8 @@ def cancel(request, pk=None):
                 event.save()
                 form_user = form.cleaned_data["cancel"]
                 body = "<h1>Hej!</h1><br><br><p>Det finns nya event att ställa in på i-Portalen.<br><a href='https://www.i-portalen.se/article/unapproved/'>Klicka här!</a></p><br><br><p>Med vänliga hälsningar, <br><br>Admins @ webgroup" + form_user
-                send_mail('Nytt event att ställa in', '', settings.EMAIL_HOST_USER, ['utgivare@isektionen.se'], fail_silently=False, html_message=body)
+
+                send_mail('Nytt event att ställa in', '', settings.EMAIL_HOST_USER, ['admin@isektionen.se'], fail_silently=False, html_message=body)
                 messages.success(request, _("Dina ändringar har skickats för granskning."))
             #     vill låsa radera knapp
             else:

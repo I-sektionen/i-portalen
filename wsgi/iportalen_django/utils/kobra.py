@@ -18,10 +18,6 @@ def get_user_by_liu_id(liu_id):
     return _make_call_to_kobra({'liu_id': liu_id})
 
 
-def get_user_by_p_nr(pnr):
-    return _make_call_to_kobra({'personal_number': pnr})
-
-
 def get_user_by_rfid(rfid):
     return _make_call_to_kobra({'rfid_number': rfid})
 

@@ -371,7 +371,7 @@ class Event(models.Model):
         return False
 
     def reserve_nr(self, user):
-        return self.reserves_object().get(userREJE=user).position()
+        return self.reserves_object().get(user=user).position()
 
     @transaction.atomic
     def check_in(self, user):
@@ -680,6 +680,3 @@ class EntryAsParticipant(models.Model):
                                  0].speech_nr + 1
         except:
             self.speech_nr = 1
-        self.save()
-
-
