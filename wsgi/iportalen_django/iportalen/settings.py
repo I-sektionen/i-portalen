@@ -93,11 +93,7 @@ INSTALLED_APPS = (
     'exchange_portal',
     'liu_crawler',
     'fika_penalty',
-<<<<<<< HEAD
     'webgroup'
-
-=======
->>>>>>> exchange_portal_admin
 )
 
 if not ON_PASS:

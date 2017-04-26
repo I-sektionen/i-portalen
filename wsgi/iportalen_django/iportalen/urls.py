@@ -51,10 +51,8 @@ urlpatterns = [
     url(r'^exchange_portal/',   include('exchange_portal.urls')),
     url(r'^liu-crawler/',       include('liu_crawler.urls')),
     url(r'^fika_penalty/',      include('fika_penalty.urls')),
-<<<<<<< HEAD
     url(r'^webgroup/',          include('webgroup.urls')),
-=======
->>>>>>> exchange_portal_admin
+
 
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
