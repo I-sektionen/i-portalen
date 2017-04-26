@@ -36,26 +36,33 @@
                     <div class="no-img">
                         <div class="placeholder"><h1>{{ organisation.name|capfirst }}</h1></div>
 
-                    </div>
-                </div>
-            {% endif %}
+
+            </div>
         </div>
-        <div id="organisation-admin-panel">
-        {% can_edit_organisation request.user organisation as can_edit %}
-            {% if can_edit %}
-                <a href="{% url "organisations:edit" organisation.name %}">
-                    <button>Ändra info</button>
-                </a>
-                <a href="{% url "organisations:edit organisation members" organisation.name %}">
-                    <button>Hantera medlemmar igen</button>
-                </a>
-            {% endif %}
-        </div>
-        <div id="organisation-content">
-            <section id="organisation-description">
-                <h1 {% ifequal organisation.name|capfirst 'Webgroup' %}
-                title="Vi jobbar med kod, inte personer!"
-                {% endifequal %}>Om {{ organisation.name }}</h1>
+    {% endif %}
+</div>
+    <div id="organisation-admin-panel">
+    {% can_edit_organisation request.user organisation as can_edit %}
+        {% if can_edit %}
+            <a href="{% url "organisations:edit" organisation.name %}">
+                <button>Ändra info</button>
+            </a>
+            <a href="{% url "organisations:edit organisation members" organisation.name %}">
+                <button>Hantera medlemmar</button>
+            </a>
+        {% endif %}
+    {% is_in_organisation request.user organisation as is_member %}
+    {% if is_member %}
+    <a href="{% url "fika_penalty:organisation penalties" organisation.name %}">
+        <button>Fikakassan</button>
+    </a>
+    {% endif %}
+    </div>
+    <div id="organisation-content">
+        <section id="organisation-description">
+            <h1 {% ifequal organisation.name|capfirst 'Webgroup' %}
+            title="Vi jobbar med kod, inte personer!"
+            {% endifequal %}>Om {{ organisation.name }}</h1>
 
                 {{ organisation.description|markdown }}
 

@@ -5,7 +5,7 @@
 # ruby, etc.
 
 #Activates the right virtualenv:
-source $OPENSHIFT_PYTHON_DIR"virtenv/venv/bin/activate"
+#source $OPENSHIFT_PYTHON_DIR"virtenv/venv/bin/activate"
 
 echo "Migrating database... " -ne
 python $OPENSHIFT_REPO_DIR"wsgi/iportalen_django/manage.py" migrate --noinput

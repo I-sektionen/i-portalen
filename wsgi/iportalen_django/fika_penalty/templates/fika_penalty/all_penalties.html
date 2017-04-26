@@ -1,0 +1,27 @@
+{% extends "master.html" %}
+
+{% block content %}
+    <table>
+        <tr><th>Namn</th><th>Summa</th><th>Datum</th><th>Kommentar</th></tr>
+        {% for penalty in penalties %}
+            <tr>
+                <td>{{ penalty.user.get_full_name }}</td>
+                <td>{{ penalty.cost }}Kr</td>
+                <td>{{ penalty.date|date:"d/m -y" }}</td>
+                <td><p>{{ penalty.reason }}</p></td></tr>
+        {% endfor %}
+        <tr><td>Summa</td><td>{{ sum.cost__sum }}Kr</td><td></td><td></td></tr>
+
+    </table>
+    <br>
+    {% if request.user == organisation.leader %}
+            <a href="{% url "fika_penalty:add organisation penalty" organisation.name %}">
+                <button>Lägg till straff</button>
+            </a>
+    {% endif %}
+    <a href="{% url "fika_penalty:organisation penalties" organisation.name %}">
+        <button>Tillbaka</button>
+    </a>
+    <br>
+    <br>
+{% endblock %}

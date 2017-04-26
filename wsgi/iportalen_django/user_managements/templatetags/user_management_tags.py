@@ -2,6 +2,13 @@ from django.core.urlresolvers import reverse
 from django.template.loader_tags import register
 from django.utils.translation import ugettext as _
 
+from user_managements.models import IUser
+
+
+@register.assignment_tag
+def get_user_from_id(user_id):
+    return IUser.objects.get(pk=user_id)
+
 @register.assignment_tag
 def get_menu_choices_user(user):
     menu_choices = []

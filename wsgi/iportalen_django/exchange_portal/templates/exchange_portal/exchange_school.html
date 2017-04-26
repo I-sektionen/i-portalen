@@ -5,6 +5,17 @@
     {% include "exchange_portal/exchange_portal_header.html" %}
 
     <h1>{{ school.name }}</h1>
+    {% if school.exchange_with_liu or school.freemover %}
+        <i>
+        {% if school.freemover and school.exchange_with_liu %}
+            (Utbyte genom skolan, utbyte genom freemover)
+        {% elif school.exchange_with_liu %}
+            (Utbyte genom skolan)
+        {% elif school.freemover %}
+            (Utbyte genom freemover)
+        {% endif %}
+        </i>
+    {% endif %}
 
     <p>Land: {{ school.in_city.in_country.name }} </p> <br>
     <p>Stad: {{ school.in_city.name }} </p>

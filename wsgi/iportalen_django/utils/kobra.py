@@ -1,5 +1,6 @@
 import json
 import os
+import string
 
 import requests
 # from requests_toolbelt import SSLAdapter
@@ -27,7 +28,7 @@ def get_user_by_rfid(rfid):
 
 def _convert_new_to_old(new_kobra):
     return {'email': new_kobra['email'],
-            'last_name': new_kobra['name'].split(' ', 1)[1],
+            'last_name': string.capwords(new_kobra['name'].split(' ', 1)[1]),
             'first_name': new_kobra['name'].split(' ', 1)[0],
             'rfid_number': None,
             'personal_number': None}
@@ -55,10 +56,10 @@ def _make_call_to_kobra(payload):
     }
 
     response = requests.request("GET", url, data=payload, headers=headers)
+    response.encoding = "utf-8"
+    person = json.loads(response.text, encoding="utf-8")
 
-    person = json.loads(response.text)
     if 'detail' in person:
-        print(person['detail'])
         if 'Invalid token' in person['detail']:
             raise LiuGetterError(person['detail'])
         raise LiuNotFoundError(person['detail'])
