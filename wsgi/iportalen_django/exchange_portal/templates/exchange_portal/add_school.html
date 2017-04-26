@@ -12,7 +12,7 @@
         <p>Stad: </p>
         <select name="city_id">
             {% for city in city_list %}
-                <option value={{city.id}}>{{ city.name }}</option>
+                <option value={{city.id}}>{{ city.name }}, {{ city.in_country.name }}</option>
             {% endfor %}
         </select>
         <input class="submit-holder primary action-button" type="submit" value="Lägg till">

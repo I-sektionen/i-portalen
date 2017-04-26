@@ -1,10 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends "master.html" %}
 
-</body>
-</html>
+{% block title %}Utlandsportalen{% endblock %}
+
+{% block content %}
+
+<h1>Lägg till en utbyteskurs till Utlandsportalen</h1>
+
+    <form class="search-form" action="" method="post">
+        {% csrf_token %}
+        <input class="search-holder" type="text" name="exchange_course_name" placeholder="Lokalt namn på utbyteskurs">
+
+        <input class="search-holder" type="text" name="exchange_course_code" placeholder="Lokal kurskod">
+
+        <select name="school_id">
+            {% for school in school_list %}
+                <option value={{school.id}}>{{ school.name }}, {{ school.in_city.name }}, {{ school.in_city.in_country.name }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="liu_course_id">
+            {% for liu_course in liu_course_list %}
+                <option value={{liu_course.id}}>{{ liu_course.course_code }}: {{ liu_course.name }}</option>
+            {% endfor %}
+        </select>
+        <input class="submit-holder primary action-button" type="submit" value="Lägg till">
+    </form>
+
+{% endblock %}

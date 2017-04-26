@@ -86,11 +86,20 @@ def Add_Liu_Course(request):
 
 
 def Add_Exchange_Course(request):
-    query = request.POST.get('q')
-    if query != None:
-        new_country = Country(name=query)
-        new_country.save()
-    return render(request, 'exchange_portal/add_exchange_course.html')
+    school_list = School.objects.all()
+    liu_course_list = Liu_Course.objects.all()
+    exchange_course_name = request.POST.get('exchange_course_name')
+    exchange_course_code = request.POST.get('exchange_course_code')
+    school_id = request.POST.get('school_id')
+    liu_course_id = request.POST.get('liu_course_id')
+    if exchange_course_name != None and exchange_course_code != None and school_id != None and liu_course_id != None:
+        new_exchange_course = Exchange_Course(name=exchange_course_name,
+                                              course_code=exchange_course_code,
+                                              in_school=School.objects.get(id=school_id),
+                                              corresponding_liu_course=Liu_Course.objects.get(id=liu_course_id),
+                                              year=3)
+        new_exchange_course.save()
+    return render(request, 'exchange_portal/add_exchange_course.html', {'school_list': school_list, 'liu_course_list': liu_course_list})
 
 
 class Search_Autocomplete (autocomplete.Select2QuerySetView):
