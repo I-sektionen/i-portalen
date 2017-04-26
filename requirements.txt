@@ -17,6 +17,7 @@ requests==2.6.0
 requests-toolbelt==0.7.0
 django-reversion==2.0.0
 sqlparse==0.2.1
+<<<<<<< HEAD
 <<<<<<< .merge_file_9XxlQU
 urllib3==1.17
 django-autocomplete-light
@@ -28,3 +29,6 @@ urllib3
 =======
 urllib3
 >>>>>>> exchange_portal_admin
+=======
+urllib3
+>>>>>>> 860db785d03627d82048db27d929a28aa783274d

@@ -608,13 +608,13 @@ def cancel(request, pk=None):
                 body = "<h1>Hej!</h1><br><br><p>Det finns nya event att ställa in på i-Portalen.<br><a href='https://www.i-portalen.se/article/unapproved/'>Klicka här!</a></p><br><br><p>Med vänliga hälsningar, <br><br>Admins @ webgroup" + form_user
 
                 send_mail('Nytt event att ställa in', '', settings.EMAIL_HOST_USER, ['admin@isektionen.se'], fail_silently=False, html_message=body)
-
                 messages.success(request, _("Dina ändringar har skickats för granskning."))
             #     vill låsa radera knapp
             else:
                 messages.error(request, _("Det har ej fyllts i varför eventet önskas raderas."))
                 return redirect("events:administer event", pk=pk)
         #         vill stanna kvar på sidan
+
 
         return render(request, 'events/administer_event.html', {'event': event, 'form':form, 'form_user':form_user, })
     raise PermissionDenied

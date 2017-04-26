@@ -28,6 +28,7 @@ setup(name='I-Portalen',
           'django-reversion==2.0.0',
           'sqlparse==0.2.1',
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< .merge_file_8XRNCN
 =======
 >>>>>>> exchange_portal_admin
@@ -36,4 +37,7 @@ setup(name='I-Portalen',
 =======
           'urllib3'],  # This should match requirements.txt!
 >>>>>>> .merge_file_SIto4a
+=======
+          'urllib3'],  # This should match requirements.txt!
+>>>>>>> 860db785d03627d82048db27d929a28aa783274d
       )
