@@ -10,11 +10,13 @@ from django.utils.translation import ugettext
 
 class Bookable(models.Model):
     name = models.CharField(max_length=512)
+    alert_info = models.TextField(null=True, blank=True, help_text="Om det är något som är fel läggs denna varningstext högst upp.")
     max_number_of_bookings = models.IntegerField(default=1)  # Maximum number of simultaneous bookings.
     max_number_of_slots_in_booking = models.IntegerField(default=1)  # Max length of booking
     hours_before_booking = models.IntegerField(default=24)  # must book at least this many hours befor booking starts.
     info = models.TextField(null=True, blank=True)
     require_phone = models.BooleanField(default=False)
+
 
     def __str__(self):
         return self.name
