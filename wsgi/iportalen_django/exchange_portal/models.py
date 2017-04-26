@@ -35,8 +35,6 @@ class School(models.Model):
     freemover = models.BooleanField(default=False)
     exchange_with_liu = models.BooleanField(default=False)
 
-
-
     class Meta:
         verbose_name = _("Skola")
         verbose_name_plural = _("Skolor")
@@ -47,7 +45,7 @@ class School(models.Model):
 class Liu_Course(models.Model):
     name = models.CharField(max_length=50)
     course_code = models.CharField(max_length=20)
-    is_compulsary = models.BooleanField()
+    is_compulsary = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = _("Liukurs")

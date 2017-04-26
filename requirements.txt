@@ -20,7 +20,11 @@ sqlparse==0.2.1
 <<<<<<< .merge_file_9XxlQU
 urllib3==1.17
 django-autocomplete-light
+<<<<<<< HEAD
 urllib3
 =======
 urllib3
 >>>>>>> .merge_file_NGmr8r
+=======
+urllib3
+>>>>>>> exchange_portal_admin

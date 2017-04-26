@@ -42,44 +42,63 @@ def Exchange_School(request, pk):
     return render(request, 'exchange_portal/exchange_school.html', {'school': school, 'course_list': course_list, 'travel_story': travel_story})
 
 
-def Add_Country_View(request):
-    return render(request, 'exchange_portal/add_country.html')
-
-
 def Add_Country(request):
+    query = request.POST.get('q')
+    if query != None:
+        new_country = Country(name=query)
+        new_country.save()
+
     return render(request, 'exchange_portal/add_country.html')
-
-
-def Add_City_View(request):
-    return render(request, 'exchange_portal/add_city.html')
 
 
 def Add_City(request):
-    return render(request, 'exchange_portal/add_country.html')
-
-
-def Add_School_View(request):
-    return render(request, 'exchange_portal/add_school.html')
+    country_list = Country.objects.all()
+    city_name = request.POST.get('city_name')
+    country_id = request.POST.get('country_id')
+    if city_name != None:
+        new_city = City(name=city_name, in_country=Country.objects.get(id=country_id))
+        new_city.save()
+    return render(request, 'exchange_portal/add_city.html', {'country_list': country_list})
 
 
 def Add_School(request):
-    return render(request, 'exchange_portal/add_country.html')
-
-
-def Add_Liu_Course_View(request):
-    return render(request, 'exchange_portal/add_liu_course.html')
+    city_list = City.objects.all() #Lägg till så man väljer land först så man inte behöver gå igenom alla städer som finns
+    school_name = request.POST.get('school_name')
+    city_id = request.POST.get('city_id')
+    if school_name != None:
+        new_school = School(name=school_name, in_city=City.objects.get(id=city_id))
+        new_school.save()
+    return render(request, 'exchange_portal/add_school.html', {'city_list': city_list})
 
 
 def Add_Liu_Course(request):
-    return render(request, 'exchange_portal/add_country.html')
+    liu_course_name = request.POST.get('liu_course_name')
+    liu_course_code = request.POST.get('liu_course_code') #Borde spara alla i små bokstäver
+    is_compulsary = request.POST.get('is_compulsary')
+    if is_compulsary == None:
+        is_compulsary = False
 
-
-def Add_Exchange_Course_View(request):
-    return render(request, 'exchange_portal/add_exchange_course.html')
+    if liu_course_code != None and liu_course_name != None:
+        new_liu_course = Liu_Course(name=liu_course_name, course_code=liu_course_code, is_compulsary=is_compulsary)
+        new_liu_course.save()
+    return render(request, 'exchange_portal/add_liu_course.html')
 
 
 def Add_Exchange_Course(request):
-    return render(request, 'exchange_portal/add_country.html')
+    school_list = School.objects.all()
+    liu_course_list = Liu_Course.objects.all()
+    exchange_course_name = request.POST.get('exchange_course_name')
+    exchange_course_code = request.POST.get('exchange_course_code')
+    school_id = request.POST.get('school_id')
+    liu_course_id = request.POST.get('liu_course_id')
+    if exchange_course_name != None and exchange_course_code != None and school_id != None and liu_course_id != None:
+        new_exchange_course = Exchange_Course(name=exchange_course_name,
+                                              course_code=exchange_course_code,
+                                              in_school=School.objects.get(id=school_id),
+                                              corresponding_liu_course=Liu_Course.objects.get(id=liu_course_id),
+                                              year=3)
+        new_exchange_course.save()
+    return render(request, 'exchange_portal/add_exchange_course.html', {'school_list': school_list, 'liu_course_list': liu_course_list})
 
 
 class Search_Autocomplete (autocomplete.Select2QuerySetView):

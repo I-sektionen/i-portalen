@@ -606,8 +606,12 @@ def cancel(request, pk=None):
                 event.save()
                 form_user = form.cleaned_data["cancel"]
                 body = "<h1>Hej!</h1><br><br><p>Det finns nya event att ställa in på i-Portalen.<br><a href='https://www.i-portalen.se/article/unapproved/'>Klicka här!</a></p><br><br><p>Med vänliga hälsningar, <br><br>Admins @ webgroup" + form_user
+<<<<<<< HEAD
 
                 send_mail('Nytt event att ställa in', '', settings.EMAIL_HOST_USER, ['admin@isektionen.se'], fail_silently=False, html_message=body)
+=======
+                send_mail('Nytt event att ställa in', '', settings.EMAIL_HOST_USER, ['utgivare@isektionen.se'], fail_silently=False, html_message=body)
+>>>>>>> exchange_portal_admin
                 messages.success(request, _("Dina ändringar har skickats för granskning."))
             #     vill låsa radera knapp
             else:

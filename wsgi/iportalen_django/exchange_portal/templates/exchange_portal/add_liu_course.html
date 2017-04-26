@@ -1,10 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends "master.html" %}
 
-</body>
-</html>
+{% block title %}Utlandsportalen{% endblock %}
+
+{% block content %}
+
+<h1>Lägg till en liu-kurs till Utlandsportalen</h1>
+
+    <form class="search-form" action="" method="post">
+        {% csrf_token %}
+        <input class="search-holder" type="text" name="liu_course_name" placeholder="Namn på liu-kurs">
+        <input class="search-holder" type="text" name="liu_course_code" placeholder="Kurskod">
+        <input type="checkbox" name="is_compulsary">Obligatorisk</input>
+        <input class="submit-holder primary action-button" type="submit" value="Lägg till">
+    </form>
+
+{% endblock %}
