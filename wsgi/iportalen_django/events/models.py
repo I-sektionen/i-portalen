@@ -127,6 +127,9 @@ class Event(models.Model):
     sponsored = models.BooleanField(
         verbose_name=_("sponsrat"), default=False, help_text=_("Kryssa i om innehållet är sponsrat"))
 
+    tel_required = models.BooleanField(
+        verbose_name=_("telefonnummer krävs"), default=False, help_text=_("Kryssa i om telefonnummer krävs"))
+
     finished = models.BooleanField(verbose_name='Avsluta event', default=False, help_text="Kryssa i om eventet ska avslutas")
 
     cancel = models.CharField(

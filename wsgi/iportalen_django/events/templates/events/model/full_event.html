@@ -77,6 +77,26 @@
                             {% if not event.full %}
                                 <form method="post" action="{% url "events:register to" event.pk %}">
                                     {% csrf_token %}
+                                    {% if event.tel_required %}
+                                        {% if event.status != "c" %}
+                                            <br>
+                                            <hr>
+                                            <p>Detta evenemang kräver att du har ett telefonnummer kopplat till ditt konto.</p>
+                                            <p>Telefonnumret kommer endast användas till ett utskick av ett påminnelse-sms strax före evenemangets början. Det kommer inte användas i reklamsyfte eller säljas vidare.</p>
+                                            <label style="width:100%;">
+                                                {% with u=request.user %}
+                                                    {% if u.phone %}
+                                                        <input class="tel-input username-holder" type="tel" name="telefonnummer" placeholder="0123456789" value="{{ u.phone }}" required>
+                                                    {% else %}
+                                                        <input class="tel-input username-holder" type="tel" name="telefonnummer" placeholder="0123456789" required>
+                                                    {% endif %}
+                                                {% endwith %}
+                                            </label>
+                                            <br>
+                                            <br>
+                                            <br>
+                                        {% endif %}
+                                    {% endif %}
                                     <label>
                                         {% if event.status != "c" %}
                                             <button class="button-group-item"  type="submit" title="snälla">Anmäl mig</button>
@@ -132,6 +152,12 @@
                         </label>
                     {% endif %}
                 </div>
+            {% endif %}
+            {% if event.tel_required %}
+                <label>
+                    <!-- Cellsynt logo -->
+                    <img class="sms-logo" src="https://s3.amazonaws.com/iportalen-us/static/iportalen/logo.gif">
+                </label>
             {% endif %}
         </div>
     {% endwith %}

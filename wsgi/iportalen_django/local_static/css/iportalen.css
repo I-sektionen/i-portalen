@@ -3221,6 +3221,14 @@ li span a:hover {
   cursor: pointer;
 }
 
+img.sms-logo {
+  height: 40px;
+}
+
+input.tel-input {
+  display: block;
+}
+
 .indent-me {
   padding-left: 2em;
 }
