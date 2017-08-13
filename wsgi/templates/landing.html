@@ -7,9 +7,7 @@
 {% block content %}
     {# gets all articles via template tag #}
     <section id="news-feed">
-
-{% load iportalen_tags %}
-{% get_sponsored_content as sponsored_content %}
+    {% get_sponsored_content as sponsored_content %}
         <div class="sponsored_container">
             <div id="sponsored_feed_container" class="sponsored_feed_container" style="display: none;" >
                 <div class="sponsored_feed_headline"><a href="{% url "sponsored" %}" class="content-type-nav">Senaste:</a></div>
@@ -23,26 +21,34 @@
             </div>
             <hr>
         </div>
-        <div class="expander">
-            <a href="javascript:void(0)" class="expander-trigger expander-hidden content-type-nav">Filtrera</a>
-            <div class="expander-content">
-                <div class="tag-container">
-                    <div class="tag"><label><input id="article-filter" type="checkbox" name="articles" value="true" checked> Artiklar</label></div>
-                    <div class="tag"><label><input id="event-filter" type="checkbox" name="events" value="true" checked> Arrangemang</label></div>
-                    <div class="tag"><label title="Visa endast sponsrat innehåll"><input id="sponsor-filter" type="checkbox" name="sponsored" value="true"> Endast näringsliv</label></div>
+
+        <div id="content-select-nav">
+            <a href="{% url "news feed" %}" class="content-type-nav active">Allt</a>
+            <a href="{% url "articles:articles" %}" class="content-type-nav">Nyheter</a>
+            <a href="{% url "events:calender" %}" class="content-type-nav">Event</a>
+            <a href="{% url "job_adverts" %}" class="content-type-nav">Jobbannonser</a>
+            <a href="{% url "sponsored" %}" class="content-type-nav">Näringsliv</a>
+
+            <a href="javascript:void(0)" id="expander-trigger" class="expander-trigger expander-hidden content-type-nav">Filtrera</a>
+
+            <div class="expander content-type-nav">
+                <div id="expander-content" class="expander-content" style="display:none;">
+                    <div class="tag-container">
+                        <div class="tag" hidden="true"><input id="article-filter" type="checkbox" name="articles" value="true" checked></div>
+                        <div class="tag" hidden="true"><input id="event-filter" type="checkbox" name="events" value="true" checked></div>
+                    </div>
+                    <div class="tag-container">
+                        {% get_tags as tags %}
+                        {% for tag in tags %}
+                            <div class="tag"><label><input type="checkbox" name="tags" value="{{ tag.pk }}"> {{ tag.name }}</label></div>
+                        {% endfor %}
+                    </div>
+                    <button class="action-button" onclick="get_news_content('{% url 'news api' %}')">Filtrera</button>
+                    <div style="clear: both"></div>
+                    <hr>
                 </div>
-                <hr class="thin">
-                <div class="tag-container">
-                    {% get_tags as tags %}
-                    {% for tag in tags %}
-                        <div class="tag"><label><input type="checkbox" name="tags" value="{{ tag.pk }}"> {{ tag.name }}</label></div>
-                    {% endfor %}
-                </div>
-                <button class="action-button" onclick="get_news_content('{% url 'news api' %}')">Filtrera</button>
-                <div style="clear: both"></div>
             </div>
         </div>
-        <hr>
        <div id="news-content">
 
            <div class="loading-spinner"></div><p>Laddar ditt innehåll</p>

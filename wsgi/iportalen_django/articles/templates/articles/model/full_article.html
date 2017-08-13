@@ -22,6 +22,9 @@
         {% if article.sponsored  %}
             <span>Sponsrat innehåll</span>
         {% endif %}
+        {% if article.job_advert %}
+            <span>Jobbannons</span>
+        {%  endif %}
     </p>
     {% if image_attachments %}
         {% for attachment in image_attachments.all %}

@@ -1,7 +1,14 @@
 {% extends "master.html" %}
 
 {% block content %}
+    <div id="calender">
     <h1>Kalender</h1>
+    <p>Nedan visas en kalender med sektionens aktuella evenemang. För att se alla evenemang för hela terminen finns en
+        Google-kalender som kan läggas in i valfritt kalenderprogram med hjälp av följande
+        <b><a href="https://calendar.google.com/calendar/embed?src=uc6rjnj9cdb5b4ukvc5lu2ciq0%40group.calendar.google.com&ctz=Europe/Stockholm">länk</a></b>.
+        Notera att Google-kalendern innehåller preliminära datum där evenemang läggs in löpande.
+    </p>
+
     <table class="tables">
         <thead>
             <tr>
@@ -13,15 +20,24 @@
         </thead>
         <tbody>
             {% for event in events %}
-                <tr>
-                    <td>{{ event.start }}</td>
-                    <td><a href="{{ event.get_absolute_url }}">{{ event.headline }}</a></td>
-                    <td>{{ event.location }}</td>
 
+                {% if event.status == "c" %}
+                    <tr class="strikeout">
+                    {% else %}
+                    <tr>
+                {% endif %}
+                    <td>{{ event.start }}</td>
+                    <td><a href="{{ event.get_absolute_url }}">{{ event.headline }}</a>
+                    {% if event.status == "c" %}
+                        Inställt
+                    {% endif %}
+                    </td>
+
+                    <td>{{ event.location }}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
 
-
+</div>
 {% endblock %}

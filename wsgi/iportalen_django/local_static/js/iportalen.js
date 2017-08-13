@@ -1,4 +1,20 @@
-function markdown_article_preview() {
+/**
+ * Created by jers on 11/04/16.
+ */
+
+function next_button(tab_no) {
+    var next_tab_no = parseInt(tab_no, 10)+1;
+    var next ='#tab'+next_tab_no+' a';
+    $(next).click();
+    scroll(0,0)
+}
+
+function prev_button(tab_no) {
+    var prev_tab_no = parseInt(tab_no, 10)-1;
+    var prev ='#tab'+prev_tab_no+' a';
+    $(prev).click();
+    scroll(0,0)
+};function markdown_article_preview() {
         var converter = Markdown.getSanitizingConverter();
         converter.hooks.chain("preConversion", function (text) {
             return text.replace(/[&<"'\/]/g, function (s) {
@@ -35,6 +51,7 @@ var article_preview = function () {
     var from = $("#id_visible_from");
     var tags = $("#id_tags");
     var sponsor = $("#id_sponsored");
+    var job_advert = $("#id_job_advert");
 
     //This is the elements where the results are printed to.
     var headline_preview = $(".headline_preview");
@@ -43,6 +60,7 @@ var article_preview = function () {
     var from_preview_date = $(".date_preview");
     var tags_preview = $(".tags_preview");
     var sponsor_preview = $(".sponsor_preview");
+    var job_advert_preview = $(".job_advert_preview");
 
     listened_to.push(
                     [headline, headline_preview],
@@ -50,7 +68,8 @@ var article_preview = function () {
                     [organisation, author_preview],
                     [from, from_preview_date],
                     [tags, tags_preview],
-                    [sponsor, sponsor_preview]
+                    [sponsor, sponsor_preview],
+                    [job_advert,job_advert_preview]
     );
 
     var render = function (){
@@ -79,6 +98,12 @@ var article_preview = function () {
                     sponsor_preview.text("Sponsrat innehåll");
                 } else {
                     sponsor_preview.text("");
+                }
+            } else if(element[0].is(job_advert)){
+                if (job_advert.prop('checked')) {
+                    job_advert_preview.text("Jobbannons");
+                } else {
+                    job_advert_preview.text("");
                 }
             } else if(element[0].is(organisation)) {
                 var selected_org = organisation.children().filter(":selected");
@@ -265,7 +290,49 @@ function printDiv(divName) {
      window.print();
 
      document.body.innerHTML = originalContents;
-};//This function initiates the markdown engine. It is called on by event_preview below.
+};/**
+ * Created by elonbrange on 16-04-18.
+ */
+function cancel_write(){
+    var show = document.getElementById("canceltext");
+    show.style.visibility = "visible";
+    var showsend = document.getElementById("sendtext");
+    showsend.style.visibility = "visible";
+};/**
+ * Created by jonathan on 2015-11-09.
+ */
+function check_in_admin(url){
+    init_csrf();
+    var input_field = $("#id_user");
+    var force_field = $("#id_force_check_in");
+    var s_list = $("#list").find("ol");
+    var submit_btn = $("#submit-button");
+    var msg_box = $("#message-box");
+
+    submit_btn.click(function(e) {
+        submit_btn.prop("disabled", true);
+        e.preventDefault();
+        var data = {
+            'user': input_field.val(),
+            'force_check_in': force_field.is(":checked")
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function(result) {
+                msg_box.empty();
+                message_iportalen(result.status, result.message);
+                force_field.prop('checked', false);
+                submit_btn.prop("disabled", false);
+            }
+        });
+        input_field.val('');
+    });
+}
+
+;//This function initiates the markdown engine. It is called on by event_preview below.
 function markdown_event_preview() {
         var converter = Markdown.getSanitizingConverter();
         converter.hooks.chain("preConversion", function (text) {
@@ -418,7 +485,44 @@ var event_preview = function () {
 
 
 
-;
+;/**
+ * Created by elonbrange on 16-03-06.
+ */
+
+/**
+ * Created by jonathan on 2015-11-09.
+ */
+function remove_noshow(button, url, user_id, event_id) {
+    init_csrf();
+
+        console.log(user_id, event_id)
+        var data = {
+            'user_id': user_id,
+            'event_id': event_id
+        };
+        $.ajax({
+            "type": "POST",
+            "dataType": "json",
+            "url": url,
+            "data": data,
+            "success": function (result) {
+
+                if(result.status==='OK'){
+                    $(button).closest('li').remove()
+                     message_iportalen('success', 'No show borttagen');
+                }
+                else{
+                     message_iportalen('error', result.status);
+
+                }
+
+            },
+            error: function (request, status, error) {
+                message_iportalen('error', request.responseText);
+            }
+        });
+
+};
 function next_button(tab_no) {
     var next_tab_no = parseInt(tab_no, 10)+1;
     var next ='#tab'+next_tab_no+' a';
@@ -4757,6 +4861,13 @@ catch(err) {
 
 	return init(function () {});
 }));;/**
+ * Created by elonbrange on 16-03-06.
+ */
+
+function message_iportalen(message_type, message){
+    var message = '<div class="'+message_type+'"><span>'+message+'</span> <button type="button" onclick="closeMessage(this)">&times;</button> </div>'
+    $('#message-box').append(message);
+};/**
  * Created by MagnusForzelius on 2015-10-31.
  */
 

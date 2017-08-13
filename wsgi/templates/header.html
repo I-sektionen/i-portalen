@@ -17,7 +17,7 @@
                         <div class="submenu-column">{% comment %}<!--TODO: Element Div not alowed here-->{% endcomment %}
                             {% for o in menu_orgs.sektionen %}
                                 <li><a href="{{ o.get_absolute_url }}">{{ o|capfirst }}</a></li>
-                                {% cycle 'False' 'False' 'False' 'False' 'True' as new_col silent %}
+                                {% cycle 'False' 'False' 'False' 'False' 'False' 'True' as new_col silent %}
                                 {% if new_col == 'True' %}
                                     </div>
                                     <div class="submenu-column">
@@ -50,6 +50,7 @@
                             {% with bookables|first as bookable %}
                             <li><a href="{{ bookable.get_absolute_url }}">Boka I-Bilen mm.</a></li>
                             {% endwith %}
+                            <li><a href="https://www.isektionen.se/foretag/">Information för företag <i class="fa fa-external-link"></i></a></li>
                         </div>
                         <div class="submenu-column">
                             <li><a href="javascript:void(0)" class="heading">Studier</a></li>

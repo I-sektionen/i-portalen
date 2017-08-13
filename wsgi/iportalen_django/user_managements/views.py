@@ -56,8 +56,10 @@ def login(request):  # TODO: Reduce complexity
                         user.email = kobra_dict['email'].lower()
                         user.last_name = kobra_dict['last_name'].lower()
                         user.first_name = kobra_dict['first_name'].lower()
-                        user.rfid_number = kobra_dict['rfid_number']
-                        user.p_nr = kobra_dict['personal_number']
+                        if kobra_dict['rfid_number']:
+                            user.rfid_number = kobra_dict['rfid_number']
+                        if kobra_dict['personal_number']:
+                            user.p_nr = kobra_dict['personal_number']
                         user.save()
                     except:
                         pass
@@ -207,12 +209,13 @@ def add_users_to_white_list(request):  # TODO: Reduce complexity
                     temp_user.email = kobra_dict['email'].lower()
                     temp_user.last_name = kobra_dict['last_name'].lower()
                     temp_user.first_name = kobra_dict['first_name'].lower()
+                    if kobra_dict['rfid_number']:
+                        while len(kobra_dict['rfid_number']) < 10:
+                            kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
 
-                    while len(kobra_dict['rfid_number']) < 10:
-                        kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
-
-                    temp_user.rfid_number = kobra_dict['rfid_number']
-                    temp_user.p_nr = kobra_dict['personal_number']
+                        temp_user.rfid_number = kobra_dict['rfid_number']
+                    if kobra_dict['personal_number']:
+                        temp_user.p_nr = kobra_dict['personal_number']
                     temp_user.save()
                 except IUser.DoesNotExist:
                     messages.error(request, "".join([_("Användaren"),
@@ -266,14 +269,15 @@ def update_user_from_kobra(request, liu_id):
         user = IUser.objects.get(username=liu_id)
         kobra_dict = get_user_by_liu_id(liu_id)
         user.email = kobra_dict['email'].lower()
-        user.last_name = kobra_dict['last_name'].lower()
-        user.first_name = kobra_dict['first_name'].lower()
+        user.last_name = kobra_dict['last_name']
+        user.first_name = kobra_dict['first_name']
+        if kobra_dict['rfid_number']:
+            while len(kobra_dict['rfid_number']) < 10:
+                kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
 
-        while len(kobra_dict['rfid_number']) < 10:
-            kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
-
-        user.rfid_number = kobra_dict['rfid_number']
-        user.p_nr = kobra_dict['personal_number']
+            user.rfid_number = kobra_dict['rfid_number']
+        if kobra_dict['personal_number']:
+            user.p_nr = kobra_dict['personal_number']
         user.save()
         messages.info(request, "".join(["{:} ",_("har uppdaterats i databasen.")]).format(liu_id))
     except IUser.DoesNotExist:
@@ -304,12 +308,13 @@ def update_all_users_from_kobra(request):
             user.email = kobra_dict['email'].lower()
             user.last_name = kobra_dict['last_name'].lower()
             user.first_name = kobra_dict['first_name'].lower()
+            if kobra_dict['rfid_number']:
+                while len(kobra_dict['rfid_number']) < 10:
+                    kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
 
-            while len(kobra_dict['rfid_number']) < 10:
-                kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
-
-            user.rfid_number = kobra_dict['rfid_number']
-            user.p_nr = kobra_dict['personal_number']
+                user.rfid_number = kobra_dict['rfid_number']
+            if kobra_dict['personal_number']:
+                user.p_nr = kobra_dict['personal_number']
             user.save()
         except ValueError:
             errors += (user.username + _(" gick inte att hämta hos kobra.\n"))
@@ -343,12 +348,13 @@ def update_list_of_users_from_kobra(request):  # TODO: Reduce complexity
                     user.email = kobra_dict['email'].lower()
                     user.last_name = kobra_dict['last_name'].lower()
                     user.first_name = kobra_dict['first_name'].lower()
+                    if kobra_dict['rfid_number']:
+                        while len(kobra_dict['rfid_number']) < 10:
+                            kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
 
-                    while len(kobra_dict['rfid_number']) < 10:
-                        kobra_dict['rfid_number'] = "0" + kobra_dict['rfid_number']
-
-                    user.rfid_number = kobra_dict['rfid_number']
-                    user.p_nr = kobra_dict['personal_number']
+                        user.rfid_number = kobra_dict['rfid_number']
+                    if kobra_dict['personal_number']:
+                        user.p_nr = kobra_dict['personal_number']
                     user.save()
                 except ValueError:
                     messages.error(request, liu_id + _(" gick inte att hämta hos kobra.\n"))

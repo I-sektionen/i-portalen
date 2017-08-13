@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.query_utils import Q
 from django.utils import timezone
 from utils.time import six_months_back
 
@@ -6,7 +7,9 @@ from utils.time import six_months_back
 class EventManager(models.Manager):
     def published(self):
         return self.filter(
-                status=self.model.APPROVED,
+                Q(status=self.model.APPROVED)|
+                Q(status=self.model.BEING_CANCELD),
+
                 visible_from__lte=timezone.now(),
                 end__gte=timezone.now()
                 ).order_by('-start')

@@ -14,6 +14,7 @@ admin_patterns = [
     url(r'^participants/download/$',     view=views.CSV_view_participants,     name="participants download"),
     url(r'^preregistrations/download/$', view=views.CSV_view_preregistrations, name="preregistrations download"),
     url(r'^event_check_in/$',            view=views.check_in,                  name="check in"),
+    url(r'^check_in/$', view=views.check_in_api, name="check in API"),
     url(r'^noshow/$',                    view=views.summarise_noshow,          name="no show"),
 ]
 
@@ -37,9 +38,10 @@ event_patterns = [
     url(r'^(?P<pk>[0-9]+)/user_view/$',        view=views.user_view,              name="user view"),
     url(r'^(?P<pk>[0-9]+)/attachments/$',      view=views.upload_attachments,     name='manage attachments'),
     url(r'^(?P<pk>[0-9]+)/images/$',           view=views.upload_attachments_images, name='manage images'),
-    url(r'no_shows/$',                         view=views.show_noshows,            name="no_shows"),
+    url(r'^no_shows/$',                        view=views.show_noshows,           name="no_shows"),
     url(r'^(?P<pk>[0-9]+)/administer/', include(admin_patterns)),
-
+    url(r'^no_shows/remove$',                  view=views.remove_noshow,          name="remove_noshow"),
+    url(r'^(?P<pk>[0-9]+)/cancel/$',           view=views.cancel,                 name="cancel_event"),
 ]
 
 urlpatterns = [url(r'^', include(event_patterns, namespace=app_name))]

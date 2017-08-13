@@ -39,12 +39,17 @@ class Event(models.Model):
     BEING_REVIEWED = 'b'
     REJECTED = 'r'
     APPROVED = 'a'
+    CANCEL = 'c'
+    BEING_CANCELD = 'e'
     STATUSES = (
         (DRAFT, _("utkast")),
         (BEING_REVIEWED, _("väntar på godkännande")),
         (REJECTED, _("Avslaget")),
-        (APPROVED, _("Godkänt"))
+        (APPROVED, _("Godkänt")),
+        (CANCEL, _("Inställt")),
+        (BEING_CANCELD, _("väntar på att bli inställd"))
     )
+
 
     #  Description:
     headline = models.CharField(
@@ -107,6 +112,7 @@ class Event(models.Model):
     status = models.CharField(
         max_length=1, choices=STATUSES, default=DRAFT, blank=False, null=False)
     rejection_message = models.TextField(blank=True, null=True)
+    cancel_message = models.TextField(blank=True, null=True)
 
     created = models.DateTimeField(editable=False)
     modified = models.DateTimeField(editable=False)
@@ -123,6 +129,13 @@ class Event(models.Model):
 
     finished = models.BooleanField(verbose_name='Avsluta event', default=False, help_text="Kryssa i om eventet ska avslutas")
 
+    cancel = models.CharField(
+        blank=True,
+        null=True,
+        verbose_name=_("Beskrivning för inställt event"),
+        help_text=_("Motivera varför eventet blivit inställt"),
+        max_length=255)
+
     objects = EventManager()
 
     ###########################################################################
@@ -132,7 +145,7 @@ class Event(models.Model):
     class Meta:
         verbose_name = _("Arrangemang")
         verbose_name_plural = _("Arrangemang")
-        permissions = (('can_approve_event', 'Can approve event'), ('can_view_no_shows', 'Can view no shows'))
+        permissions = (('can_approve_event', 'Can approve event'), ('can_view_no_shows', 'Can view no shows'), ('can_remove_no_shows', 'Can remove no shows'))
 
     ###########################################################################
     # Overridden and standard functions
@@ -358,7 +371,7 @@ class Event(models.Model):
         return False
 
     def reserve_nr(self, user):
-        return self.reserves_object().get(userREJE=user).position()
+        return self.reserves_object().get(user=user).position()
 
     @transaction.atomic
     def check_in(self, user):
@@ -667,6 +680,3 @@ class EntryAsParticipant(models.Model):
                                  0].speech_nr + 1
         except:
             self.speech_nr = 1
-        self.save()
-
-

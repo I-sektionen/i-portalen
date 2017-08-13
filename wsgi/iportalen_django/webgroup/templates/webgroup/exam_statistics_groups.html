@@ -1,0 +1,160 @@
+{% extends "master.html" %}
+{# Det finns inget som heter fulkod på denna sidan, Här är det fritt fram att skriva inline styling och javascript, SASS och SCSS är strikt förbjudet! #}
+{% load iportalen_tags %}
+{% load tag_tags %}
+{% include "header.html" %}
+{% block head %}<style>
+body, header.navigation, footer.footer {
+    background-color: black;
+    color: #00dd1c;
+    font-family: "monospace";
+}
+header.navigation ul li.nav-link a {
+    background-color: black;
+    color: #00dd1c;
+}
+header.navigation .navigation-tools .user-nav-tools a {
+    background-color: black;
+    color: #00dd1c;
+}
+h1, h2, h3, h4, h5, h6 {
+    background-color: black;
+    color: #00dd1c;
+    font-family: "monospace";
+}
+.sponsor{
+    background-color: white;
+}
+.footer li a, .footer li h3 {
+    background-color: black;
+    color: #00dd1c;
+    font-family: "monospace";
+}
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+          background-clip: padding-box;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, .15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+
+    </style>
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+{% endblock %}
+{% block hero %}{% endblock %}
+{% block content %}
+    <pre style="font-size: 6pt">{% include "asciiart.html" %}</pre>
+    <br>
+    <br>
+    <h3>Tentastatistik</h3>
+    <form action="" method="get">
+        <label>
+            Grupp:
+            <select style="background-color: #333333;" name="group" >
+            {% for g in groups %}
+                <option value="{{ g.id }}" {% if filter.group == g.id  %}selected{% endif %} >{{ g.name }}</option>
+            {% endfor %}
+                </select>
+        </label>
+
+        <label>
+            Datumspann:
+        <input style="background-color: #333333;" type="text" name="daterange">
+
+        </label>
+        <label>
+            Minsta antal per tillfälle:
+        <input style="background-color: #333333;" type="number" name="min_participants" value="{% if filter.min_participants %}{{ filter.min_participants }}{% endif %}">
+
+        </label>
+        <input class="button" style="background-color: #333333; color: #00dd1c" type="submit" value="Hämta statistik!">
+    </form>
+    <br>
+    <div>
+    <br>
+    <p>
+        GGK<sup>*</sup>: {{ ggk }}%
+    </p>
+    <p>
+        GU<sub>MAX</sub><sup>**</sup>: {{ gu }}%
+    </p>
+    <p>
+        G4<sup>***</sup>: {{ g4 }}%
+    </p>
+    <p>
+        G5<sup>****</sup>: {{ g5 }}%
+    </p>
+    <br>
+    <table>
+
+    <tr><th width="10%">Kurskod</th><th width="24%">Kursnamn</th><th style="color: #ff1493;" width="11%">Antal</th><th style="color: #ff0505;"  width="11%">U</th><th  style="color: #00b4ff" width="11%">G</th><th  style="color: #FFE403;" width="11%">3</th><th  style="color: #81FF02;" width="11%">4</th><th  style="color: #02ff00;" width="11%">5</th></tr>
+    {% for c in courses %}
+        <tr><td>{{ c.course_code }}</td><td colspan="7">{{ c.course_name|title }}<br> GK<sup>*****</sup>: {{ c.course_pass_avg }}%<br>  U<sub>MAX</sub>: {{ c.course_highest_kugg }}%</td></tr>
+            {% for k, v in c.items %}{% if k != "course_code" and k != "course_name" and k != "course_pass_avg"  and k != "course_highest_kugg"%}
+                <tr style="color: #ff1493;">
+                    <td></td>
+                    <td>{{ k }}</td>
+                    <td>{{ v.summed }}</td>
+                    <td style="color: #ff0505;">{{ v.kugg }}%</td>
+                    <td style="color: #00b4ff">{% if v.pass %}{{ v.pass }}%{% endif %}</td>
+                    <td style="color: #FFE403">{% if v.3or or v.4or or v.5or %}{{ v.3or }}%{% endif %}</td>
+                    <td style="color: #81FF02">{% if v.3or or v.4or or v.5or %}{{ v.4or }}%{% endif %}</td>
+                    <td style="color: #02ff00">{% if v.3or or v.4or or v.5or %}{{ v.5or }}%{% endif %}</td></tr>
+            {% endif %}{%  endfor %}
+    {% endfor %}
+    </table>
+        <br>
+    <p>* Genomsnittligt GK på alla kurser.</p>
+    <p>** Genomsnittligt U<sub>MAX</sub> på alla kurser.</p>
+    <p>*** Genomsnittligt andel 4:or på alla delmoment med betygsteget 4.</p>
+    <p>**** Genomsnittligt andel 5:or på alla delmoment med betygsteget 5.</p>
+    <p>***** Genomsnittligt kugg på alla delmoment.</p>
+    </div>
+{% endblock %}
+{% block document_ready %}
+    $('input[name="daterange"]').daterangepicker(
+        {
+            locale: {
+              format: 'YYYY-MM-DD'
+            },
+            startDate: {% if filter.date_from %}'{{ filter.date_from }}'{% else %}moment().subtract(12, 'month').startOf('month'){% endif %},
+            endDate: {% if filter.date_to %}'{{ filter.date_to }}'{% else %}moment(){% endif %},
+            ranges: {
+
+                   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                   'This Month': [moment().startOf('month'), moment().endOf('month')],
+                   'Last Year': [moment().subtract(12, 'month').startOf('month'), moment()],
+                   'Last 3 Years': [moment().subtract(36, 'month').startOf('month'), moment()]
+                }
+        },
+        function(start, end, label) {
+            console.log("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        }
+    );
+    //$(".daterangepicker")
+
+{% endblock %}
+
+{% block after_scripts %}
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+{% endblock %}
+
+

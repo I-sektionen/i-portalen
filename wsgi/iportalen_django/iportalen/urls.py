@@ -1,5 +1,4 @@
 from django.conf.urls import include, url
-from django.contrib import admin
 
 from utils.admin import iportalen_admin_site, iportalen_superadmin_site
 from django.views.generic import TemplateView, RedirectView
@@ -26,12 +25,14 @@ sitemaps = {
     'static_mid': StaticViewSitemapMedium,
 }
 
+
 urlpatterns = [
     url(r'^$',             view=views.landing,                   name="news feed"),
     url(r'^news_api$',     view=views.news_content,              name="news api"),
     url(r'^sponsored/$',   view=views.display_sponsored_content, name="sponsored"),
+    url(r'^job_adverts/$', view=views.display_job_advert_content,name="job_adverts"),
     url(r'^placeholder/',  view=views.placeholder,               name="placeholder"),
-    url(r'^file_storage/$', view=views.glasscubes_link,           name="glasscubes storage"),
+    url(r'^file_storage/$',view=views.glasscubes_link,           name="glasscubes storage"),
 
     url(r'^file_storage/course_evaluations$', view=views.glasscubes_link_course, name="glasscubes storage course"),
     url(r'^file_storage/i-bibles$',           view=views.glasscubes_link_bible, name="glasscubes storage bible"),
@@ -48,6 +49,9 @@ urlpatterns = [
     url(r'^voting/',            include('votings.urls')),
     url(r'^speaker/',           include('speaker_list.urls')),
     url(r'^utlandsportalen/',   include('utlandsportalen.urls')),
+    url(r'^fika_penalty/',      include('fika_penalty.urls')),
+    url(r'^liu-crawler/',       include('liu_crawler.urls')),
+    url(r'^webgroup/',          include('webgroup.urls')),
 
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
@@ -55,8 +59,7 @@ urlpatterns = [
     url(r'^cookies/$',   view=TemplateView.as_view(template_name="cookies.html"), name="cookies"),
     url(r'^robots.txt$', view=TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
 
-    url(r'^.well-known/acme-challenge/o1RETI1T86n55DRPYdvyBNK5C5mzfvWk33Mhz5CyT_8',
-        view=TemplateView.as_view(template_name='acme.txt', content_type='text/plain')),
+    url(r'^.well-known/acme-challenge/', include('letsencrypt.urls')),
 
     # Om någon har sparat /student som favorit skickar vi dem till startsidan
     url(r'^student', RedirectView.as_view(pattern_name='news feed', permanent=True)),
@@ -65,6 +68,9 @@ urlpatterns = [
     url(r'^alumn', RedirectView.as_view(pattern_name='news feed', permanent=True)),
     #url(r'^utlandsportalen', RedirectView.as_view(pattern_name='news feed', permanent=True)),
     url(r'^i-profilen', RedirectView.as_view(pattern_name='user_management:my page', permanent=True)),
+
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/v1/', include("user_managements.api_urls")),
 
 ]
 if not settings.ON_PASS:

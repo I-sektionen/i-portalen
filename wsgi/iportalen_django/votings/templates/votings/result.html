@@ -4,8 +4,9 @@
 {% block hero %}
 {% endblock %}
 {% block content %}
+    {% show_result question request.user as result %}
     {% detailed question request.user as show_detailed %}
-
+    {% if result %}
     {% with question.get_result as result %}
         <h1>Valresulat:</h1>
         <hr>
@@ -38,4 +39,5 @@
         <hr>
     <a href="{% url 'votings:question group' question.question_group_id %}" class="button">Tillbaka</a>
     {% endwith %}
+    {% endif %}
 {% endblock %}
