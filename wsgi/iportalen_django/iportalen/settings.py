@@ -90,7 +90,8 @@ INSTALLED_APPS = (
     'letsencrypt',
     'fika_penalty',
     'liu_crawler',
-    'webgroup'
+    'webgroup',
+    'utlandsportalen'
 )
 
 if not ON_PASS:
