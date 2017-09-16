@@ -24,7 +24,7 @@ ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
 ON_CIRCLE = 'ON_CIRCLE' in os.environ
 ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 
-
+print(ON_PASS)
 if ON_PASS:
     ALLOWED_HOSTS = ['*']
     DEBUG = False
@@ -139,12 +139,6 @@ NOSE_ARGS = [
 WSGI_APPLICATION = 'iportalen.wsgi.application'
 
 if ON_PASS:
-    try:
-        import pymysql
-        pymysql.install_as_MySQLdb()
-    except ImportError:
-        print("CANT FIND - PyMySQL")
-        pass
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
