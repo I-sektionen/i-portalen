@@ -28,6 +28,9 @@ RUN ["git", "init"]
 RUN ["git", "remote", "add", "origin", "https://github.com/I-sektionen/i-portalen"]
 RUN ["git", "fetch", "origin", "docker:refs/remotes/origin/docker"]
 RUN ["git", "checkout", "-t", "origin/docker"]
+RUN rm -f /etc/service/nginx/down &&\
+  rm /etc/nginx/sites-enabled/default
+
 # Install Python dependencies
 #RUN pip3 $DOCKYARD_SRVPROJ/requirement.txt
 # Port to expose
@@ -36,11 +39,12 @@ EXPOSE 80
 RUN /usr/bin/pip3 install --upgrade pip
 RUN /usr/bin/pip3 install -r requirements.txt
 RUN /usr/bin/pip3 install gunicorn
-WORKDIR /srv/wsgi
+
+RUN ["cp", "./django_nginx.conf", "/etc/nginx/sites-available/"]
 RUN ["chmod", "+x", "/etc/my_init.d/docker-entrypoint.sh"]
-RUN rm -f /etc/service/nginx/down &&\
-  rm /etc/nginx/sites-enabled/default
-COPY ./django_nginx.conf /etc/nginx/sites-available/
+
+WORKDIR /srv/wsgi
+
 RUN ln -s /etc/nginx/sites-available/django_nginx.conf /etc/nginx/sites-enabled
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
