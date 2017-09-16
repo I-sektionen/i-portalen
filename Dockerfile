@@ -26,7 +26,7 @@ VOLUME ["/srv/media/", "/srv/logs/"]
 COPY ./docker-entrypoint.sh /etc/my_init.d/
 RUN ["git", "init"]
 RUN ["git", "remote", "add", "origin", "https://github.com/I-sektionen/i-portalen"]
-RUN ["git", "fetch"]
+RUN ["git", "fetch", "origin", "docker:refs/remotes/origin/docker"]
 RUN ["git", "checkout", "-t", "origin/docker"]
 # Install Python dependencies
 #RUN pip3 $DOCKYARD_SRVPROJ/requirement.txt
