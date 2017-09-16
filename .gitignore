@@ -187,3 +187,4 @@ wsgi/media
 local_static
 
 .coverage
+/env-variables.conf

@@ -23,12 +23,10 @@ REPO_DIR = os.path.dirname(WSGI_DIR)
 ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
 ON_CIRCLE = 'ON_CIRCLE' in os.environ
 ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
+ON_AWS = 'ON_AWS' in os.environ
+ON_LOCAL_DOCKER = 'ON_LOCAL_DOCKER' in os.environ
 
-
-if ON_PASS:
-    ALLOWED_HOSTS = ['*']
-    DEBUG = False
-elif ON_JENKINS:
+if ON_AWS or ON_PASS or ON_JENKINS or ON_LOCAL_DOCKER:
     ALLOWED_HOSTS = ['*']
     DEBUG = False
 else:
@@ -42,7 +40,7 @@ MANAGERS = ADMINS
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-if not ON_PASS:
+if not (ON_PASS or ON_AWS):
     SECRET_KEY = '^+^i^1i94%j-hi+107xw(vf^mz4hg--#w0mw93+kc#&4vc=#=@'
 else:
     SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
@@ -59,7 +57,6 @@ if ON_PASS:
         SECURE_SSL_REDIRECT = True
         SESSION_COOKIE_SECURE = True
         CSRF_COOKIE_SECURE = True
-
 
 # Application definition
 INSTALLED_APPS = (
@@ -93,7 +90,7 @@ INSTALLED_APPS = (
     'webgroup'
 )
 
-if not ON_PASS:
+if not ON_PASS or ON_AWS:
     INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
 
 MIDDLEWARE_CLASSES = (
@@ -138,13 +135,18 @@ NOSE_ARGS = [
 
 WSGI_APPLICATION = 'iportalen.wsgi.application'
 
-if ON_PASS:
-    try:
-        import pymysql
-        pymysql.install_as_MySQLdb()
-    except ImportError:
-        print("CANT FIND - PyMySQL")
-        pass
+if ON_AWS or ON_LOCAL_DOCKER:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ['AWS_DB_NAME'],
+            'USER': os.environ['AWS_DB_USERNAME'],
+            'PASSWORD': os.environ['AWS_DB_PASSWORD'],
+            'HOST': os.environ['AWS_DB_HOSTNAME'],
+            'PORT': os.environ['AWS_DB_PORT']
+        }
+    }
+elif ON_PASS:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -207,7 +209,7 @@ USE_TZ = True
 # Target folder of collectstatic.
 
 # Staticfiles settings for local dev environment:
-if not ON_PASS:
+if not (ON_PASS or ON_AWS):
     STATIC_ROOT = os.path.join(BASE_DIR, "../static/")
     STATIC_URL = "/static/"
 
@@ -219,7 +221,7 @@ if not ON_PASS:
     MEDIA_ROOT = os.path.join(BASE_DIR, "../media/")
 
 # This is the s3 settings for Openshift.
-if ON_PASS:
+if ON_PASS or ON_AWS:
     STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, "../static/"))
     MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
 
@@ -258,7 +260,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # This is a du
                                                                   # normal print() statement (i.e. to stdout)
 EMAIL_HOST_USER = 'noreply@i-portalen.se'
 
-if ON_PASS:
+if ON_PASS or ON_AWS:
     send_email = False
     try:
         s = str(os.environ.get('SEND_EMAIL'))
@@ -328,11 +330,11 @@ LOGGING = {
 
 CORS_ORIGIN_ALLOW_ALL = False
 
-if ON_PASS:
+if ON_PASS or ON_AWS:
     CORS_ORIGIN_WHITELIST = (
         'utlandsportalen-ember.herokuapp.com',
     )
-if not ON_PASS:
+if not (ON_PASS or ON_AWS):
     CORS_ORIGIN_WHITELIST = (
         '127.0.0.1:4200',
         '127.0.0.1:1337',
