@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-git pull origin docker
+git pull origin master
 /usr/bin/pip3 install -r ../requirements.txt
 export PYTHONPATH=$PYTHONPATH:/srv/wsgi:/srv/wsgi/iportalen_django
 /usr/bin/python3 iportalen_django/manage.py migrate        # Apply database migrations
