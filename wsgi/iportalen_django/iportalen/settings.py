@@ -23,9 +23,12 @@ REPO_DIR = os.path.dirname(WSGI_DIR)
 ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
 ON_CIRCLE = 'ON_CIRCLE' in os.environ
 ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
+ON_AWS = 'ON_AWS' in os.environ
 
-print(ON_PASS)
-if ON_PASS:
+if ON_AWS:
+    ALLOWED_HOSTS = ['*']
+    DEBUG = False
+elif ON_PASS:
     ALLOWED_HOSTS = ['*']
     DEBUG = False
 elif ON_JENKINS:
@@ -59,7 +62,18 @@ if ON_PASS:
         SECURE_SSL_REDIRECT = True
         SESSION_COOKIE_SECURE = True
         CSRF_COOKIE_SECURE = True
-
+if ON_AWS:
+    ssl = False
+    try:
+        s = str(os.environ.get('SSL_ENABLED'))
+        if s == str("TRUE"):
+            ssl = True
+    except:
+        pass
+    if ssl:
+        SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+        SESSION_COOKIE_SECURE = True
+        CSRF_COOKIE_SECURE = True
 
 # Application definition
 INSTALLED_APPS = (
@@ -138,6 +152,17 @@ NOSE_ARGS = [
 
 WSGI_APPLICATION = 'iportalen.wsgi.application'
 
+if ON_AWS:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'],
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT']
+        }
+    }
 if ON_PASS:
     DATABASES = {
         'default': {
