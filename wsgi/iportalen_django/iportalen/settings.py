@@ -56,18 +56,6 @@ if ON_PASS:
         SECURE_SSL_REDIRECT = True
         SESSION_COOKIE_SECURE = True
         CSRF_COOKIE_SECURE = True
-elif ON_AWS:
-    ssl = False
-    try:
-        s = str(os.environ.get('SSL_ENABLED'))
-        if s == str("TRUE"):
-            ssl = True
-    except:
-        pass
-    if ssl:
-        SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-        SESSION_COOKIE_SECURE = True
-        CSRF_COOKIE_SECURE = True
 
 # Application definition
 INSTALLED_APPS = (
@@ -150,11 +138,11 @@ if ON_AWS:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
-            'PASSWORD': os.environ['RDS_PASSWORD'],
-            'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT']
+            'NAME': os.environ['AWS_DB_NAME'],
+            'USER': os.environ['AWS_USERNAME'],
+            'PASSWORD': os.environ['AWS_PASSWORD'],
+            'HOST': os.environ['AWS_HOSTNAME'],
+            'PORT': os.environ['AWS_PORT']
         }
     }
 elif ON_PASS:
