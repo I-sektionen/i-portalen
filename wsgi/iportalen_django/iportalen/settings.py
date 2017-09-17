@@ -139,10 +139,10 @@ if ON_AWS:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': os.environ['AWS_DB_NAME'],
-            'USER': os.environ['AWS_USERNAME'],
-            'PASSWORD': os.environ['AWS_PASSWORD'],
-            'HOST': os.environ['AWS_HOSTNAME'],
-            'PORT': os.environ['AWS_PORT']
+            'USER': os.environ['AWS_DB_USERNAME'],
+            'PASSWORD': os.environ['AWS_DB_PASSWORD'],
+            'HOST': os.environ['AWS_DB_HOSTNAME'],
+            'PORT': os.environ['AWS_DB_PORT']
         }
     }
 elif ON_PASS:
