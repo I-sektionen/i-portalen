@@ -26,8 +26,8 @@ VOLUME ["/srv/media/", "/srv/logs/"]
 COPY ./docker-entrypoint.sh /etc/my_init.d/
 RUN ["git", "init"]
 RUN ["git", "remote", "add", "origin", "https://github.com/I-sektionen/i-portalen"]
-RUN ["git", "fetch", "origin", "docker:refs/remotes/origin/docker"]
-RUN ["git", "checkout", "-t", "origin/docker"]
+RUN ["git", "fetch", "origin", "docker:refs/remotes/origin/master"]
+RUN ["git", "checkout", "-t", "origin/master"]
 RUN rm -f /etc/service/nginx/down &&\
   rm /etc/nginx/sites-enabled/default
 
@@ -41,6 +41,7 @@ RUN /usr/bin/pip3 install -r requirements.txt
 RUN /usr/bin/pip3 install gunicorn
 
 RUN ["cp", "./django_nginx.conf", "/etc/nginx/sites-available/"]
+#COPY ./django_nginx_local.conf /etc/nginx/sites-available/django_nginx.conf
 RUN ["chmod", "+x", "/etc/my_init.d/docker-entrypoint.sh"]
 
 WORKDIR /srv/wsgi

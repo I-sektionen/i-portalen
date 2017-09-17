@@ -24,8 +24,9 @@ ON_PASS = 'OPENSHIFT_REPO_DIR' in os.environ
 ON_CIRCLE = 'ON_CIRCLE' in os.environ
 ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 ON_AWS = 'ON_AWS' in os.environ
+ON_LOCAL_DOCKER = 'ON_LOCAL_DOCKER' in os.environ
 
-if ON_AWS or ON_PASS or ON_JENKINS:
+if ON_AWS or ON_PASS or ON_JENKINS or ON_LOCAL_DOCKER:
     ALLOWED_HOSTS = ['*']
     DEBUG = False
 else:
@@ -39,7 +40,7 @@ MANAGERS = ADMINS
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-if not ON_PASS:
+if not (ON_PASS or ON_AWS):
     SECRET_KEY = '^+^i^1i94%j-hi+107xw(vf^mz4hg--#w0mw93+kc#&4vc=#=@'
 else:
     SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
@@ -134,7 +135,7 @@ NOSE_ARGS = [
 
 WSGI_APPLICATION = 'iportalen.wsgi.application'
 
-if ON_AWS:
+if ON_AWS or ON_LOCAL_DOCKER:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -208,7 +209,7 @@ USE_TZ = True
 # Target folder of collectstatic.
 
 # Staticfiles settings for local dev environment:
-if not ON_PASS:
+if not (ON_PASS or ON_AWS):
     STATIC_ROOT = os.path.join(BASE_DIR, "../static/")
     STATIC_URL = "/static/"
 
