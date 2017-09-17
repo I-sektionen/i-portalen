@@ -25,13 +25,7 @@ ON_CIRCLE = 'ON_CIRCLE' in os.environ
 ON_JENKINS = 'JENKINS_SERVER_IPORTALEN' in os.environ
 ON_AWS = 'ON_AWS' in os.environ
 
-if ON_AWS:
-    ALLOWED_HOSTS = ['*']
-    DEBUG = False
-elif ON_PASS:
-    ALLOWED_HOSTS = ['*']
-    DEBUG = False
-elif ON_JENKINS:
+if ON_AWS or ON_PASS or ON_JENKINS:
     ALLOWED_HOSTS = ['*']
     DEBUG = False
 else:
@@ -62,7 +56,7 @@ if ON_PASS:
         SECURE_SSL_REDIRECT = True
         SESSION_COOKIE_SECURE = True
         CSRF_COOKIE_SECURE = True
-if ON_AWS:
+elif ON_AWS:
     ssl = False
     try:
         s = str(os.environ.get('SSL_ENABLED'))
@@ -107,7 +101,7 @@ INSTALLED_APPS = (
     'webgroup'
 )
 
-if not ON_PASS:
+if not ON_PASS or ON_AWS:
     INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
 
 MIDDLEWARE_CLASSES = (
@@ -163,7 +157,7 @@ if ON_AWS:
             'PORT': os.environ['RDS_PORT']
         }
     }
-if ON_PASS:
+elif ON_PASS:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -238,7 +232,7 @@ if not ON_PASS:
     MEDIA_ROOT = os.path.join(BASE_DIR, "../media/")
 
 # This is the s3 settings for Openshift.
-if ON_PASS:
+if ON_PASS or ON_AWS:
     STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, "../static/"))
     MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
 
@@ -277,7 +271,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # This is a du
                                                                   # normal print() statement (i.e. to stdout)
 EMAIL_HOST_USER = 'noreply@i-portalen.se'
 
-if ON_PASS:
+if ON_PASS or ON_AWS:
     send_email = False
     try:
         s = str(os.environ.get('SEND_EMAIL'))
@@ -347,11 +341,11 @@ LOGGING = {
 
 CORS_ORIGIN_ALLOW_ALL = False
 
-if ON_PASS:
+if ON_PASS or ON_AWS:
     CORS_ORIGIN_WHITELIST = (
         'utlandsportalen-ember.herokuapp.com',
     )
-if not ON_PASS:
+if not (ON_PASS or ON_AWS):
     CORS_ORIGIN_WHITELIST = (
         '127.0.0.1:4200',
         '127.0.0.1:1337',

@@ -71,5 +71,5 @@ urlpatterns = [
     url(r'^api/v1/', include("user_managements.api_urls")),
 
 ]
-if not settings.ON_PASS:
+if not (settings.ON_PASS or settings.ON_AWS):
     urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
