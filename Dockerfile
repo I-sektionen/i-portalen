@@ -26,7 +26,7 @@ VOLUME ["/srv/media/", "/srv/logs/"]
 COPY ./docker-entrypoint.sh /etc/my_init.d/
 RUN ["git", "init"]
 RUN ["git", "remote", "add", "origin", "https://github.com/I-sektionen/i-portalen"]
-RUN ["git", "fetch", "origin", "docker:refs/remotes/origin/master"]
+RUN ["git", "fetch", "origin", "master:refs/remotes/origin/master"]
 RUN ["git", "checkout", "-t", "origin/master"]
 RUN rm -f /etc/service/nginx/down &&\
   rm /etc/nginx/sites-enabled/default
