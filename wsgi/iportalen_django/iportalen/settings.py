@@ -103,6 +103,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'csp.middleware.CSPMiddleware',
 )
 
 AUTH_USER_MODEL = 'user_managements.IUser'
@@ -339,4 +340,13 @@ if not (ON_PASS or ON_AWS):
         '127.0.0.1:4200',
         '127.0.0.1:1337',
     )
+
+CSP_DEFAULT_SRC = ("'self', 'unsafe-eval', 'unsafe-inline', 's3.amazonsaws.com'")
+CSP_SCRIPT_SRC = ("'self', "
+                  "'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js', "
+                  "'iportalen/js/jquery.datetimepicker.full.min.js', "
+                  "'https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js', "
+                  "'unsafe-inline'",)
+CSP_IMG_SRC = ("'https://s3.amazonaws.com/iportalen-us/static/sponsorer/capgemini.jpg', 'unsafe-eval', 'unsafe-inline'")
+
 
