@@ -7,7 +7,7 @@
 
     <form class="search-form" action="/exchange_portal/" method="post">
         {% csrf_token %}
-        <input class="search-holder" type="text" name="q" placeholder="Sök universitet eller land">
+        <input class="search-holder" type="text" name="q" placeholder="Sök universitet, stad eller land">
         <input class="submit-holder primary action-button" type="submit" value="Sök">
     </form>
     <br>
@@ -15,5 +15,8 @@
     {% for school in school_list %}
         <li><a href="/exchange_portal/school/{{ school.id }}">{{ school.name|capfirst }}, {{ school.in_city|capfirst }}, {{ school.in_city.in_country|capfirst }}</a></li>
     {% endfor %}
+    {% if school_list.count == 0  %}
+        <p>Inget resultat.</p>
+    {% endif %}
 
 {% endblock %}
