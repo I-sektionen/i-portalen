@@ -183,12 +183,12 @@ else:
 
     DATABASES = {
         'default': {
-             'ENGINE': 'django.db.backends.mysql',
-             'NAME': 'django_iportalen',
-             'USER': mysql["user"],
-             'PASSWORD': mysql["password"],
-             'HOST': mysql["host"],
-             'PORT': mysql["port"],
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'django_iportalen',
+            'USER': mysql["user"],
+            'PASSWORD': mysql["password"],
+            'HOST': mysql["host"],
+            'PORT': mysql["port"],
         }
     }
 # Database
@@ -258,7 +258,7 @@ REST_FRAMEWORK = {
 
 # Email settings:
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # This is a dummy backend which prints emails as a
-                                                                  # normal print() statement (i.e. to stdout)
+# normal print() statement (i.e. to stdout)
 EMAIL_HOST_USER = 'noreply@i-portalen.se'
 
 if ON_PASS or ON_AWS:
@@ -341,12 +341,19 @@ if not (ON_PASS or ON_AWS):
         '127.0.0.1:1337',
     )
 
-CSP_DEFAULT_SRC = ("'self', 'unsafe-eval', 'unsafe-inline', 's3.amazonsaws.com'")
-CSP_SCRIPT_SRC = ("'self', "
-                  "'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js', "
-                  "'iportalen/js/jquery.datetimepicker.full.min.js', "
-                  "'https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js', "
-                  "'unsafe-inline'",)
-CSP_IMG_SRC = ("'https://s3.amazonaws.com/iportalen-us/static/sponsorer/capgemini.jpg', 'unsafe-eval', 'unsafe-inline'")
+CSP_DEFAULT_SRC = (
+    "'self'", "'unsafe-eval'", "'unsafe-inline'", 'https://s3.amazonaws.com/',
+    'https://maxcdn.bootstrapcdn.com/', 'http://www.google-analytics.com/',
+    '*.googleapis.com/', 'https://cdnjs.cloudflare.com/', '*.gstatic.com/',
+    '*.github.com/repos/I-sektionen/', 'data:'
+)
+CSP_SCRIPT_SRC = (
+    "'self'", "'unsafe-eval'", "'unsafe-inline'",
+    '*.googleapis.com/',
+    'iportalen/js/jquery.datetimepicker.full.min.js', 'http://www.googletagmanager.com/',
+    'http://www.google-analytics.com/', 'https://www.gstatic.com/',
+    'https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js',
+)
+
 
 
