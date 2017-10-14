@@ -349,8 +349,8 @@ CSP_DEFAULT_SRC = (
 )
 CSP_SCRIPT_SRC = (
     "'self'", "'unsafe-eval'", "'unsafe-inline'",
-    '*.googleapis.com/',
-    'iportalen/js/jquery.datetimepicker.full.min.js', 'http://www.googletagmanager.com/',
+    '*.googleapis.com/','*.s3.amazonaws.com/',
+    'iportalen/js/jquery.datetimepicker.full.min.js', 'https://www.googletagmanager.com/',
     'http://www.google-analytics.com/', 'https://www.gstatic.com/',
     'https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js',
 )
