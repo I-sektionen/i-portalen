@@ -342,7 +342,7 @@ if not (ON_PASS or ON_AWS):
     )
 
 CSP_DEFAULT_SRC = (
-    "'self'", "'unsafe-eval'", "'unsafe-inline'", 'https://s3.amazonaws.com/',
+    "'self'", "'unsafe-eval'", "'unsafe-inline'", '*.s3.amazonaws.com/',
     'https://maxcdn.bootstrapcdn.com/', 'http://www.google-analytics.com/',
     '*.googleapis.com/', 'https://cdnjs.cloudflare.com/', '*.gstatic.com/',
     '*.github.com/repos/I-sektionen/', 'data:'
