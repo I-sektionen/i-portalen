@@ -130,7 +130,21 @@ var article_preview = function () {
         ele.change(function(){render()});
         ele.keypress(function(){render()});
     });
-};;/**
+};;
+// function updateCount()  {
+
+//$('#characters').text(cs);
+// }
+$("#id_lead").on("change paste keyup keydown keypress", function(){
+    console.log("funktion");
+    var cs = $("#id_lead").val().length;
+    document.getElementById("characters").value = cs+"/160";
+});
+
+
+//$('#id_lead').on('input', updateCount());
+
+;/**
  * Created by isac on 2015-11-22.
  */
 function generate_booking_form(pk, weeks_forward){

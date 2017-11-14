@@ -3,7 +3,7 @@
 
 //$('#characters').text(cs);
 // }
-$("#id_lead").on("change paste keyup keypress", function(){
+$("#id_lead").on("change paste keyup keydown keypress", function(){
     console.log("funktion");
     var cs = $("#id_lead").val().length;
     document.getElementById("characters").value = cs+"/160";
