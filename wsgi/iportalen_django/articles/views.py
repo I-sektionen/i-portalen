@@ -91,7 +91,11 @@ def upload_attachments(request, article_pk):
             for entry in formset.cleaned_data:
                 if not entry == {}:
                     if entry['DELETE']:
-                        entry['id'].delete()  # TODO: Remove the clear option from html-widget (or make it work).
+
+                        try:
+                            entry['id'].delete()  # TODO: Remove the clear option from html-widget (or make it work).
+                        except AttributeError:
+                            pass
                     else:
                         if entry['id']:
                             attachment = entry['id']
@@ -135,7 +139,10 @@ def upload_attachments_images(request, article_pk):
             for entry in formset.cleaned_data:
                 if not entry == {}:
                     if entry['DELETE']:
-                        entry['id'].delete()  # TODO: Remove the clear option from html-widget (or make it work).
+                        try:
+                            entry['id'].delete()  # TODO: Remove the clear option from html-widget (or make it work).
+                        except AttributeError:
+                            pass
                     else:
                         if entry['id']:
                             attachment = entry['id']
