@@ -118,3 +118,7 @@ def Travel_Stories(request):
     #Add all travel stories to show
 
     return render(request, 'exchange_portal/travel_stories.html')
+
+def Asia(request):
+
+    return render(request, 'exchange_portal/asia.html')
