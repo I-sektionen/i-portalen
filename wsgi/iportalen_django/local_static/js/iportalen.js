@@ -131,18 +131,21 @@ var article_preview = function () {
         ele.keypress(function(){render()});
     });
 };;
-// function updateCount()  {
 
-//$('#characters').text(cs);
-// }
+$(document).ready(function()
+{
+    $("#id_lead").attr('maxlength','160');
+});
+
 $("#id_lead").on("change paste keyup keydown keypress", function(){
     console.log("funktion");
     var cs = $("#id_lead").val().length;
-    document.getElementById("characters").value = cs+"/160";
+    document.getElementById("word_counter_form").value = cs+"/160";
 });
 
+//Get coordinate of the lead form by using jquery
 
-//$('#id_lead').on('input', updateCount());
+
 
 ;/**
  * Created by isac on 2015-11-22.
