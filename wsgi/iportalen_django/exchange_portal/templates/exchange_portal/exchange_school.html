@@ -30,23 +30,23 @@
 <br>
 <h3>Kurser</h3>
     {% if course_list %}
-        <table class="courses" id="course_table">
-            <thead>
+        <table  class="courses">
+            <thead id="course_table_head">
             <tr>
-                <th colspan="6"> Kurs: </th>
-                <th colspan="2"> HP: </th>
-                <th colspan="2"> Nivå: </th>
-                <th colspan="2"> Inriktning:  </th>
+                <th colspan="4"> Kurs: </th>
+                <th colspan="1"> HP: </th>
+                <th colspan="1"> Nivå: </th>
+                <th colspan="1"> Inriktning:  </th>
                 <th colspan="2"> LiU-Kurs:  </th>
             </tr>
             </thead>
             <tbody>
             {% for course in course_list %}
                 <tr>
-                    <td colspan="6">{{course.name|capfirst}}, {{ course.course_code|capfirst }}</td>
-                    <td colspan="2">  6 </td>
-                    <td colspan="2"> G2 </td>
-                    <td colspan="2"> D </td>
+                    <td colspan="4">{{course.name|capfirst}}, {{ course.course_code|capfirst }}</td>
+                    <td colspan="1">  6 </td>
+                    <td colspan="1"> G2 </td>
+                    <td colspan="1"> D </td>
                     <td colspan="2"> {{ course.corresponding_liu_course.name|capfirst }}, {{ course.corresponding_liu_course.course_code|capfirst }} </td>
                 </tr>
             {% endfor %}

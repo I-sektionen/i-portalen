@@ -1475,6 +1475,11 @@ label.required:after {
   height: 70px;
 }
 
+#course_table_head {
+  border-top: 3px solid #737373;
+  border-bottom: 3px solid #737373;
+}
+
 .footer {
   background: #f7f7f7;
   padding: 1.95em 1.618em;
