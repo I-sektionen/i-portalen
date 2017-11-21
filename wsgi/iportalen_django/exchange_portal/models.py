@@ -1,6 +1,7 @@
 __author__ = 'Magnus Forzelius & Jesper Lehtonen'
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 from utils.validators import liu_id_validator
 import os
 
@@ -72,8 +73,8 @@ class Exchange_Course(models.Model):
     in_school = models.ForeignKey(School, on_delete=models.CASCADE)
     corresponding_liu_course = models.ForeignKey(Liu_Course, on_delete=models.CASCADE)
 
-    #Add attribute "credits", and att the credits/hp quota in school model
-    #A course can be required in several tech profile
+    # Add attribute "credits", and att the credits/hp quota in school model
+    # A course can be required in several tech profile
 
     class Meta:
         verbose_name = _("Utlandskurs")
@@ -89,9 +90,22 @@ def _file_path(instance, filename):
     )
 
 class Travel_Story(models.Model):
+    #Change from file to form
      file = models.FileField(upload_to=_file_path)
      about_school = models.ForeignKey(School, on_delete=models.CASCADE)
      added_by_user = models.CharField(verbose_name=_("liu-id"), max_length=10)
+     #headline = models.CharField(
+      #  verbose_name=_("rubrik"),
+      # max_length=255,
+      # help_text=_("Rubriken till artikeln"))
+     #lead = models.TextField(
+      #  verbose_name=_("ingress"),
+      #  help_text=_("Ingressen är den text som syns i nyhetsflödet. Max 160 tecken."))
+     #body = models.TextField(
+      #  verbose_name=_("brödtext"),
+      #  help_text=_("Brödtext syns när en artikel visas enskilt."))
+
+
 
      class Meta:
          verbose_name = _("Reseberättelse")
