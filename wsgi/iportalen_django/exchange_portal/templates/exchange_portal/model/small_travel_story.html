@@ -1,0 +1,53 @@
+<!--
+<article class="news-feed-content">
+    <div class="article-type-and-date">
+
+        <i class="fa fa-newspaper-o large"></i>
+        <div class="article-preview-time-organisation">
+            if article.organisations.all %}
+            <p class="article-preview-type">{ article.organisations.all|safeseq|join:", " }}</p>
+             else %}
+            <p class="article-preview-type">{ article.user.get_full_name }}</p>
+             endif %}
+            <p class="article-preview-type time-since">{ article.visible_from|timesince}}</p>
+        </div>
+    </div>
+    <a href="{ article.get_absolute_url }}"><h1>{ article.headline }}</h1></a>
+
+    <p class="meta">
+        if article.tags.all  %}
+            <i class="fa fa-tags"></i>
+            <span>{ article.tags.all|safeseq|join:", " }}</span>
+        % endif %}
+        % if article.sponsored  %}
+            <span>Sponsrat innehåll</span>
+        % endif %}
+        % if article.job_advert %}
+            <span>Jobbannons</span>
+        %  endif %}
+    </p>
+    <h2> article.lead|truncatewords_html:50 }}</h2>
+    <a href="{article.get_absolute_url }}">Läs mer</a>
+    <hr>
+</article>
+-->
+<travel_story class="news-feed-content">
+
+     <a href="{{travel_story.get_absolute_url }}"> <h1>{{ travel_story.headline }}</h1></a>
+    <div class="article-type-and-date">
+        <i class="fa fa-globe large"></i>
+        {{ travel_story.added_by_user }}
+    </div>
+
+
+    <p class="meta">
+       <!-- { if travel_story.tags.all  %}
+            <i class="fa fa-tags"></i>
+            <span>{ travel_story.tags.all|safeseq|join:", " }}</span>
+        { endif %}-->
+        {{ travel_story.about_school.name }} , {{ travel_story.about_school.in_city }}, {{ travel_story.about_school.in_city.in_country }}
+    </p>
+    <h2>{{ travel_story.lead|truncatewords_html:50 }}</h2>
+   <!-- <a href="{ travel_story.get_absolute_url }}">Läs mer</a> -->
+    <hr>
+</travel_story>

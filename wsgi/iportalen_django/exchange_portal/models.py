@@ -1,8 +1,10 @@
 __author__ = 'Magnus Forzelius & Jesper Lehtonen'
 from django.db import models
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from utils.validators import liu_id_validator
+from tags.models import Tag
 import os
 
 class Country(models.Model):
@@ -91,22 +93,35 @@ def _file_path(instance, filename):
 
 class Travel_Story(models.Model):
     #Change from file to form
-     file = models.FileField(upload_to=_file_path)
-     about_school = models.ForeignKey(School, on_delete=models.CASCADE)
-     added_by_user = models.CharField(verbose_name=_("liu-id"), max_length=10)
-     #headline = models.CharField(
-      #  verbose_name=_("rubrik"),
-      # max_length=255,
-      # help_text=_("Rubriken till artikeln"))
-     #lead = models.TextField(
-      #  verbose_name=_("ingress"),
-      #  help_text=_("Ingressen är den text som syns i nyhetsflödet. Max 160 tecken."))
-     #body = models.TextField(
-      #  verbose_name=_("brödtext"),
-      #  help_text=_("Brödtext syns när en artikel visas enskilt."))
+    about_school = models.ForeignKey(School, on_delete=models.CASCADE)
+    added_by_user = models.CharField(verbose_name=_("liu-id"), max_length=10)
+    headline = models.CharField(
+      verbose_name=_("rubrik"),
+      max_length=255,
+      help_text=_("Rubriken till reseberättelsen"))
+    lead = models.TextField(
+        verbose_name=_("ingress"),
+        help_text=_("Ingressen är den text som syns i reseberättelse."))
+    body = models.TextField(
+        verbose_name=_("brödtext"),
+        help_text=_("Brödtext syns när en reseberättelse visas enskilt."))
+    #tags = models.ManyToManyField(
+     #   Tag,
+     #   verbose_name=_("tag"),
+      #  blank=True,
+       # help_text=_("Håll ner Ctrl för att markera flera."))
 
-
-
-     class Meta:
+    class Meta:
          verbose_name = _("Reseberättelse")
          verbose_name_plural = _("Reseberättelser")
+
+    def __str__(self):
+        return self.headline
+
+    #def get_absolute_url(self):
+     #   """Get url of object"""
+      #  return reverse(self)
+    #self.about_school
+
+
+

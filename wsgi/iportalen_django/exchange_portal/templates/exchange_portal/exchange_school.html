@@ -4,9 +4,13 @@
 {% block content %}
 {% include "exchange_portal/exchange_portal_header.html" %}
 
-<h1>{{ school.name|capfirst }}</h1>
-<p>{{ school.in_city.name|capfirst }}, {{ school.in_city.in_country.name }} </p><br>
+<h1>{{ school.name|capfirst }}, {{ school.in_city.in_country.name }}, {{ school.in_city.name|capfirst }} </h1>
 
+<div class="button-group">
+    <button href="#" class="button"> Kurser </button>
+    <button href="#" class="button"> Reseberättelser </button>
+    <button href="#" class="button"> Bra länkar </button>
+</div>
 <i>
     Utbyte genom universitetet:
     {% if school.exchange_with_liu %}
@@ -26,20 +30,24 @@
 <br>
 <h3>Kurser</h3>
     {% if course_list %}
-        <table class="courses">
-            <thead>
+        <table  class="courses">
+            <thead id="course_table_head">
             <tr>
-                <th colspan="2">{{ school.name|capfirst }}</th>
-                <th colspan="2">Linköpings Universitet</th>
+                <th colspan="4"> Kurs: </th>
+                <th colspan="1"> HP: </th>
+                <th colspan="1"> Nivå: </th>
+                <th colspan="1"> Inriktning:  </th>
+                <th colspan="2"> LiU-Kurs:  </th>
             </tr>
             </thead>
             <tbody>
             {% for course in course_list %}
                 <tr>
-                    <td>{{ course.course_code|capfirst }}</td>
-                    <td>{{ course.name|capfirst }}</td>
-                    <td>{{ course.corresponding_liu_course.course_code|capfirst }}</td>
-                    <td>{{ course.corresponding_liu_course.name|capfirst }}</td>
+                    <td colspan="4">{{course.name|capfirst}}, {{ course.course_code|capfirst }}</td>
+                    <td colspan="1">  6 </td>
+                    <td colspan="1"> G2 </td>
+                    <td colspan="1"> D </td>
+                    <td colspan="2"> {{ course.corresponding_liu_course.name|capfirst }}, {{ course.corresponding_liu_course.course_code|capfirst }} </td>
                 </tr>
             {% endfor %}
             </tbody>
