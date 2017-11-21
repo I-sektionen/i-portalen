@@ -112,3 +112,9 @@ class Search_Autocomplete (autocomplete.Select2QuerySetView):
 
         return qs
 
+def Travel_Stories(request):
+    #Search function
+
+    #Add all travel stories to show
+
+    return render(request, 'exchange_portal/travel_stories.html')
