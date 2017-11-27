@@ -3,38 +3,17 @@
   border-bottom: 3px solid shade($base-border-color, 25%);
 }
 
-.dropbtn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
+#exchange_divider {
+  border-top: 2px solid shade($base-border-color, 25%);
+  border-bottom: 2px solid shade($base-border-color, 25%);
 }
-
-.dropbtn:hover, .dropbtn:focus {
-    background-color: #3e8e41;
+/* Dropdown Button */
+/* The container <div> - needed to position the dropdown content */
+/* Dropdown Content (Hidden by Default) */
+#dropdown-content {
+  display: none;
 }
-
-.dropdown {
-    position: relative;
-    display: inline-block;
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+show {
+  display: block !important;
 }
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    overflow: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropdown-content a {
-
-}
-
-.dropdown a:hover {background-color: #f1f1f1}
-
-.show {display:block;}

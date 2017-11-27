@@ -535,7 +535,7 @@ function prev_button(tab_no) {
     var prev ='#tab'+prev_tab_no+' a';
     $(prev).click();
     scroll(0,0)
-};"use strict";
+};;"use strict";
 var Markdown;
 
 if (typeof exports === "object" && typeof require === "function") // we're in a CommonJS (e.g. Node.js) module

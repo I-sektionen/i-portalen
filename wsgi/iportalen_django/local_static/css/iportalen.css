@@ -1480,6 +1480,23 @@ label.required:after {
   border-bottom: 3px solid #737373;
 }
 
+#exchange_divider {
+  border-top: 2px solid #737373;
+  border-bottom: 2px solid #737373;
+}
+
+/* Dropdown Button */
+/* The container <div> - needed to position the dropdown content */
+/* Dropdown Content (Hidden by Default) */
+#dropdown-content {
+  display: none !important;
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+show {
+  display: block !important;
+}
+
 .footer {
   background: #f7f7f7;
   padding: 1.95em 1.618em;
@@ -1790,7 +1807,7 @@ header.navigation ul.submenu {
     border: 8px solid transparent;
     bottom: 0em;
     color: white;
-    content: 'Ôû▓';
+    content: '▲';
     font-size: 1.4em;
     text-align: center;
     text-shadow: 1px -1px 1px silver;
