@@ -32,6 +32,8 @@
     <div>
         <button class="button filter_btn">	<span class="fa fa-times"> </span> Datateknik</button>
     </div>
+   {% include "exchange_portal/model/nav_filtering.html" %}
+
     {% if course_list %}
         <table  class="courses">
             <thead id="course_table_head">
