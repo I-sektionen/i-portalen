@@ -114,7 +114,10 @@ class Search_Autocomplete (autocomplete.Select2QuerySetView):
 
 def Travel_Stories(request):
     #Search function
-
+    travel_story_list = list(Travel_Story.objects.all())
     #Add all travel stories to show
+    return render(request, 'exchange_portal/travel_stories.html', {'travel_story_list':travel_story_list})
 
-    return render(request, 'exchange_portal/travel_stories.html')
+def Asia(request):
+
+    return render(request, 'exchange_portal/asia.html')

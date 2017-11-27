@@ -1,0 +1,27 @@
+{% extends "master.html" %}
+
+{% block title %}Utlandsportalen{% endblock %}
+{% block content %}
+{%  include "exchange_portal/exchange_portal_header.html" %} <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
+
+
+<h1>Asien</h1>
+<hr>
+
+<div id="dropdown">
+  <button onclick="myFunction()" type="button" class="btn btn-primary">Länder</button>
+  <div id="myDropdown" class="dropdown-content">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+ </div>
+ </div>
+
+
+
+
+  <button type="button" class="btn btn-primary">Asiens Reseberättelser</button>
+
+
+
+{% endblock %}
