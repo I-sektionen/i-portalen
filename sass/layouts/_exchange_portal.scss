@@ -17,3 +17,34 @@
 show {
   display: block !important;
 }
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {}
+
+.dropdown a:hover {
+  background-color: #f1f1f1;
+}
+
+.show {
+  display: block;
+}
+
+.filter_btn {
+  border-radius: 50px;
+  text-transform: none;
+  padding: 5px 10px;
+  color: #999;
+  background-color: white;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #999;
+}
