@@ -28,9 +28,18 @@
     {% else %}
         <div id="organisation-hero">
             {% if organisation.image %}
-                <div class="hero" style="background-image: url({{ MEDIA_URL }}{{ organisation.image }})">
 
-                </div>
+            {% ifequal organisation.name|capfirst 'Webgroup' %}
+                    <a href="{% url "webgroup:landing" %}">
+                        <div class="hero" style="background-image: url({{ MEDIA_URL }}{{ organisation.image }})">
+                    </div>
+                    </a>
+
+            {% else %}
+                    <div class="hero" style="background-image: url({{ MEDIA_URL }}{{ organisation.image }})">
+                    </div>
+            {% endifequal %}
+
             {% else %}
                 <div class="hero">
                     <div class="no-img">
