@@ -535,7 +535,12 @@ function prev_button(tab_no) {
     var prev ='#tab'+prev_tab_no+' a';
     $(prev).click();
     scroll(0,0)
-};;"use strict";
+};function expander_trigger_exchange_portal(url) {
+    $('.expander-trigger').click(function(){
+        $('.expander-content').slideToggle( "fast" );
+        $(this).toggleClass("expander-hidden");
+    });
+};"use strict";
 var Markdown;
 
 if (typeof exports === "object" && typeof require === "function") // we're in a CommonJS (e.g. Node.js) module
