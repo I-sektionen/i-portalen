@@ -29,26 +29,32 @@
         <div id="organisation-hero">
             {% if organisation.image %}
 
-            {% ifequal organisation.name|capfirst 'Webgroup' %}
+                    <div class="hero" style="background-image: url({{ MEDIA_URL }}{{ organisation.image }})">
+
+                    {% ifequal organisation.name|capfirst 'Webgroup' %}
                     <a href="{% url "webgroup:landing" %}">
-                        <div class="hero" style="background-image: url({{ MEDIA_URL }}{{ organisation.image }})">
+                        <div id="secret-webgroup-link">
                     </div>
                     </a>
 
-            {% else %}
-                    <div class="hero" style="background-image: url({{ MEDIA_URL }}{{ organisation.image }})">
+                    {% endifequal %}
+
+
+
                     </div>
-            {% endifequal %}
+
 
             {% else %}
                 <div class="hero">
                     <div class="no-img">
                         <div class="placeholder"><h1>{{ organisation.name|capfirst }}</h1></div>
-
-            </div>
-        </div>
+                    </div>
+                </div>
     {% endif %}
 </div>
+
+
+
     <div id="organisation-admin-panel">
     {% can_edit_organisation request.user organisation as can_edit %}
         {% if can_edit %}
