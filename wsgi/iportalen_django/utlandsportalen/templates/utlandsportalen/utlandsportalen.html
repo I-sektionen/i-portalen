@@ -1,0 +1,25 @@
+{% extends "master.html" %}
+
+{% load staticfiles %}
+{% block head %}
+{% endblock %}
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+    <h1>Utlandsportalen</h1>
+    <ul>
+    <li>
+        <a href="{% url "utlandsportalen:utl_schools" %}">Länder/skolor</a>
+    </li>
+    <li>
+        <a href="{% url "utlandsportalen:utl_blogs" %}">Bloggar</a>
+    </li>
+    <li>
+        <a href="{% url "utlandsportalen:utl_scholarships" %}">Stipendier</a>
+    </li>
+    <li>
+        <a href="{% url "utlandsportalen:utl_contact" %}">Kontakt</a>
+    </li>
+    </ul>
+{% endblock %}

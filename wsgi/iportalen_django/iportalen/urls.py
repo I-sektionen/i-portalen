@@ -48,6 +48,7 @@ urlpatterns = [
     url(r'^user/',              include('user_managements.urls')),
     url(r'^voting/',            include('votings.urls')),
     url(r'^speaker/',           include('speaker_list.urls')),
+    url(r'^utlandsportalen/',   include('utlandsportalen.urls')),
     url(r'^fika_penalty/',      include('fika_penalty.urls')),
     url(r'^liu-crawler/',       include('liu_crawler.urls')),
     url(r'^webgroup/',          include('webgroup.urls')),
@@ -65,8 +66,9 @@ urlpatterns = [
     url(r'^soekande', view=views.isektionen_link),
     url(r'^foeretag', view=views.isektionen_link),
     url(r'^alumn', RedirectView.as_view(pattern_name='news feed', permanent=True)),
-    url(r'^utlandsportalen', RedirectView.as_view(pattern_name='news feed', permanent=True)),
+    #url(r'^utlandsportalen', RedirectView.as_view(pattern_name='news feed', permanent=True)),
     url(r'^i-profilen', RedirectView.as_view(pattern_name='user_management:my page', permanent=True)),
+
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/v1/', include("user_managements.api_urls")),
 
