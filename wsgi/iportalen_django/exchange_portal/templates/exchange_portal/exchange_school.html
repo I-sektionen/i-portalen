@@ -32,7 +32,6 @@
     <div>
         <button class="button filter_btn">	<span class="fa fa-times"> </span> Datateknik</button>
     </div>
-   {% include "exchange_portal/model/nav_filtering.html" %}
 
     {% if course_list %}
         <table  class="courses">
@@ -64,14 +63,11 @@
 <br>
 <h3>Travelstories:</h3>
 {% if travel_story %}
-    <i>(Klicka länk för nedladdning)</i>
-    {% for story in travel_story.all %}
-        <p><a href="{{ story.file.url }}">{{ forloop.counter }}. Reseberättelse av {{ story.added_by_user }}</a></p>
+    {% for travel_story in travel_story.all %}
+       {% include "exchange_portal/model/small_travel_story.html" %}
     {% endfor %}
 
-    <!-- Koppla liu-id till namn? Så att vi kan .get_full_name efter added_by_user -->
-    <!--ifall vi hellre vill ha antal efter "reseberättelse{{ forloop.counter }}-->
-    <!--<p>Bifogad fil: <a href="{{ travel_story.file.url }}">{{ travel_story.about_school }}</a></p>-->
+
 {% elif not travel_story %}
     <p>Det finns inga travelstories uppe just nu. Men vi längtar efter att få läsa om dina berättelser under ditt utlandsår!</p>
 {% endif %}
