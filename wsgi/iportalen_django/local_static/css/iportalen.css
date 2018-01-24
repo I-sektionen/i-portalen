@@ -1537,6 +1537,11 @@ show {
   border-color: #999;
 }
 
+.dropdown {
+  float: left;
+  padding-right: 10px;
+}
+
 travel_story.travel-feed-content a {
   text-decoration: none;
 }

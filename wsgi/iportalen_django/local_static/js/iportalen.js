@@ -540,6 +540,23 @@ function prev_button(tab_no) {
         $('.expander-content').slideToggle( "fast" );
         $(this).toggleClass("expander-hidden");
     });
+<<<<<<< HEAD
+}
+
+// Click-function for the dropdwon. When someone clicks on the dropdown-btn, the content for that dropdown will show.
+$(".dropdown-btn").on('click', function() {
+  $(this).parent().children(".dropdown-content").slideToggle('fast');
+});
+
+$(document).click(function(){
+  $(".dropdown-content").hide();
+});
+
+$(".dropdown-btn").click(function(e){
+  e.stopPropagation();
+});
+;"use strict";
+=======
 }
 
 
@@ -599,6 +616,7 @@ function sortTable(table_id, n) {
     }
   }
 };"use strict";
+>>>>>>> 0267d4442037d5efd6297f9e19167fc2bd84e587
 var Markdown;
 
 if (typeof exports === "object" && typeof require === "function") // we're in a CommonJS (e.g. Node.js) module

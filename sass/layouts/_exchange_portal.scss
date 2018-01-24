@@ -49,6 +49,11 @@ show {
   border-color: #999;
 }
 
+.dropdown {
+  float: left;
+  padding-right: 10px;
+}
+
 travel_story.travel-feed-content {
   $base-border-radius: 3px !default;
   $base-line-height: 1.5em !default;
@@ -67,9 +72,7 @@ travel_story.travel-feed-content {
     &:hover {
       text-decoration: underline;
     }
-
   }
-  .travel-author{
 
-  }
+  .travel-author {}
 }
