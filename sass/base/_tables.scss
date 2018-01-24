@@ -26,3 +26,14 @@ th {
 .auto-width {
   width: auto;
 }
+
+.table_icon {
+  background:none;
+  border:none;
+  box-shadow:none;
+  padding:0;
+}
+
+.table_icon:hover {
+  background-color:transparent;
+}

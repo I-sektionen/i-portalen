@@ -655,6 +655,17 @@ th {
   width: auto;
 }
 
+.table_icon {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.table_icon:hover {
+  background-color: transparent;
+}
+
 body {
   color: #333;
   font-family: "Lato", sans-serif;
@@ -1843,7 +1854,7 @@ header.navigation ul.submenu {
     border: 8px solid transparent;
     bottom: 0em;
     color: white;
-    content: '▲';
+    content: 'Ôû▓';
     font-size: 1.4em;
     text-align: center;
     text-shadow: 1px -1px 1px silver;

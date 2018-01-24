@@ -34,14 +34,14 @@
     </div>
 
     {% if course_list %}
-        <table  class="courses">
+        <table  class="courses" id="courses">
             <thead id="course_table_head">
             <tr>
-                <th colspan="4"> Kurs: </th>
-                <th colspan="1"> HP: </th>
-                <th colspan="1"> Nivå: </th>
-                <th colspan="1"> Inriktning:  </th>
-                <th colspan="2"> LiU-Kurs:  </th>
+                <th colspan="4"> Kurs: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,0)" aria-hidden="true"></i></button> </th>
+                <th colspan="1"> HP: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,1)" aria-hidden="true"></i></button></th>
+                <th colspan="1"> Nivå: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,2)" aria-hidden="true"></i></button></th>
+                <th colspan="1"> Inriktning:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,3)" aria-hidden="true"></i></button></th>
+                <th colspan="2"> LiU-Kurs:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,4)" aria-hidden="true"></i></button></th>
             </tr>
             </thead>
             <tbody>
