@@ -53,3 +53,26 @@ show {
   float: left;
   padding-right: 10px;
 }
+
+travel_story.travel-feed-content {
+  $base-border-radius: 3px !default;
+  $base-line-height: 1.5em !default;
+  $base-spacing: 1.5em !default;
+  $action-color: $isektionen-green;
+  //$dark-gray: #333 !default;
+  //$light-gray: #DDD !default;
+  $medium-screen: em(640) !default;
+  $base-font-color: $dark-gray !default;
+  $sans-serif: $base-font-family;
+  $sans-serif-2: $base-font-family;
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .travel-author {}
+}

@@ -1531,6 +1531,13 @@ show {
   padding-right: 10px;
 }
 
+travel_story.travel-feed-content a {
+  text-decoration: none;
+}
+travel_story.travel-feed-content a:hover {
+  text-decoration: underline;
+}
+
 .footer {
   background: #f7f7f7;
   padding: 1.95em 1.618em;

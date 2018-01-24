@@ -31,12 +31,12 @@
     <hr>
 </article>
 -->
-<travel_story class="news-feed-content">
+<travel_story class="travel-feed-content">
 
      <a href="{{travel_story.get_absolute_url }}"> <h1>{{ travel_story.headline }}</h1></a>
-    <div class="article-type-and-date">
-        <i class="fa fa-globe large"></i>
-        {{ travel_story.added_by_user }}
+    <div class="travel-author">
+
+        <h3><i class="fa fa-globe large"></i>  {{ travel_story.added_by_user }}</h3>
     </div>
 
 
@@ -45,9 +45,10 @@
             <i class="fa fa-tags"></i>
             <span>{ travel_story.tags.all|safeseq|join:", " }}</span>
         { endif %}-->
-        {{ travel_story.about_school.name }} , {{ travel_story.about_school.in_city }}, {{ travel_story.about_school.in_city.in_country }}
+        {{ travel_story.about_school.name }}  {{ travel_story.about_school.in_city }}, {{ travel_story.about_school.in_city.in_country }}
     </p>
-    <h2>{{ travel_story.lead|truncatewords_html:50 }}</h2>
-   <!-- <a href="{ travel_story.get_absolute_url }}">Läs mer</a> -->
+    <h2>{{ travel_story.lead|truncatewords_html:100 }}</h2>
+    <a href="">Läs mer</a>
+    <!-- { travel_story.get_absolute_url }}-->
     <hr>
 </travel_story>

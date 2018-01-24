@@ -540,6 +540,7 @@ function prev_button(tab_no) {
         $('.expander-content').slideToggle( "fast" );
         $(this).toggleClass("expander-hidden");
     });
+<<<<<<< HEAD
 }
 
 // Click-function for the dropdwon. When someone clicks on the dropdown-btn, the content for that dropdown will show.
@@ -555,6 +556,9 @@ $(".dropdown-btn").click(function(e){
   e.stopPropagation();
 });
 ;"use strict";
+=======
+};"use strict";
+>>>>>>> 0267d4442037d5efd6297f9e19167fc2bd84e587
 var Markdown;
 
 if (typeof exports === "object" && typeof require === "function") // we're in a CommonJS (e.g. Node.js) module
