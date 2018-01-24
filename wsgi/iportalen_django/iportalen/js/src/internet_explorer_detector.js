@@ -30,10 +30,10 @@ function closeDevilMessage(element){
 }
 try {
    if (son_of_the_devil() && !(Cookies.get('DevilsBrowser'))){
-        jQuery('#message-box').append('<div class="warning"><span>Du använder en osupportad webbläsare</span><button type="button" onclick="closeDevilMessage(this)">&times;</button></div>>')
+        jQuery('#message-box').append('<div class="warning"><span>Du använder en osupportad webbläsare</span><button type="button" onclick="closeDevilMessage(this)">&times;</button></div>')
     }
 }
 catch(err) {
-    jQuery('#message-box').append('<div class="warning"><span>Du använder en osupportad webbläsare</span><button type="button" onclick="closeDevilMessage(this)">&times;</button></div>>')
+    jQuery('#message-box').append('<div class="warning"><span>Du använder en osupportad webbläsare</span><button type="button" onclick="closeDevilMessage(this)">&times;</button></div>')
 }
 
