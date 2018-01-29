@@ -102,9 +102,41 @@ class Travel_Story(models.Model):
     lead = models.TextField(
         verbose_name=_("ingress"),
         help_text=_("Ingressen är den text som syns i reseberättelse."))
-    body = models.TextField(
-        verbose_name=_("brödtext"),
-        help_text=_("Brödtext syns när en reseberättelse visas enskilt."))
+    prep_text = models.TextField(
+        verbose_name=_("förberedelser"),
+        help_text=_("Var det några särskilda förberedelser som krävdes?  Har du några generella tips gällande ansökan? Visum?"),
+        null=True,
+        blank=True)
+    location_text = models.TextField(
+        verbose_name=_("landet och staden"),
+        help_text=_("Hur upplevdes landet? Staden? Kultur? Billigt eller dyrt?"),
+        null=True,
+        blank=True)
+    school_text = models.TextField(
+        verbose_name=_("skolan"),
+        help_text=_("Geografisk placering i staden?  Hur var campus?  Var det lätt att träffa lokalbefolkning?  Hur var studentlivet? Kurser: var det lätt/svårt att få kurser? Var de lätta/svåra att få tillgodoräknade?"),
+        null=True,
+        blank=True)
+    studies_text = models.TextField(
+        verbose_name=_("studier"),
+        help_text=_("Hur var nivån på kurserna?  Råd angående att välja kurser på plats?  Svårt att hitta kurser på engelska?  Hur var språket? (framförallt för de som läser ii eller som inte läste på engelska)"),
+        null=True,
+        blank=True)
+    living_text = models.TextField(
+        verbose_name=_("boende"),
+        help_text=_("Hur bodde du?  Hur hittade du ditt boende? Tips på eventuell mäklare eller liknande? Vilka alternativ finns?  Priser och standard? "),
+        null=True,
+        blank=True)
+    sparetime_text = models.TextField(
+        verbose_name=_("fritid"),
+        help_text=_("Vad gör man på fritiden?  Resor?  Tips på saker man inte får missa"),
+        null=True,
+        blank=True)
+    other_text = models.TextField(
+        verbose_name=_("övrigt"),
+        help_text=_("Brödtext syns när en reseberättelse visas enskilt."),
+        null=True,
+        blank=True)
     #tags = models.ManyToManyField(
      #   Tag,
      #   verbose_name=_("tag"),
