@@ -104,8 +104,14 @@ class FixedCostInline(admin.TabularInline):
 
 
 class UserInvoiceAdmin(admin.ModelAdmin):
-    readonly_fields = ('ocr', 'send_invoice_email')
+    readonly_fields = ('ocr', 'send_invoice_email', 'get_email')
     # fields = ('status', 'due', 'booking')
+
+    def get_email(self, obj):
+        return obj.booking.user.email
+
+    get_email.short_description = 'Email adress'
+    get_email.admin_order_field = 'user__email'
 
     @staticmethod
     def send_invoice_email(obj):
