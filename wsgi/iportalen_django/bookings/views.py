@@ -1,10 +1,12 @@
+import ast
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse, HttpResponseForbidden
+from django.http import JsonResponse, HttpResponseForbidden, Http404
 from django.utils import timezone
 from bookings.exceptions import NoSlots, InvalidInput, MaxLength, MultipleBookings, TooShortNotice
 from utils.time import first_day_of_week, daterange, combine_date_and_time
@@ -26,24 +28,35 @@ def index(request):
 
 
 @login_required()
-def invoice(request, invoice_id):
-    inv = get_object_or_404(Invoice, pk=invoice_id)
-    booking = inv.booking
+def invoice(request, invoice_ids):
+    try:
+        invoice_ids = ast.literal_eval(invoice_ids)
+    except (SyntaxError, TypeError, ValueError):
+        raise Http404
+    if type(invoice_ids) is not list:
+        temp = invoice_ids
+        invoice_ids = []
+        invoice_ids.append(temp)
+    invoice_list = []
+    for invoice_id in invoice_ids:
+        inv = get_object_or_404(Invoice, pk=invoice_id)
+        booking = inv.booking
 
-    #  Must be have permission or be correct user.
-    if not (request.user.has_perm("bookings.manage_bookings") or booking.user == request.user):
-        return HttpResponseForbidden
+        #  Must be have permission or be correct user.
+        if not (request.user.has_perm("bookings.manage_bookings") or booking.user == request.user):
+            return HttpResponseForbidden
 
-    bookable = booking.bookable
-    fixed_costs = FixedCostAmount.objects.filter(invoice=inv)
-    variable_costs = VariableCostAmount.objects.filter(invoice=inv)
-    return render(request, 'bookings/invoice.html', {
-        'invoice': inv,
-        'booking': booking,
-        'bookable': bookable,
-        'fixed_costs': fixed_costs,
-        'variable_costs': variable_costs,
-    })
+        bookable = booking.bookable
+        fixed_costs = FixedCostAmount.objects.filter(invoice=inv)
+        variable_costs = VariableCostAmount.objects.filter(invoice=inv)
+        invoice_list.append({
+            'invoice': inv,
+            'booking': booking,
+            'bookable': bookable,
+            'fixed_costs': fixed_costs,
+            'variable_costs': variable_costs})
+
+    return render(request, 'bookings/invoice.html', {'invoice_list': invoice_list})
 
 
 @login_required()
