@@ -7,8 +7,19 @@ from utils.validators import liu_id_validator
 from tags.models import Tag
 import os
 
+class Continent(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name = _("Världsdel")
+        verbose_name_plural = _("Världsdelar")
+
+    def __str__(self):
+        return self.name
+
 class Country(models.Model):
     name = models.CharField(max_length=50)
+    in_continent = models.ForeignKey(Continent, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Land")
@@ -122,6 +133,3 @@ class Travel_Story(models.Model):
      #   """Get url of object"""
       #  return reverse(self)
     #self.about_school
-
-
-

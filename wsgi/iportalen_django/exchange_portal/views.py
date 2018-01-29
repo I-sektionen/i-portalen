@@ -21,8 +21,8 @@ def Exchange_Portal(request):
     else:
         school_list = None
 
-    return render(request, 'exchange_portal/exchange_portal.html', {'school_list': school_list})
-
+    asia_list = Country.objects.filter(Q(continent__incontrains='Asien'))
+    return render(request, 'exchange_portal/exchange_portal.html', {'school_list': school_list, 'asia_list': asia_list})
 
 def Important_Dates(request):
     return render(request, 'exchange_portal/important_dates.html')
