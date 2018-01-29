@@ -67,6 +67,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'alumni_portal',
     'speaker_list',
     'iportalen',
     'votings',
