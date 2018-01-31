@@ -117,6 +117,14 @@ class FixedCostInline(admin.TabularInline):
     extra = 1
 
 
+def print_all_action_invoice(modeladmin, request, queryset):
+    print_all_action.short_description = 'Gå till utskrivningssida för valda fakturor'
+    final_queryset = []
+    for item in queryset:
+        final_queryset.append(item.pk)
+    return HttpResponseRedirect(reverse('bookings:invoice view', kwargs={'invoice_ids': final_queryset}))
+
+
 class UserInvoiceAdmin(admin.ModelAdmin):
     readonly_fields = ('ocr', 'send_invoice_email')
     # fields = ('status', 'due', 'booking')
@@ -139,6 +147,7 @@ class UserInvoiceAdmin(admin.ModelAdmin):
     search_fields = ('ocr',)
     list_filter = ('status', )
     list_display = ('ocr', 'due', 'status')
+    actions = [print_all_action_invoice]
 
 
 iportalen_admin_site.register(Bookable, BookableAdmin)
