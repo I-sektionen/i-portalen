@@ -44,7 +44,7 @@ def login(request):  # TODO: Reduce complexity
                 return redirect("password_reset", liu_id=username)
             else:
                 # the authentication system was unable to verify the username and password
-                messages.error(request, _("Fel Liu-id eller lösenord. Om felet kvarstår kontakta medlem@i-portalen.se"))
+                messages.error(request, _("Fel Liu-id eller lösenord. Om felet kvarstår kontakta webgroup@i-portalen.se"))
             return render(request, "user_managements/login.html")
 
         # The user has the right password.

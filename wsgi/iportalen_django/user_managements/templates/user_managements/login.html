@@ -7,7 +7,7 @@
         <div class="form-div">
             <h4>Logga in på I-Portalen</h4>
             <h3 style="color:tomato">OBS: För att kunna logga in första gången du använder i-portalen, måste du skaffa nytt lösenord.
-            Klicka på länken 'Glömt lösenord' nedan för att begära ett sådant</h3>
+            Klicka på länken 'Glömt lösenord' nedan för att begära ett sådant.</h3>
             <form class="login-form" action="{{ request.get_full_path }}" method="post">
             {% csrf_token %}
             <input class="username-holder" type="text" name="username" placeholder="Liu-id">
