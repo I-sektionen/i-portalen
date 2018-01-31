@@ -19,7 +19,7 @@ class Continent(models.Model):
 
 class Country(models.Model):
     name = models.CharField(max_length=50)
-    in_continent = models.ForeignKey(Continent, on_delete=models.CASCADE)
+    # in_continent = models.ForeignKey(Continent, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Land")
