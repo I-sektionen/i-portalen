@@ -26,15 +26,13 @@
   {% endif %}
 
   <ul>
-    {% for country in country_list %}
-
+    {% for asia in asia_list %}
       <h1>
-        {{ country.name|capfirst }}
+        {{ asia.name|capfirst }}
       </h1>
       <li>Coffee</li>
       <li>Tea</li>
       <li>Milk</li>
-
     {% endfor %}
   </ul>
 
