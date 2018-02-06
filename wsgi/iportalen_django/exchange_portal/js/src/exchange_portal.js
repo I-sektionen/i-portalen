@@ -21,6 +21,20 @@ $(".dropdown-btn").click(function(e){
 
 
 
+$(".button_exchange_portal").on('click', function(event) {
+  $(".button_exchange_portal").removeClass("current");
+  $(event.target).addClass("current");
+  if(event.target.id == "courses_button") {
+    $("#travel_stories").addClass("hidden");
+    $("#courses_section").removeClass("hidden");
+  } else if (event.target.id == "travel_stories_button") {
+    $("#travel_stories").removeClass("hidden");
+    $("#courses_section").addClass("hidden");
+  } else if (event.target.id == "links_button") {
+
+  }
+});
+
 
 function sortTable(table_id, n) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
