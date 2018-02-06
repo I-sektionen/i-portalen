@@ -3,53 +3,60 @@
 {% endblock %}
 
 {% block content %}
-<div id="printableArea">
-    <table class="invoice">
-    <tr><td><h1>Faktura</h1></td><td><img src="https://s3.eu-central-1.amazonaws.com/isektionen-bildbank/mailfooter/isektionen_logo.png" alt="I-sektionen logga" height="100px"></td>
-        </tr>
-    </table>
-    <br>
-    <table class="invoice">
-        <tr><th>Avser en bokning av {{ bookable }} under tiden:</th><td>{{ booking.start_time|date:"Y-m-d H:i" }} - {{ booking.end_time|date:"Y-m-d H:i" }}</td></tr>
-        <tr><th>Mottagare:</th><td> {{ booking.user.get_full_name }}</td></tr>
-        <tr><th>Epost:</th><td> {{ booking.user.email }}</td></tr>
-        <tr class="blank_row"><td colspan="2"></td></tr>
-        <tr class="blank_row"><td colspan="2"></td></tr>
-        <tr><th>Faktureringsdatum:</th><td> {{ invoice.issuing_date|date:"Y m d" }}</td></tr>
-        <tr><th>Förfallodag:</th><td> {{ invoice.due|date:"Y m d" }}</td></tr>
-        <tr><th>Fakturanr:</th><td> {{ invoice.pk }}</td></tr>
-        <tr class="blank_row"><td colspan="2"></td></tr>
-        <tr><th>OCR:</th><td> {{ invoice.ocr }}</td></tr>
-    </table>
+    {% if invoice_list|length > 1 %}
+        <input type="button" class="action-button" onclick="printDiv('printableArea')" value="Skriv ut alla fakturor" />
+    {%  endif %}
+    <div id="printableArea">
+    {% for inv_obj in invoice_list %}
+        <div class="printableDiv" id="printableArea{{ forloop.counter }}">
+            <table class="invoice">
+                <tr><td><h1>Faktura</h1></td><td><img src="https://s3.eu-central-1.amazonaws.com/isektionen-bildbank/mailfooter/isektionen_logo.png" alt="I-sektionen logga" height="100px"></td>
+                </tr>
+            </table>
+            <br>
+            <table class="invoice">
+                <tr><th>Avser en bokning av {{ inv_obj.bookable }} under tiden:</th><td>{{ inv_obj.booking.start_time|date:"Y-m-d H:i" }} - {{ inv_obj.booking.end_time|date:"Y-m-d H:i" }}</td></tr>
+                <tr><th>Mottagare:</th><td> {{ inv_obj.booking.user.get_full_name }}</td></tr>
+                <tr><th>Epost:</th><td> {{ inv_obj.booking.user.email }}</td></tr>
+                <tr class="blank_row"><td colspan="2"></td></tr>
+                <tr class="blank_row"><td colspan="2"></td></tr>
+                <tr><th>Faktureringsdatum:</th><td> {{ inv_obj.invoice.issuing_date|date:"Y m d" }}</td></tr>
+                <tr><th>Förfallodag:</th><td> {{ inv_obj.invoice.due|date:"Y m d" }}</td></tr>
+                <tr><th>Fakturanr:</th><td> {{ inv_obj.invoice.pk }}</td></tr>
+                <tr class="blank_row"><td colspan="2"></td></tr>
+                <tr><th>OCR:</th><td> {{ inv_obj.invoice.ocr }}</td></tr>
+            </table>
 
-    <br>
-    <h2>Specifikation: </h2>
-    <table>
-    <thead>
-        <tr>
-            <th>Post</th><th>Antal</th><th>Styckpris</th><th>Totalt</th><th>Varav moms</th>
-        </tr>
-    </thead>
-        <tbody>
-        {% for fixed in fixed_costs %}
-        <tr>
-            <td>{{ fixed }}</td><td>{{ fixed.quantity }}</td><td>{{ fixed.template.amount }}</td><td>{{ fixed.amount }} kr</td><td>{{ fixed.tax_amount }} kr</td>
-        </tr>
-        {% endfor %}
-        {% for variab in variable_costs %}
-        <tr>
-            <td>{{ variab }}</td><td>{{ variab.units }} {{ variab.unit_name }}</td><td>{{ variab.unit_price }} kr</td>
-            <td>{{ variab.amount }} kr</td><td>{{ variab.tax_amount }} kr</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <h3>Att betala: {{ invoice.total }} SEK</h3>
-    <br>
-    <br>
-    <p>Detta ska inbetalas till Bankgiro: 5840-0136 innan den {{ invoice.due|date:"Y-m-d" }}</p>
-    <p>Ange OCR: {{ invoice.ocr }}</p>
+            <br>
+            <h2>Specifikation: </h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Post</th><th>Antal</th><th>Styckpris</th><th>Totalt</th><th>Varav moms</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for fixed in inv_obj.fixed_costs %}
+                    <tr>
+                        <td>{{ fixed }}</td><td>{{ fixed.quantity }}</td><td>{{ fixed.template.amount }}</td><td>{{ fixed.amount }} kr</td><td>{{ fixed.tax_amount }} kr</td>
+                    </tr>
+                {% endfor %}
+                {% for variab in inv_obj.variable_costs %}
+                    <tr>
+                        <td>{{ variab }}</td><td>{{ variab.units }} {{ variab.unit_name }}</td><td>{{ variab.unit_price }} kr</td>
+                        <td>{{ variab.amount }} kr</td><td>{{ variab.tax_amount }} kr</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <h3>Att betala: {{ inv_obj.invoice.total }} SEK</h3>
+            <br>
+            <br>
+            <p>Detta ska inbetalas till Bankgiro: 5840-0136 innan den {{ inv_obj.invoice.due|date:"Y-m-d" }}</p>
+            <p>Ange OCR: {{ inv_obj.invoice.ocr }}</p>
+        </div>
+        <input type="button" class="action-button" onclick="printDiv('printableArea{{ forloop.counter }}')" value="Skriv ut fakturan" />
+    {%  endfor %}
     </div>
-    <input type="button" class="action-button" onclick="printDiv('printableArea')" value="Skriv ut fakturan" />
 {% endblock %}
 

@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.db.models.aggregates import Max, Min
+from django.http import HttpResponseRedirect
 from django.utils.safestring import mark_safe
 from .models import (
     Bookable,
@@ -42,6 +43,17 @@ class InvoiceInline(admin.TabularInline):
     max_num = 0  # So we don't show the 'add another' link.
     can_delete = False
     readonly_fields = ('ocr', 'due', 'status')
+
+
+def print_all_action(modeladmin, request, queryset):
+
+    print_all_action.short_description = 'Gå till utskrivningssida för valda fakturor'
+    final_queryset = []
+    for item in queryset:
+        if _get_invoice_status_display(item) in {'Skapad', 'Skickad', 'Betald'}:
+            final_queryset.append(item.pk)
+    if final_queryset:
+        return HttpResponseRedirect(reverse('bookings:invoice view', kwargs={'invoice_ids': final_queryset}))
 
 
 def _get_invoice_status_display(obj):
@@ -92,6 +104,8 @@ class BookingsAdmin(admin.ModelAdmin):
         InvoiceInline
     ]
 
+    actions = [print_all_action]
+
 
 class VariableCostInline(admin.TabularInline):
     model = VariableCostAmount
@@ -101,6 +115,14 @@ class VariableCostInline(admin.TabularInline):
 class FixedCostInline(admin.TabularInline):
     model = FixedCostAmount
     extra = 1
+
+
+def print_all_action_invoice(modeladmin, request, queryset):
+    print_all_action.short_description = 'Gå till utskrivningssida för valda fakturor'
+    final_queryset = []
+    for item in queryset:
+        final_queryset.append(item.pk)
+    return HttpResponseRedirect(reverse('bookings:invoice view', kwargs={'invoice_ids': final_queryset}))
 
 
 class UserInvoiceAdmin(admin.ModelAdmin):
@@ -131,6 +153,7 @@ class UserInvoiceAdmin(admin.ModelAdmin):
     search_fields = ('ocr',)
     list_filter = ('status', )
     list_display = ('ocr', 'due', 'status')
+    actions = [print_all_action_invoice]
 
 
 iportalen_admin_site.register(Bookable, BookableAdmin)

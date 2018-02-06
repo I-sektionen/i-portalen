@@ -3021,6 +3021,10 @@ div.booking-container .third-container .third .center {
   height: 10px;
 }
 
+.printableDiv {
+  page-break-after: always;
+}
+
 #event-create-form-main {
   float: left;
   display: block;
