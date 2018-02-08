@@ -29,7 +29,7 @@
                     <ul class="submenu">
                         <div class="submenu-column">
                             {% for o in menu_orgs.foreningar %}
-                                <li><a href="{{ o.get_absolute_url }}">{{ o|capfirst }}</a></li>
+                                <li><a href="{{ o.get_absolute_url }}">{{ o }}</a></li>
                                 {% cycle 'False' 'False' 'False' 'False' 'True' as new_col silent %}
                                 {% if new_col == 'True' %}
                                     </div>
