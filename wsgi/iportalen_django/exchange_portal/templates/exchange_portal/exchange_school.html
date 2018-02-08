@@ -2,33 +2,34 @@
 
 {% block title %}Utlandsportalen{% endblock %}
 {% block content %}
-{% include "exchange_portal/exchange_portal_header.html" %}
+    {% include "exchange_portal/exchange_portal_header.html" %}
 
-<h1>{{ school.name|capfirst }}, {{ school.in_city.in_country.name }}, {{ school.in_city.name|capfirst }} </h1>
+    <h1>{{ school.name|capfirst }}, {{ school.in_city.in_country.name }}, {{ school.in_city.name|capfirst }} </h1>
 
-<div class="button-group">
-    <button href="#" class="button"> Kurser </button>
-    <button href="#" class="button"> Reseberättelser </button>
-    <button href="#" class="button"> Bra länkar </button>
-</div>
-<i>
-    Utbyte genom universitetet:
-    {% if school.exchange_with_liu %}
-        <b>Ja</b>
-    {% elif not school.exchange_with_liu %}
-        <b>Nej</b>
-    {% endif %}
+    <div class="button-group">
+        <button href="#" class="button button_exchange_portal" id="courses_button"> Kurser </button>
+        <button href="#" class="button button_exchange_portal" id="travel_stories_button"> Reseberättelser </button>
+        <button href="#" class="button button_exchange_portal"> Bra länkar </button>
+    </div>
+    <div id="courses_section">
+    <i>
+        Utbyte genom universitetet:
+        {% if school.exchange_with_liu %}
+            <b>Ja</b>
+        {% elif not school.exchange_with_liu %}
+            <b>Nej</b>
+        {% endif %}
+        <br>
+        Utbyte genom freemover:
+        {% if school.freemover %}
+            <b>Ja</b>
+        {% elif not school.freemover %}
+            <b>Nej</b>
+        {% endif %}
+    </i>
     <br>
-    Utbyte genom freemover:
-    {% if school.freemover %}
-        <b>Ja</b>
-    {% elif not school.freemover %}
-        <b>Nej</b>
-    {% endif %}
-</i>
-<br>
-<br>
-<h3>Kurser</h3>
+    <br>
+    <h3>Kurser</h3>
     <div>
         <button class="button filter_btn">	<span class="fa fa-times"> </span> Datateknik</button>
     </div>
@@ -60,17 +61,19 @@
         <p>Mer information om skolans kurser och motsvarande kurser på Linköpings Universitet kommer upp inom
             kort.</p>
     {% endif %}
-<br>
-<h3>Travelstories:</h3>
-{% if travel_story %}
-    {% for travel_story in travel_story.all %}
-       {% include "exchange_portal/model/small_travel_story.html" %}
-    {% endfor %}
+    <br>
+    </div>
+    <div id="travel_stories" class="hidden">
+    <h3>Travelstories:</h3>
+    {% if travel_story %}
+        {% for travel_story in travel_story.all %}
+            {% include "exchange_portal/model/small_travel_story.html" %}
+        {% endfor %}
 
 
-{% elif not travel_story %}
-    <p>Det finns inga travelstories uppe just nu. Men vi längtar efter att få läsa om dina berättelser under ditt utlandsår!</p>
-{% endif %}
+    {% elif not travel_story %}
+        <p>Det finns inga travelstories uppe just nu. Men vi längtar efter att få läsa om dina berättelser under ditt utlandsår!</p>
+    {% endif %}
 
-
+    </div>
 {% endblock %}

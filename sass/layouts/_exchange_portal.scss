@@ -76,3 +76,18 @@ travel_story.travel-feed-content {
 
   .travel-author {}
 }
+
+.hidden {
+  display:none;
+}
+
+.current {
+  background-color: lightgrey;
+}
+
+.current:focus {
+      background-color: lightgrey;
+      outline: none;
+
+}
+
