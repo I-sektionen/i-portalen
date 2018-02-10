@@ -33,11 +33,9 @@ def Contact(request):
 
 
 def Exchange_School(request, pk):
-
     course_list = Exchange_Course.objects.filter(in_school=pk)
     school = get_object_or_404(School, pk=pk)
     travel_story = school.travel_story_set.all()
-
     return render(request, 'exchange_portal/exchange_school.html', {'school': school, 'course_list': course_list, 'travel_story': travel_story})
 
 
@@ -120,3 +118,7 @@ def Travel_Stories(request):
 def Asia(request):
 
     return render(request, 'exchange_portal/asia.html')
+
+def Asia_filtered(request,filter):
+
+    return render(request, 'exchange_portal/asia.html', {'filter': filter})
