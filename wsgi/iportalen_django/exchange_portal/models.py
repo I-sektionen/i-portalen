@@ -19,7 +19,7 @@ class Continent(models.Model):
 
 class Country(models.Model):
     name = models.CharField(max_length=50)
-    # in_continent = models.ForeignKey(Continent, on_delete=models.CASCADE)
+    in_continent = models.ForeignKey(Continent, on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = _("Land")
@@ -56,6 +56,7 @@ class School(models.Model):
     def __str__(self):
         return self.name
 
+# Lägga till: HP, Nivå,
 class Liu_Course(models.Model):
     name = models.CharField(max_length=50)
     course_code = models.CharField(max_length=20)
@@ -70,13 +71,14 @@ class Liu_Course(models.Model):
 
 class Exchange_Course(models.Model):
 
+    # Kanske expandera
     TECH_PROFILES = (
-        ('Datateknik', "Datateknik"),
-        ('Energiteknik', "Energiteknik"),
-        ('Maskinteknik', "Maskinteknik"),
-        ('Bioteknik', "Bioteknik"),
-        ('Systemteknik', "Systemteknik"),
-        ('Ingen', "Ingen")
+        ('D', "D"),
+        ('E', "E"),
+        ('M', "M"),
+        ('B', "B"),
+        ('S', "S"),
+        ('Övr', "Övr")
     )
 
     name = models.CharField(max_length=50)

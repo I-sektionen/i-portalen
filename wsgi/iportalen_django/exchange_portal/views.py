@@ -21,8 +21,14 @@ def Exchange_Portal(request):
     else:
         school_list = None
 
-    asia_list = Country.objects.all()
-    return render(request, 'exchange_portal/exchange_portal.html', {'school_list': school_list, 'asia_list': asia_list})
+    asia_list = Country.objects.filter(in_continent__name='Asien')
+    europa_list = Country.objects.filter(in_continent__name='Europa')
+    northamerica_list = Country.objects.filter(in_continent__name='Nordamerika')
+    southamerica_list = Country.objects.filter(in_continent__name='Sydamerika')
+    africa_list = Country.objects.filter(in_continent__name='Afrika')
+    oceania_list = Country.objects.filter(in_continent__name='Oceanien')
+
+    return render(request, 'exchange_portal/exchange_portal.html', {'school_list': school_list, 'asia_list': asia_list, 'europa_list': europa_list, 'northamerica_list': northamerica_list, 'southamerica_list': southamerica_list, 'africa_list': africa_list, 'oceania_list': oceania_list})
 
 def Important_Dates(request):
     return render(request, 'exchange_portal/important_dates.html')

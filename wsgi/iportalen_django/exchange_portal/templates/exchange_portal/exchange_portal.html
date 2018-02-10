@@ -26,13 +26,29 @@
   {% endif %}
 
   <ul>
+    <h1>Afrika</h1>
+    {% for africa in africa_list %}
+      <li>{{ africa.name|capfirst }}</li>
+    {% endfor %}
+    <h1>Asien</h1>
     {% for asia in asia_list %}
-      <h1>
-        {{ asia.name|capfirst }}
-      </h1>
-      <li>Coffee</li>
-      <li>Tea</li>
-      <li>Milk</li>
+      <li>{{ asia.name|capfirst }}</li>
+    {% endfor %}
+    <h1>Europa</h1>
+    {% for europa in europa_list %}
+      <li>{{ europa.name|capfirst }}</li>
+    {% endfor %}
+    <h1>Nordamerika</h1>
+    {% for northamerica in northamerica_list %}
+      <li>{{ northamerica.name|capfirst }}</li>
+    {% endfor %}
+    <h1>Oceanien</h1>
+    {% for oceania in oceania_list %}
+      <li>{{ oceania.name|capfirst }}</li>
+    {% endfor %}
+    <h1>Sydamerika</h1>
+    {% for southamerica in southamerica_list %}
+      <li>{{ southamerica.name|capfirst }}</li>
     {% endfor %}
   </ul>
 
