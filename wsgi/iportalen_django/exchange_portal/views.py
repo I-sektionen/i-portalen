@@ -33,9 +33,8 @@ def Contact(request):
 
 
 def Exchange_School(request, pk):
-    school = get_object_or_404(School, pk=pk)
-    course_list = Exchange_Course.objects.filter(in_school=pk)
 
+    course_list = Exchange_Course.objects.filter(in_school=pk)
     school = get_object_or_404(School, pk=pk)
     travel_story = school.travel_story_set.all()
 

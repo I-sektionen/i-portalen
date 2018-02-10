@@ -51,7 +51,7 @@
                         <td colspan="4">{{course.name|capfirst}}, {{ course.course_code|capfirst }}</td>
                         <td colspan="1">  6 </td>
                         <td colspan="1"> G2 </td>
-                        <td colspan="1"> D </td>
+                        <td colspan="1"> {{ course.technical_profile|capfirst }} </td>
                         <td colspan="2"> {{ course.corresponding_liu_course.name|capfirst }}, {{ course.corresponding_liu_course.course_code|capfirst }} </td>
                     </tr>
                 {% endfor %}
