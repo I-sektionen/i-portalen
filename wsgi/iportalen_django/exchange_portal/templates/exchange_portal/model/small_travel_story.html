@@ -45,9 +45,9 @@
             <i class="fa fa-tags"></i>
             <span>{ travel_story.tags.all|safeseq|join:", " }}</span>
         { endif %}-->
-        {{ travel_story.about_school.name }}  {{ travel_story.about_school.in_city }}, {{ travel_story.about_school.in_city.in_country }}, HT 2016
+        <a href="">{{ travel_story.about_school.name }}</a>, {{ travel_story.about_school.in_city }}, <a href="">{{ travel_story.about_school.in_city.in_country }}</a>, {{ travel_story.term_abroad }} {{ travel_story.year_abroad }}
     </p>
-    <h2>{{ travel_story.lead|truncatewords_html:100 }}</h2>
+    <h2>{{ travel_story.lead|truncatewords_html:100}}</h2>
 
     <a href="">Läs mer</a>
     <!-- länka till långa -->

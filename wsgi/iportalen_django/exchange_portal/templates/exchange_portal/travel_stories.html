@@ -15,8 +15,16 @@
        {% include "exchange_portal/model/small_travel_story.html" %}
     {% endfor %}
 </div>
-{% endblock %}
 
+
+
+    <div>
+     {% for travel_story in travel_story_list %}
+       {% include "exchange_portal/model/large_travel_story.html" %}
+    {% endfor %}
+    </div>
+
+{% endblock %}
 
 {% block document_ready %}
         expander_trigger_exchange_portal()

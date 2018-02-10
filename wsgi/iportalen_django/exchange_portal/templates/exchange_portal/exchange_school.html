@@ -2,75 +2,75 @@
 
 {% block title %}Utlandsportalen{% endblock %}
 {% block content %}
-{% include "exchange_portal/exchange_portal_header.html" %}
+    {% include "exchange_portal/exchange_portal_header.html" %}
 
-<h1>{{ school.name|capfirst }}, {{ school.in_city.in_country.name }}, {{ school.in_city.name|capfirst }} </h1>
+    <h1>{{ school.name|capfirst }}, {{ school.in_city.name|capfirst }}, {{ school.in_city.in_country.name }} </h1>
 
-<div class="button-group">
-    <button href="#" class="button"> Kurser </button>
-    <button href="#" class="button"> Reseberättelser </button>
-    <button href="#" class="button"> Bra länkar </button>
-</div>
-<i>
-    Utbyte genom universitetet:
-    {% if school.exchange_with_liu %}
-        <b>Ja</b>
-    {% elif not school.exchange_with_liu %}
-        <b>Nej</b>
-    {% endif %}
-    <br>
-    Utbyte genom freemover:
-    {% if school.freemover %}
-        <b>Ja</b>
-    {% elif not school.freemover %}
-        <b>Nej</b>
-    {% endif %}
-</i>
-<br>
-<br>
-<h3>Kurser</h3>
-    <div>
-        <button class="button filter_btn">	<span class="fa fa-times"> </span> Datateknik</button>
+    <div class="button-group">
+        <button href="#" class="button button_exchange_portal" id="courses_button"> Kurser </button>
+        <button href="#" class="button button_exchange_portal" id="travel_stories_button"> Reseberättelser </button>
+        <button href="#" class="button button_exchange_portal" id="helpful_links_button"> Bra länkar </button>
     </div>
+    <div id="courses_section">
+        <i>
+            Utbyte genom universitetet:
+            {% if school.exchange_with_liu %}
+                <b>Ja</b>
+            {% elif not school.exchange_with_liu %}
+                <b>Nej</b>
+            {% endif %}
+            <br>
+            Utbyte genom freemover:
+            {% if school.freemover %}
+                <b>Ja</b>
+            {% elif not school.freemover %}
+                <b>Nej</b>
+            {% endif %}
+        </i>
+        <br>
+        <br>
+        <h3>Kurser</h3>
+        <div>
+            <button class="button filter_btn">	<span class="fa fa-times"> </span> Datateknik</button>
+        </div>
 
-    {% if course_list %}
-        <table  class="courses" id="courses">
-            <thead id="course_table_head">
-            <tr>
-                <th colspan="4"> Kurs: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,0)" aria-hidden="true"></i></button> </th>
-                <th colspan="1"> HP: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,1)" aria-hidden="true"></i></button></th>
-                <th colspan="1"> Nivå: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,2)" aria-hidden="true"></i></button></th>
-                <th colspan="1"> Inriktning:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,3)" aria-hidden="true"></i></button></th>
-                <th colspan="2"> LiU-Kurs:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,4)" aria-hidden="true"></i></button></th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for course in course_list %}
+        {% if course_list %}
+            <table  class="courses" id="courses">
+                <thead id="course_table_head">
                 <tr>
-                    <td colspan="4">{{course.name|capfirst}}, {{ course.course_code|capfirst }}</td>
-                    <td colspan="1">  6 </td>
-                    <td colspan="1"> G2 </td>
-                    <td colspan="1"> D </td>
-                    <td colspan="2"> {{ course.corresponding_liu_course.name|capfirst }}, {{ course.corresponding_liu_course.course_code|capfirst }} </td>
+                    <th colspan="4"> Kurs: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,0)" aria-hidden="true"></i></button> </th>
+                    <th colspan="1"> HP: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,1)" aria-hidden="true"></i></button></th>
+                    <th colspan="1"> Nivå: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,2)" aria-hidden="true"></i></button></th>
+                    <th colspan="1"> Inriktning:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,3)" aria-hidden="true"></i></button></th>
+                    <th colspan="2"> LiU-Kurs:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,4)" aria-hidden="true"></i></button></th>
                 </tr>
+                </thead>
+                <tbody>
+                {% for course in course_list %}
+                    <tr>
+                        <td colspan="4">{{course.name|capfirst}}, {{ course.course_code|capfirst }}</td>
+                        <td colspan="1">  6 </td>
+                        <td colspan="1"> G2 </td>
+                        <td colspan="1"> {{ course.technical_profile|capfirst }} </td>
+                        <td colspan="2"> {{ course.corresponding_liu_course.name|capfirst }}, {{ course.corresponding_liu_course.course_code|capfirst }} </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% elif not course_list %}
+            <p>Mer information om skolans kurser och motsvarande kurser på Linköpings Universitet kommer upp inom
+                kort.</p>
+        {% endif %}
+        <br>
+    </div>
+    <div id="travel_stories" class="hidden">
+        {% if travel_story %}
+            {% for travel_story in travel_story.all %}
+                {% include "exchange_portal/model/small_travel_story.html" %}
             {% endfor %}
-            </tbody>
-        </table>
-    {% elif not course_list %}
-        <p>Mer information om skolans kurser och motsvarande kurser på Linköpings Universitet kommer upp inom
-            kort.</p>
-    {% endif %}
-<br>
-<h3>Travelstories:</h3>
-{% if travel_story %}
-    {% for travel_story in travel_story.all %}
-       {% include "exchange_portal/model/small_travel_story.html" %}
-    {% endfor %}
+        {% elif not travel_story %}
+            <p>Det finns inga travelstories uppe just nu. Men vi längtar efter att få läsa om dina berättelser under ditt utlandsår!</p>
+        {% endif %}
 
-
-{% elif not travel_story %}
-    <p>Det finns inga travelstories uppe just nu. Men vi längtar efter att få läsa om dina berättelser under ditt utlandsår!</p>
-{% endif %}
-
-
+    </div>
 {% endblock %}

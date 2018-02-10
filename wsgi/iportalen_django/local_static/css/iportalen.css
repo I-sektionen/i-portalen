@@ -1549,6 +1549,26 @@ travel_story.travel-feed-content a:hover {
   text-decoration: underline;
 }
 
+.hidden {
+  display: none;
+}
+
+.current {
+  background-color: lightgrey;
+}
+
+.current:focus {
+  background-color: lightgrey;
+  outline: none;
+}
+
+.meta {
+  color: #919191;
+}
+.meta a {
+  color: #919191;
+}
+
 .footer {
   background: #f7f7f7;
   padding: 1.95em 1.618em;

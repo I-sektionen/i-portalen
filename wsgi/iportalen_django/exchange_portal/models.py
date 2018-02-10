@@ -6,6 +6,7 @@ from django.utils import timezone
 from utils.validators import liu_id_validator
 from tags.models import Tag
 import os
+import datetime
 
 class Continent(models.Model):
     name = models.CharField(max_length=50)
@@ -105,16 +106,27 @@ def _file_path(instance, filename):
     )
 
 class Travel_Story(models.Model):
+    TERM_CHOICES = (
+        ("HT", "HT"),
+        ("VT", "VT"),
+        ("Helår", "Helår")
+    )
+    YEAR_CHOICES = []
+    for y in range(1969, (datetime.datetime.now().year + 1)):
+        YEAR_CHOICES.append((y, y))
+
     #Change from file to form
     about_school = models.ForeignKey(School, on_delete=models.CASCADE)
     added_by_user = models.CharField(verbose_name=_("liu-id"), max_length=10)
+    term_abroad = models.CharField(verbose_name=("termin utomlands"), help_text="Termin du var utomlands", max_length=5, choices=TERM_CHOICES)
+    year_abroad = models.IntegerField(verbose_name=("tid utomlands"), help_text="År när du var utomlands", choices=YEAR_CHOICES)
     headline = models.CharField(
       verbose_name=_("rubrik"),
       max_length=255,
       help_text=_("Rubriken till reseberättelsen"))
     lead = models.TextField(
         verbose_name=_("ingress"),
-        help_text=_("Ingressen är den text som syns i reseberättelse."))
+        help_text=_("Ingressen är den text som syns i reseberättelse"))
     prep_text = models.TextField(
         verbose_name=_("förberedelser"),
         help_text=_("Var det några särskilda förberedelser som krävdes?  Har du några generella tips gällande ansökan? Visum?"),
