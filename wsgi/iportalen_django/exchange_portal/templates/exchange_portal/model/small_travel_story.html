@@ -33,24 +33,20 @@
 -->
 <travel_story class="travel-feed-content">
 
-     <a href="{{travel_story.get_absolute_url }}"> <h1>{{ travel_story.headline }}</h1></a>
-    <div class="travel-author">
-
-        <h3><i class="fa fa-globe large"></i>  {{ travel_story.added_by_user }}</h3>
-    </div>
-
-
+    <a href="/exchange_portal/travel_story/{{ travel_story.id }}"><h1>{{ travel_story.headline }}</h1></a>
     <p class="meta">
-       <!-- { if travel_story.tags.all  %}
-            <i class="fa fa-tags"></i>
-            <span>{ travel_story.tags.all|safeseq|join:", " }}</span>
-        { endif %}-->
-        <a href="">{{ travel_story.about_school.name }}</a>, {{ travel_story.about_school.in_city }}, <a href="">{{ travel_story.about_school.in_city.in_country }}</a>, {{ travel_story.term_abroad }} {{ travel_story.year_abroad }}
+        <i class="fa fa-globe large"></i>
+        <a href="">{{ travel_story.about_school.name }}</a>, {{ travel_story.about_school.in_city }}, <a href="">{{ travel_story.about_school.in_city.in_country }}</a>
+        <br>
+        <i class="fa fa-user large"></i>  {{ travel_story.added_by_user }}
+        <br>
+        <i class="fa fa-calendar large"></i> {{ travel_story.term_abroad }} {{ travel_story.year_abroad }}
     </p>
     <h2>{{ travel_story.lead|truncatewords_html:100}}</h2>
 
-    <a href="">Läs mer</a>
+    <a href="/exchange_portal/travel_story/{{ travel_story.id }}">Läs mer</a>
     <!-- länka till långa -->
     <!-- { travel_story.get_absolute_url }}-->
+
     <hr>
 </travel_story>

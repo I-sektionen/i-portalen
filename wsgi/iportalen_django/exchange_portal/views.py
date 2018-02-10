@@ -121,6 +121,12 @@ def Travel_Stories(request):
     #Add all travel stories to show
     return render(request, 'exchange_portal/travel_stories.html', {'travel_story_list':travel_story_list})
 
+def single_travel_story(request, pk):
+    travel_story = get_object_or_404(Travel_Story, pk=pk)
+    return render(request, 'exchange_portal/travel_story.html', {'travel_story': travel_story})
+    #Add all travel stories to show
+
+
 def Asia(request):
 
     return render(request, 'exchange_portal/asia.html')

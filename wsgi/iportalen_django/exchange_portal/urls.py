@@ -17,6 +17,7 @@ exchange_portal_patterns = [
     url(r'^school/(?P<pk>[0-9]+)/$',     view=views.Exchange_School,          name='school'),
     url(r'^search-autocomplete/$', view=views.Search_Autocomplete.as_view(),  name='search_autocomplete'),
     url(r'^travel_stories/$',   view=views.Travel_Stories,    name="travel_stories"),
+    url(r'^travel_story/(?P<pk>[0-9]+)/$', view=views.single_travel_story, name='travel_story'),
     url(r'^asia/$',   view=views.Asia,    name="asia"),
     url(r'^asia/(?P<filter>\w{0,50})/$',   view=views.Asia_filtered,    name="asia"),
 

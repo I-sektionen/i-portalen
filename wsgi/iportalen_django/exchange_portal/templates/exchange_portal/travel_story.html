@@ -1,0 +1,12 @@
+{% extends "master.html" %}
+{% block hero %}
+{% endblock %}
+
+
+{% block content %}
+{%  include "exchange_portal/exchange_portal_header.html" %} <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
+
+
+{% include "exchange_portal/model/large_travel_story.html" %}
+
+{% endblock %}

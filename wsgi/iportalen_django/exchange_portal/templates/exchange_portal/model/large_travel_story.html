@@ -1,51 +1,56 @@
 <travel_story class="travel-feed-content">
 
     <h1>{{ travel_story.headline }}</h1>
+    <p><a href="/exchange_portal/school/{{ travel_story.about_school.id }}"> Till skolsidan för {{ travel_story.about_school.name }}</a></p>
     <div class="travel-author">
-        <h3><i class="fa fa-globe large"></i>  {{ travel_story.added_by_user }}</h3>
+        <p class="meta">
+            <i class="fa fa-globe large"></i>
+            <span><a href="">{{ travel_story.about_school.name }}</a>, {{ travel_story.about_school.in_city }}, <a href="">{{ travel_story.about_school.in_city.in_country }} </a>
+            </span>
+            <i class="fa fa-calendar large"></i>  <span>{{ travel_story.term_abroad }} {{ travel_story.year_abroad }}</span>
+            <i class="fa fa-user large"></i>   <span>{{ travel_story.added_by_user }} </span>
+        </p>
     </div>
-    <p class="meta">
-        {{ travel_story.about_school.name }}, {{ travel_story.about_school.in_city }}, {{ travel_story.about_school.in_city.in_country }}, {{ travel_story.term_abroad }} {{ travel_story.year_abroad }}
+    <p>
+        {{ travel_story.lead }}
     </p>
+    <div class="story">
 
-    <p>
-        {{ travel_story.ingress }}
-    </p>
-    {% if travel_story.prep_text  %}
-    <h2>Förberedelser och ansökan</h2>
-    <p>
-        {{ travel_story.prep_text }}
-    </p>
-    {% endif  %}
-    {% if travel_story.location_text  %}
-    <h2>Landet och staden</h2>
-    <p>
-        {{travel_story.location_text}}
-    </p>
-    {% endif  %}
-    {% if travel_story.school_text  %}
-    <h2>Skolan</h2>
-    <p>
-        {{ travel_story.school_text }}
-    </p>
-    {% endif  %}
-    {% if travel_story.studies_text  %}
-    <h2>Kurser och studier</h2>
-    <p>
-        {{ travel_story.studies_text }}
-    </p>
-    {% endif  %}
-    {% if travel_story.sparetime_text  %}
-    <h2>Fritid</h2>
-    <p>
-        {{ travel_story.sparetime_text }}
-    </p>
-    {% endif  %}
-    {% if travel_story.other_text  %}
-    <h2>Övrigt</h2>
-    <p>
-        {{ travel_story.other_text }}
-    </p>
-    {% endif  %}
-
+        {% if travel_story.prep_text  %}
+            <h2>Förberedelser och ansökan</h2>
+            <p>
+                {{ travel_story.prep_text }}
+            </p>
+        {% endif  %}
+        {% if travel_story.location_text  %}
+            <h2>Landet och staden</h2>
+            <p>
+                {{travel_story.location_text}}
+            </p>
+        {% endif  %}
+        {% if travel_story.school_text  %}
+            <h2>Skolan</h2>
+            <p>
+                {{ travel_story.school_text }}
+            </p>
+        {% endif  %}
+        {% if travel_story.studies_text  %}
+            <h2>Kurser och studier</h2>
+            <p>
+                {{ travel_story.studies_text }}
+            </p>
+        {% endif  %}
+        {% if travel_story.sparetime_text  %}
+            <h2>Fritid</h2>
+            <p>
+                {{ travel_story.sparetime_text }}
+            </p>
+        {% endif  %}
+        {% if travel_story.other_text  %}
+            <h2>Övrigt</h2>
+            <p>
+                {{ travel_story.other_text }}
+            </p>
+        {% endif  %}
+    </div>
 </travel_story>

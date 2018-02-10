@@ -96,5 +96,12 @@ travel_story.travel-feed-content {
   a {
     color: darken($light-gray, 40%);
     }
+  span {
+      margin-right: 2em;
+      text-transform: none;
+    }
+}
+.story {
+  margin-top: 2em;
 }
 
