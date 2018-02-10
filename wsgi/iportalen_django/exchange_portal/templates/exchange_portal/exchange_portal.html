@@ -2,7 +2,6 @@
 
 {% block title %}Utlandsportalen{% endblock %}
 {% block content %}
-<<<<<<< HEAD
   {% include "exchange_portal/exchange_portal_header.html" %}
   <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
 
@@ -13,15 +12,26 @@
   </form>
   <br>
   {% if school_list.count != 0 %}Sökresultat
-    <i>(Skolnamn, Stad, Land)</i>:
-  {% endif %}
-  {% for school in school_list %}
-    <li>
-      <a href="/exchange_portal/school/{{ school.id }}">{{ school.name|capfirst }},
-        {{ school.in_city|capfirst }},
-        {{ school.in_city.in_country|capfirst }}</a>
-    </li>
-  {% endfor %}
+  <table  class="courses" id="courses">
+      <thead id="course_table_head">
+      <tr>
+          <th colspan="2"> Skola: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,0)" aria-hidden="true"></i></button> </th>
+          <th colspan="2"> Stad: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,1)" aria-hidden="true"></i></button></th>
+          <th colspan="2"> Land: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,2)" aria-hidden="true"></i></button></th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for school in school_list %}
+          <tr>
+
+              <td colspan="2"><a href="/exchange_portal/school/{{ school.id }}">{{school.name|capfirst}}</a></td>
+              <td colspan="2"> {{ school.in_city|capfirst }} </td>
+              <td colspan="2"> <a href=""></a>{{ school.in_city.in_country|capfirst }} </td>
+          </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+    {% endif %}
   {% if school_list.count == 0 %}
     <p>Inget resultat.</p>
   {% endif %}
@@ -52,56 +62,5 @@
       <li>{{ southamerica.name|capfirst }}</li>
     {% endfor %}
   </ul>
-=======
-    {% include "exchange_portal/exchange_portal_header.html" %}
-    <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
-
-    <form class="search-form" action="/exchange_portal/" method="post">
-        {% csrf_token %}
-        <input class="search-holder" type="text" name="q" placeholder="Sök universitet, stad eller land">
-        <input class="submit-holder primary action-button" type="submit" value="Sök">
-    </form>
-    <br>
-    {% if school_list.count != 0 %}Sökresultat
-        <i>(Skolnamn, Stad, Land)</i>:
-    {% endif %}
-
-    <table  class="courses" id="courses">
-        <thead id="course_table_head">
-        <tr>
-            <th colspan="2"> Skola: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,0)" aria-hidden="true"></i></button> </th>
-            <th colspan="2"> Stad: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,1)" aria-hidden="true"></i></button></th>
-            <th colspan="2"> Land: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,2)" aria-hidden="true"></i></button></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for school in school_list %}
-            <tr>
-
-                <td colspan="2"><a href="/exchange_portal/school/{{ school.id }}">{{school.name|capfirst}}</a></td>
-                <td colspan="2"> {{ school.in_city|capfirst }} </td>
-                <td colspan="2"> <a href=""></a>{{ school.in_city.in_country|capfirst }} </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-
-
-    {% if school_list.count == 0 %}
-        <p>Inget resultat.</p>
-    {% endif %}
-
-    <ul>
-        {% for asia in asia_list %}
-            <h1>
-                {{ asia.name|capfirst }}
-            </h1>
-            <li>Coffee</li>
-            <li>Tea</li>
-            <li>Milk</li>
-        {% endfor %}
-    </ul>
->>>>>>> cf60832f917a96153d867473745c846232debb57
 
 {% endblock %}
