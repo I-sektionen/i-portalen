@@ -6,10 +6,10 @@ app_name = "bookings"
 invoice_patterns = [
     url(r'^create_custom/(?P<booking_pk>[0-9]+)$',
         view=views.create_invoice, name="create custom invoice"),
-    url(r'^(?P<invoice_ids>(.*?)+)/$',
-        view=views.invoice, name="invoice view"),
-    url(r'^(?P<invoice_pk>[0-9]+)/email/$',
+    url(r'^(?P<invoice_id>[0-9]+)/email/$',
         view=views.send_invoice_email, name="send invoice email"),
+    url(r'^(?P<invoice_ids>(.*?)+)/$',
+        view=views.invoice, name="invoice view")
 ]
 
 booking_patterns = [

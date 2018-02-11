@@ -32,11 +32,17 @@ def invoice(request, invoice_ids):
     try:
         invoice_ids = ast.literal_eval(invoice_ids)
     except (SyntaxError, TypeError, ValueError):
-        raise Http404
-    if type(invoice_ids) is not list:
-        temp = invoice_ids
-        invoice_ids = []
-        invoice_ids.append(temp)
+        if type(invoice_ids) is not list:
+            try:
+                data = invoice_ids.split('/', 1)[0]
+                if data[1] == "email":
+                    invoice_ids = []
+                    invoice_ids.append(data[0])
+            except:
+                raise Http404
+        else:
+            raise Http404
+
     invoice_list = []
     for invoice_id in invoice_ids:
         inv = get_object_or_404(Invoice, pk=invoice_id)
@@ -275,8 +281,8 @@ def create_invoice(request, booking_pk):
 
 
 @permission_required('bookings.manage_bookings')
-def send_invoice_email(request, invoice_pk):
-    i = get_object_or_404(Invoice, pk=invoice_pk)
+def send_invoice_email(request, invoice_id):
+    i = get_object_or_404(Invoice, pk=invoice_id)
     subject = "".join([_("Faktura för"), " {name}"]).format(name=i.booking.bookable, )
     msg = _("En ny faktura finns nu tillgänglig åt dig på i-portalen.se."
             " Du behöver logga in på ditt konto för att ta del av fakturan,"
