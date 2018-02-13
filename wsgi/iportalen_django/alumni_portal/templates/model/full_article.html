@@ -1,0 +1,42 @@
+{% load iportalen_tags %}
+<article class="news-feed-content">
+    <div class="article-type-and-date">
+        <!-- <p class="type">Nyhet</p>-->
+        <i class="fa fa-newspaper-o large"></i>
+        <div class="article-preview-time-organisation">
+            {% if article.organisations.all %}
+            <p class="article-preview-type">{{ article.organisations.all|safeseq|join:", " }}</p>
+            {% else %}
+            <p class="article-preview-type">{{ article.user.get_full_name }}</p>
+            {% endif %}
+            <p class="article-preview-type time-since">{{ article.visible_from|timesince}}</p>
+        </div>
+    </div>
+    <h1>{{ article.headline }}</h1>
+    <h2>{{ article.lead }}</h2>
+    <p class="meta">
+        {% if article.tags.all  %}
+            <i class="fa fa-tags"></i>
+            <span>{{ article.tags.all|safeseq|join:", " }}</span>
+        {% endif %}
+        {% if article.sponsored  %}
+            <span>Sponsrat innehåll</span>
+        {% endif %}
+        {% if article.job_advert %}
+            <span>Jobbannons</span>
+        {%  endif %}
+    </p>
+    {% if image_attachments %}
+        {% for attachment in image_attachments.all %}
+            <a class="fancybox" rel="article_gallery" href="{{ attachment.img.url }}" title="{{ attachment.caption }}">
+                <!--<img src="{#  #}{ attachment.thumbnail.url }}" alt=""/>-->
+            </a>
+        {% endfor %}
+    {% endif %}
+    {{ article.body|markdown }}
+    {% if attachments %}
+        {% for attachment in attachments.all %}
+            <p>Bifogad fil: <a href="{{ attachment.file.url }}">{{ attachment.display_name }}</a></p>
+        {% endfor %}
+    {% endif %}
+</article>
