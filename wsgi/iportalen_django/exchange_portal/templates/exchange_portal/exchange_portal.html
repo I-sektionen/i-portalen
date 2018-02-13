@@ -2,65 +2,65 @@
 
 {% block title %}Utlandsportalen{% endblock %}
 {% block content %}
-  {% include "exchange_portal/exchange_portal_header.html" %}
-  <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
+    {% include "exchange_portal/exchange_portal_header.html" %}
+    <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
 
-  <form class="search-form" action="/exchange_portal/" method="post">
-    {% csrf_token %}
-    <input class="search-holder" type="text" name="q" placeholder="Sök universitet, stad eller land">
-    <input class="submit-holder primary action-button" type="submit" value="Sök">
-  </form>
-  <br>
-  {% if school_list.count != 0 %}Sökresultat
-  <table  class="courses" id="courses">
-      <thead id="course_table_head">
-      <tr>
-          <th colspan="2"> Skola: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,0)" aria-hidden="true"></i></button> </th>
-          <th colspan="2"> Stad: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,1)" aria-hidden="true"></i></button></th>
-          <th colspan="2"> Land: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,2)" aria-hidden="true"></i></button></th>
-      </tr>
-      </thead>
-      <tbody>
-      {% for school in school_list %}
-          <tr>
+    <form class="search-form" action="/exchange_portal/" method="post">
+        {% csrf_token %}
+        <input class="search-holder" type="text" name="q" placeholder="Sök universitet, stad eller land">
+        <input class="submit-holder primary action-button" type="submit" value="Sök">
+    </form>
+    <br>
+    {% if school_list.count != 0 %}Sökresultat
+        <table  class="courses" id="courses">
+            <thead id="course_table_head">
+            <tr>
+                <th colspan="2"> Skola: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,0)" aria-hidden="true"></i></button> </th>
+                <th colspan="2"> Stad: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,1)" aria-hidden="true"></i></button></th>
+                <th colspan="2"> Land: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,2)" aria-hidden="true"></i></button></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for school in school_list %}
+                <tr>
 
-              <td colspan="2"><a href="/exchange_portal/school/{{ school.id }}">{{school.name|capfirst}}</a></td>
-              <td colspan="2"> {{ school.in_city|capfirst }} </td>
-              <td colspan="2"> <a href=""></a>{{ school.in_city.in_country|capfirst }} </td>
-          </tr>
-      {% endfor %}
-      </tbody>
-  </table>
+                    <td colspan="2"><a href="/exchange_portal/school/{{ school.id }}">{{school.name|capfirst}}</a></td>
+                    <td colspan="2"> {{ school.in_city|capfirst }} </td>
+                    <td colspan="2"> <a href=""></a>{{ school.in_city.in_country|capfirst }} </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     {% endif %}
-  {% if school_list.count == 0 %}
-    <p>Inget resultat.</p>
-  {% endif %}
+    {% if school_list.count == 0 %}
+        <p>Inget resultat.</p>
+    {% endif %}
 
-  <ul>
-    <h1>Afrika</h1>
-    {% for africa in africa_list %}
-      <li>{{ africa.name|capfirst }}</li>
-    {% endfor %}
-    <h1>Asien</h1>
-    {% for asia in asia_list %}
-      <li>{{ asia.name|capfirst }}</li>
-    {% endfor %}
-    <h1>Europa</h1>
-    {% for europa in europa_list %}
-      <li>{{ europa.name|capfirst }}</li>
-    {% endfor %}
-    <h1>Nordamerika</h1>
-    {% for northamerica in northamerica_list %}
-      <li>{{ northamerica.name|capfirst }}</li>
-    {% endfor %}
-    <h1>Oceanien</h1>
-    {% for oceania in oceania_list %}
-      <li>{{ oceania.name|capfirst }}</li>
-    {% endfor %}
-    <h1>Sydamerika</h1>
-    {% for southamerica in southamerica_list %}
-      <li>{{ southamerica.name|capfirst }}</li>
-    {% endfor %}
-  </ul>
+    <ul>
+        <h1>Afrika</h1>
+        {% for africa in africa_list %}
+            <li>{{ africa.name|capfirst }}</li>
+        {% endfor %}
+        <h1>Asien</h1>
+        {% for asia in asia_list %}
+            <li>{{ asia.name|capfirst }}</li>
+        {% endfor %}
+        <h1>Europa</h1>
+        {% for europa in europa_list %}
+            <li>{{ europa.name|capfirst }}</li>
+        {% endfor %}
+        <h1>Nordamerika</h1>
+        {% for northamerica in northamerica_list %}
+            <li>{{ northamerica.name|capfirst }}</li>
+        {% endfor %}
+        <h1>Oceanien</h1>
+        {% for oceania in oceania_list %}
+            <li>{{ oceania.name|capfirst }}</li>
+        {% endfor %}
+        <h1>Sydamerika</h1>
+        {% for southamerica in southamerica_list %}
+            <li>{{ southamerica.name|capfirst }}</li>
+        {% endfor %}
+    </ul>
 
 {% endblock %}

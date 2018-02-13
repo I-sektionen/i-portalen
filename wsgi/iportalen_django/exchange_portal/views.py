@@ -150,3 +150,7 @@ def continent_filtered(request, continent, country):
     #filtered_country = Country.objects.filter(in_country__name=country)
 
     return render(request, 'exchange_portal/continent.html', {'country': country})
+
+@login_required()
+def Admin(request):
+    return render(request, 'exchange_portal/admin.html')
