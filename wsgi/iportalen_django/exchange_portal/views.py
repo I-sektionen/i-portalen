@@ -134,3 +134,7 @@ def Asia(request):
 def Asia_filtered(request,filter):
 
     return render(request, 'exchange_portal/asia.html', {'filter': filter})
+
+@login_required()
+def Admin(request):
+    return render(request, 'exchange_portal/admin.html')

@@ -1,0 +1,22 @@
+{% extends "master.html" %}
+
+{% block hero %}
+{% endblock %}
+{% block content %}
+    {% include "exchange_portal/exchange_portal_header.html" %}
+
+    <h3>Skolor</h3>
+    <a href="/exchange_portal/add_school/">Lägg till en skola</a>
+
+    <h3>Städer</h3>
+    <a href="/exchange_portal/add_city">Lägg till en stad</a>
+
+    <h3>Länder</h3>
+    <a href="/exchange_portal/add_country">Lägg till ett land</a>
+
+    <h3>Kurser</h3>
+    <a href="/exchange_portal/add_liu_course">Lägg till en LiU-kurs</a>
+    <br>
+    <a href="/exchange_portal/add_exchange_course">Lägg till en utlandskurs</a>
+
+{% endblock %}
