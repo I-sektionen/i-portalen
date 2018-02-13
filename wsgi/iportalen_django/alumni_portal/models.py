@@ -3,6 +3,7 @@
 # and same but event or create new slim classes?
 from django.db import models, transaction
 from django.utils import timezone
+from django.core.urlresolvers import reverse
 from django.conf import settings
 import os
 from django.utils.translation import ugettext_lazy as _

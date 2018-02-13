@@ -7,14 +7,8 @@
     <!-- kopierad från job adverts -->
     <section id="news-feed">
 
-    {% for content in content_feed_list %}
-            {% if content.type == "article" %}
-                {% include "articles/model/small_article.html" with article=content %}
-            {% endif %}
-            {% if content.type == "event" %}
-                {% include "events/model/small_event.html" with event=content %}
-            {% endif %}
-
+     {% for article in articles %}
+            {% include "articles/model/small_article.html" with article=article %}
         {% endfor %}
         <div class="pagination">
             <span class="step-links">
