@@ -22,6 +22,7 @@
             {% endif %}
 
         {% endfor %}
+
         <div class="pagination">
             <span class="step-links">
             <span class="meta">
@@ -29,10 +30,12 @@
                     <span class="prev"><a href="?page={{ content_feed_list.previous_page_number }}">Prev</a></span>
                 {% endif %}
                 {% for number in content_feed_list.paginator.page_range|slice:":10" %}
-                    {% if number == content_feed_list.number %}
+                    {% if number == content_feed_list.number and content_feed_list %}
                         <a class="pagenumber active" href="">{{ number }}</a>
-                    {%  else %}
+                    {%  elif content_feed_list %}
                         <a class="pagenumber" href="?page={{ number }}">{{ number }}</a>
+                    {%  elif not content_feed_list %}
+                        <b>Oj här var det tomt</b>
                     {% endif %}
                 {% endfor %}
                 {% if news_list.has_next %}
