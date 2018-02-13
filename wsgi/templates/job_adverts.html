@@ -35,7 +35,7 @@
                     {%  elif content_feed_list %}
                         <a class="pagenumber" href="?page={{ number }}">{{ number }}</a>
                     {%  elif not content_feed_list %}
-                        <b>Oj här var det tomt</b>
+                        <hr>Oj här var det tomt.</hr>
                     {% endif %}
                 {% endfor %}
                 {% if news_list.has_next %}
