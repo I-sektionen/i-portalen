@@ -127,10 +127,26 @@ def single_travel_story(request, pk):
     #Add all travel stories to show
 
 
-def Asia(request):
+# Add continents here. If statements is due to limiting the threat of SQL-injection.
+def continent(request, continent):
+    continent = continent.lower()
 
-    return render(request, 'exchange_portal/asia.html')
+    if continent == 'asia':
+        countries = Country.objects.filter(in_continent__name='asien')
+        return render(request, 'exchange_portal/continent.html', {'continent': 'asien', 'country_list': countries})
 
-def Asia_filtered(request,filter):
+    elif continent == 'europe':
+        countries = Country.objects.filter(in_continent__name='europa')
+        return render(request, 'exchange_portal/continent.html', {'continent': 'europa', 'country_list': countries})
 
-    return render(request, 'exchange_portal/asia.html', {'filter': filter})
+    elif continent == 'africa':
+        countries = Country.objects.filter(in_continent__name='afrika')
+        return render(request, 'exchange_portal/continent.html', {'continent': 'afrika', 'country_list': countries})
+
+
+def continent_filtered(request, continent, country):
+    country = country.lower()
+    #countries = Country.objects.filter(in_continent__name='asien')
+    #filtered_country = Country.objects.filter(in_country__name=country)
+
+    return render(request, 'exchange_portal/continent.html', {'country': country})

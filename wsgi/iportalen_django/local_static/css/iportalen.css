@@ -1568,6 +1568,14 @@ travel_story.travel-feed-content a:hover {
 .meta a {
   color: #919191;
 }
+.meta span {
+  margin-right: 2em;
+  text-transform: none;
+}
+
+.story {
+  margin-top: 2em;
+}
 
 .footer {
   background: #f7f7f7;
@@ -1879,7 +1887,7 @@ header.navigation ul.submenu {
     border: 8px solid transparent;
     bottom: 0em;
     color: white;
-    content: '▲';
+    content: 'Ôû▓';
     font-size: 1.4em;
     text-align: center;
     text-shadow: 1px -1px 1px silver;
