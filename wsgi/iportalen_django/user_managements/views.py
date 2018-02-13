@@ -44,7 +44,7 @@ def login(request):  # TODO: Reduce complexity
                 return redirect("password_reset", liu_id=username)
             else:
                 # the authentication system was unable to verify the username and password
-                messages.error(request, _("Fel Liu-id eller lösenord. Om felet kvarstår kontakta webgroup@i-portalen.se"))
+                messages.error(request, _("Fel Liu-id eller lösenord. Om felet kvarstår kontakta webgroup@isektionen.se"))
             return render(request, "user_managements/login.html")
 
         # The user has the right password.
@@ -78,7 +78,7 @@ def login(request):  # TODO: Reduce complexity
 
         # The password is valid, but the account has been disabled! (Användaren Klickade ev: "vill INTE bli medlem")
         messages.error(request, _("Lösenordet är korrekt, men kontot är avstängt! "
-                                  "Om detta inte bör vara fallet var god kontakta medlem@i-portalen.se"))
+                                  "Om detta inte bör vara fallet var god kontakta webgroup@isektionen.se"))
         return render(request, "user_managements/login.html")
     else:
         # Did not try to login.
