@@ -32,16 +32,11 @@ def invoice(request, invoice_ids):
     try:
         invoice_ids = ast.literal_eval(invoice_ids)
     except (SyntaxError, TypeError, ValueError):
-        if type(invoice_ids) is not list:
-            try:
-                data = invoice_ids.split('/', 1)[0]
-                if data[1] == "email":
-                    invoice_ids = []
-                    invoice_ids.append(data[0])
-            except:
-                raise Http404
-        else:
-            raise Http404
+        raise Http404
+    if type(invoice_ids) is not list:
+        temp = invoice_ids
+        invoice_ids = []
+        invoice_ids.append(temp)
 
     invoice_list = []
     for invoice_id in invoice_ids:
