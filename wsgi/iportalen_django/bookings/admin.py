@@ -51,7 +51,7 @@ def print_all_action(modeladmin, request, queryset):
     final_queryset = []
     for item in queryset:
         if _get_invoice_status_display(item) in {'Skapad', 'Skickad', 'Betald'}:
-            final_queryset.append(item.pk)
+            final_queryset.append(Invoice.objects.get(booking=item).pk)
     if final_queryset:
         return HttpResponseRedirect(reverse('bookings:invoice view', kwargs={'invoice_ids': final_queryset}))
 
