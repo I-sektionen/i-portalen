@@ -4,6 +4,20 @@
 
 {% block content %}
     <section id="news-feed">
+        {% get_sponsored_content as sponsored_content %}
+        <div class="sponsored_container">
+            <div id="sponsored_feed_container" class="sponsored_feed_container" style="display: none;" >
+                <div class="sponsored_feed_headline"><a href="{% url "sponsored" %}" class="content-type-nav">Senaste:</a></div>
+                <div id="sponsored_feed_content">
+                    <ul style="display: block; overflow: hidden">
+                        {% for c in sponsored_content %}
+                            <li><strong><a href="{{ c.get_absolute_url }}">{{ c.headline|truncatechars:62 }}</a></strong></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <hr>
+        </div>
         <div id="content-select-nav">
             <a href="{% url "news feed" %}" class="content-type-nav">Allt</a>
             <a href="{% url "articles:articles" %}" class="content-type-nav active">Nyheter</a>
@@ -15,4 +29,7 @@
             {% include "articles/model/small_article.html" with article=article %}
         {% endfor %}
     </section>
+{% endblock %}
+{% block document_ready %}
+    expander_trigger_news_page('{% url 'news api' %}')
 {% endblock %}
