@@ -14,5 +14,10 @@
         {% for article in articles %}
             {% include "articles/model/small_article.html" with article=article %}
         {% endfor %}
+
+        {%  if not articles %}
+            <p id="empty-text">Oj, här var det tomt.</p>
+        {% endif %}
+
     </section>
 {% endblock %}

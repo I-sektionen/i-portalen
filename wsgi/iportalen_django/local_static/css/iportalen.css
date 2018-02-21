@@ -2918,6 +2918,10 @@ label.required:after {
   box-shadow: none;
 }
 
+#empty-text {
+  text-align: center;
+}
+
 div.booking-container .bookable_menu {
   box-shadow: 2px 2px 8px #919191;
   border-radius: 3px;

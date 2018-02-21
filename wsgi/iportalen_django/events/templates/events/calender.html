@@ -16,5 +16,8 @@
         {% for event in events %}
             {% include "events/model/small_event.html" with event=event %}
         {% endfor %}
+        {%  if not events %}
+            <p id="empty-text">Oj, här var det tomt.</p>
+        {% endif %}
     </section>
 {% endblock %}

@@ -16,8 +16,10 @@
         {% for number in content_feed_list.paginator.page_range|slice:":10" %}
             {% if number == content_feed_list.number %}
                 <span class="pagenumber active" onclick="get_news_content('{% url 'news api' %}?page={{ number }}')">{{ number }}</span>
-            {%  else %}
+            {%  elif content_feed_list %}
                 <span class="pagenumber" onclick="get_news_content('{% url 'news api' %}?page={{ number }}')">{{ number }}</span>
+            {&  else &}
+                <p id="empty-text">Oj, här var det tomt.</p>
             {% endif %}
         {% endfor %}
         {% if content_feed_list.has_next %}
