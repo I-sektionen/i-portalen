@@ -5,11 +5,17 @@
 {% block content %}
 
 <h1>Lägg till ett land till Utlandsportalen</h1>
-
+<p>Tänk på att inte lägga till länder som redan finns!</p>
     <form class="search-form" action="" method="post">
         {% csrf_token %}
-        <input class="search-holder" type="text" name="q" placeholder="Lägg till land">
+        <input class="search-holder" type="text" name="country_name" placeholder="Lägg till land">
+         <select name="in_continent">
+            {% for continent in continent_list %}
+                <option value={{continent.id}}>{{ continent.name }}</option>
+            {% endfor %}
+        </select>
         <input class="submit-holder primary action-button" type="submit" value="Lägg till">
     </form>
+
 
 {% endblock %}

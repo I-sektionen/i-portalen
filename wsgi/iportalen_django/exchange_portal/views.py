@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db import transaction
 from django.utils.translation import ugettext as _
-from .models import Exchange_Course, Liu_Course, School, Country, City, Travel_Story
+from .models import Exchange_Course, Liu_Course, School, Continent, Country, City, Travel_Story
 from django.forms import modelformset_factory
 import mimetypes
 from django.db.models import Q
@@ -18,7 +18,7 @@ def Exchange_Portal(request):
     query = request.POST.get('q')
     if query != None:
         school_list = School.objects.filter(Q(name__icontains=query) | Q(in_city__name__icontains=query) |
-                                        Q(in_city__in_country__name__icontains=query))
+                                            Q(in_city__in_country__name__icontains=query))
     else:
         school_list = None
 
@@ -47,30 +47,41 @@ def Exchange_School(request, pk):
 
 
 def Add_Country(request):
-    query = request.POST.get('q')
-    if query != None:
-        new_country = Country(name=query)
+    continent_list = Continent.objects.all()
+    country_name = request.POST.get('country_name')
+    in_continent = request.POST.get('in_continent')
+    if country_name != None:
+        new_country = Country(name=country_name, in_continent=Continent.objects.get(id=in_continent))
         new_country.save()
 
-    return render(request, 'exchange_portal/add_country.html')
+    return render(request, 'exchange_portal/add_country.html', {'continent_list': continent_list})
 
 
 def Add_City(request):
     country_list = Country.objects.all()
     city_name = request.POST.get('city_name')
     country_id = request.POST.get('country_id')
-    if city_name != None:
+    if city_name != None and country_id!=None:
         new_city = City(name=city_name, in_country=Country.objects.get(id=country_id))
         new_city.save()
     return render(request, 'exchange_portal/add_city.html', {'country_list': country_list})
 
 
 def Add_School(request):
+    country_list = Country.objects.all()
     city_list = City.objects.all() #Lägg till så man väljer land först så man inte behöver gå igenom alla städer som finns
     school_name = request.POST.get('school_name')
     city_id = request.POST.get('city_id')
+    freemover = request.POST.get('freemover')
+    exchange_with_liu = request.POST.get('exchange_with_liu')
+    if freemover == None:
+        freemover = False
+
+    if exchange_with_liu == None:
+        exchange_with_liu = False
+
     if school_name != None:
-        new_school = School(name=school_name, in_city=City.objects.get(id=city_id))
+        new_school = School(name=school_name, in_city=City.objects.get(id=city_id), freemover=freemover, exchange_with_liu=exchange_with_liu)
         new_school.save()
     return render(request, 'exchange_portal/add_school.html', {'city_list': city_list})
 
