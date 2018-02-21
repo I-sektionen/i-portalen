@@ -10,6 +10,7 @@ from .models import Exchange_Course, Liu_Course, School, Country, City, Travel_S
 from django.forms import modelformset_factory
 import mimetypes
 from django.db.models import Q
+from django.http import Http404
 from dal import autocomplete
 
 # Create your views here.
@@ -129,27 +130,26 @@ def single_travel_story(request, pk):
 
 # Add continents here. If statements is due to limiting the threat of SQL-injection.
 def continent(request, continent):
-    continent = continent.lower()
+    #continent = continent.lower()
 
-    if continent == 'asia':
-        countries = Country.objects.filter(in_continent__name='asien')
-        return render(request, 'exchange_portal/continent.html', {'continent': 'asien', 'country_list': countries})
-
-    elif continent == 'europe':
-        countries = Country.objects.filter(in_continent__name='europa')
-        return render(request, 'exchange_portal/continent.html', {'continent': 'europa', 'country_list': countries})
-
-    elif continent == 'africa':
-        countries = Country.objects.filter(in_continent__name='afrika')
-        return render(request, 'exchange_portal/continent.html', {'continent': 'afrika', 'country_list': countries})
-
+   # if continent == 'asia':
+    #countries = Country.objects.filter(in_continent__name__icontains=continent)
+    all_universities = School.objects.filter(in_city__in_country__in_continent__name__icontains=continent)
+    if all_universities:
+        return render(request, 'exchange_portal/continent.html', {'continent': continent, 'university_list': all_universities})
+    else:
+        raise Http404
 
 def continent_filtered(request, continent, country):
     country = country.lower()
-    #countries = Country.objects.filter(in_continent__name='asien')
-    #filtered_country = Country.objects.filter(in_country__name=country)
 
-    return render(request, 'exchange_portal/continent.html', {'country': country})
+    filtered_country = Country.objects.filter(name__icontains=country)#.filter(in_continent__country__name=country)
+    schools = School.objects.filter(in_city__in_country__name__icontains=country)
+
+    if schools:
+        return render(request, 'exchange_portal/continent.html', {'continent': continent, 'university_list': schools, 'country':country})
+    else:
+        raise Http404
 
 @login_required()
 def Admin(request):

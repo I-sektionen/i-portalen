@@ -7,10 +7,6 @@
     <h1>{{ continent|capfirst }}</h1>
     <hr id="exchange_divider">
 
-    {% if country %}
-        <h2>FILTER: {{ country }}</h2>
-    {% endif %}
-
     <div class="dropdown">
         <button class="dropdown-btn">länder<i class="fa fa-caret-down"></i>
         </button>
@@ -21,64 +17,29 @@
 
     <button type="button" class="btn btn-primary style=" style="position:relative">Asiens Reseberättelser</button>
     <img src="/media/maps/Geo-map-asia.png" height="480">
-    {% if country_list %}
-        <table class="courses">
-            <thead id="course_table_head">
-            <tr>
-                <th colspan="3">
-                    Land:
-                </th>
-                <th colspan="3">
-                    Stad:
-                </th>
-                <th colspan="4">
-                    Universitet:
-                </th>
-            </tr>
-            </thead>
-            <tbody>
+    {% if university_list %}
 
-            {% for country in country_list %}
 
+     <table id="university_list">
+                <thead id="course_table_head">
                 <tr>
-                <td colspan="3">
-                    <a href="#">{{ country|capfirst }}</a>
-                </td>
-                <td colspan="3">
-                    Filtered city
-                </td>
-                <td colspan="4">
-                    <a href="#">Filtered uni</a>
-                </td>
-            </tr>
-
-            {% endfor %}
-            <tr>
-                <td colspan="3">
-                    <a href="#">Nordkorea</a>
-                </td>
-                <td colspan="3">
-                    Pyongyang
-                </td>
-                <td colspan="4">
-                    <a href="#">Krökonens Uni</a>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <a href="#">Sydkorea</a>
-                </td>
-                <td colspan="3">
-                    Seoul
-                </td>
-                <td colspan="4">
-                    <a href="#">Jeepens Uni</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    {% elif not country_list %}
-        <p> Lägg till länder för att kunna se filtreringen </p>
+                    <th colspan="4"> Land: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('university_list' ,0)" aria-hidden="true"></i></button> </th>
+                    <th colspan="4"> Stad: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('university_list' ,1)" aria-hidden="true"></i></button></th>
+                    <th colspan="4"> Universitet: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('university_list' ,2)" aria-hidden="true"></i></button></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for university in university_list %}
+                    <tr>
+                        <td colspan="4">{{university.in_city.in_country|capfirst}}</td>
+                        <td colspan="4">  {{ university.in_city|capfirst }} </td>
+                        <td colspan="4"> {{ university.name|capfirst }} </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
     {% endif %}
+
+
 
 {% endblock %}
