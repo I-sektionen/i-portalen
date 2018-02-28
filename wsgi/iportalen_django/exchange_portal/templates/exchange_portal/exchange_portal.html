@@ -39,27 +39,27 @@
     <ul>
         <h1>Afrika</h1>
         {% for africa in africa_list %}
-            <li>{{ africa.name|capfirst }}</li>
+            <li><a href="afrika/{{ africa.name}}">{{ africa.name|capfirst }}</a></li>
         {% endfor %}
         <h1>Asien</h1>
         {% for asia in asia_list %}
-            <li>{{ asia.name|capfirst }}</li>
+            <li><a href="asien/{{ asia.name}}">{{ asia.name|capfirst }}</a></li>
         {% endfor %}
         <h1>Europa</h1>
-        {% for europa in europa_list %}
-            <li>{{ europa.name|capfirst }}</li>
+        {% for europe in europa_list %}
+            <li><a href="europa/{{ europe.name}}">{{ europe.name|capfirst }}</a></li>
         {% endfor %}
         <h1>Nordamerika</h1>
         {% for northamerica in northamerica_list %}
-            <li>{{ northamerica.name|capfirst }}</li>
+           <li><a href="nordamerika/{{ northamerica.name}}">{{ northamerica.name|capfirst }}</a></li>
         {% endfor %}
         <h1>Oceanien</h1>
         {% for oceania in oceania_list %}
-            <li>{{ oceania.name|capfirst }}</li>
+            <li><a href="oceanien/{{ oceania.name}}">{{ oceania.name|capfirst }}</a></li>
         {% endfor %}
         <h1>Sydamerika</h1>
         {% for southamerica in southamerica_list %}
-            <li>{{ southamerica.name|capfirst }}</li>
+            <li><a href="sydamerika/{{ southamerica.name}}">{{ southamerica.name|capfirst }}</a></li>
         {% endfor %}
     </ul>
 

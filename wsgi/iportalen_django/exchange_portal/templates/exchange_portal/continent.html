@@ -9,15 +9,17 @@
         <button class="dropdown-btn">länder<i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-content">
-            Länder
+        {% if university_list %}
+            {% for university in university_list %}
+                <a href="{{ university.in_city.in_country.name }}">{{ university.in_city.in_country.name }}</a> <br>
+            {% endfor %}
+        {% endif %}
         </div>
     </div>
 
     <button type="button" class="btn btn-primary style=" style="position:relative">Asiens Reseberättelser</button>
     <img src="/media/maps/Geo-map-asia.png" height="480">
     {% if university_list %}
-
-
      <table id="university_list">
                 <thead id="course_table_head">
                 <tr>
@@ -29,9 +31,9 @@
                 <tbody>
                 {% for university in university_list %}
                     <tr>
-                        <td colspan="4">{{university.in_city.in_country|capfirst}}</td>
+                        <td colspan="4"><a href="{{ university.in_city.in_country.name }}">{{university.in_city.in_country|capfirst}}</a></td>
                         <td colspan="4">  {{ university.in_city|capfirst }} </td>
-                        <td colspan="4"> {{ university.name|capfirst }} </td>
+                        <td colspan="4"> <a href="/exchange_portal/school/{{ university.id }}"> {{ university.name|capfirst }}</a> </td>
                     </tr>
                 {% endfor %}
                 </tbody>
