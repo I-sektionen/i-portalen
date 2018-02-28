@@ -1,11 +1,11 @@
-#@register.assignment_tag
-#def get_menu_organisations():
- #   organisations = {
-  #      "sektionen": list(Organisation.objects.filter(
-   #         organisation_type=Organisation.SEKTIONEN,
-    #    ).order_by('name')),
-     #   "foreningar": list(Organisation.objects.filter(
-      #      organisation_type=Organisation.FORENINGAR,
-       # ).order_by('name')),
- #   }
-#    return organisations
+from django.core.urlresolvers import reverse
+from django.template.loader_tags import register
+from django.utils.translation import ugettext as _
+
+
+@register.assignment_tag
+def get_menu_choices_exchange_portal(user):
+    menu_choices = []
+    if user.has_perm("exchange_portal.add_school"):
+        menu_choices.append((_("Administrera Utlandsportalen"), reverse('iportalenadmin:app_list', args=('exchange_portal',))))
+    return menu_choices
