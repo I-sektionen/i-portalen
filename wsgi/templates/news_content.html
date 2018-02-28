@@ -14,13 +14,15 @@
             <span class="prev" onclick="get_news_content('{% url 'news api' %}?page={{ content_feed_list.previous_page_number }}')">Föregående</span>
         {% endif %}
         {% for number in content_feed_list.paginator.page_range|slice:":10" %}
-            {% if number == content_feed_list.number %}
+            {% if number == content_feed_list.number  and content_feed_list%}
                 <span class="pagenumber active" onclick="get_news_content('{% url 'news api' %}?page={{ number }}')">{{ number }}</span>
             {%  elif content_feed_list %}
                 <span class="pagenumber" onclick="get_news_content('{% url 'news api' %}?page={{ number }}')">{{ number }}</span>
-            {&  else &}
+            {%  else %}
                 <p id="empty-text">Oj, här var det tomt.</p>
             {% endif %}
+
+
         {% endfor %}
         {% if content_feed_list.has_next %}
             <span class="next" onclick="get_news_content('{% url 'news api' %}?page={{ content_feed_list.next_page_number }}')">Nästa</span>
