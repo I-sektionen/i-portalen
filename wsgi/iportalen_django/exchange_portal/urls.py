@@ -20,7 +20,13 @@ exchange_portal_patterns = [
     url(r'^travel_stories/$',   view=views.Travel_Stories,    name="travel_stories"),
     url(r'^travel_story/(?P<pk>[0-9]+)/$', view=views.single_travel_story, name='travel_story'),
     url(r'^(?P<continent>\w{0,50})/$',   view=views.continent,    name="continent"),
-    url(r'^(?P<continent>\w{0,50})/(?P<country>\w{0,50})$',   view=views.continent_filtered,    name="country")
+    url(r'asien/(?P<country>\w{0,50})$',   view=views.continent_filtered,    name="country"),
+    url(r'nordamerika/(?P<country>\w{0,50})$',   view=views.continent_filtered,    name="country"),
+    url(r'europa/(?P<country>\w{0,50})$',   view=views.continent_filtered,    name="country"),
+    url(r'afrika/(?P<country>\w{0,50})$',   view=views.continent_filtered,    name="country"),
+    url(r'oceanien/(?P<country>\w{0,50})$',   view=views.continent_filtered,    name="country"),
+    url(r'sydamerika/(?P<country>\w{0,50})$',   view=views.continent_filtered,    name="country")
+
 ]
 
 

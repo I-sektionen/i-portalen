@@ -151,14 +151,14 @@ def continent(request, continent):
     else:
         raise Http404
 
-def continent_filtered(request, continent, country):
+def continent_filtered(request, country):
     country = country.lower()
 
     filtered_country = Country.objects.filter(name__icontains=country)#.filter(in_continent__country__name=country)
     schools = School.objects.filter(in_city__in_country__name__icontains=country)
-
+    # Lägg till en check för att kontrollera ifall continent finns.
     if schools:
-        return render(request, 'exchange_portal/continent.html', {'continent': continent, 'university_list': schools, 'country':country})
+        return render(request, 'exchange_portal/continent.html', {'university_list': schools, 'country':country})
     else:
         raise Http404
 
