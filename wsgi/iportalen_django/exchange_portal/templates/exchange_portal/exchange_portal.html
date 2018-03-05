@@ -37,27 +37,27 @@
     {% endif %}
 
     <ul>
-        <h1>Afrika</h1>
+        <a href="afrika"><h1>Afrika</h1></a>
         {% for africa in africa_list %}
             <li><a href="afrika/{{ africa.name}}">{{ africa.name|capfirst }}</a></li>
         {% endfor %}
-        <h1>Asien</h1>
+        <a href="asien"><h1>Asien</h1></a>
         {% for asia in asia_list %}
             <li><a href="asien/{{ asia.name}}">{{ asia.name|capfirst }}</a></li>
         {% endfor %}
-        <h1>Europa</h1>
+        <a href="europa"><h1>Europa</h1></a>
         {% for europe in europa_list %}
             <li><a href="europa/{{ europe.name}}">{{ europe.name|capfirst }}</a></li>
         {% endfor %}
-        <h1>Nordamerika</h1>
+        <a href="nordamerika"><h1>Nordamerika</h1></a>
         {% for northamerica in northamerica_list %}
            <li><a href="nordamerika/{{ northamerica.name}}">{{ northamerica.name|capfirst }}</a></li>
         {% endfor %}
-        <h1>Oceanien</h1>
+        <a href="oceanien"><h1>Oceanien</h1></a>
         {% for oceania in oceania_list %}
             <li><a href="oceanien/{{ oceania.name}}">{{ oceania.name|capfirst }}</a></li>
         {% endfor %}
-        <h1>Sydamerika</h1>
+        <a href="sydamerika"><h1>Sydamerika</h1></a>
         {% for southamerica in southamerica_list %}
             <li><a href="sydamerika/{{ southamerica.name}}">{{ southamerica.name|capfirst }}</a></li>
         {% endfor %}
