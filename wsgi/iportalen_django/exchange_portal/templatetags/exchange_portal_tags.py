@@ -9,3 +9,12 @@ def get_menu_choices_exchange_portal(user):
     if user.has_perm("exchange_portal.add_school"):
         menu_choices.append((_("Administrera Utlandsportalen"), reverse('iportalenadmin:app_list', args=('exchange_portal',))))
     return menu_choices
+
+
+
+@register.assignment_tag
+def has_perm_exchange_portal(user):
+    if user.has_perm("exchange_portal.add_school"):
+        return True
+    else:
+        return False

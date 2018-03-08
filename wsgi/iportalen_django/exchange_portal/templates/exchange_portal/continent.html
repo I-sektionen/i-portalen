@@ -1,6 +1,10 @@
 {% extends "master.html" %}
+{% load exchange_portal_tags %}
+
 {% block title %}Utlandsportalen{% endblock %}
 {% block content %}
+    {% has_perm_exchange_portal request.user as exchange_portal %}
+    {% if exchange_portal %}
     {% include "exchange_portal/exchange_portal_header.html" %}
     <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
     <hr id="exchange_divider">
@@ -39,6 +43,10 @@
                 </tbody>
             </table>
     {% endif %}
+    {% else %}
+        <p>Äntligen! Utlandsportalen är under uppbyggnad och alphan släpps förhoppningsvis under våren. Stay tuned!</p>
+        <i>"The road to success (utlandsportalen) is always under construction"</i> - Arnold Palmer
+{% endif %}
 
 
 

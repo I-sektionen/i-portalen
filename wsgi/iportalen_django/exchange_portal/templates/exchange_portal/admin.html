@@ -4,11 +4,18 @@
 {% block hero %}
 {% endblock %}
 {% block content %}
+    {% has_perm_exchange_portal request.user as exchange_portal %}
+    {% if exchange_portal %}
     {% include "exchange_portal/exchange_portal_header.html" %}
 
         <div id="admin-menu">
            {% get_menu_choices_exchange_portal request.user as exchange_portal %}
          {% include "user_managements/menu_box.html" with menu_name="Utlandsportalen" menu_list=exchange_portal %}
         </div>
+
+        {% else %}
+        <p>Äntligen! Utlandsportalen är under uppbyggnad och alphan släpps förhoppningsvis under våren. Stay tuned!</p>
+        <i>"The road to success (utlandsportalen) is always under construction"</i> - Arnold Palmer
+{% endif %}
 
 {% endblock %}

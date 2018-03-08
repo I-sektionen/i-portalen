@@ -1,11 +1,18 @@
 {% extends "master.html" %}
+{% load exchange_portal_tags %}
 
 {% block title %}Utlandsportalen{% endblock %}
 {% block content %}
-{%  include "exchange_portal/exchange_portal_header.html" %}
+    {% has_perm_exchange_portal request.user as exchange_portal %}
+    {% if exchange_portal %}
+        {%  include "exchange_portal/exchange_portal_header.html" %}
 
-<p>
-Här kommer det stå lite viktiga datum!
-</p>
+        <p>
+            Här kommer det stå lite viktiga datum!
+        </p>
 
+    {% else %}
+        <p>Äntligen! Utlandsportalen är under uppbyggnad och alphan släpps förhoppningsvis under våren. Stay tuned!</p>
+        <i>"The road to success (utlandsportalen) is always under construction"</i> - Arnold Palmer
+    {% endif %}
 {% endblock %}
