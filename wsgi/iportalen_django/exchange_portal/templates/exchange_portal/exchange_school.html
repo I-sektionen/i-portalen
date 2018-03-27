@@ -42,7 +42,7 @@
                     <thead id="course_table_head">
                     <tr>
                         <th colspan="4"> Kurs: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,0)" aria-hidden="true"></i></button> </th>
-                        <th colspan="1"> HP: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,1)" aria-hidden="true"></i></button></th>
+                        <th colspan="1"> Credits: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,1)" aria-hidden="true"></i></button></th>
                         <th colspan="1"> Nivå: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,2)" aria-hidden="true"></i></button></th>
                         <th colspan="1"> Inriktning:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,3)" aria-hidden="true"></i></button></th>
                         <th colspan="2"> LiU-Kurs:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,4)" aria-hidden="true"></i></button></th>
@@ -52,7 +52,7 @@
                     {% for course in course_list %}
                         <tr>
                             <td colspan="4">{{course.name|capfirst}}, {{ course.course_code|capfirst }}</td>
-                            <td colspan="1">  {{ course.liu_hp|capfirst }} </td>
+                            <td colspan="1">  {{ course.credits|capfirst }} </td>
                             <td colspan="1"> {{ course.level|capfirst }} </td>
                             <td colspan="1"> {{ course.technical_profile|capfirst }} </td>
                             <td colspan="2"> {{ course.corresponding_liu_course.name|capfirst }}, {{ course.corresponding_liu_course.course_code|capfirst }} </td>
