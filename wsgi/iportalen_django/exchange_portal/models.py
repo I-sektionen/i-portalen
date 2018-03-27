@@ -61,6 +61,8 @@ class School(models.Model):
 class Liu_Course(models.Model):
     name = models.CharField(max_length=50)
     course_code = models.CharField(max_length=20)
+    liu_hp = models.IntegerField(default=0)
+    level = models.CharField(max_length=10, default='N/A')
     is_compulsary = models.BooleanField(default=False)
 
     class Meta:
