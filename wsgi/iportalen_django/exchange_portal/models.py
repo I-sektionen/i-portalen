@@ -90,7 +90,7 @@ class Exchange_Course(models.Model):
     technical_profile = models.CharField(verbose_name='Teknisk inriktning', max_length=12, choices=TECH_PROFILES, default='NONE')
     in_school = models.ForeignKey(School, on_delete=models.CASCADE)
     corresponding_liu_course = models.ForeignKey(Liu_Course, on_delete=models.CASCADE)
-    liu_hp = models.IntegerField(default=0)
+    credits = models.IntegerField(default=0)
     level = models.CharField(max_length=10, default='N/A')
 
     # Add attribute "credits", and att the credits/hp quota in school model
