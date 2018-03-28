@@ -1,0 +1,40 @@
+
+    <div class="page-header">
+        <h1 style="display: inline-block">Utlandsportalen</h1>
+        <h1 style="text-align: right; display: inline-block">Alpha</h1>
+    </div>
+
+    <header class="navigation ep-navigation">
+    <div class="navigation-wrapper ep-navigation-wrapper">
+
+        <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu"><i class="fa fa-bars"></i></a>
+        <nav>
+            <ul id="js-navigation-menu" class="navigation-menu">
+                <li class="nav-link"><a href="{% url 'exchange_portal:exchange_portal' %}">Startsida</a>
+                <li class="nav-link"><a href="{% url 'exchange_portal:important_dates' %}">Viktiga datum</a>
+                <li class="nav-link more"><a href="javascript:void(0)">Innan utbytet</a>
+                    <ul class="submenu">
+                        <div class="submenu-column">
+                            <li><a href="javascript:void(0)" class="heading">Boende</a></li>
+                        </div>
+                        <div class="submenu-column">
+                            <li><a href="javascript:void(0)" class="heading">Stipendier</a></li>
+                        </div>
+                    </ul>
+                <li class="nav-link more"><a href="javascript:void(0)">Efter utbytet</a>
+                    <ul class="submenu">
+                        <div class="submenu-column">
+                            <li><a href="javascript:void(0)" class="heading">Tillgodoräkna</a></li>
+                        </div>
+                        <div class="submenu-column">
+                            <li><a href="javascript:void(0)" class="heading">Utvärdera</a></li>
+                        </div>
+                    </ul>
+                </li>
+                <li class="nav-link"><a href="{% url 'exchange_portal:contact' %}">Kontakt</a></li>
+                <li class="nav-link"><a href="{% url 'exchange_portal:travel_stories' %}">Reseberättelser</a></li>
+            </ul>
+        </nav>
+
+    </div>
+    </header>

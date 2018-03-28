@@ -1,0 +1,25 @@
+{% extends "master.html" %}
+{% load exchange_portal_tags %}
+
+{% block title %}Utlandsportalen{% endblock %}
+
+{% block content %}
+    {% has_perm_exchange_portal request.user as exchange_portal %}
+    {% if exchange_portal %}
+        {%  include "exchange_portal/exchange_portal_header.html" %} <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
+
+
+        <h1>Reseberättelser</h1>
+
+        <div>
+            {% for travel_story in travel_story_list %}
+                {% include "exchange_portal/model/small_travel_story.html" %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Äntligen! Utlandsportalen är under uppbyggnad och alphan släpps förhoppningsvis under våren. Stay tuned!</p>
+        <i>"The road to success (utlandsportalen) is always under construction"</i> - Arnold Palmer
+    {% endif %}
+
+{% endblock %}
+
