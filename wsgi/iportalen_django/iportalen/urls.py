@@ -49,6 +49,7 @@ urlpatterns = [
     url(r'^voting/',            include('votings.urls')),
     url(r'^speaker/',           include('speaker_list.urls')),
     url(r'^fika_penalty/',      include('fika_penalty.urls')),
+    url(r'^exchange_portal/',   include('exchange_portal.urls')),
     url(r'^liu-crawler/',       include('liu_crawler.urls')),
     url(r'^webgroup/',          include('webgroup.urls')),
 
