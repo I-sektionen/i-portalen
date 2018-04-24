@@ -5,26 +5,26 @@
 {% block content %}
     {% has_perm_exchange_portal request.user as exchange_portal %}
     {% if exchange_portal %}
-    {% include "exchange_portal/exchange_portal_header.html" %}
-    <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
-    <hr id="exchange_divider">
+        {% include "exchange_portal/exchange_portal_header.html" %}
+        <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
+        <hr id="exchange_divider">
+        <div class="button-group">
+            <div class="dropdown">
+                <button class="dropdown-btn">Länder<i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    {% if university_list %}
+                        {% for university in university_list %}
+                            <a href="{{ university.in_city.in_country.name }}">{{ university.in_city.in_country.name }}</a> <br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
 
-    <div class="dropdown">
-        <button class="dropdown-btn">länder<i class="fa fa-caret-down"></i>
-        </button>
-        <div class="dropdown-content">
-        {% if university_list %}
-            {% for university in university_list %}
-                <a href="{{ university.in_city.in_country.name }}">{{ university.in_city.in_country.name }}</a> <br>
-            {% endfor %}
-        {% endif %}
+            <button type="button" class="btn btn-primary style=" style="position:relative">Reseberättelser</button>
         </div>
-    </div>
-
-    <button type="button" class="btn btn-primary style=" style="position:relative">Asiens Reseberättelser</button>
-    <img src="/media/maps/Geo-map-asia.png" height="480">
-    {% if university_list %}
-     <table id="university_list">
+        {% if university_list %}
+            <table id="university_list">
                 <thead id="course_table_head">
                 <tr>
                     <th colspan="4"> Land: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('university_list' ,0)" aria-hidden="true"></i></button> </th>
@@ -42,11 +42,11 @@
                 {% endfor %}
                 </tbody>
             </table>
-    {% endif %}
+        {% endif %}
     {% else %}
         <p>Äntligen! Utlandsportalen är under uppbyggnad och alphan släpps förhoppningsvis under våren. Stay tuned!</p>
         <i>"The road to success (utlandsportalen) is always under construction"</i> - Arnold Palmer
-{% endif %}
+    {% endif %}
 
 
 
