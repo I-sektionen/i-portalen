@@ -11,6 +11,7 @@ from utils.validators import less_than_160_characters_validator
 from utils import time
 from tags.models import Tag
 from .managers import AlumniManager
+from organisations.models import Organisation
 
 
 class Alumni_Article(models.Model):
@@ -57,6 +58,12 @@ class Alumni_Article(models.Model):
         blank=True,
         default=None,
         on_delete=models.SET_NULL)
+    organisations = models.ManyToManyField(
+        Organisation,
+        blank=True,
+        verbose_name=_("organisationer"),
+        help_text=_("Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln."
+                   " Håll ner Ctrl för att markera flera."))
     objects = AlumniManager()  # Manager
 
     ###########################################################################
@@ -84,7 +91,7 @@ class Alumni_Article(models.Model):
 
     def get_absolute_url(self):
         """Get url of object"""
-        return reverse('articles:article', kwargs={'pk': self.pk})
+        return reverse('alumni_portal:alumni_article', kwargs={'pk': self.pk})
 
     ###########################################################################
     # Properties reachable in template

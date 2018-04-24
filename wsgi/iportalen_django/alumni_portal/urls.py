@@ -6,7 +6,8 @@ app_name = 'alumni_portal'
 
 alumni_patterns = [
     url(r'^$', view=views.alumni_portal, name='alumni_portal'),
-    url(r'^alumni_magazine/$', view=views.alumni_magazine, name="alumni_magazine")
+    url(r'^alumni_magazine/$', view=views.alumni_magazine, name="alumni_magazine"),
+    url(r'^alumni_article/(?P<pk>[0-9]+)/$', view=views.single_article, name='alumni_article')
 ]
 
 urlpatterns = [url(r'^', include(alumni_patterns, namespace=app_name))]

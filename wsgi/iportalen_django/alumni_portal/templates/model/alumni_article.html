@@ -1,0 +1,37 @@
+{% extends "master.html" %}
+
+{% comment %}
+ This files contains the view rendered for *single articles*
+{% endcomment %}
+
+{% load staticfiles %}
+{% block page_subtitle %}{{ article.headline }}{% endblock %}
+{% block head %}
+    <meta property="og:url"                content="{{ article.get_absolute_url }}" />
+    <meta property="og:type"               content="article" />
+    <meta property="og:title"              content="{{ article.headline }}" />
+    <meta property="og:description"        content="{{ article.lead }}" />
+{% endblock %}
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+{% include "model/full_article.html" with article=article %}
+    {% if can_administer %}
+        <hr>
+        <h3>Administratörskontroller:</h3>
+        <p><i>Obs. alla ändringar är spårbara till dig som användare.</i></p>
+        <ul>
+            <li><a href="{% url "articles:edit" article.pk %}">Ändra artikel</a></li>
+            <li><a href="{% url "articles:manage attachments" article.pk %}">Hantera bilagor</a></li>
+            <!--<li><a href="{% url "articles:manage images" article.pk %}">Hantera bilder</a></li>-->
+        </ul>
+    {% endif %}
+{% endblock %}
+{% block after_scripts %}
+    <script>
+        jQuery(document).ready(function () {
+            $(".fancybox").fancybox();
+        })
+    </script>
+{% endblock %}
