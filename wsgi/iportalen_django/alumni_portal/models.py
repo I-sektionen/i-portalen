@@ -13,7 +13,6 @@ from tags.models import Tag
 from .managers import AlumniManager
 
 
-
 class Alumni_Article(models.Model):
 
     headline = models.CharField(
@@ -124,3 +123,36 @@ class Alumni_Article(models.Model):
         if user.has_perm("articles.can_approve_article"):
             return True
         return False
+
+
+class Magazine(models.Model):
+
+    title = models.CharField(
+        verbose_name=_("titel"),
+        max_length=255,
+        help_text=_("Titel på tidningen")
+    )
+
+    url = models.URLField(
+        verbose_name=_("URL"),
+        help_text=_("URL till tidningen")
+    )
+
+    thumbnail = models.TextField(
+        verbose_name=_("thumbnail"),
+        help_text=_("thumbnail som ska visas"),
+        default=_("https://www.rosegoldstudio.com/wp-content/plugins/penci-portfolio//images/no-thumbnail.jpg")
+    )
+
+    date = models.DateField(
+        verbose_name=_("utgivningsdatum"),
+        help_text=_("utgivningsdatum för tidningen")
+    )
+
+    class Meta:
+        verbose_name = _("Tidning")
+        verbose_name_plural = _("Tidningar")
+
+    def __str__(self):
+        """Return string representation of object"""
+        return self.title

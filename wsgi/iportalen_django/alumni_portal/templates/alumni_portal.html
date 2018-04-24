@@ -2,12 +2,12 @@
 
 {% block title %}Alumniportalen{% endblock %}
 {% block content %}
-{% include "alumni_portal_header.html" %} <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
+    {% include "alumni_portal_header.html" %} <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
 
     <!-- kopierad från job adverts -->
     <section id="news-feed">
 
-     {% for article in articles %}
+        {% for article in articles %}
             {% include "articles/model/small_article.html" with article=article %}
         {% endfor %}
         <div class="pagination">

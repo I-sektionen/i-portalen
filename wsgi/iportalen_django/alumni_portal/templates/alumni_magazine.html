@@ -1,0 +1,22 @@
+{% extends "master.html" %}
+
+{% block title %}Alumniportalen{% endblock %}
+{% block content %}
+    {% include "alumni_portal_header.html" %} <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
+
+    <div>
+        <h1>Alumnitidningen</h1>
+        <p>Här hittar du alla tidigare utgåvor av alumnitidningen. Alumnitidningen som skickas ut till sektionens över 6000 alumner varje vår.</p>
+        <div class="grid-container">
+            {%  for item in magazines %}
+                <div class="grid-item">
+                    <a target="_blank" href="{{ item.url }}">
+                        <img class="icon thumbnail-image--loaded sl-grid-thumbnail" src={{ item.thumbnail }}>
+                        <h7>{{ item.title }}</h7>
+                    </a>
+                </div>
+            {% endfor %}
+            <br class="clearBoth" />
+        </div>
+    </div>
+{% endblock %}
