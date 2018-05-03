@@ -16,7 +16,7 @@
         <p>{{ u.username}}</p>
         <h3>Adress:</h3>
         <p>{{ u.address|default:"Du har inte angett någon information"}} {{ u.zip_code|default:""}} {{ u.city|default:""}}</p>
-        <h3>Anmälda allergier:</h3>
+        <h3>Anmälda allergier/Specialkost:</h3>
         <p> {{ u.allergies|default:"Du har inte angett någon information"}}</p>
         <h3>ipikuré:</h3>
         {% if u.ipikuresubscriber %}

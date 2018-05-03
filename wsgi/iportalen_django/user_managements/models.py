@@ -102,7 +102,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     city = models.CharField(verbose_name=_("ort"), max_length=255, null=True, blank=True)
     gender = models.CharField(verbose_name=_("kön"),
                               max_length=1, null=True, blank=True, choices=GENDER_OPTIONS, default=None)
-    allergies = models.TextField(verbose_name=_("allergier"), null=True, blank=True)
+    allergies = models.TextField(verbose_name=_("allergier/Specialkost"), null=True, blank=True)
     start_year = models.IntegerField(
         verbose_name=_("startår"), choices=YEAR_CHOICES, default=timezone.now().year, validators=[validate_year])
     current_year = models.CharField(verbose_name=_("nuvarande årskurs"),
