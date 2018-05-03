@@ -99,6 +99,7 @@ class Exchange_Course(models.Model):
     class Meta:
         verbose_name = _("Utlandskurs")
         verbose_name_plural = _("Utlandskurser")
+        #ordering = ['-year_abroad', 'term_abroad']
 
     def __str__(self):
         return self.name
@@ -125,9 +126,9 @@ class Travel_Story(models.Model):
     term_abroad = models.CharField(verbose_name=("termin utomlands"), help_text="Termin du var utomlands", max_length=5, choices=TERM_CHOICES)
     year_abroad = models.IntegerField(verbose_name=("tid utomlands"), help_text="År när du var utomlands", choices=YEAR_CHOICES)
     headline = models.CharField(
-      verbose_name=_("rubrik"),
-      max_length=255,
-      help_text=_("Rubriken till reseberättelsen"))
+        verbose_name=_("rubrik"),
+        max_length=255,
+        help_text=_("Rubriken till reseberättelsen"))
     lead = models.TextField(
         verbose_name=_("ingress"),
         help_text=_("Ingressen är den text som syns i reseberättelse"))
@@ -167,19 +168,20 @@ class Travel_Story(models.Model):
         null=True,
         blank=True)
     #tags = models.ManyToManyField(
-     #   Tag,
-     #   verbose_name=_("tag"),
-      #  blank=True,
-       # help_text=_("Håll ner Ctrl för att markera flera."))
+    #   Tag,
+    #   verbose_name=_("tag"),
+    #  blank=True,
+    # help_text=_("Håll ner Ctrl för att markera flera."))
 
     class Meta:
-         verbose_name = _("Reseberättelse")
-         verbose_name_plural = _("Reseberättelser")
+        verbose_name = _("Reseberättelse")
+        verbose_name_plural = _("Reseberättelser")
+        ordering= ['-year_abroad','term_abroad']
 
     def __str__(self):
         return self.headline
 
-    #def get_absolute_url(self):
-     #   """Get url of object"""
-      #  return reverse(self)
-    #self.about_school
+        #def get_absolute_url(self):
+        #   """Get url of object"""
+        #  return reverse(self)
+        #self.about_school
