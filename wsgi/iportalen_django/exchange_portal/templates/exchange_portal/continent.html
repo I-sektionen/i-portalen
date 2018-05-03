@@ -7,7 +7,11 @@
     {% if exchange_portal %}
         {% include "exchange_portal/exchange_portal_header.html" %}
         <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
+        {% if country %}<h1> <a href="/exchange_portal/{{ country.in_continent }}">{{country.in_continent|capfirst}}</a>/{{ country.name|capfirst }}</h1> {% else %}
+            <h1>{{ continent|capfirst }}</h1>
+        {% endif %}
         <hr id="exchange_divider">
+
         <div class="button-group">
             <div class="dropdown">
                 <button class="dropdown-btn">Länder<i class="fa fa-caret-down"></i>
@@ -33,6 +37,7 @@
                 </tr>
                 </thead>
                 <tbody>
+
                 {% for university in university_list %}
                     <tr>
                         <td colspan="4"><a href="{{ university.in_city.in_country.name }}">{{university.in_city.in_country|capfirst}}</a></td>
@@ -42,6 +47,8 @@
                 {% endfor %}
                 </tbody>
             </table>
+        {% else %}
+            <p> Det finns inga universitet tillagda ännu.  </p>
         {% endif %}
     {% else %}
         <p>Äntligen! Utlandsportalen är under uppbyggnad och alphan släpps förhoppningsvis under våren. Stay tuned!</p>

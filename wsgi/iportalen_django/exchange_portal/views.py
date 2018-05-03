@@ -139,26 +139,23 @@ def single_travel_story(request, pk):
     #Add all travel stories to show
 
 
-# Add continents here. If statements is due to limiting the threat of SQL-injection.
 def continent(request, continent):
-    #continent = continent.lower()
+    continent_found = Continent.objects.filter(name__contains=continent)
 
-   # if continent == 'asia':
-    #countries = Country.objects.filter(in_continent__name__icontains=continent)
     all_universities = School.objects.filter(in_city__in_country__in_continent__name__icontains=continent)
-    if all_universities:
+    if continent_found:
         return render(request, 'exchange_portal/continent.html', {'continent': continent, 'university_list': all_universities})
     else:
         raise Http404
 
-def continent_filtered(request, country):
-    country = country.lower()
 
-    filtered_country = Country.objects.filter(name__icontains=country)#.filter(in_continent__country__name=country)
+def continent_filtered(request, country):
+
+    found_country = Country.objects.filter(name__icontains=country)#.filter(in_continent__country__name=country)
     schools = School.objects.filter(in_city__in_country__name__icontains=country)
-    # Lägg till en check för att kontrollera ifall continent finns.
-    if schools:
-        return render(request, 'exchange_portal/continent.html', {'university_list': schools, 'country':country})
+
+    if found_country:
+        return render(request, 'exchange_portal/continent.html', {'university_list': schools, 'country':found_country.first})
     else:
         raise Http404
 
