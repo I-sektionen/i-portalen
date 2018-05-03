@@ -128,9 +128,13 @@ class Search_Autocomplete (autocomplete.Select2QuerySetView):
         return qs
 
 def Travel_Stories(request):
-    #Search function
-    travel_story_list = list(Travel_Story.objects.all())
-    #Add all travel stories to show
+    query = request.POST.get('q')
+    if query != None:
+        travel_story_list = Travel_Story.objects.filter(Q(about_school__name__icontains=query) | Q(about_school__in_city__name__icontains=query) |
+                                            Q(about_school__in_city__in_country__name__icontains=query))
+    else:
+        travel_story_list = list(Travel_Story.objects.all())
+
     return render(request, 'exchange_portal/travel_stories.html', {'travel_story_list':travel_story_list})
 
 def single_travel_story(request, pk):
