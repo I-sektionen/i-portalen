@@ -7,7 +7,8 @@
     {% if exchange_portal %}
         {% include "exchange_portal/exchange_portal_header.html" %}
 
-        <h1>{{ school.name|capfirst }}, {{ school.in_city.name|capfirst }}, {{ school.in_city.in_country.name }} </h1>
+        <h1>{{ school.in_city.in_continent.name|capfirst }}{{ school.in_city.in_country.name|capfirst }}/{{ school.in_city.name|capfirst }}/{{ school.name|capfirst }} </h1>
+
 
         <div class="button-group">
             <button href="#" class="button button_exchange_portal" id="courses_button"> Kurser </button>

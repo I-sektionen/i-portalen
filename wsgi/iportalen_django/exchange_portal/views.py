@@ -151,7 +151,7 @@ def continent(request, continent):
 
 def continent_filtered(request, country):
 
-    found_country = Country.objects.filter(name__icontains=country)#.filter(in_continent__country__name=country)
+    found_country = Country.objects.filter(name__icontains=country)
     schools = School.objects.filter(in_city__in_country__name__icontains=country)
 
     if found_country:
