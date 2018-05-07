@@ -16,6 +16,14 @@ from organisations.models import Organisation
 
 class Alumni_Article(models.Model):
 
+    ARTIKEL = 'a'
+    ARRANGEMANG = 'e'
+
+    TYPES = (
+        (ARTIKEL, _('Artikel')),
+        (ARRANGEMANG, _('Event'))
+    )
+
     headline = models.CharField(
         verbose_name=_("rubrik"),
         max_length=255,
@@ -64,6 +72,13 @@ class Alumni_Article(models.Model):
         verbose_name=_("organisationer"),
         help_text=_("Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln."
                    " Håll ner Ctrl för att markera flera."))
+
+    kind = models.CharField(
+        max_length=1,
+        choices=TYPES,
+        default=ARTIKEL,
+        verbose_name=_("Typ"))
+
     objects = AlumniManager()  # Manager
 
     ###########################################################################
