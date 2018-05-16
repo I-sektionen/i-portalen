@@ -61,6 +61,7 @@ def Add_Feedback(request):
     if feedback_message != None:
         new_feedback = Feedback(message=feedback_message)
         new_feedback.save()
+        return redirect('/exchange_portal')
     return render(request, 'exchange_portal/feedback.html')
 
 
