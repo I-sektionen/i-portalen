@@ -1,0 +1,37 @@
+{% extends "master.html" %}
+{% load exchange_portal_tags %}
+
+{% block hero %}
+{% endblock %}
+{% block content %}
+    {% has_perm_exchange_portal request.user as exchange_portal %}
+    {% if exchange_portal %}
+    {% include "exchange_portal/exchange_portal_header.html" %}
+
+
+    <div>
+        <br>
+         Hej!
+        <br>
+        <br>
+        Här har du chansen att vara med och påverka I-sektionens Utlandsportal!
+        <br>
+        <br>
+        Eftersom du nu är i en del av I-portalen som är under utveckling och som är i Alpha-stadiet så har vi nedan gjort det möjligt för dig att lämna feedback. Feedbacken kan vara allt från problem till önskningar (eller bara en trevlig hälsning) som går till både Webgroup och Internationella Utskottet.
+        <br>
+    </div>
+  <div>
+      <br>
+    <form class="search-form" action="" method="post">
+        {% csrf_token %}
+        <textarea name="feedback_message" cols="40" rows="5" placeholder="Meddelande"></textarea>
+        <input class="submit-holder primary action-button" type="submit" value="Skicka">
+    </form>
+  </div>
+
+    {% else %}
+        <p>Äntligen! Utlandsportalen är under uppbyggnad och alphan släpps förhoppningsvis under våren. Stay tuned!</p>
+        <i>"The road to success (utlandsportalen) is always under construction"</i> - Arnold Palmer
+    {% endif %}
+
+{% endblock %}
