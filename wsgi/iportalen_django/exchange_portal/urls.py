@@ -7,6 +7,7 @@ app_name = 'exchange_portal'
 exchange_portal_patterns = [
     url(r'^$',                           view=views.Exchange_Portal,          name="exchange_portal"),
     url(r'^admin/$',                           view=views.Admin,            name="admin"),
+    url(r'^feedback/$',                           view=views.Add_Feedback,            name="feedback"),
     url(r'^important_dates/$',           view=views.Important_Dates,          name='important_dates'),
     url(r'^contact/$',                   view=views.Contact,                  name='contact'),
     url(r'^school/(?P<pk>[0-9]+)/$',     view=views.Exchange_School,          name='school'),

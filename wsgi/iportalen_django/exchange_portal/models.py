@@ -179,6 +179,12 @@ class Travel_Story(models.Model):
     def __str__(self):
         return self.headline
 
+class Feedback(models.Model):
+    message = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.message
+
     #def get_absolute_url(self):
      #   """Get url of object"""
       #  return reverse(self)

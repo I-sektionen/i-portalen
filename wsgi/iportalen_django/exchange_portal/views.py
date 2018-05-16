@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db import transaction
 from django.utils.translation import ugettext as _
-from .models import Exchange_Course, Liu_Course, School, Continent, Country, City, Travel_Story
+from .models import Exchange_Course, Liu_Course, School, Continent, Country, City, Travel_Story, Feedback
 from django.forms import modelformset_factory
 import mimetypes
 from django.db.models import Q
@@ -55,6 +55,13 @@ def Add_Country(request):
         new_country.save()
 
     return render(request, 'exchange_portal/add_country.html', {'continent_list': continent_list})
+
+def Add_Feedback(request):
+    feedback_message = request.POST.get('feedback_message')
+    if feedback_message != None:
+        new_feedback = Feedback(message=feedback_message)
+        new_feedback.save()
+    return render(request, 'exchange_portal/feedback.html')
 
 
 def Add_City(request):
