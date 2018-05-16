@@ -1,7 +1,7 @@
 {% extends "master.html" %}
 
 {% comment %}
- This files contains the view rendered for *single articles*
+    This files contains the view rendered for *single articles*
 {% endcomment %}
 
 {% load staticfiles %}
@@ -16,16 +16,8 @@
 {% endblock %}
 
 {% block content %}
-{% include "model/full_article.html" with article=article %}
-    {% if can_administer %}
-        <hr>
-        <h3>Administratörskontroller:</h3>
-        <p><i>Obs. alla ändringar är spårbara till dig som användare.</i></p>
-        <ul>
-            <li><a href="{% url "articles:edit" article.pk %}">Ändra artikel FUNGERAR EJ</a></li>
-            <!--<li><a href="{% url "articles:manage images" article.pk %}">Hantera bilder</a></li>-->
-        </ul>
-    {% endif %}
+    {% include "alumni_portal_header.html" %}
+    {% include "model/full_article.html" with article=article %}
 {% endblock %}
 {% block after_scripts %}
     <script>

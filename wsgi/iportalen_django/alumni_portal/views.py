@@ -26,3 +26,19 @@ def single_article(request, pk):
             # 'attachments': attachments,
             # 'image_attachments': image_attachments,
             'can_administer': admin})
+
+
+def alumni_skugga(request):
+    return render(request, 'alumni_skugga_en_alumn.html')
+
+
+def about(request):
+    return render(request, 'alumni_about.html')
+
+
+def mentorship_program(request):
+    return render(request, 'alumni_mentorship_program.html')
+
+
+def calendar(request):
+    return render(request, 'alumni_calendar.html')

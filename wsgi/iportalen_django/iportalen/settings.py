@@ -346,14 +346,14 @@ CSP_DEFAULT_SRC = (
     "'self'", "'unsafe-eval'", "'unsafe-inline'", '*.s3.amazonaws.com/', 's3.amazonaws.com/',
     'https://maxcdn.bootstrapcdn.com/', 'google-analytics.com/',
     '*.googleapis.com/', 'https://cdnjs.cloudflare.com/', '*.gstatic.com/',
-    '*.github.com/repos/I-sektionen/', 'data:'
+    '*.github.com/repos/I-sektionen/', 'data:', 'https://calendar.google.com/'
 )
 CSP_SCRIPT_SRC = (
     "'self'", "'unsafe-eval'", "'unsafe-inline'",
     '*.googleapis.com/','*.s3.amazonaws.com/', 's3.amazonaws.com/',
     'iportalen/js/jquery.datetimepicker.full.min.js', 'googletagmanager.com/',
     'google-analytics.com/', 'https://www.gstatic.com/',
-    'https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js', 'https://calendar.google.com/'
 )
 
 

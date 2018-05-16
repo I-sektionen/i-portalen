@@ -26,17 +26,5 @@
             <span>Jobbannons</span>
         {%  endif %}
     </p>
-    {% if image_attachments %}
-        {% for attachment in image_attachments.all %}
-            <a class="fancybox" rel="article_gallery" href="{{ attachment.img.url }}" title="{{ attachment.caption }}">
-                <!--<img src="{#  #}{ attachment.thumbnail.url }}" alt=""/>-->
-            </a>
-        {% endfor %}
-    {% endif %}
     {{ article.body|markdown }}
-    {% if attachments %}
-        {% for attachment in attachments.all %}
-            <p>Bifogad fil: <a href="{{ attachment.file.url }}">{{ attachment.display_name }}</a></p>
-        {% endfor %}
-    {% endif %}
 </article>
