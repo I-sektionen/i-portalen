@@ -11,7 +11,6 @@
             <h1>{{ continent|capfirst }}</h1>
         {% endif %}
         <hr id="exchange_divider">
-        <div class="button-group">
             <div class="dropdown">
                 <button class="dropdown-btn">Länder<i class="fa fa-caret-down"></i>
                 </button>
@@ -23,9 +22,6 @@
                     {% endif %}
                 </div>
             </div>
-
-            <button type="button" class="btn btn-primary style=" style="position:relative">Reseberättelser</button>
-        </div>
         {% if university_list %}
             <table id="university_list">
                 <thead id="course_table_head">
