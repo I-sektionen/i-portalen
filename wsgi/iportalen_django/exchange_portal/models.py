@@ -14,6 +14,7 @@ class Continent(models.Model):
     class Meta:
         verbose_name = _("Världsdel")
         verbose_name_plural = _("Världsdelar")
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -25,6 +26,7 @@ class Country(models.Model):
     class Meta:
         verbose_name = _("Land")
         verbose_name_plural = _("Länder")
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -39,6 +41,7 @@ class City(models.Model):
     class Meta:
         verbose_name = _("Stad")
         verbose_name_plural = _("Städer")
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -53,6 +56,7 @@ class School(models.Model):
     class Meta:
         verbose_name = _("Skola")
         verbose_name_plural = _("Skolor")
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -99,7 +103,7 @@ class Exchange_Course(models.Model):
     class Meta:
         verbose_name = _("Utlandskurs")
         verbose_name_plural = _("Utlandskurser")
-        #ordering = ['-year_abroad', 'term_abroad']
+        ordering = ['name']
 
     def __str__(self):
         return self.name

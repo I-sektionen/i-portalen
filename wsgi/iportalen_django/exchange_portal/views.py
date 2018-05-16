@@ -145,10 +145,10 @@ def single_travel_story(request, pk):
 
 def continent(request, continent):
     continent_found = Continent.objects.filter(name__contains=continent)
-
     all_universities = School.objects.filter(in_city__in_country__in_continent__name__icontains=continent)
+    all_countries = Country.objects.filter(in_continent__name__icontains = continent)
     if continent_found:
-        return render(request, 'exchange_portal/continent.html', {'continent': continent, 'university_list': all_universities})
+        return render(request, 'exchange_portal/continent.html', {'continent': continent, 'university_list': all_universities, 'country_list': all_countries})
     else:
         raise Http404
 
@@ -156,10 +156,9 @@ def continent(request, continent):
 def continent_filtered(request, country):
 
     found_country = Country.objects.filter(name__icontains=country)
-    schools = School.objects.filter(in_city__in_country__name__icontains=country)
-
+    universities = School.objects.filter(in_city__in_country__name__icontains=country)
     if found_country:
-        return render(request, 'exchange_portal/continent.html', {'university_list': schools, 'country':found_country.first})
+        return render(request, 'exchange_portal/continent.html', {'university_list': universities, 'country':found_country.first, 'country_list': found_country})
     else:
         raise Http404
 
