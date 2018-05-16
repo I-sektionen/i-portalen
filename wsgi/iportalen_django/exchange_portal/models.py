@@ -185,7 +185,6 @@ class Travel_Story(models.Model):
     def __str__(self):
         return self.headline
 
-<<<<<<< HEAD
 class Feedback(models.Model):
     message = models.CharField(max_length=500)
 
@@ -196,9 +195,3 @@ class Feedback(models.Model):
      #   """Get url of object"""
       #  return reverse(self)
     #self.about_school
-=======
-        #def get_absolute_url(self):
-        #   """Get url of object"""
-        #  return reverse(self)
-        #self.about_school
->>>>>>> c28a0f3d5eb42a3184b8daef987f6e5bd59c660a
