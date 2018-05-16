@@ -4,7 +4,7 @@
     <a href="/exchange_portal/travel_story/{{ travel_story.id }}"><h1>{{ travel_story.headline }}</h1></a>
     <p class="meta">
         <i class="fa fa-globe large"></i>
-        <a href="/exchange_portal/{{ travel_story.about_school.id }}">{{ travel_story.about_school.name }}</a>, {{ travel_story.about_school.in_city }}, {{ travel_story.about_school.in_city.in_country }}
+        <a href="/exchange_portal/school/{{ travel_story.about_school.id }}">{{ travel_story.about_school.name }}</a>, {{ travel_story.about_school.in_city }}, {{ travel_story.about_school.in_city.in_country }}
         <br>
         <i class="fa fa-user large"></i>  {{ travel_story.added_by_user }}
         <br>
@@ -13,8 +13,5 @@
     <h2>{{ travel_story.lead|truncatewords_html:100}}</h2>
 
     <a href="/exchange_portal/travel_story/{{ travel_story.id }}">Läs mer</a>
-    <!-- länka till långa -->
-    <!-- { travel_story.get_absolute_url }}-->
-
     <hr>
 </travel_story>

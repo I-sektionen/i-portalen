@@ -136,9 +136,13 @@ class Search_Autocomplete (autocomplete.Select2QuerySetView):
         return qs
 
 def Travel_Stories(request):
-    #Search function
-    travel_story_list = list(Travel_Story.objects.all())
-    #Add all travel stories to show
+    query = request.POST.get('q')
+    if query != None:
+        travel_story_list = Travel_Story.objects.filter(Q(about_school__name__icontains=query) | Q(about_school__in_city__name__icontains=query) |
+                                            Q(about_school__in_city__in_country__name__icontains=query))
+    else:
+        travel_story_list = list(Travel_Story.objects.all())
+
     return render(request, 'exchange_portal/travel_stories.html', {'travel_story_list':travel_story_list})
 
 def single_travel_story(request, pk):
@@ -147,26 +151,22 @@ def single_travel_story(request, pk):
     #Add all travel stories to show
 
 
-# Add continents here. If statements is due to limiting the threat of SQL-injection.
 def continent(request, continent):
-    #continent = continent.lower()
-
-   # if continent == 'asia':
-    #countries = Country.objects.filter(in_continent__name__icontains=continent)
+    continent_found = Continent.objects.filter(name__contains=continent)
     all_universities = School.objects.filter(in_city__in_country__in_continent__name__icontains=continent)
-    if all_universities:
-        return render(request, 'exchange_portal/continent.html', {'continent': continent, 'university_list': all_universities})
+    all_countries = Country.objects.filter(in_continent__name__icontains = continent)
+    if continent_found:
+        return render(request, 'exchange_portal/continent.html', {'continent': continent, 'university_list': all_universities, 'country_list': all_countries})
     else:
         raise Http404
 
-def continent_filtered(request, country):
-    country = country.lower()
 
-    filtered_country = Country.objects.filter(name__icontains=country)#.filter(in_continent__country__name=country)
-    schools = School.objects.filter(in_city__in_country__name__icontains=country)
-    # Lägg till en check för att kontrollera ifall continent finns.
-    if schools:
-        return render(request, 'exchange_portal/continent.html', {'university_list': schools, 'country':country})
+def continent_filtered(request, country):
+
+    found_country = Country.objects.filter(name__icontains=country)
+    universities = School.objects.filter(in_city__in_country__name__icontains=country)
+    if found_country:
+        return render(request, 'exchange_portal/continent.html', {'university_list': universities, 'country':found_country.first, 'country_list': found_country})
     else:
         raise Http404
 

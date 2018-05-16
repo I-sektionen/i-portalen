@@ -7,12 +7,13 @@
     {% if exchange_portal %}
         {% include "exchange_portal/exchange_portal_header.html" %}
 
-        <h1>{{ school.name|capfirst }}, {{ school.in_city.name|capfirst }}, {{ school.in_city.in_country.name }} </h1>
-
+        <h1><a href="/exchange_portal/{{school.in_city.in_country.in_continent.name}}">{{ school.in_city.in_country.in_continent.name|capfirst }}/</a>
+            <a href="/exchange_portal/{{ school.in_city.in_country.in_continent.name }}/{{school.in_city.in_country.name}}">{{ school.in_city.in_country.name|capfirst }}</a>
+            /{{ school.in_city.name|capfirst }}/{{ school.name|capfirst }} </h1>
+        {{ school.in_city.in_country.name|capfirst }}/{{ school.in_city.name|capfirst }}/{{ school.name|capfirst }}
         <div class="button-group">
             <button href="#" class="button button_exchange_portal" id="courses_button"> Kurser </button>
             <button href="#" class="button button_exchange_portal" id="travel_stories_button"> Reseberättelser </button>
-            <button href="#" class="button button_exchange_portal" id="helpful_links_button"> Bra länkar </button>
         </div>
         <div id="courses_section">
             <i>
@@ -42,20 +43,22 @@
                     <thead id="course_table_head">
                     <tr>
                         <th colspan="4"> Kurs: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,0)" aria-hidden="true"></i></button> </th>
-                        <th colspan="1"> Credits: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,1)" aria-hidden="true"></i></button></th>
+                        <th colspan="2"> Credits: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,1)" aria-hidden="true"></i></button></th>
                         <th colspan="1"> Nivå: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,2)" aria-hidden="true"></i></button></th>
-                        <th colspan="1"> Inriktning:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,3)" aria-hidden="true"></i></button></th>
-                        <th colspan="2"> LiU-Kurs:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,4)" aria-hidden="true"></i></button></th>
+                        <th colspan="2"> Inriktning:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,3)" aria-hidden="true"></i></button></th>
+                        <th colspan="2"> Senast läst:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,4)" aria-hidden="true"></i></button></th>
+                        <th colspan="3"> LiU-Kurs:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,5)" aria-hidden="true"></i></button></th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for course in course_list %}
                         <tr>
-                            <td colspan="4">{{course.name|capfirst}}, {{ course.course_code|capfirst }}</td>
-                            <td colspan="1">  {{ course.credits|capfirst }} </td>
+                            <td colspan="4">{{course.name|capfirst}}, {{ course.course_code|upper }}</td>
+                            <td colspan="2">  {{ course.credits|capfirst }} </td>
                             <td colspan="1"> {{ course.level|capfirst }} </td>
-                            <td colspan="1"> {{ course.technical_profile|capfirst }} </td>
-                            <td colspan="2"> {{ course.corresponding_liu_course.name|capfirst }}, {{ course.corresponding_liu_course.course_code|capfirst }} </td>
+                            <td colspan="2"> {{ course.technical_profile|capfirst }} </td>
+                            <td colspan="2"> {{ course.year|capfirst }} </td>
+                            <td colspan="3"> {{ course.corresponding_liu_course.name|capfirst }}, {{ course.corresponding_liu_course.course_code|upper }} </td>
                         </tr>
                     {% endfor %}
                     </tbody>
