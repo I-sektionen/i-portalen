@@ -11,15 +11,14 @@
             <h1>{{ continent|capfirst }}</h1>
         {% endif %}
         <hr id="exchange_divider">
-
         <div class="button-group">
             <div class="dropdown">
                 <button class="dropdown-btn">Länder<i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    {% if university_list %}
-                        {% for university in university_list %}
-                            <a href="{{ university.in_city.in_country.name }}">{{ university.in_city.in_country.name }}</a> <br>
+                    {% if country_list %}
+                        {% for country in country_list %}
+                            <a href="{{ country.name }}">{{ country.name }}</a> <br>
                         {% endfor %}
                     {% endif %}
                 </div>
