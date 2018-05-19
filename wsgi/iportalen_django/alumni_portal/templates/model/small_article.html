@@ -1,12 +1,17 @@
 <article class="news-feed-content">
     <div class="article-type-and-date">
-        <!-- <p class="type">Nyhet</p>-->
-        <i class="fa fa-newspaper-o large"></i>
+        <!-- <p class="type">Nyhet</p> -->
+        {% if article.kind == 'e' %}
+            <i class="fa fa-calendar large"></i>
+        {% else %}
+            <i class="fa fa-newspaper-o large"></i>
+        {% endif %}
+
         <div class="article-preview-time-organisation">
             {% if article.organisations.all %}
-            <p class="article-preview-type">{{ article.organisations.all|safeseq|join:", " }}</p>
+                <p class="article-preview-type">{{ article.organisations.all|safeseq|join:", " }}</p>
             {% else %}
-            <p class="article-preview-type">{{ article.user.get_full_name }}</p>
+                <p class="article-preview-type">{{ article.user.get_full_name }}</p>
             {% endif %}
             <p class="article-preview-type time-since">{{ article.visible_from|timesince}}</p>
         </div>
