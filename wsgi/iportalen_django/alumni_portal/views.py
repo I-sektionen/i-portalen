@@ -41,4 +41,5 @@ def mentorship_program(request):
 
 
 def calendar(request):
-    return render(request, 'alumni_calendar.html')
+    articles = Alumni_Article.objects.published()
+    return render(request, 'alumni_calendar.html', context={'articles': articles})

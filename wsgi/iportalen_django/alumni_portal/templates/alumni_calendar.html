@@ -4,7 +4,12 @@
 {% block content %}
     {% include "alumni_portal_header.html" %}
     <div>
-{#    Link to alumniutskottets google calendar should go into src below #}
-<iframe src="" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+        {#    Link to alumniutskottets google calendar should go into src below #}
+        {% for article in articles %}
+            {% if article.kind == 'e' %}
+                {% include "model/small_article.html" with article=article %}
+            {% endif %}
+        {% endfor %}
+        <iframe src="" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
     </div>
 {% endblock %}
