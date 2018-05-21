@@ -1,4 +1,4 @@
-from .models import Alumni_Article, Magazine
+from .models import Magazine, Alumni_Article
 from django.shortcuts import render, redirect, get_object_or_404
 
 

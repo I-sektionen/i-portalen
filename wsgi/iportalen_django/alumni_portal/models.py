@@ -76,7 +76,7 @@ class Alumni_Article(models.Model):
     kind = models.CharField(
         max_length=1,
         choices=TYPES,
-        default=ARTIKEL,
+        default='a',
         verbose_name=_("Typ"))
 
     objects = AlumniManager()  # Manager
