@@ -17,6 +17,7 @@ from utils.kobra import get_user_by_liu_id, LiuGetterError, LiuNotFoundError
 import re
 import time
 from django.utils.translation import ugettext as _
+import datetime
 
 
 def logout_view(request):
@@ -34,7 +35,7 @@ def login(request):  # TODO: Reduce complexity
         if user is None:
             #  The user tried an island-id. (format: i12firla)
             if re.match(r"^i\w{2}[a-z]{4}", username):
-                messages.error(request, _("Använd ditt LiU-id för att logga in, inte Islands-id."))
+                messages.error(request, _("Använd ditt LiU-id för att logga in."))
                 return render(request, "user_managements/login.html")
 
             user_account = IUser.objects.filter(username__exact=username)
@@ -67,7 +68,7 @@ def login(request):  # TODO: Reduce complexity
                     form = MembershipForm(initial={"user": user.username})
                     return render(request, "user_managements/membership.html", {"form": form})
                 elif user.is_member is True:
-                    if user.must_edit:
+                    if user.must_edit or user.date_gdpr_accepted is None:
                         form = ChangeUserInfoForm(instance=user)
                         return render(request, "user_managements/force_user_form.html", {"form": form})
                     auth_login(request, user)
@@ -78,7 +79,7 @@ def login(request):  # TODO: Reduce complexity
 
         # The password is valid, but the account has been disabled! (Användaren Klickade ev: "vill INTE bli medlem")
         messages.error(request, _("Lösenordet är korrekt, men kontot är avstängt! "
-                                  "Om detta inte bör vara fallet var god kontakta webgroup@isektionen.se"))
+                                  "Om detta inte bör vara fallet var god kontakta webmaster@isektionen.se"))
         return render(request, "user_managements/login.html")
     else:
         # Did not try to login.
@@ -139,13 +140,21 @@ def force_change_user_info_view(request):
 
         if form.is_valid():
             form.save()
-
-            user.must_edit = False
-            user.save()
-            auth_login(request, user)
-            messages.info(request,
-                          _("Tack! Nu kan du utnyttja sektionens tjänster."))
-            return redirect("/")
+            accept_gdpr = request.POST['accept_gdpr']
+            if accept_gdpr == "1":
+                user.must_edit = False
+                user.set_accepted_gdpr(datetime.datetime.now())
+                user.save()
+                auth_login(request, user)
+                messages.info(request,("Tack! Nu kan du utnyttja sektionens tjänster."))
+                return redirect("/")
+            elif accept_gdpr == "2":
+                user.remove()
+                messages.info(request,("Din information har raderats. Ta kontakt med personuppgiftsansvariga ifall du skulle ångra dig."))
+                return redirect("/")
+            else:
+                messages.info(request, ("Ett fel uppstod, pröva igen. Kontakta webmaster@isketionen.se ifall felet upprepas."))
+                return redirect("/")
         else:
             messages.error(request, _("Fel Liu-id eller lösenord."))
             return render(request, "user_managements/force_user_form.html", {"form": form})

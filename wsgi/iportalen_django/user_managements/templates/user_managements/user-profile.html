@@ -24,6 +24,8 @@
         {% else %}
         <p>Du prenumererar inte på ipikure. <a href="{% url "user_management:subscribe to ipikure" %}">Anmälan Ipikuré</a></p>
         {% endif %}
+        <h3>Accepterat villkoren:</h3>
+        <p>Du accepterade villkoren och lämnade ditt samtycke för behandlingen av dina personuppgifter den {{ u.date_gdpr_accepted }}. Skulle du vilja återkalla ditt samtycke, kontakta personuppgiftsansvarig: <a href="mailto:inka@isektionen.se">inka@isektionen.se</a></p>
     {% endwith %}
 </div>
 </li>

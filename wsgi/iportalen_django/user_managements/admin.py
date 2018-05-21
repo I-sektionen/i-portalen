@@ -67,6 +67,7 @@ class IUserAdmin(UserAdmin):
             'master_profile',
             'groups',
             'rfid_number',
+            'date_gdpr_accepted',
         )}),
         ('Permissions', {'fields': ('is_active', 'is_superuser', 'is_staff', 'is_member', 'must_edit')}),
     )
