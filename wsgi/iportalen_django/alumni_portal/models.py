@@ -66,6 +66,13 @@ class Alumni_Article(models.Model):
         blank=True,
         default=None,
         on_delete=models.SET_NULL)
+
+    kind = models.CharField(
+        max_length=1,
+        choices=TYPES,
+        default='a',
+        verbose_name=_("Typ"),
+        help_text=_("Välj om du vill skapa en artikel eller ett event."))
     organisations = models.ManyToManyField(
         Organisation,
         blank=True,
@@ -73,20 +80,14 @@ class Alumni_Article(models.Model):
         help_text=_("Om du väljer en organisation i listan du inte tillhör kommer du att tappa åtkomsten till artikeln."
                    " Håll ner Ctrl för att markera flera."))
 
-    kind = models.CharField(
-        max_length=1,
-        choices=TYPES,
-        default='a',
-        verbose_name=_("Typ"))
-
     objects = AlumniManager()  # Manager
 
     ###########################################################################
     # Meta data for model
     ###########################################################################
     class Meta:
-        verbose_name = _("Artikel")
-        verbose_name_plural = _("Artiklar")
+        verbose_name = _("Artikel/Event")
+        verbose_name_plural = _("Artiklar/Event")
         permissions = (('can_approve_article', 'Can approve article'),)
 
     ###########################################################################
