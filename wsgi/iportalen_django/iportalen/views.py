@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from user_managements.forms import ChangeUserInfoForm
 from articles.models import Article
 from events.models import Event
 
@@ -33,6 +34,11 @@ def isektionen_link(request):
 
 
 def landing(request):
+    if request.user is not None:
+        if request.user.is_active and request.user.is_member is True:
+            if request.user.must_edit or request.user.date_gdpr_accepted is None:
+                form = ChangeUserInfoForm(instance=request.user)
+                return render(request, "user_managements/force_user_form.html", {"form": form})
     return render(request, 'landing.html')
 
 
