@@ -264,6 +264,25 @@ def reset_done(request):
     return redirect("/")
 
 
+@login_required()
+def require_user_update(request):
+    if not request.user.has_perm("user_managements.add_iuser"):
+        messages.error(request, _("Du saknar behörighet."))
+        return redirect("/")
+    users = IUser.objects.all()
+    timeout = 0
+    for user in users:
+        timeout += 1
+        if timeout == 10:
+            time.sleep(1)
+            timeout = 0
+        user.must_edit = True
+        user.save()
+
+    messages.info(request, _("Samtliga användare måste nu uppdatera sin information."))
+    return redirect("/")
+
+
 def reset_complete(request):
     messages.info(request, _("Ditt lösenord är uppdaterat, logga in nedan."))
     return redirect(reverse("login_view"))

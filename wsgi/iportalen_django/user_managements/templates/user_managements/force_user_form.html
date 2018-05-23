@@ -18,12 +18,15 @@
         <form action="{% url "user_management:force user info" %}" method="post">
             {% csrf_token %}
             {{ form }}
-             <input class="username-holder" type="text" name="username" placeholder="Liu-id">
+            <br>
+            <br>
+            <h3>Bekräfta ditt LiU ID och lösenord:<p style="display:inline;color:red;">*</p></h3>
+            <input class="username-holder" type="text" name="username" placeholder="Liu-id">
             <input class="password-holder" type="password" name="password" placeholder="Lösenord">
             <div class="button-group">
                 <br>
                 <hr>
-                <label class="required" for="id_gdpr">Jag ger härmed mitt samtycke att informationen jag angivit används för de uttryckta ändamålen och är medveten om mina rättigheter (<a target="_blank" href="{% url 'gdpr' %}">läs om GDPR</a>):</label>
+                <label class="required" for="id_gdpr">Jag ger härmed mitt samtycke att informationen jag angivit används för de uttryckta ändamålen och är medveten om mina rättigheter (<a target="_blank" href="{% url 'gdpr' %}">läs om GDPR</a>) och intygar om informationens korrekthet:</label>
                 <select id="id_gdpr" name="accept_gdpr" required>
                     <option value="">---------</option>
                     <option value="1">Jag ger mitt samtycke och är medveten om mina rättigheter</option>
@@ -33,6 +36,9 @@
             <button class="action-button" type="submit">Spara och logga in</button>
                 </div>
         </form>
+        <br>
+        <br>
+        <br>
     </div>
 {% endblock %}
 
