@@ -36,7 +36,7 @@ RUN rm -f /etc/service/nginx/down &&\
 # Port to expose
 EXPOSE 80
 # Copy entrypoint script into the image
-RUN /usr/bin/pip3 install --upgrade pip
+#RUN /usr/bin/pip3 install --upgrade pip
 RUN /usr/bin/pip3 install -r requirements.txt
 RUN /usr/bin/pip3 install gunicorn
 
