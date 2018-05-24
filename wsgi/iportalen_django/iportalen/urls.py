@@ -39,6 +39,8 @@ urlpatterns = [
 
     url(r'^admin/',             include(iportalen_admin_site.urls)),
     url(r'^superadmin/',        include(iportalen_superadmin_site.urls)),
+    #Pattern matching in URL since APPEND_SLASH in settings doesnt work
+    url(r'^alumni_portal/?',    include('alumni_portal.urls')),
     url(r'^article/',           include('articles.urls')),
     url(r'^booking/',           include('bookings.urls')),
     url(r'^course_evaluation/', include('course_evaluations.urls')),
@@ -55,7 +57,7 @@ urlpatterns = [
 
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
-    url(r'^pul/$',       view=TemplateView.as_view(template_name="pul.html"), name="pul"),
+    url(r'^gdpr/$',      view=TemplateView.as_view(template_name="gdpr.html"), name="gdpr"),
     url(r'^cookies/$',   view=TemplateView.as_view(template_name="cookies.html"), name="cookies"),
     url(r'^robots.txt$', view=TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
 

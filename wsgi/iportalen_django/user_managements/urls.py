@@ -44,6 +44,7 @@ user_patterns = [
     url(r'^ipikure_subscribers$', view=views.ipikure_subscribers, name="ipikure subscribers"),
     url(r'^search_users/', view=views.filter_users, name="filter users"),
     url(r'^all_users/', view=views.all_users, name="all users"),
+    url(r'^update_users/', view=views.require_user_update, name="require user update")
 ]
 
 urlpatterns = [

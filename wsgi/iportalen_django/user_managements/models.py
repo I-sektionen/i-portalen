@@ -95,6 +95,7 @@ class IUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(auto_now_add=True, verbose_name=_("gick med datum"))
     is_active = models.BooleanField(default=True, null=False)
     is_staff = models.BooleanField(default=False, null=False)
+    date_gdpr_accepted = models.DateTimeField(auto_now_add=False, verbose_name=_("accepterade villkoren datum"), null=True, blank=True)
 
     # our fields
     address = models.CharField(verbose_name=_("adress"), max_length=255, null=True, blank=True)
@@ -179,6 +180,11 @@ class IUser(AbstractBaseUser, PermissionsMixin):
         return organisations
     organisations = property(get_organisations)
 
+    def set_accepted_gdpr(self, time):
+        self.date_gdpr_accepted = time
+
+    def remove(self):
+        self.delete()
 
 class IpikureSubscriber(models.Model):
     user = models.OneToOneField(IUser, null=True, blank=True)
