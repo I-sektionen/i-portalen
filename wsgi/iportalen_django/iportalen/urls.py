@@ -39,6 +39,8 @@ urlpatterns = [
 
     url(r'^admin/',             include(iportalen_admin_site.urls)),
     url(r'^superadmin/',        include(iportalen_superadmin_site.urls)),
+    #Pattern matching in URL since APPEND_SLASH in settings doesnt work
+    url(r'^alumni_portal/?',    include('alumni_portal.urls')),
     url(r'^article/',           include('articles.urls')),
     url(r'^booking/',           include('bookings.urls')),
     url(r'^course_evaluation/', include('course_evaluations.urls')),
