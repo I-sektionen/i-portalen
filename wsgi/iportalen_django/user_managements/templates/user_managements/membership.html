@@ -14,7 +14,7 @@
         <h1>Medlemsskap</h1>
         <p>Du måste bli medlem i I-sektionen innan du kan utnyttja sektionens tjänster.</p>
         <p>Om du väljer att navigera ifrån den här sidan utan att bli medlem eller väljer att inte bli medlem kommer du inte kunna logga in på iportalen igen.</p>
-        <p>Enligt PUL måste vi be dig samtycka till att vi behandlar lämnade uppgifter om dig i egenskap av medlem i Sektionen för Industriell ekonomi vid Linköpings universitet. Vi ber dig därför att läsa igenom de fullständigavillkoren för PUL. <a href="{% url 'pul' %}" target="_blank">Till användarvillkoren angående PUL.</a></p>
+        <p>På nästa sida kommer du att få fylla i ett antal uppgifter och samtycka till behandlingen av dessa, du kan läsa mer om villkoren på följande sida: <a target="_blank" href="{% url 'gdpr' %}">GDPR</a>.</p>
 
         <form action="{% url "user_management:become member" %}" method="post">
             {% csrf_token %}
