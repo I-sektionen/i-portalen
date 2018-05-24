@@ -70,7 +70,7 @@ class Alumni_Article(models.Model):
     kind = models.CharField(
         max_length=1,
         choices=TYPES,
-        default='a',
+        default=ARTIKEL,
         verbose_name=_("Typ"),
         help_text=_("Välj om du vill skapa en artikel eller ett event."))
     organisations = models.ManyToManyField(
