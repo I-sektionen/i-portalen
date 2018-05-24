@@ -6,7 +6,7 @@ function printDiv(divName) {
      var originalContents = document.body.innerHTML;
 
      document.body.innerHTML = printContents;
-
+     $('.action-button').remove();
      window.print();
 
      document.body.innerHTML = originalContents;

@@ -60,6 +60,8 @@ if ON_PASS:
 
 # Application definition
 INSTALLED_APPS = (
+    'dal',
+    'dal_select2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -88,7 +90,8 @@ INSTALLED_APPS = (
     'letsencrypt',
     'fika_penalty',
     'liu_crawler',
-    'webgroup'
+    'webgroup',
+    'exchange_portal'
 )
 
 if not ON_PASS or ON_AWS:
@@ -346,13 +349,13 @@ CSP_DEFAULT_SRC = (
     "'self'", "'unsafe-eval'", "'unsafe-inline'", '*.s3.amazonaws.com/', 's3.amazonaws.com/',
     'https://maxcdn.bootstrapcdn.com/', 'google-analytics.com/',
     '*.googleapis.com/', 'https://cdnjs.cloudflare.com/', '*.gstatic.com/',
-    '*.github.com/repos/I-sektionen/', 'data:', 'https://calendar.google.com/'
+    '*.github.com/repos/I-sektionen/', 'data:', "s3.eu-central-1.amazonaws.com/", 'https://calendar.google.com/'
 )
 CSP_SCRIPT_SRC = (
     "'self'", "'unsafe-eval'", "'unsafe-inline'",
     '*.googleapis.com/','*.s3.amazonaws.com/', 's3.amazonaws.com/',
-    'iportalen/js/jquery.datetimepicker.full.min.js', 'googletagmanager.com/',
-    'google-analytics.com/', 'https://www.gstatic.com/',
+    'iportalen/js/jquery.datetimepicker.full.min.js', '*.googletagmanager.com/',
+    'google-analytics.com/', 'https://www.gstatic.com/', 'https://www.google-analytics.com/analytics.js',
     'https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js', 'https://calendar.google.com/'
 )
 

@@ -1,0 +1,28 @@
+{% extends "master.html" %}
+{% load exchange_portal_tags %}
+
+{% block title %}Utlandsportalen{% endblock %}
+
+{% block content %}
+    {% has_perm_exchange_portal request.user as exchange_portal %}
+    {% if exchange_portal %}
+        {%  include "exchange_portal/exchange_portal_header.html" %}
+        <h1>Reseberättelser</h1>
+        <form class="search-form" action="/exchange_portal/travel_stories/" method="post">
+            {% csrf_token %}
+            <input class="search-holder" type="text" name="q" placeholder="Sök universitet, stad eller land">
+            <input class="submit-holder primary action-button" type="submit" value="Sök">
+        </form>
+        <div>
+            {% for travel_story in travel_story_list %}
+                {% include "exchange_portal/model/small_travel_story.html" %}
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <p>Äntligen! Utlandsportalen är under uppbyggnad och alphan släpps förhoppningsvis under våren. Stay tuned!</p>
+        <i>"The road to success (utlandsportalen) is always under construction"</i> - Arnold Palmer
+    {% endif %}
+
+{% endblock %}
+

@@ -655,6 +655,17 @@ th {
   width: auto;
 }
 
+.table_icon {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.table_icon:hover {
+  background-color: transparent;
+}
+
 body {
   color: #333;
   font-family: "Lato", sans-serif;
@@ -1475,6 +1486,97 @@ label.required:after {
   height: 70px;
 }
 
+#course_table_head {
+  border-top: 3px solid #737373;
+  border-bottom: 3px solid #737373;
+}
+
+#exchange_divider {
+  border-top: 2px solid #737373;
+  border-bottom: 2px solid #737373;
+}
+
+/* Dropdown Button */
+/* The container <div> - needed to position the dropdown content */
+/* Dropdown Content (Hidden by Default) */
+#dropdown-content {
+  display: none;
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+show {
+  display: block !important;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown a:hover {
+  background-color: #f1f1f1;
+}
+
+.show {
+  display: block;
+}
+
+.filter_btn {
+  border-radius: 50px;
+  text-transform: none;
+  padding: 5px 10px;
+  color: #999;
+  background-color: white;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #999;
+}
+
+.dropdown {
+  float: left;
+  padding-right: 10px;
+}
+
+travel_story.travel-feed-content a {
+  text-decoration: none;
+}
+travel_story.travel-feed-content a:hover {
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none;
+}
+
+.current {
+  background-color: lightgrey;
+}
+
+.current:focus {
+  background-color: lightgrey;
+  outline: none;
+}
+
+.meta {
+  color: black;
+}
+.meta a {
+  color: black;
+}
+.meta span {
+  margin-right: 2em;
+  text-transform: none;
+}
+
+.story {
+  margin-top: 2em;
+}
+
 .footer {
   background: #f7f7f7;
   padding: 1.95em 1.618em;
@@ -1785,7 +1887,7 @@ header.navigation ul.submenu {
     border: 8px solid transparent;
     bottom: 0em;
     color: white;
-    content: 'Ôû▓';
+    content: '\25B2';
     font-size: 1.4em;
     text-align: center;
     text-shadow: 1px -1px 1px silver;
@@ -3019,6 +3121,10 @@ div.booking-container .third-container .third .center {
 }
 .invoice .blank_row {
   height: 10px;
+}
+
+.printableDiv {
+  page-break-after: always;
 }
 
 #event-create-form-main {

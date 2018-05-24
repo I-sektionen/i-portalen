@@ -137,7 +137,7 @@ class Invoice(models.Model):
         return ugettext("Faktura")
 
     def get_absolute_url(self):
-        return reverse('bookings:invoice view', kwargs={'invoice_id': self.pk})
+        return reverse('bookings:invoice view', kwargs={'invoice_ids': self.pk})
 
     def _total_cost(self):
         fixed = FixedCostAmount.objects.filter(invoice__exact=self)

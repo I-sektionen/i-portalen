@@ -1,0 +1,55 @@
+{% extends "master.html" %}
+{% load exchange_portal_tags %}
+
+{% block title %}Utlandsportalen{% endblock %}
+{% block content %}
+    {% has_perm_exchange_portal request.user as exchange_portal %}
+    {% if exchange_portal %}
+        {% include "exchange_portal/exchange_portal_header.html" %}
+        <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
+        {% if country %}<h1> <a href="/exchange_portal/{{ country.in_continent }}">{{country.in_continent|capfirst}}</a>/{{ country.name|capfirst }}</h1> {% else %}
+            <h1>{{ continent|capfirst }}</h1>
+        {% endif %}
+        <hr id="exchange_divider">
+            <div class="dropdown">
+                <button class="dropdown-btn">Länder<i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    {% if country_list %}
+                        {% for country in country_list %}
+                            <a href="{{ country.name }}">{{ country.name }}</a> <br>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        {% if university_list %}
+            <table id="university_list">
+                <thead id="course_table_head">
+                <tr>
+                    <th colspan="4"> Land: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('university_list' ,0)" aria-hidden="true"></i></button> </th>
+                    <th colspan="4"> Stad: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('university_list' ,1)" aria-hidden="true"></i></button></th>
+                    <th colspan="4"> Universitet: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('university_list' ,2)" aria-hidden="true"></i></button></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for university in university_list %}
+                    <tr>
+                        <td colspan="4"><a href="{{ university.in_city.in_country.name }}">{{university.in_city.in_country|capfirst}}</a></td>
+                        <td colspan="4">  {{ university.in_city|capfirst }} </td>
+                        <td colspan="4"> <a href="/exchange_portal/school/{{ university.id }}"> {{ university.name|capfirst }}</a> </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p> Det finns inga universitet tillagda ännu.  </p>
+        {% endif %}
+    {% else %}
+        <p>Äntligen! Utlandsportalen är under uppbyggnad och alphan släpps förhoppningsvis under våren. Stay tuned!</p>
+        <i>"The road to success (utlandsportalen) is always under construction"</i> - Arnold Palmer
+    {% endif %}
+
+
+
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "master.html" %}
+{% load exchange_portal_tags %}
+
+{% block title %}Utlandsportalen{% endblock %}
+{% block content %}
+    {% has_perm_exchange_portal request.user as exchange_portal %}
+    {% if exchange_portal %}
+        {% include "exchange_portal/exchange_portal_header.html" %}
+
+        <h1><a href="/exchange_portal/{{school.in_city.in_country.in_continent.name}}">{{ school.in_city.in_country.in_continent.name|capfirst }}/</a>
+            <a href="/exchange_portal/{{ school.in_city.in_country.in_continent.name }}/{{school.in_city.in_country.name}}">{{ school.in_city.in_country.name|capfirst }}</a>
+            /{{ school.in_city.name|capfirst }}/{{ school.name|capfirst }} </h1>
+        <div class="button-group">
+            <button href="#" class="button button_exchange_portal" id="courses_button"> Kurser </button>
+            <button href="#" class="button button_exchange_portal" id="travel_stories_button"> Reseberättelser </button>
+        </div>
+        <div id="courses_section">
+            <i>
+                Tidigare utbyte genom universitetet:
+                {% if school.exchange_with_liu %}
+                    <b>Ja</b>
+                {% elif not school.exchange_with_liu %}
+                    <b>Nej</b>
+                {% endif %}
+                <br>
+                Tidigare utbyte genom freemover:
+                {% if school.freemover %}
+                    <b>Ja</b>
+                {% elif not school.freemover %}
+                    <b>Nej</b>
+                {% endif %}
+            </i>
+            <br>
+            <br>
+            <h3>Kurser</h3>
+            <div>
+                <button class="button filter_btn">	<span class="fa fa-times"> </span> Datateknik</button>
+            </div>
+
+            {% if course_list %}
+                <table  class="courses" id="courses">
+                    <thead id="course_table_head">
+                    <tr>
+                        <th colspan="4"> Kurs: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,0)" aria-hidden="true"></i></button> </th>
+                        <th colspan="2"> Credits: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,1)" aria-hidden="true"></i></button></th>
+                        <th colspan="1"> Nivå: <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,2)" aria-hidden="true"></i></button></th>
+                        <th colspan="2"> Inriktning:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,3)" aria-hidden="true"></i></button></th>
+                        <th colspan="2"> Senast läst:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,4)" aria-hidden="true"></i></button></th>
+                        <th colspan="3"> LiU-Kurs:  <button class="table_icon"><i class="fa fa-sort" onclick="sortTable('courses' ,5)" aria-hidden="true"></i></button></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for course in course_list %}
+                        <tr>
+                            <td colspan="4">{{course.name|capfirst}}, {{ course.course_code|upper }}</td>
+                            <td colspan="2">  {{ course.credits|capfirst }} </td>
+                            <td colspan="1"> {{ course.level|capfirst }} </td>
+                            <td colspan="2"> {{ course.technical_profile|capfirst }} </td>
+                            <td colspan="2"> {{ course.year|capfirst }} </td>
+                            <td colspan="3"> {{ course.corresponding_liu_course.name|capfirst }}, {{ course.corresponding_liu_course.course_code|upper }} </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% elif not course_list %}
+                <p>Mer information om skolans kurser och motsvarande kurser på Linköpings Universitet kommer upp inom
+                    kort.</p>
+            {% endif %}
+            <br>
+        </div>
+        <div id="travel_stories" class="hidden">
+            {% if travel_story %}
+                {% for travel_story in travel_story.all %}
+                    {% include "exchange_portal/model/small_travel_story.html" %}
+                {% endfor %}
+            {% elif not travel_story %}
+                <p>Det finns inga travelstories uppe just nu. Men vi längtar efter att få läsa om dina berättelser under ditt utlandsår!</p>
+            {% endif %}
+
+        </div>
+
+    {% else %}
+        <p>Äntligen! Utlandsportalen är under uppbyggnad och alphan släpps förhoppningsvis under våren. Stay tuned!</p>
+        <i>"The road to success (utlandsportalen) is always under construction"</i> - Arnold Palmer
+    {% endif %}
+{% endblock %}
