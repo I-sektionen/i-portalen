@@ -22,4 +22,7 @@ def get_menu_choices_user(user):
     if user.has_perm('user_managements.can_view_subscribers'):
         menu_choices.append((_('Lista Ipikuréprenumeranter'), reverse('user_management:ipikure subscribers')))
 
+    if user.has_perm('user_managements.add_iuser'):
+        menu_choices.append((_("Kräv uppdatering av användare"), reverse('user_management:require user update')))
+
     return menu_choices

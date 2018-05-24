@@ -55,7 +55,7 @@ urlpatterns = [
 
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
-    url(r'^pul/$',       view=TemplateView.as_view(template_name="pul.html"), name="pul"),
+    url(r'^gdpr/$',      view=TemplateView.as_view(template_name="gdpr.html"), name="gdpr"),
     url(r'^cookies/$',   view=TemplateView.as_view(template_name="cookies.html"), name="cookies"),
     url(r'^robots.txt$', view=TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
 

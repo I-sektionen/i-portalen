@@ -12,17 +12,36 @@
 {% block content %}
     <div id="membership">
         <h1>Ange uppgifter</h1>
-        <p>Innan du kan gå vidare så behöver du fylla i lite fler uppgifter:</p>
-        <p><em>Vi samlar in addressuppgifterna för att kunna dela ut ipikuré. Övriga uppgifter används för att underlätta sektionens arbete och ge dig som användare en bättre upplevelse.</em></p>
+        <p>Innan du kan gå vidare så behöver du fylla i och kontrollera några uppgifter:</p>
+        <p>Vi ber er att läsa genom vår information angående GDPR: <a target="_blank" href="{% url 'gdpr' %}">vilken du finner här.</a></p>
+        <br>
         <form action="{% url "user_management:force user info" %}" method="post">
             {% csrf_token %}
             {{ form }}
-             <input class="username-holder" type="text" name="username" placeholder="Liu-id">
+            <br>
+            <br>
+            <h3>Bekräfta ditt LiU ID och lösenord:<p style="display:inline;color:red;">*</p></h3>
+            <input class="username-holder" type="text" name="username" placeholder="Liu-id">
             <input class="password-holder" type="password" name="password" placeholder="Lösenord">
             <div class="button-group">
+                <br>
+                <hr>
+                <label class="required" for="id_gdpr">Jag ger härmed mitt samtycke att informationen jag angivit används för de uttryckta ändamålen och är medveten om mina rättigheter (<a target="_blank" href="{% url 'gdpr' %}">läs om GDPR</a>) och intygar om informationens korrekthet:</label>
+                <select id="id_gdpr" name="accept_gdpr" required>
+                    <option value="">---------</option>
+                    <option value="1">Jag ger mitt samtycke och är medveten om mina rättigheter</option>
+                    <option value="">---------</option>
+                    <option value="2">Jag ger inte mitt samtycke (DIN INFORMATION RADERAS)</option>
+                    <option value="">---------</option>
+                </select>
+                <p><strong>OBS:</strong> Ifall du inte lämnar ditt samtycke kommer samtlig information som lagras om dig att raderas. Detta innebär att du inte längre kan utnyttja sektionens tjänster.</p>
+                <br>
             <button class="action-button" type="submit">Spara och logga in</button>
                 </div>
         </form>
+        <br>
+        <br>
+        <br>
     </div>
 {% endblock %}
 
