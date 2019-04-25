@@ -1,0 +1,22 @@
+{% load iportalen_tags %}
+<article class="news-feed-content">
+    <div class="article-type-and-date">
+        <!-- <p class="type">Nyhet</p>-->
+        <i class="fa fa-graduation-cap large"></i>
+        <div class="article-preview-time-organisation">
+            <p class="article-preview-type" style="font-weight: bold; font-size: 1.25em">{{ article.company }}</p>
+            <p class="article-preview-type time-since">{{ article.visible_from|timesince}}</p>
+        </div>
+    </div>
+    <h1>{{ article.headline }}</h1>
+    <h2>{{ article.lead }}</h2>
+    <p class="meta">
+        <i class="fa fa-map-marker"></i>
+        <span>{{ article.location }}</span>
+        {% if article.payed  %}
+            <i class="fa fa-usd"></i>
+            <span>Betalt exjobb</span>
+        {% endif %}
+    </p>
+    {{ article.body|markdown }}
+</article>

@@ -1,0 +1,28 @@
+{% extends "master.html" %}
+
+{% comment %}
+    This files contains the view rendered for *single articles*
+{% endcomment %}
+
+{% load staticfiles %}
+{% block page_subtitle %}{{ article.headline }}{% endblock %}
+{% block head %}
+    <meta property="og:url"                content="{{ article.get_absolute_url }}" />
+    <meta property="og:type"               content="article" />
+    <meta property="og:title"              content="{{ article.headline }}" />
+    <meta property="og:description"        content="{{ article.lead }}" />
+{% endblock %}
+{% block hero %}
+{% endblock %}
+
+{% block content %}
+    <br>
+    {% include "model/thesis_full_article.html" with article=article %}
+{% endblock %}
+{% block after_scripts %}
+    <script>
+        jQuery(document).ready(function () {
+            $(".fancybox").fancybox();
+        })
+    </script>
+{% endblock %}

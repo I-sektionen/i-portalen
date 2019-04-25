@@ -91,7 +91,8 @@ INSTALLED_APPS = (
     'fika_penalty',
     'liu_crawler',
     'webgroup',
-    'exchange_portal'
+    'exchange_portal',
+    'thesis_portal'
 )
 
 if not ON_PASS or ON_AWS:
