@@ -1,0 +1,32 @@
+{% extends "master.html" %}
+
+{% block title %}Exjobbsportalen{% endblock %}
+{% block content %}
+    {% include "thesis_portal_header.html" %} <!-- Måste ändra så den inte har samma/högre z-värde som riktiga headern, ser konstigt ut nu -->
+
+    <section id="news-feed">
+        {% for article in articles %}
+            {% include "model/thesis_small_article.html" with article=article %}
+        {% endfor %}
+        <div class="pagination">
+            <span class="step-links">
+            <span class="meta">
+                {% if content_feed_list.has_previous %}
+                    <span class="prev"><a href="?page={{ content_feed_list.previous_page_number }}">Prev</a></span>
+                {% endif %}
+                {% for number in content_feed_list.paginator.page_range|slice:":10" %}
+                    {% if number == content_feed_list.number %}
+                        <a class="pagenumber active" href="">{{ number }}</a>
+                    {%  else %}
+                        <a class="pagenumber" href="?page={{ number }}">{{ number }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if news_list.has_next %}
+                    <span class="next"><a href="?page={{ content_feed_list.next_page_number }}">Next</a></span>
+                {% endif %}
+            </span>
+            </span>
+        </div>
+    </section>
+
+{% endblock %}
