@@ -11,7 +11,8 @@ MAINTAINER Jonathan Anderson
 CMD ["/sbin/my_init"]
 
 # Update the default application repository sources list
-RUN apt-get update && apt-get -y upgrade
+RUN apt-get update && apt-get -y upgrade \
+  util-linux=2.27.1-6ubuntu3.2
 RUN apt-get install -y python3 python3-pip
 RUN apt-get install -y python3-dev
 RUN apt-get install -y libmysqlclient-dev
