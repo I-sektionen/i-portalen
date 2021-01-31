@@ -8,7 +8,7 @@ setup(name='I-Portalen',
       author_email='webmaster@isektionen.se',
       url='http://www.i-portalen.se',
       install_requires=[
-          'Django==1.8.15',
+          'Django==1.11.29',
           'PyMySQL',
           'boto==2.42.0',
           'coverage==4.2',
