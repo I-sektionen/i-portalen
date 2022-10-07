@@ -16,17 +16,17 @@ def placeholder(request):
 
 @login_required()
 def glasscubes_link(request):
-    return redirect("https://www.dropbox.com/sh/ah2wws4hsu1p184/AAAhfa1l-AvbBGzKPNS3AYQUa?dl=0")
+    return redirect("https://drive.google.com/drive/folders/1OlboXaiTWsYiYxcYJK8p3KSX7x9F6QBZ?usp=sharing")
 
 
 @login_required()
 def glasscubes_link_course(request):
-    return redirect("https://www.dropbox.com/sh/8n3t8om0rkqlkem/AAA0igQbQB_C7q4LLbGwUKPaa?dl=0")
+    return redirect("https://drive.google.com/drive/folders/1LVqroOU6AUtJTIGGFU1aZPtKH0JSjmlJ?usp=sharing")
 
 
 @login_required()
 def glasscubes_link_bible(request):
-    return redirect("https://www.dropbox.com/sh/rd3rcmfepq036uq/AABtg4JSpCxWVmLjJ2NGM0L0a?dl=0")
+    return redirect("https://drive.google.com/drive/folders/14YmOgL9-5x8ca8VZOKaji4MXiLyAtUyP?usp=sharing")
 
 
 def isektionen_link(request):
