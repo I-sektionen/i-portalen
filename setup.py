@@ -26,7 +26,7 @@ setup(name='I-Portalen',
           'requests==2.6.0',
           'requests-toolbelt==0.7.0',
           'django-reversion==2.0.0',
-          'sqlparse==0.2.1',
+          'sqlparse==0.4.4',
           'urllib3',
           'django-autocomplete-light'],  # This should match requirements.txt!
       )
