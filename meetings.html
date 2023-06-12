@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="UTF-8">
+    <title>I-portalen by I-sektionen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+</head>
+<body>
+<section class="page-header">
+    <a href="http://i-portalen.se" class="btn"><h1 class="project-name">I-portalen</h1></a>
+
+    <h2 class="project-tagline">Användarmanual</h2>
+    <a href="index.html" class="btn">Tillbaka till startsidan</a>
+</section>
+
+<!-- Change from here on new pages -->
+<section class="main-content">
+    <!-- Page title -->
+    <h3><a id="start" class="anchor" href="#start" aria-hidden="true"><span class="octicon octicon-link"></span></a> Möteshantering </h3>
+    
+    <!-- Content -->
+    <p><strong>Innehållsförteckning</strong></p>
+    <ul>
+        <!-- Remember to internally link to h4 elements on the page-->
+        <li><a href="#background">Skapa och hantera möten</a></li>
+        <li><a href="#create">Skapa möte</a></li>
+        <li><a href="#edit">Redigera möte</a></li>
+        <li><a href="#delete">Radera möte</a></li>
+        <li><a href="#start">Starta ett möte</a></li>
+        <li><a href="#checkIn">Checka in anmälda</a></li>
+        <li><a href="#speakerList">Talarlista</a></li>
+        <li><a href="#voting">Röstningssystem</a></li>
+        <li><a href="#end">Avsluta ett möte</a></li>
+    </ul>
+
+    <!-- On page content -->
+    <h4><a id="background" class="anchor" href="#background" aria-hidden="true"><span class="octicon octicon-link"></span></a>Skapa och hantera möten </h4>
+    <p>
+        På i-portalen går det att skapa vad som kallas Möten. Detta är en variant av evenemang där det går att ha en talarlista och omröstningar. Möten skapas via Strapi och hanteras sedan via i-portalen/Strapi. <br /> 
+        Notera: För att kunna hantera sektionsmöten på i-portalen behöver du ha admin-behörigheter. I huvudsak är det endast Webgroup och Styret som har denna behörighet. 
+    </p>
+
+    <h4><a id="create" class="anchor" href="#create" aria-hidden="true"><span class="octicon octicon-link"></span></a> Skapa möte </h4>
+    <ol>
+        <li>Logga in på Strapi</li>
+        <li>Klicka på <b>“Content Manager”</b> i menyn till vänster.</li>
+        <li>Klicka på <b>“Create new entry”</b> uppe till höger.</li>
+        <li>Ange namn, beskrivning samt start- och sluttid. <a href=""> Se här hur formateringen i textrutor fungerar</a>. <br />
+            <ol type="a"><li> Notera att fältet <b>“Views”</b> inte behöver fyllas i. Detta fält visar hur många visningar ett möte har efter att det har publicerats.</li></ol>
+        </li>
+        <li>Lägg till plats genom att trycka på </b>“position”</b> och ange namnet på platsen/salen.</li>
+        <li>Lägg till <b>“relations”</b> till höger för att ange vem som skapat eventet. Under <b>“association”</b> finns alla utskott och under <b>“group”</b> resterande tillhörande sektionen. Det går även att lägga till taggar under fältet <b>“tags”</b>. </li>
+        <li>Om du vill lägga till anmälda personer till eventet redan nu går det att göra det i fältet <b>“users”</b>. </li>
+        <li>Klicka på <b>“Save”</b> uppe i högra hörnet.</li>
+    </ol>
+
+    <h4><a id="edit" class="anchor" href="#edit" aria-hidden="true"><span class="octicon octicon-link"></span></a> Redigera möte</h4>
+
+    <ol>
+        <li>Logga in på Strapi</li>
+        <li>Klicka på <b>“Content Manager”</b> i menyn till vänster.</li>
+        <li>Klicka på <b>“Create new entry”</b> uppe till höger.</li>
+        <li>Leta reda på det möte du vill redigera i listan som visas. Det går att sortera, filtrera eller söka i listan för att enklare hitta det sökta objektet.</li>
+        <li>Klicka på objektet du vill redigera.</li>
+        <li>Redigera de fält som ska ändras. <a href="">Se här hur formateringen i textrutor fungerar</a>. <br />
+            <ol type="a"><li>OBS: Redigera inte fältet “eventid”.</li></ol>
+        </li>
+        <li>Klicka på <b>“Spara”</b>  i övre högra hörnet.</li>
+    </ol>
+
+    <h4><a id="delete" class="anchor" href="#delete" aria-hidden="true"><span class="octicon octicon-link"></span></a> Radera möte </h4>
+
+    <ol>
+        <li>Logga in på Strapi</li>
+        <li>Klicka på <b>“Content Manager”</b> i menyn till vänster.</li>
+        <li>Klicka på <b>“Meeting”</b> i content-menyn som dyker upp.</li>
+        <li>Leta reda på det möte du vill redigera i listan som visas. Det går att sortera, filtrera eller söka i listan för att enklare hitta det sökta objektet. <br />
+            Klicka antingen: <br />
+
+            <ol type="a">
+                <li>direkt på <b>“radera”</b> till höger i listan för det element som ska raderas. <br />
+                <img src="images/delete.png" alt="Bild som visar hur knappen ser ut">
+                </li>
+                <li>på bokningen som ska raderas, och klicka sedan på <b>“Delete this entry”</b>. </li>
+            </ol>
+        </li>
+    </ol>
+        
+    <h4><a id="start" class="anchor" href="#start" aria-hidden="true"><span class="octicon octicon-link"></span></a> Starta möte </h4>
+    <ol>
+        <li>Klicka på <b>“Admin panel”</b> på i-portalen till höger i huvudmenyn.</li>
+        <li>Leta efter mötet du vill starta i listan <b>“Uppkommande möten”</b>.</li>
+        <li>Klicka på <b>“Starta”</b>. Listan ska nu även ha lagts till i listan <b>“Aktiva möten”</b>.</li>
+    </ol>
+
+
+
+
+    <h4><a id="checkIn" class="anchor" href="#checkIn" aria-hidden="true"><span class="octicon octicon-link"></span></a> Checka in anmälda </h4>
+    <ol>
+        <li>Klicka på <b>“Admin panel”</b> på i-portalen.se till höger i huvudmenyn.</li>
+        <li>Leta efter mötet du vill checka in personer till i listan <b>“Aktiva möten”</b>.</li>
+        <li>Klicka på knappen <b>“Kontrollpanel”</b>.</li>
+        <li>Klicka på <b>“Öppna användare”</b>.</li>
+        <li>Gå antingen genom listan eller sök på id, LiU-id eller namn för att hitta det namn som ska checkas in till mötet. <br />
+            <ol type="a">
+                <li>Notera: Sökfunktionen är skiftlägeskänslig (case sensitive).</li>
+            </ol>
+        </li>
+        <li> Klicka på <b>“Närvarande”</b>. <br />
+            <ol type="a">
+                <li>Notera: Om knappen klickas på igen kommer personen att markeras som inte incheckad igen.</li>
+            </ol>
+        </li>
+        <li>Klicka på <b>“Stäng användare”</b> om du vill sluta visa listan.</li>
+    </ol>
+
+    <h4><a id="speakerList" class="anchor" href="#speakerList" aria-hidden="true"><span class="octicon octicon-link"></span></a> Talarlista </h4>
+
+    <h4><a id="voting" class="anchor" href="#voting" aria-hidden="true"><span class="octicon octicon-link"></span></a> Talarlista </h4>
+    
+    <h4><a id="end" class="anchor" href="#end" aria-hidden="true"><span class="octicon octicon-link"></span></a> Avsluta ett möte </h4>
+    
+    <!-- Footer containing references required to refrain from copyright infringement, do not change anything past this-->
+    <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/I-sektionen/i-portalen">I-portalen</a> is maintained by <a
+                href="https://github.com/I-sektionen">I-sektionen</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a
+                href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a
+                href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+    </footer>
+</section>
+</body>
+</html>

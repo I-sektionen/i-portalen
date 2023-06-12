@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<title>I-portalen by I-sektionen</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="../stylesheets/normalize.css" media="screen">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="../stylesheets/github-light.css" media="screen">
+</head>
+<body>
+<section class="page-header">
+	<a href="http://i-portalen.se" class="btn"><h1 class="project-name">I-portalen</h1></a>
+
+	<h2 class="project-tagline">Användarmanual</h2>
+	<a href="index2-0.html" class="btn">Tillbaka till startsidan</a>
+</section>
+
+<!-- Change from here on new pages -->
+<section class="main-content">
+	<!-- Page title -->
+	<h3><a id="start" class="anchor" href="#start" aria-hidden="true"><span class="octicon octicon-link"></span></a> Hantera evenemang </h3>
+
+	<p>
+		Här finner ni lite generell information gällande evenemang. Denna berör inte de som deltar på evenemang, utan om hur man skapar/hanterar/aktiverar.
+	</p>
+
+	<!-- Content -->
+	<p><strong>Innehållsförteckning</strong></p>
+	<ul>
+	<!-- Remember to internally link to h4 elements on the page-->
+		<li><a href="#create">Skapa ett evenemang</a></li>
+		<li><a href="#apprv">Godkännande av evenemang</a></li>
+		<li><a href="#change">Ändra datum eller tid för ett evenemang</a></li>
+		<li><a href="#del">Ta bort ett evenemang</a></li>
+		<li><a href="#admin">Administera evenemang och checka in deltagare</a></li>
+		<li><a href="#find">find Participants</a></li>
+		<li><a href="#our">Våra evenemang</a></li>
+	</ul>
+
+	<!-- On page content -->
+	<h4><a id="create" class="anchor" href="#create" aria-hidden="true"><span class="octicon octicon-link"></span></a> Skapa ett evenemang </h4>
+
+	<ol>
+		<li>Logga in på Strapi</li>
+		<li>Klicka på <b>“Content Manager”</b> i menyn till vänster.</li>
+		<li>Klicka på <b>“Event”</b> i content-menyn som dyker upp.</li>
+		<li>Klicka på <b>“Create new entry”</b> uppe till höger.</li>
+		<li>Ange namn, start- och sluttid och beskrivning och en kort förhandsbeskrivning. <br /></li>
+		<li>Se här hur formateringen i textrutor fungerar. Lägg till plats genom att trycka på <b>“position”</b> och ange namnet på platsen/salen. </li>
+		<li>Lägg till <b>“relations”</b> till höger för att ange vem som skapat eventet. Under <b>“association”</b> finns alla utskott och under <b>“group”</b> resterande tillhörande sektionen.</li>
+		<li>Klicka på <b>“Save”</b> uppe till höger och sen <b>“Publish”</b> bredvid för att publicera eventet.</li>
+	</ol>
+
+	<h4><a id="change" class="anchor" href="#change" aria-hidden="true"><span class="octicon octicon-link"></span></a> Ändra datum eller tid för ett evenemang </h4>
+
+	<ol>
+		<li>Logga in på Strapi</li>
+		<li>Klicka på <b>“Content Manager”</b> i menyn till vänster.</li>
+		<li>Klicka på <b>“Event”</b> i content-menyn som dyker upp.</li>
+		<li>Välj ert evenemang i listan. Om du inte kan se det är det för att du saknar rättigheter. I sådana fall, kontakta utskottets ordförande eller Webgroup för att hjälpa dig vidare.</li>
+		<li>Redigera tid eller datum för evenemanget under blocken <b>“start_date”</b> eller <b>“end_date”</b>.</li>
+	</ol>
+	<h4><a id="del" class="anchor" href="#del" aria-hidden="true"><span class="octicon octicon-link"></span></a> Ta bort ett evenemang </h4>
+
+	<ol>
+		<li>Logga in på Strapi</li>
+		<li>Klicka på <b>“Content Manager”</b> i menyn till vänster.</li>
+		<li>Klicka på <b>“Event”</b> i content-menyn som dyker upp.</li>
+		<li>Välj ert evenemang i listan. Om du inte kan se det är det för att du saknar rättigheter. I sådana fall, kontakta utskottets ordförande eller Webgroup för att hjälpa dig vidare.</li>
+		<li>För att radera finns det en rödaktig knapp <b>“Delete this entry”</b> längst ned i den högraste kolumnen (alltså under där ni valt association osv.)</li>
+	</ol>
+	<h4><a id="admin" class="anchor" href="#admin" aria-hidden="true"><span class="octicon octicon-link"></span></a> Administera evenemang och checka in deltagare </h4>
+	
+	<p>
+		För att administrera ett evenemang krävs det att du har speciella rättigheter kopplat till ditt konto på i-portalen och därav åtkomst till adminpanelen. Notera att det skiljer sig i funktionalitet mellan möten och vanliga evenemang. Klicka här för att komma till möten. Incheckning på evenemang sker av de som administrerar evenemanget. 
+	</p>
+
+	<ol>
+		<li>Logga in på i-portalen.</li>
+		<li>Klicka på <b>“Admin panel”</b>  (låset uppe till höger)</li>
+		<li>Klicka på <b>“Evenemang</b>”.</li>
+		<li>Hitta ert evenemang i listan. Om det inte har aktiverats finner ni det i listan <b>“Uppkommande evenemang”</b>. Aktivera evenemanget genom att klicka på starta.</li>
+		<li>Efter att det har startats kan man checka in deltagare. I listan längre ned <b>“Aktiva evenemang”</b>, kan man checka in deltagare som är anmälda till evenemanget genom att klicka på <b>“Hantera”</b> närvaro, sedan söka efter användaren i listan genom namn eller liu-id. Knappen <b>“Närvaro”</b> kan man växla närvarostatusen på den användaren.</li>
+		<li>För att avsluta ett evenemang klickar man på <b>“Hantera”</b> och sedan på den röda knappen <b>“Arkivera”</b>. OBS, detta kommer att ge en prick till alla anmälda användare vars närvaro inte var registrerad.</li>
+	</ol>
+	<p>
+		För att hitta data om de närvarande deltagarna vid ett evenemang så finns det för både pågående och avslutade evenemang.
+	</p>
+	<ol>
+		<li>Logga in på i-portalen.</li>
+		<li>Klicka på <b>“Admin panel”</b>  (låset uppe till höger)</li>
+		<li>Klicka på <b>“Användarutdrag”</b>.</li>
+		<li>Välj parametrar och klicka på <b>“Hämta användare”</b>. Därefter kan ni ladda ned en fil i csv format med informationen på skärmen.</li>
+	</ol>
+	<h4><a id="our" class="anchor" href="#our" aria-hidden="true"><span class="octicon octicon-link"></span></a> Våra evenemang </h4>
+
+	<p>
+		Det går att komma åt sina evenemang på olika sätt. Dels via strapi och dels via admin panelen på i-portalen. För att nå dem via adminpanelen följ stegen ovan. Notera att ni då ser allas evenemang.<br /><br />
+
+		För att nå dem via strapi:
+	</p>
+	<ol>
+		<li>Logga in på Strapi</li>
+		<li>Klicka på <b>“Content Manager”</b> i menyn till vänster.</li>
+		<li>Klicka på <b>“Event”</b> i content-menyn som dyker upp.</li>
+		<li>Klicka på <b>“Filter”</b> och skriv in HELA utskottets namn om filtreringsfunktionen <b>“is”</b> är vald, vilket brukar vara standard. Tänk på att sökningen är shift-känslig också så kom ihåg stor bokstav. </li>
+	</ol>
+<!-- Footer containing references required to refrain from copyright infringement, dont change anything past this -->	
+<footer class="site-footer">
+		<span class="site-footer-owner"><a href="https://github.com/I-sektionen/i-portalen">I-portalen</a> is maintained by <a href="https://github.com/I-sektionen">I-sektionen</a>.</span>		
+<span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+</span>	
+</footer>
+</section>
+</body>
+</html>

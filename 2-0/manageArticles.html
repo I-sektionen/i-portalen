@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<title>I-portalen by I-sektionen</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="../stylesheets/normalize.css" media="screen">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="../stylesheets/github-light.css" media="screen">
+</head>
+<body>
+<section class="page-header">
+	<a href="http://i-portalen.se" class="btn"><h1 class="project-name">I-portalen</h1></a>
+
+	<h2 class="project-tagline">Användarmanual</h2>
+	<a href="index2-0.html" class="btn">Tillbaka till startsidan</a>
+</section>
+
+<!-- Change from here on new pages -->
+<section class="main-content">
+	<!-- Page title -->
+	<h3><a id="start" class="anchor" href="#start" aria-hidden="true"><span class="octicon octicon-link"></span></a> Hantera artiklar </h3>
+
+	<!-- Content -->
+	<p><strong>Innehållsförteckning</strong></p>
+	<ul>
+	<!-- Remember to internally link to h4 elements on the page-->
+		<li><a href="#create">Skapa en artikel</a></li>
+		<li><a href="#edit">Redigera en artikel</a></li>
+		<li><a href="#apprv">Godkänn en artikel (publicera)</a></li>
+		<li><a href="#del">Radera eller avpublicera en artikel</a></li>
+		<li><a href="#our">Våra artiklar</a></li>
+	</ul>
+
+	<!-- On page content -->
+	<h4><a id="create" class="anchor" href="#create" aria-hidden="true"><span class="octicon octicon-link"></span></a> Skapa en artikel </h4>
+
+	<ol>
+		<li>Logga in på Strapi</li>
+		<li>Klicka på <b>“Content Manager”</b> i menyn till vänster.</li>
+		<li>Klicka på <b>“Article”</b> i content-menyn som dyker upp.</li>
+		<li>Klicka på <b>“Create new entry”</b> uppe till höger.</li>
+		<li>Ange titel, brödtext och en kort <b>“preview”</b> som syns på förhandsvisningen av artikeln. Ange deadline om det är relevant. Se här hur formateringen i textrutor fungerar.</li>
+		<li>Lägg till <b>“relations”</b> till höger för att ange vem som är skribent. Under <b>“association”</b> finns alla utskott och under <b>“group”</b> resterande tillhörande sektionen.</li>
+		<li>Vill ni lägga till en eller flera taggar på artikeln kan man antingen skapa nya taggar eller hitta redan skapade taggar i rullgardinsmenyn. Se detta avsnitt om hur man skapar en tagg.</li>
+		<li>Klicka på <b>“Save”</b> uppe till höger och sen <b>“Publish”</b> bredvid för att publicera artikeln. Saknar du rättigheter att publicera får du be ordförande i ditt utskott att hjälpa dig, alternativt vända er till Webgroup.</li>
+</ol>
+	<h4><a id="edit" class="anchor" href="#edit" aria-hidden="true"><span class="octicon octicon-link"></span></a> Redigera en artikel </h4>
+
+	<ol>
+		<li>Logga in på Strapi</li>
+		<li>Klicka på <b>“Content Manager”</b> i menyn till vänster.</li>
+		<li>Klicka på <b>“Content Manager”</b> i menyn till vänster.</li>
+		<li>Klicka på den artikeln du vill redigera.</li>
+		<li>Gör de förändringarna du vill göra.</li>
+		<li>Klicka på <b>“Save”</b>  upp till höger när du är klar med de förändringar du vill göra.</li>
+</ol>
+	<h4><a id="apprv" class="anchor" href="#apprv" aria-hidden="true"><span class="octicon octicon-link"></span></a> Godkänn en artikel (publicera) </h4>
+
+	<ol>
+		<li>Logga in på Strapi</li>
+		<li>Klicka på <b>“Content Manager”</b> i menyn till vänster.</li>
+		<li>Klicka på <b>“Article”</b> i content-menyn som dyker upp.</li>
+		<li>Klicka på den artikeln ni vill redigera</li>
+		<li>När ni är redo att publicera finns <b>“Publish”</b> upp till höger på sidan, bredvid <b>“Save”</b> knappen</li>
+</ol>
+	<h4><a id="del" class="anchor" href="#del" aria-hidden="true"><span class="octicon octicon-link"></span></a> Radera eller avpublicera en artikel </h4>
+
+	<ol>
+		<li>Logga in på Strapi</li>
+		<li>Klicka på <b>“Content Manager”</b> i menyn till vänster.</li>
+		<li>Klicka på <b>“Article”</b> i content-menyn som dyker upp.</li>
+		<li>Klicka på den artikeln du vill redigera.</li>
+		<li>För att endast avpublicera artikeln finns <b>“unpublish”</b> uppe till höger. För att radera finns det en rödaktig knapp <b>“Delete this entry”</b> längst ned i den högraste kolumnen (alltså under där ni valt association osv.)</li>
+</ol>
+	<h4><a id="our" class="anchor" href="#our" aria-hidden="true"><span class="octicon octicon-link"></span></a> Våra artiklar </h4>
+
+	<ol>
+		<li>Logga in på Strapi</li>
+		<li>Klicka på <b>“Content Manager”</b> i menyn till vänster.</li>
+		<li>Klicka på <b>“Article”</b> i content-menyn som dyker upp.</li>
+		<li>Klicka på <b>“Filter”</b> och skriv in HELA utskottets namn om filtreringsfunktionen <b>“is”</b> är vald, vilket brukar vara standard. Tänk på att sökningen är shift-känslig också så kom ihåg stor bokstav.</li>
+</ol>
+<!-- Footer containing references required to refrain from copyright infringement, dont change anything past this -->	
+<footer class="site-footer">
+		<span class="site-footer-owner"><a href="https://github.com/I-sektionen/i-portalen">I-portalen</a> is maintained by <a href="https://github.com/I-sektionen">I-sektionen</a>.</span>		
+<span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+</span>	
+</footer>
+</section>
+</body>
+</html>

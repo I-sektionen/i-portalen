@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<title>I-portalen by I-sektionen</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="../stylesheets/normalize.css" media="screen">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="../stylesheets/stylesheet.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="../stylesheets/github-light.css" media="screen">
+</head>
+<body>
+<section class="page-header">
+	<a href="http://i-portalen.se" class="btn"><h1 class="project-name">I-portalen</h1></a>
+
+	<h2 class="project-tagline">Användarmanual</h2>
+	<a href="index2-0.html" class="btn">Tillbaka till startsidan</a>
+</section>
+
+<!-- Change from here on new pages -->
+<section class="main-content">
+	<!-- Page title -->
+	<h3><a id="start" class="anchor" href="#start" aria-hidden="true"><span class="octicon octicon-link"></span></a> Hur man skapar och hanterar ett möte (sektionsmöte) </h3>
+
+	<!-- Content -->
+	<p><strong>Innehållsförteckning</strong></p>
+	<ul>
+	<!-- Remember to internally link to h4 elements on the page-->
+		<li><a href="#create">Skapa möte</a></li>
+		<li><a href="#edit">Redigera möte</a></li>
+		<li><a href="#del">Radera möte </a></li>
+		<li><a href="#commence">Starta ett möte </a></li>
+		<li><a href="#checkin">Checka in anmälda</a></li>
+		<li><a href="#speakerList">Talarlista</a></li>
+		<li><a href="#votingSys">Röstningssystem</a></li>
+		<li><a href="#end">Avsluta ett möte </a></li>
+	</ul>
+
+	<!-- On page content -->
+	<h4><a id="create" class="anchor" href="#create" aria-hidden="true"><span class="octicon octicon-link"></span></a> Skapa möte </h4>
+
+	<ol>
+		<li>Logga in på Strapi</li>
+		<li>Klicka på “Content Manager” i menyn till vänster.</li>
+		<li>Klicka på “Meeting” i content-menyn som dyker upp.</li>
+		<li>Klicka på “Create new entry” uppe till höger.</li>
+		<li>Ange namn, beskrivning samt start- och sluttid. Se här hur formateringen i textrutor fungerar. <br />
+			<ol type="a"><li>Notera att fältet “Views” inte behöver fyllas i. Detta fält visar hur många visningar ett möte har efter att det ah publicerats. </li></ol>
+</li>
+		<li>Lägg till plats genom att trycka på “position” och ange namnet på platsen/salen. </li>
+		<li>Lägg till “relations” till höger för att ange vem som skapat eventet. Under “association” finns alla utskott och under “group” resterande tillhörande sektionen. Det går även att lägga till taggar under fältet “tags”. </li>
+		<li>Om du vill lägga till anmälda personer till eventet redan nu går det att göra det i fältet “users”. </li>
+		<li>Klicka på “Save” uppe i högra hörnet.  </li>
+</ol>
+	<h4><a id="edit" class="anchor" href="#edit" aria-hidden="true"><span class="octicon octicon-link"></span></a> Redigera möte </h4>
+
+	<ol>
+		<li>Logga in på Strapi</li>
+		<li>Klicka på “Content Manager” i menyn till vänster.</li>
+		<li>Klicka på “Meeting” i content-menyn som dyker upp.</li>
+		<li>Leta reda på det möte du vill redigera i listan som visas. Det går att sortera, filtrera eller söka i listan för att enklare hitta det sökta objektet. </li>
+		<li>Klicka på objektet du vill redigera. </li>
+		<li>Redigera de fält som ska ändras. Se här hur formateringen i textrutor fungerar. </li>
+		<li>Redigera de fält som ska ändras. Se här hur formateringen i textrutor fungerar. <br />
+			<ol type="a"><li>OBS: Redigera inte fältet “eventid”.</li></ol>
+</li>
+		<li>Klicka på “Spara”  i övre högra hörnet. </li>
+</ol>
+	<h4><a id="del" class="anchor" href="#del" aria-hidden="true"><span class="octicon octicon-link"></span></a> Radera möte  </h4>
+
+	<ol>
+		<li>Logga in på Strapi</li>
+		<li>Klicka på “Content Manager” i menyn till vänster.</li>
+		<li>Klicka på “Meeting” i content-menyn som dyker upp.</li>
+		<li>Leta reda på det möte du vill redigera i listan som visas. Det går att sortera, filtrera eller söka i listan för att enklare hitta det sökta objektet.</li>
+		<li>Klicka antingen:<br />
+			<ol type="a"><li>direkt på “radera” till höger i listan för det element som ska raderas. </li></ol>
+			<ol type="a"><li>på bokningen som ska raderas, och klicka sedan på “Delete this entry”.</li></ol>
+</li>
+</ol>
+	<h4><a id="commence" class="anchor" href="#commence" aria-hidden="true"><span class="octicon octicon-link"></span></a> Starta ett möte  </h4>
+
+	<ol>
+		<li>Klicka på “Admin panel” på i-portalen till höger i huvudmenyn.  </li>
+		<li>Leta efter mötet du vill starta i listan “Uppkommande möten”. </li>
+		<li>Klicka på “Starta”. Listan ska nu även ha lagts till i listan “Aktiva möten”. </li>
+</ol>
+	<h4><a id="checkin" class="anchor" href="#checkin" aria-hidden="true"><span class="octicon octicon-link"></span></a> Checka in anmälda </h4>
+
+	<ol>
+		<li>Klicka på “Admin panel” på i-portalen.se till höger i huvudmenyn.  </li>
+		<li>Leta efter mötet du vill checka in personer till i listan “Aktiva möten”. </li>
+		<li>Klicka på knappen “Kontrollpanel”. </li>
+		<li>Klicka på “Öppna användare”. </li>
+		<li>Gå antingen igenom listan eller sök på id, LiU-id eller namn för att hitta det namn som ska checkas in till mötet.<br />
+			<ol type="a"><li>Notera: Sökfunktionen är skiftlägeskänslig (case sensitive). </li></ol>
+</li>
+		<li>Klicka på “Närvarande”.<br />
+			<ol type="a"><li>Notera: Om knappen klickas på igen kommer personen att markeras som inte incheckad igen.</li></ol>
+</li>
+		<li>Klicka på “Stäng användare” om du vill sluta visa listan. </li>
+</ol>
+	<h4><a id="speakerList" class="anchor" href="#speakerList" aria-hidden="true"><span class="octicon octicon-link"></span></a> Talarlista </h4>
+
+	<ol>
+		<li>Klicka på “Admin panel” på i-portalen.se till höger i huvudmenyn.  </li>
+		<li>Leta efter mötet du vill checka in personer till i listan “Aktiva möten”. </li>
+		<li>Klicka på knappen “Kontrollpanel”. Talarlistan kommer nu att visas i ett popup-fönster. </li>
+		<li>Skriv in id, LiU-id eller namn i sökfältet och klicka sedan på “Lägg till talare i talarlistan” för att lägga till användare i talarlistan.  </li>
+		<li>Klicka på krysset för att ta bort användare från talarlistan som visas bakom namnet.</li>
+		<li>Klicka på “Visa talarlista på egen sida” för att visa en egen webbsida med endast talarlistan på.</li>
+</ol>
+	<h4><a id="votingSys" class="anchor" href="#votingSys" aria-hidden="true"><span class="octicon octicon-link"></span></a> Röstningssystem </h4>
+
+	<ol>
+		<li>Klicka på “Admin panel” på i-portalen.se till höger i huvudmenyn.  </li>
+		<li>Leta efter mötet du vill checka in personer till i listan “Aktiva möten”. </li>
+		<li>Klicka på knappen “Kontrollpanel”. Talarlistan kommer nu att visas i ett popup-fönster. </li>
+		<li>Klicka på “Omröstning”. Om det reda pågår en omröstning kommer denna att visas till vänster på sidan som visas. </li>
+		<li>För att skapa en ny omröstning fyller du i fälten till vänster under “Starta omröstning?”. Om det redan pågår en omröstning kommer denna att försvinna. </li>
+		<li>Klicka på “Stoppa omröstning” för att avsluta en omröstning. Resultaten från omröstningen kommer inte att sparas. </li>
+</ol>
+	<h4><a id="end" class="anchor" href="#end" aria-hidden="true"><span class="octicon octicon-link"></span></a> Avsluta ett möte  </h4>
+
+	<ol>
+		<li>Klicka på “Admin panel” på i-portalen.se till höger i huvudmenyn.  </li>
+		<li>Leta efter mötet du vill checka in personer till i listan “Aktiva möten”. </li>
+		<li>Klicka på knappen “Kontrollpanel”.</li>
+		<li>Klicka på “Avsluta möte” för att avsluta det pågående mötet.</li>
+</ol>
+<!-- Footer containing references required to refrain from copyright infringement, dont change anything past this -->	
+<footer class="site-footer">
+		<span class="site-footer-owner"><a href="https://github.com/I-sektionen/i-portalen">I-portalen</a> is maintained by <a href="https://github.com/I-sektionen">I-sektionen</a>.</span>		
+<span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>	
+</footer>
+</section>
+</body>
+</html>
